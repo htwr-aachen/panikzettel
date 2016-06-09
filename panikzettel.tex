@@ -1,0 +1,109 @@
+\documentclass[11pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hanging}
+\usepackage{calc}
+\title{\textbf{Lineare Algebra Panikzettel}}
+\author{Philipp Schröer}
+\date{31.05.16}
+
+% Formatting
+\newcommand{\id}{\mathrm{id}}
+
+\setlength\parindent{0pt}
+\relpenalty=9999
+\binoppenalty=9999
+
+% Code blocks
+\lstnewenvironment{mat}
+{\lstset{language=Mathematica,
+	mathescape,
+    columns=flexible,
+    backgroundcolor=\color{lightgray!10},
+%    numberstyle=\tiny\color{gray},
+%    numbers=left,
+    basicstyle=\small\ttfamily}
+    }
+{}
+
+% Definitions
+\newlength{\hangwidth}
+\newcommand{\skript}[1]{\settowidth{\hangwidth}{\textbf{(#1)} }\hangpara{\hangwidth}{1}\textbf{(#1)} }
+
+\begin{document}
+\maketitle
+
+\section{Matrixkalkül}
+
+\subsection{Spalteninterpretation}
+
+TODO FOLGENDES IST FALSCH...
+
+Eine Funktion $\varphi : K^{2 \times 1} \to K^{3 \times 1}$ mit
+$$\varphi(x_1) = y_1 - y_3$$
+$$\varphi(x_2) = y_2 + y_3$$
+lässt sich schreiben als $\varphi(x) = Ax$ mit
+$$A = \begin{pmatrix}
+	1 & 0 & -1 \\
+    0 & 1 & 1 \\
+\end{pmatrix}
+$$
+
+\subsection{Koordinatenspalte}
+
+\skript{3.6}$\kappa_s : V \to K^{n \times 1}, v \mapsto \kappa_s(v)$ \\
+ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Hom.
+
+\textit{Beispiel.} Koordinatenspalte von $a \in K^2$ bzgl. $s = ((1,0), (1,1))$ ist $\kappa_s(a) = \begin{pmatrix} a_1 - a_2 \\ a_2 \end{pmatrix}$, denn $a = (a_1, a_2) = (a_1 - a_2) (1,0) + a_2 (1,1)$. Dazu einfach das LGS lösen mit $\sum_{i \in [1,n]} (\kappa_s(v))_i s_i = v$. D.h. die Basis spaltenweise in die LGS-Matrix eintragen und lösen.
+
+\begin{mat}
+> LinearSolve[{{1, 0}, {1, 1}} // Transpose, {a1, a2}]
+{a1-a2,a2}
+\end{mat}
+
+\subsection{Darstellungsmatrix}
+
+\skript{3.8}$M_{t,s}(\varphi) = (\kappa_t(\varphi(s_1)) \ldots \kappa_t(\varphi(s_n)))$ \\
+für $\varphi : V \to W \in Hom(V, W)$, Basen $s = (s_1, \ldots, s_n)$ von $V$ und $t = (t_1, \ldots, t_m)$ von $W$.
+
+Es muss also für jede Spalte das $s_i$ in $\varphi$ eingesetzt werden und das Ergebnis wieder nach den Linearfaktoren von $t$ aufgelöst werden.
+
+\textit{Beispiel.}
+\begin{mat}
+> phi[{x1_, x2_}] := {x1+x2, x1-x2, x2}
+> s = {{1, 0}, {0, 1}}
+> t = {{1,0,0}, {0, 1, 0}, {0, 0, 1}}
+> {
+	LinearSolve[t // Transpose, phi[s[[1]]]],
+	LinearSolve[t // Transpose, phi[s[[2]]]]
+  } // Transpose
+{
+  {1, 1},
+  {1, -1},
+  {0, 1}
+}
+\end{mat}
+
+\skript{Tutoraufgabe 30.5.16 a}$M_{e,e}(\varphi_A) = A$
+
+\subsection{Basiswechselmatrix, Basiswechselformeln}
+
+
+\skript{3.15}In einem Vektorraum $V$ mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ ist $M_{s, s^\prime}(\id_V)$ die Basiswechselmatrix.
+
+\skript{3.18a}Mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt für $v \in V$:\\ $\kappa^\prime_s(v) = (M_{s,s^\prime}(\id_V))^{-1} \kappa_s(v)$.
+
+\skript{3.18b}Mit $\varphi : V \to W \in Hom(V,W)$, Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ und Basen $t = (t_1,\ldots, t_n)$ und $t^\prime = (t^\prime_1, \ldots, t^\prime_n)$ von $W$ gilt: \\
+$M_{t^\prime, s^\prime}(\varphi) = (M_{t,t^\prime}(\id_W))^{-1} M_{t,s}(\varphi) M_{s,s^\prime}(\id_V)$
+
+\subsection{Kardinalitäten von versch. Mengen}
+
+$\text{Sol}(A,0)$ für ein $A \in \textbf{F}^{9 \times 8}_7$ mit $\text{rk}_{\textbf{F}_7} A 5$ ist $7^{8-5}$; Körpergröße hoch Spalten minus Rang.
+\\
+$\{ U \leq \textbf{F}^6_{11} | \text{dim}_{\textbf{F }_{11}} U = 4 \}$ ist $\binom{6}{4}_{11}$, der Gauß'sche Binomialkoeffizient. Ja, die Ergebnisse werden schnell groß.
+
+\end{document}
