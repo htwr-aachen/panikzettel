@@ -13,6 +13,12 @@
 
 % Formatting
 \newcommand{\id}{\mathrm{id}}
+\newcommand{\Sol}{\mathrm{Sol}}
+\newcommand{\rk}{\mathrm{rk}}
+\newcommand{\GL}{\mathrm{GL}}
+%\newcommand{\dim}{\mathrm{dim}}
+\newcommand{\Field}{\mathbb{F}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
 
 \setlength\parindent{0pt}
 \relpenalty=9999
@@ -39,26 +45,21 @@
 
 \section{Matrixkalkül}
 
-\subsection{Spalteninterpretation}
+\subsection{Wiederholung Diskrete Strukturen}
 
-TODO FOLGENDES IST FALSCH...
+\subsubsection{Zeilen-/Spaltenoperatoren}
 
-Eine Funktion $\varphi : K^{2 \times 1} \to K^{3 \times 1}$ mit
-$$\varphi(x_1) = y_1 - y_3$$
-$$\varphi(x_2) = y_2 + y_3$$
-lässt sich schreiben als $\varphi(x) = Ax$ mit
-$$A = \begin{pmatrix}
-	1 & 0 & -1 \\
-    0 & 1 & 1 \\
-\end{pmatrix}
-$$
+Eine Zeilenoperation ist eine Verkettung von Elementaren Zeilenoperatoren.
+Eine Zeilenoperation $z$ hat eine eindeutige Matrix $Z = z(\mathrm{E})$, sodass $z(A) = ZA$. (E ist die Einheitsmatrix).	\\
+Diese Matrix nennen wir Zeilenoperator. Der Zeilenoperator $Z$ einer Zeilenoperation $z = z_1 \circ \ldots \circ z_n$ mit Zeilenoperationen $z_1,\ldots,z_n$ ist das Produkt $Z_1 \cdot \ldots \cdot Z_n$ der Zeilenoperatoren zu $z_1,\ldots,z_n$.	\\
+Für Spaltenoperationen $z$ sind Spaltenoperatoren $Z = z(\mathrm{E})$ analog, nur dass $z(A) = AZ$ (das Z steht auf der rechten Seite) und dass der Zeilenoperator zu $z_1 \circ \ldots \circ z_n$ $Z_n \cdot \ldots \cdot Z_1$ ist.
 
 \subsection{Koordinatenspalte}
 
 \skript{3.6}$\kappa_s : V \to K^{n \times 1}, v \mapsto \kappa_s(v)$ \\
 ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Hom.
 
-\textit{Beispiel.} Koordinatenspalte von $a \in K^2$ bzgl. $s = ((1,0), (1,1))$ ist $\kappa_s(a) = \begin{pmatrix} a_1 - a_2 \\ a_2 \end{pmatrix}$, denn $a = (a_1, a_2) = (a_1 - a_2) (1,0) + a_2 (1,1)$. Dazu einfach das LGS lösen mit $\sum_{i \in [1,n]} (\kappa_s(v))_i s_i = v$. D.h. die Basis spaltenweise in die LGS-Matrix eintragen und lösen.
+\textit{Beispiel.} Koordinatenspalte von $a \in K^2$ bzgl. $s = ((1,0), (1,1))$ ist $$\kappa_s(a) = \begin{pmatrix} a_1 - a_2 \\ a_2 \end{pmatrix}$$ denn $a = (a_1, a_2) = (a_1 - a_2) (1,0) + a_2 (1,1)$. Dazu einfach das LGS lösen mit $$\sum_{i \in [1,n]} (\kappa_s(v))_i s_i = v$$ d.h. die Basis spaltenweise in die LGS-Matrix eintragen und lösen.
 
 \begin{mat}
 > LinearSolve[{{1, 0}, {1, 1}} // Transpose, {a1, a2}]
@@ -102,8 +103,17 @@ $M_{t^\prime, s^\prime}(\varphi) = (M_{t,t^\prime}(\id_W))^{-1} M_{t,s}(\varphi)
 
 \subsection{Kardinalitäten von versch. Mengen}
 
-$\text{Sol}(A,0)$ für ein $A \in \textbf{F}^{9 \times 8}_7$ mit $\text{rk}_{\textbf{F}_7} A 5$ ist $7^{8-5}$; Körpergröße hoch Spalten minus Rang.
-\\
-$\{ U \leq \textbf{F}^6_{11} | \text{dim}_{\textbf{F }_{11}} U = 4 \}$ ist $\binom{6}{4}_{11}$, der Gauß'sche Binomialkoeffizient. Ja, die Ergebnisse werden schnell groß.
+$$\abs{\Sol(A,0)} \text{ für ein } A \in \Field_q^{m \times n} \text{ mit } \rk_{\Field_q} A = r \text{ ist } q^{n-r}$$
+Da Elemente aus $\Sol(A,0)$ Vektoren aus $\Field_q^n$ sind, müssen wir $n$ Parameter aus $\Field_q$ wählen, von denen $r$ nicht frei sind.
+
+$$\abs{\{ U \leq \Field_q^n | \dim_{\Field_q} U = k \}} = \binom{n}{k}_q$$
+Der Gauß'sche Binomialkoeffizient. Ja, die Ergebnisse werden schnell groß.
+
+$$\abs{\mathrm{Hom}(\Field_q^n,\Field_q^m)} = \abs{\Field_q^{m \times n}} = q^{m n}$$
+Homomorphismen lassen sich als Matrizen darstellen und umgekehrt. Daher das ganze Matrixkalkül-Ding.
+
+$$\abs{\GL_n(\Field_q)} = \prod_{i=0}^{n-1} q^n-q^i$$
+$$\abs{\{A \in \Field_q^{m \times n} ~ | ~ \rk(A) = \min(m,n)\}} = \prod_{i=0}^{\min(m,n)-1} (q^{\max(m,n)}-q^i)$$
+Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ Stück mit Länge $\max(m,n)$. Die Erste ist dann bis auf die Null frei zu wählen, danach sollte jede folgende kein Vielfaches der Vorherigen sein.
 
 \end{document}
