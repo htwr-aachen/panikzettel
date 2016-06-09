@@ -1,0 +1,2 @@
+# panikzettel
+Die ultimative Paniksammlung.
