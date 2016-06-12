@@ -35,6 +35,7 @@
 
 \newcommand{\id}{\mathrm{id}}
 \newcommand{\Sol}{\mathrm{Sol}}
+\newcommand{\Col}{\mathrm{Sol}}
 \newcommand{\rk}{\mathrm{rk}}
 \newcommand{\GL}{\mathrm{GL}}
 \newcommand{\Field}{\mathbb{F}}
@@ -152,47 +153,49 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 
 \skript{4.1}Blockcode: Nicht-leere Teilmenge C von $K^{n \times 1}$ über $K$ mit Länge $n$. Elemente werden Codewörter genannt.
 
-\skript{4.3}Hamming-Gewicht: $wt(a):=|\{i \in [1,n]|a_i \neq 0\}|$ mit $a \in K^{n \times 1}$
+\skript{4.3}Hamming-Gewicht: $\mathrm{wt}(a):=|\{i \in [1,n]|a_i \neq 0\}|$ mit $a \in K^{n \times 1}$
 \begin{itemize}
-	\item $wt(a+b) \leq wt(a)+ wt(b)$
+	\item $\mathrm{wt}(a+b) \leq \mathrm{wt}(a)+ \mathrm{wt}(b)$
 \end{itemize}
 
 \skript{4.6}Hamming-Abstand: $d(a,b):=wt(b-a)$
 \begin{itemize}
-	\item $d(a,b)=|\{i \in [1,n]|a_i \neq b_i\}|$
-	\item $d(a,c) \leq d(a,b)+d(b,c)$
+	\item $\mathrm{d}(a,b)=|\{i \in [1,n]|a_i \neq b_i\}|$
+	\item $\mathrm{d}(a,c) \leq \mathrm{d}(a,b)+\mathrm{d}(b,c)$
 \end{itemize}
 
-\skript{4.10}Kugel: $B_r(a):=\{x \in K^{n \times 1}|d(a,x) \leq r\}$ mit $r \in \mathbb{R}_{\geq 0}$
+\skript{4.10}Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) \leq r\}$ mit $r \in \mathbb{R}_{\geq 0}$
 
 \subsection{Minimalabstand eines Blockcodes}
 
-\skript{4.11}Minimalabstand: $d(C):=min\{d(c,c`)|c,c` \in C$ mit $c \neq c` \}$, falls $|C| \ge 1$
+\skript{4.11}Minimalabstand: $\mathrm{d}(C):=\min\{\mathrm{d}(c,c^\prime)|c,c^\prime \in C$ mit $c \neq c^\prime \}$, falls $|C| \ge 1$
 \begin{itemize}
-	\item $B_{d(C)}(c) \cap C = \{c\}$
+	\item $\mathrm{B}_{\mathrm{d}(C)}(c) \cap C = \{c\}$
 \end{itemize}
 
-\skript{4.15}Nächster Nachbar von $x$ ist $c$ mit $d(c,x)=min\{d(c`,x|c` \in C)\}$
+\skript{4.15}Nächster Nachbar von $x$ ist $c$ mit $\mathrm{d}(c,x)=\min\{d(c^\prime,x|c^\prime \in C)\}$
 \begin{itemize}
-	\item $\forall x \in B_{\frac{d(C)}{2}}$ ist $c$ der eindeutige nächste Nachbar von $x \in C$
+	\item $\forall x \in \mathrm{B}_{\frac{\mathrm{d}(C)}{2}}$ ist $c$ der eindeutige nächste Nachbar von $x \in C$
 \end{itemize}
 
 \subsection{Lineare Codes}
 
-\skript{4.19}$C$ ist ein linearer $[n,k,d]$-Code, wenn die Länge $n$, $dim_K C=k$ und $d(C)=d$ ist.
+\skript{4.19}$C$ ist ein linearer $[n,k,d]$-Code, wenn die Länge $n$, $\dim_K C=k$ und $\mathrm{d}(C)=d$ ist.
 
-\skript{4.21}$d(C)=min\{wt(c)|c \in C\setminus\{0\}\}$, falls $C \neq \{0\}$
+\skript{4.21}$\mathrm{d}(C) = \min \{\mathrm{wt}(c)|c \in C\setminus\{0\}\}$, falls $C \neq \{0\}$
 
 \subsection{Erzeugermatrizen}
 
-\skript{4.22}Eine Erzeugermatrix ist $A \in K^{n \times k}$ mit $C=Col(A)$, wenn C ein linearer $[n,k]-Code$ über $K$ ist.
+\skript{4.22}Eine Erzeugermatrix ist $A \in K^{n \times k}$ mit $C=\Col(A)$, wenn C ein linearer $[n,k]$-Code über $K$ ist.
 
-\skript{4.24}$rk_k A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]-Code$ $C$.
+\skript{4.24}$\rk_k A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]$-Code $C$.
 
 \skript{4.25}Anwendung:
 \begin{itemize}
-	\item Kodieren von $w \in K^{k \times 1}$ zu einem Codewort mit Erzeugermatrix $A$: Berechne $Aw$.
-	\item Dekodieren eines Codewortes $c \in C$ zu einem Informationswort bzgl. $A$.: Berechne $w \in K^{k \times 1}$ mit $Aw=c$.
+	\item Kodieren von $w \in K^{k \times 1}$ zu einem Codewort mit Erzeugermatrix $A$: \\
+	Berechne $Aw$.
+	\item Dekodieren eines Codewortes $c \in C$ zu einem Informationswort bzgl. $A$.: \\
+	Berechne $w \in K^{k \times 1}$ mit $Aw=c$.
 \end{itemize}
 
 \subsection{Kontrollmatrizen}
