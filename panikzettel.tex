@@ -146,6 +146,7 @@ $$\abs{\GL_n(\Field_q)} = \prod_{i=0}^{n-1} q^n-q^i$$
 $$\abs{\{A \in \Field_q^{m \times n} ~ | ~ \rk(A) = \min(m,n)\}} = \prod_{i=0}^{\min(m,n)-1} (q^{\max(m,n)}-q^i)$$
 Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ Stück mit Länge $\max(m,n)$. Die Erste ist dann bis auf die Null frei zu wählen, danach sollte jede folgende kein Vielfaches der Vorherigen sein.
 
+<<<<<<< HEAD
 \section{Lineare Kodierungstheorie}
 
 \subsection{Blockcode}
@@ -198,5 +199,62 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 \subsection{Kontrollmatrizen}
 
 \skript{4.26}Kontrollmatrix
+=======
+\section{Determinante}
+
+Die Determinante gibt Auskunft über quadratische Matrizen. Wenn sie invertierbar ist, dann ist auch die Matrix invertierbar. In Körpern heißt das einfach ungleich Null, in Ringen muss Invertierbarkeit geprüft werden. Im Folgenden ist $R$ ein beliebiger kommutativer und unitärer Ring. \\
+
+\skript{5.2a} Für $A \in R^{0 \times 0}$: $\det \begin{pmatrix} & \end{pmatrix} = 1$
+
+\skript{5.2b} Für $A \in R^{1 \times 1}$: $\det A = A_{1,1}$
+explorer
+\skript{5.3c} Für $A \in R^{2 \times 2}$: $\det A = A_{1,1} A_{2,2} - A_{1,2} A_{2,1}$ \\
+
+Die Determinanten-Formel für $R^{3 \times 3}$-Matrizen ist nicht schön und wird nicht schöner in höhreren Dimensionen. Dazu der Kästchensatz: \\
+
+\skript{5.15}\textit{Kästchensatz.} Für Matrizen $A \in R^{m \times m}$, $B \in R^{m \times n}$, $C \in R^{n \times n}$ gilt: \\
+$\det \begin{pmatrix} A & B \\ 0 & C \end{pmatrix} = (\det A) (\det C)$
+
+\subsection{Produktsatz}
+
+\skript{5.8a} $\det (B A) = (\det B) (\det A)$
+
+\skript{5.8b} $\det \textrm{E}_n = 1$
+
+\skript{5.8c} $(\det A)^{-1} = \det (A^{-1})$
+
+\subsection{Veränderung der Matrix und ihrer Determinante}
+
+Nach diesem Satz gelten die folgenden Sätze für Zeilen analog wie für Spalten:
+
+\skript{5.4} $\det A^\mathrm{tr} = \det A$ \\
+
+\skript{5.5/1}\textit{Multilinearität.} \\
+$\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y+z & x_{k+1} & \ldots  & x_n \end{pmatrix} = \\
+ \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix} +
+ \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & z & x_{k+1} & \ldots  & x_n \end{pmatrix}$
+Außerdem: \\
+$\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & ay & x_{k+1} & \ldots  & x_n \end{pmatrix} =
+a \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix}$
+
+\skript{5.5/2} Wenn alle Spalten paarweise gleich sind, dann gilt $\det A = 0$
+
+\skript{5.6a} Werden zwei Spalten von $A$ getauscht, so gilt: $\det A^\prime = - \det A$
+
+\subsection{Laplace-Entwicklung}
+
+Determinanten größerer Matrizen werden mit der Laplace-Entwicklung rekursiv berechnet. Wie das geht sollte mal jemand hier erklären.
+
+\subsection{Determinante eines Vektorraumendomorphismus}
+
+Man beachte: Vektorraum\textbf{\underline{endo}}morphismus. \\
+
+Die Determinante ist unabhängig von den Basen der Darstellungsmatrix:
+
+\skript{5.9}Für  $\varphi : V \to V$, Basen $s = (s_1, \ldots, s_n), s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt: \\
+$\det \textrm{M}_{s,s}(\varphi) = \det \textrm{M}_{s^\prime, s^\prime}(\varphi)$ \\
+
+Damit können wir auch problemlos $\det \textrm{M}_{s,s}(\varphi)$ mit $\det \varphi$ abkürzen.
+>>>>>>> origin/master
 
 \end{document}
