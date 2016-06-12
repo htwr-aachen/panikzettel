@@ -245,7 +245,39 @@ a \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end
 
 \subsection{Laplace-Entwicklung}
 
-Determinanten größerer Matrizen werden mit der Laplace-Entwicklung rekursiv berechnet. Wie das geht sollte mal jemand hier erklären.
+Determinanten größerer Matrizen werden mit der Laplace-Entwicklung rekursiv berechnet.
+Zuerst braucht man da die Definition des Minor:
+
+\skript{5.11} Der Minor an der Stelle $(k,l)$ mit $k,l \in [1,n]$ von $A \in R^{n \times n}$ ist: \\
+$$\textrm{Minor}_{k,l}(A) := \det \begin{pmatrix}
+A_{1,1} & \ldots & A_{1,l-1} & A_{1,l+1} & \ldots & A_{1,n} \\
+\vdots & & \vdots & \vdots & & \vdots \\
+A_{k-1,1} & \ldots & A_{k-1,l-1} & A_{k-1,l+1} & \ldots & A_{k-1,n} \\
+A_{k+1,1} & \ldots & A_{k+1,l-1} & A_{k+1,l+1} & \ldots & A_{k+1,n} \\
+\vdots & & \vdots & \vdots & & \vdots \\
+A_{n,1} & \ldots & A_{n,l-1} & A_{n,l+1} & \ldots & A_{n,n} \\
+\end{pmatrix}$$
+
+Es ist etwas schwer zu erkennen, aber der Minor an irgendeiner Stelle bedeutet ledglich: Berechne die Determinante der Matrix ohne Zeile $k$ und ohne Spalte $l$.
+
+Die Laplace-Entwicklung ist dann möglich entweder nach Spalte $l$ oder nach Zeile $k$:
+
+\skript{5.13a} Für $l \in [1,n]$ gilt: \\
+$$\det A = \sum_{k=1}^n (-1)^{k+l} A_{k,l} \textrm{Minor}_{k,l}(A)$$
+
+\skript{5.13b} Für $k \in [1,n]$ gilt: \\
+$$\det A = \sum_{l=1}^n (-1)^{k+l} A_{k,l} \textrm{Minor}_{k,l}(A)$$
+
+Da gilt es besonders hart drauf zu starren, bis sich einem das System ergibt. Oder einach weiterlesen, denn es folgt eine kurze Erklärung:
+
+\begin{enumerate}
+\setcounter{enumi}{-1}
+\item \textit{(Pro-Tipp)} Vorher die Matrix mit elementaren Zeilenoperationen vereinfachen. Das verändert aber die Determinante etwas, siehe Korollar (5.6).
+\item Eine Zeile oder Spalte aussuchen, nach der man entwickeln möchte. Mit Vorraussicht auf die nächsten Rechnungen sollte die Zeile/Spalte mit den meisten Nullen gewählt werden, das spart gleich Arbeit.
+\item Jedes Element der gewählten Zeile/Spalte wird dann mit einem Minor multipliziert. Der Minor ist einfach die Determinante, wo die Entwicklungsspalte oder -zeile und die Zeile/Spalte des aktuellen Elementes weggestrichen wurden. Hier profitiert man von den Nullen.
+\item Wenn die Minoren mit großen Matrizen zu berechnen sind, einfach rekursiv weiter Laplace-Entwickeln!
+\item Die Ergebnisse der Minoren multipliziert mit dem Wert alternierend addieren. Ob man mit $(-1)$ oder $(+1)$ anfängt, hängt davon ab, ob man in den Minor einer Zeile/Spalte mit geradem Index berechnet: Gerade Zeile $\implies (+1)$
+\end{enumerate}
 
 \subsection{Determinante eines Vektorraumendomorphismus}
 
