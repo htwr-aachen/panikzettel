@@ -339,9 +339,15 @@ Außerdem: \\
 $\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & ay & x_{k+1} & \ldots  & x_n \end{pmatrix} =
 a \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix}$
 
-\skript{5.5/2} Wenn alle Spalten paarweise gleich sind, dann gilt $\det A = 0$
+\skript{5.5/2} Wenn alle Spalten paarweise gleich sind, dann gilt $\det A = 0$\\
 
-\skript{5.6a} Werden zwei Spalten von $A$ getauscht, so gilt: $\det A^\prime = - \det A$
+Um die Determinante deutlich einfacher berechnen zu können, ist es möglich, die Matrix mit unseren elementaren Zeilen- und Spaltenoperationen zu vereinfachen. Dazu gibt es Sätze für jeden Operator:
+
+\skript{5.6a} Mit $k \neq l$: $\det \textrm{sw}_{k,l}(A) = - \det A$
+
+\skript{5.6b} Mit $a \in R$ und $k \neq l$: $\det \textrm{add}_{k,l,a}(A) = \det A$
+
+\skript{5.6c} Mit $a \in R$: $\det \textrm{mul}_{k,a}(A) = a \det A$
 
 \subsection{Laplace-Entwicklung}
 
