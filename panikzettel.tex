@@ -35,9 +35,11 @@
 
 \newcommand{\id}{\mathrm{id}}
 \newcommand{\Sol}{\mathrm{Sol}}
-\newcommand{\Col}{\mathrm{Sol}}
+\newcommand{\Col}{\mathrm{Col}}
 \newcommand{\rk}{\mathrm{rk}}
 \newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Ker}{\mathrm{Ker}}
+\renewcommand{\Im}{\mathrm{Im}}
 \newcommand{\Field}{\mathbb{F}}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
@@ -64,6 +66,31 @@ $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapst
 \item Distributivität: $(a+b)v=(av)+(bv)$, sowie $a(v+w)=(av)+(aw)$
 \end{enumerate}
 
+\subsection{Untervektorräume}
+
+% \skript{1.10} Für $K$-Vektorräume $U$ und $V$ heißt $U$ Untervektorraum von $V$ wenn die Menge der Vektoren von $U$ Teilmenge der Menge der Vektoren von $V$ ist und für $k \in K, u,u' \in U$ gilt:
+
+\begin{align*}
+	% u {+}^{U} u' &= u {+}^{V} u'	\\
+	% k \cdot u' &= k \cdot u'
+	\
+\end{align*}
+
+Wir schreiben $U \leq V$ für ``$U$ ist ein Untervektorraum von $V$'' und $U \nleq V$ für ``$U$ ist kein Untervektorraum von $V$''.
+
+\subsection{Linearkombinationen und Lineare Unabhängigkeit}
+
+Eine linearkombination eines Tupels $s = (s_1,s_2, \ldots, s_n)$ in einem $K$-Vektorraum $V$ ist eine Summe der Einträge von $s$ mit Vorfaktoren aus $K$.	\\
+Ein Tupel heißt linear unabhängig, wenn kein Eintrag eine Linearkombination der anderen Einträge ist.
+
+\subsection{Erzeugendensysteme, Basen und Dimension}
+
+Für einen $K$-Vektorraum $V$ heißt ein Tupel $s$ in $V$ Erzeugendensystem von $V$ wenn jedes Element von $V$ eine Linearkombination von $s$ ist.	\\
+Für ein Tupel $s$ in $V$ bezeichnet $\langle s \rangle$ die Menge aller Linearkombinationen von $s$ und wird Erzeugnis von $s$ genannt. Das Erzeugnis eines belibigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.	\\
+Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endliche Basis von $V$ der länge $n$, dann nennen wir $V$ endlich erzeugt und sagen dass $V$ Dimension $n$ hat.
+
+\subsection{Homomorphismen}
+
 Ein Vektorraumhomomorphismus ist eine Funktion $\varphi : V \to W$ zwischen zwei Vektorräumen, welcher folgende Axiome für $K$-Vektorräume $V$ und $W$ erfüllt:
 
 \skript{2.2b} \begin{enumerate}
@@ -80,6 +107,15 @@ Oder direkt in einem Axiom:
 \skript{2.9} Ein Vektorraum\underline{iso}morphismus ist ein bijektiver/invertierbarer Vektorraum\underline{homo}morphismus.
 
 \skript{2.10} Ein Vektorraum\underline{auto}morphismus ist ein Vektorraum\underline{iso}morphismus von $V$ nach $V$. Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
+
+\subsubsection{Bild und Kern}
+
+Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\Phi: V \to W$
+
+\skript{2.11 a)} $\Im \varphi$ ist ein $K$-Untervektorraum von $W$
+
+\skript{2.11 b)} $\Ker \varphi \coloneqq \{v \in V | \varphi(v)=0 \}$ ist ein $K$-Untervektorraum von $V$
+
 
 \section{Matrixkalkül}
 
