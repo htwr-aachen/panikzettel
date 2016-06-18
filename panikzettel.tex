@@ -50,7 +50,7 @@
 
 Dieser ``Panikzettel'' für Lineare Algebra ist eine mehr oder weniger informelle Zusammenfassung des Skriptes von Sebastian Thomas und der Vorlesung Lineare Algebra im SS 2016 bei PD Dr. Viktor Levandovskyy. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen, wie etwa offensichtliche $n \in \mathbb{N}$. Ideen, Anmerkungen und Verbesserungen nehmen wir gerne an via panikzettel@philworld.de.
 
-\section{Vektorräume}
+\section{Vektorräume und ihre Homomorphismen}
 
 $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapsto v+w$, sowie die Skalarmultiplikation $K \times V \to V, (a,v) \mapsto a \cdot v  $, für den folgende Axiome mit $v, w, x \in V, a,b \in K$ gelten müssen:
 
@@ -63,6 +63,23 @@ $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapst
 \item Einselement: $1\cdot v=v$
 \item Distributivität: $(a+b)v=(av)+(bv)$, sowie $a(v+w)=(av)+(aw)$
 \end{enumerate}
+
+Ein Vektorraumhomomorphismus ist eine Funktion $\varphi : V \to W$ zwischen zwei Vektorräumen, welcher folgende Axiome für $K$-Vektorräume $V$ und $W$ erfüllt:
+
+\skript{2.2b} \begin{enumerate}
+	\item Additivität: Für $v, v^\prime \in V$ ist $\varphi(v + v^\prime) = \varphi(v) + \varphi(v^\prime)$
+	\item Homogenität: Für $a \in K, v \in V$ ist $\varphi(av) = a \varphi(v)$
+\end{enumerate}
+
+Oder direkt in einem Axiom:
+
+\skript{2.2c} Für $a \in K, v, v^\prime \in V$ ist $\varphi(av + v^\prime) = a \varphi(v) + \varphi(v^\prime)$.\\
+
+\skript{2.5} Ein Vektorraum\underline{endo}morphismus ist ein Vektorraum\underline{homo}morphismus von $V$ nach $V$.
+
+\skript{2.9} Ein Vektorraum\underline{iso}morphismus ist ein bijektiver/invertierbarer Vektorraum\underline{homo}morphismus.
+
+\skript{2.10} Ein Vektorraum\underline{auto}morphismus ist ein Vektorraum\underline{iso}morphismus von $V$ nach $V$. Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
 
 \section{Matrixkalkül}
 
