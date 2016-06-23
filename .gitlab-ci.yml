@@ -1,0 +1,7 @@
+compile_pdf:
+  image: blang/latex
+  script:
+    - pdflatex panikzettel.tex
+  artifacts:
+    paths:
+      - panikzettel.pdf

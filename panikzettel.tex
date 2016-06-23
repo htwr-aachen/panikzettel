@@ -38,6 +38,7 @@
 \newcommand{\Sol}{\mathrm{Sol}}
 \newcommand{\Col}{\mathrm{Col}}
 \newcommand{\rk}{\mathrm{rk}}
+\newcommand{\defekt}{\mathrm{def}}
 \newcommand{\GL}{\mathrm{GL}}
 \newcommand{\Ker}{\mathrm{Ker}}
 \renewcommand{\Im}{\mathrm{Im}}
@@ -110,14 +111,29 @@ Oder direkt in einem Axiom:
 
 \skript{2.10} Ein Vektorraum\underline{auto}morphismus ist ein Vektorraum\underline{iso}morphismus von $V$ nach $V$. Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
 
-\subsubsection{Bild und Kern}
+\subsubsection{Bild und Kern, Rang und Defekt}
 
-Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\Phi: V \to W$
+Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$
 
 \skript{2.11 a)} $\Im \varphi$ ist ein $K$-Untervektorraum von $W$
 
 \skript{2.11 b)} $\Ker \varphi \coloneqq \{v \in V | \varphi(v)=0 \}$ ist ein $K$-Untervektorraum von $V$
 
+\skript{2.21 a)} $\defekt_K(\varphi) \coloneqq \dim_K(\Ker\varphi)$
+
+\skript{2.21 b)} $\rk_K(\varphi) \coloneqq \dim_K(\Im\varphi)$
+
+\subsubsection{Rangsatz}
+
+\skript{2.27} Für jeden $K$-Vektorraumhomomorphismus $\varphi: V \to W$ gilt: $$\dim_K(V) = \rk_K(\varphi) + \defekt_K(\varphi)$$
+
+\subsubsection{Verschiedenes}
+
+Es seien $K$-Vektorräume $V$ und $W$, ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$ und ein Tupel $s \in K^n$.
+
+\skript{HA. 24 c)} $\varphi(\langle s_1,\ldots,s_n \rangle) = \langle \varphi(s_1), \ldots, \varphi(s_n) \rangle$
+
+\skript{HA. 24 d),e)} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear Unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
 
 \section{Matrixkalkül}
 
@@ -184,7 +200,7 @@ Es muss also für jede Spalte das $s_i$ in $\varphi$ eingesetzt werden und das E
 
 \subsection{Basiswechselmatrix, Basiswechselformeln}
 
-\skript{3.15}In einem Vektorraum $V$ mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ ist $\mathrm{M}_{s, s^\prime}(\id_V)$ die Basiswechselmatrix.
+\skript{3.15}In einem Vektorraum $V$ mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ ist $\mathrm{M}_{s, s^\prime}(\id_V)$ die Basiswechselmatrix von $s$ nach $s^\prime$.
 
 \skript{3.18a}Mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt für $v \in V$:\\ $\kappa_{s^\prime}(v) = (\mathrm{M}_{s,s^\prime}(\id_V))^{-1} \kappa_s(v)$.
 
@@ -234,7 +250,7 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 
 \skript{4.15}Nächster Nachbar von $x$ ist $c$ mit $\mathrm{d}(c,x)=\min\{d(c^\prime,x|c^\prime \in C)\}$
 \begin{itemize}
-	\item $\forall x \in \mathrm{B}_{\frac{\mathrm{d}(C)}{2}}$ ist $c$ der eindeutige nächste Nachbar von $x \in C$
+	\item $\forall x \in \mathrm{B}_{\frac{\mathrm{d}(C)}{2}}(c)$ ist $c$ der eindeutige nächste Nachbar von $x \in C$
 \end{itemize}
 
 \subsection{Lineare Codes}
@@ -269,7 +285,9 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 
 \skript{4.29}Codewort-Test: Berechne $Bx$ und falls $Bx=0$ ist, dann ist $x$ ein Codewort von $C$.
 
-\skript{4.30}Seien $k \in [1,n],$ ein linearer $[n,k]$-Code $C$ über $K$ und die Kontrollmatrix $B$ gegeben.
+\skript{4.30}Seien $k \in [1,n],$ ein linearer $[n,k]$-Code $C$ über $K$ und die Kontrollmatrix $B$ gegeben. Dann ist \\
+$\mathrm{d}(C) = \min \{r \in \mathbb{N}_0 \ |\ $ es gibt $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ so, dass $(B_{-,j_1},...,B_{-,j_r})$ linear abhängig ist. \\
+=$ \max \{r \in \mathbb{N}_0 \ |\ $ für alle $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ ist $(B_{-,j_1},...,B_{-,j_r})$ linear unabhängig.
 
 \subsection{Syndromdekodierung}
 
