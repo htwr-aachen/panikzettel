@@ -43,6 +43,9 @@
 \newcommand{\Ker}{\mathrm{Ker}}
 \renewcommand{\Im}{\mathrm{Im}}
 \newcommand{\Field}{\mathbb{F}}
+\newcommand{\Eig}{\mathrm{Eig}}
+\newcommand{\geo}{\mathrm{g}}
+\newcommand{\mul}{\mathrm{m}}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 
@@ -413,5 +416,51 @@ Die Determinante ist unabhängig von den Basen der Darstellungsmatrix:
 $\det \textrm{M}_{s,s}(\varphi) = \det \textrm{M}_{s^\prime, s^\prime}(\varphi)$ \\
 
 Damit können wir auch problemlos $\det \textrm{M}_{s,s}(\varphi)$ mit $\det \varphi$ abkürzen.
+
+\section{Eigenwerte}
+
+\skript{6.1} Ein Eigenvektor $v$ eines Endomorphismus' $\varphi$ ist ein nicht-null Vektor, der von dem Endomorphismus bis auf einen skalaren Faktor, den Eigenwert, nicht verändert wird. Ein Eigenraum ist der Vektorraum, der alle Eigenvektoren zu einem Eigenwert (und den Nullvektor) enthält.
+$$\Eig_a(\varphi) = \{ v \in V \vert \varphi(v) = a v \}$$
+
+Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/-räume von $\varphi_A$.
+
+\skript{6.6} Für verschiedene Eigenwerte sind die zugehörigen Eigenräume unabhängig.
+
+\subsection{Characteristische Polynome}
+
+\skript{6.8} Das charakteristische Polynom einer Matrix $A$ ist $\chi_A = \det(XE_n-A)$.
+
+\skript{6.12} Das charakteristische Polynom eines Vektorraumendomorphismus' $\varphi$ ist $\chi_\varphi = \chi_{M_{s,s}(\varphi)}$ für eine beliebige Basis $s$.
+
+\skript{6.13} Es sind Äquivalent:
+\begin{enumerate}
+	\item $a$ ist ein Eigenwet von $A$
+	\item $\rk(A-aE_n)<n$
+	\item $det(A-aE_n)=0$
+	\item $a$ ist eine Nullstelle des Charakteristischen Polynoms von $A$
+\end{enumerate}
+
+\subsubsection{Begleitmatrix}
+
+\skript{6.20} Für ein normiertes Polynom $f = X^n + \sum_{i=0}^{n-1} a_iX^i \in K[X]\setminus\{0\}$ ist die Begleitmatrix
+$$C(f) = \left(\begin{array}{cccc}
+		& 0 & & -a_0	\\
+		& & & -a_1	\\
+		& E_{n-1} & & \vdots	\\
+		& & & -a_n
+\end{array}\right)$$
+
+\skript{6.22} Das charakteristische Polynom einer Begleitmatrix ist
+$$\chi_{C(f)} = f$$
+
+\subsection{Vielfachheiten}
+
+\skript{6.16} Die geometrische Vielfachheit eines Eigenwertes $a$ von einem Endomorphismus $\varphi$ ist
+$$\geo_a(\varphi) = \dim(\Eig_a(\varphi))$$
+	Die algebraische Vielfachheit eines Eigenwertes $a$ von einem Endomorphismus $\varphi$ ist
+$$\mul_a(\varphi) = \mul_a(\chi_\varphi)$$
+	Für eine Matrix $A$ sind Vielfachheiten analog über $\varphi_A$ gegeben.
+
+\skript{6.19} Es gilt stets $\geo_a(\varphi) \le \mul_a(\varphi)$
 
 \end{document}
