@@ -434,7 +434,7 @@ Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/
 
 \skript{6.13} Es sind Äquivalent:
 \begin{enumerate}
-	\item $a$ ist ein Eigenwet von $A$
+	\item $a$ ist ein Eigenwert von $A$
 	\item $\rk(A-aE_n)<n$
 	\item $det(A-aE_n)=0$
 	\item $a$ ist eine Nullstelle des Charakteristischen Polynoms von $A$
@@ -462,5 +462,32 @@ $$\mul_a(\varphi) = \mul_a(\chi_\varphi)$$
 	Für eine Matrix $A$ sind Vielfachheiten analog über $\varphi_A$ gegeben.
 
 \skript{6.19} Es gilt stets $\geo_a(\varphi) \le \mul_a(\varphi)$
+
+\subsection{Diagonalisierbarkeit}
+
+\skript{6.41} Für einen Endomorphismus $\varphi: V \to V$ und eine Basis $s$ ist $s$ eine Eigenbasis von $V$ bezüglich $\varphi$ wenn alle Einträge von $s$ Eigenvektoren von $\varphi$ sind.	\\
+Für eine Matrix $A \in K^{n \times n}$ und eine Basis $s$ von $K^{n \times 1}$ heißt $s$ Eigenbasis von $K^{n \times 1}$ bezüglich $A$, wenn $s$ eine Eigenbasis bezüglich $\varphi_A$ ist.
+
+\skript{6.43} Für einen Endomorphismus $\varphi: V \to V$ ist eine Basis $s$ von $V$ genau dann eine Eigenbasis bezüglich $\varphi$ wenn $M_{s,s}(\varphi)$ eine Diagonalmatrix ist.
+
+\skript{6.46} Ein Endomorphismus $\varphi$ heißt diagonalisierbar, falls es eine Eigenbasis bezüglich $\varphi$ gibt.	\\
+Eine Matrix $A$ heißt diagonalisierbar, wenn $\varphi_A$ diagonalisierbar ist.
+
+\skript{6.50} Für eine matrix $A \in K^{n \times n}$ sind äquivalent:
+\begin{enumerate}
+	\item $A$ ist diagonalisierbar.
+	\item Es gibt eine Eigenbasis bezüglich $A$.
+	\item $A$ ist ähnlich zu einer Diagonalmatrix.
+\end{enumerate}
+
+\skript{6.52} Für einen Endomorphismus $\varphi: V \to V$ sind äquivalent:
+\begin{enumerate}
+	\item $\varphi$ ist diagonalisierbar.
+	\item $V = \dot\sum_{a \in K\text{, a ist Eigenwert von $\varphi$}} \Eig_a(\phi)$.
+	\item $\dim V = \sum_{a \in K} \geo_a(\varphi)$.
+	\item Das charakteristische Polynom $\chi_\varphi$ zerfällt in Linearfaktoren und für jeden Eigenwert $a$ von $\varphi$ gilt $\geo_a(\varphi) = \mul_a(\varphi)$.
+\end{enumerate}
+
+\skript{6.53} Wenn ein Endomorphismus $\varphi: V \to V$ $\dim V$ verschiedene Eigenwerte hat, ist er diagonalisierbar.
 
 \end{document}
