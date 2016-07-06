@@ -1,7 +1,7 @@
-all: panikzettel.pdf
+all: la.pdf
 
-panikzettel.pdf: panikzettel.tex
-	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make panikzettel.tex
+la.pdf: la.tex
+	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
 
 clean:
 	latexmk -CA
