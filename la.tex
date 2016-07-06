@@ -187,22 +187,6 @@ für $\varphi : V \to W \in \mathrm{Hom}(V, W)$, Basen $s = (s_1, \ldots, s_n)$ 
 
 Es muss also für jede Spalte das $s_i$ in $\varphi$ eingesetzt werden und das Ergebnis wieder nach den Linearfaktoren von $t$ aufgelöst werden.
 
-\textit{Beispiel.}
-\begin{mat}
-> phi[{x1_, x2_}] := {x1+x2, x1-x2, x2}
-> s = {{1, 0}, {0, 1}}
-> t = {{1,0,0}, {0, 1, 0}, {0, 0, 1}}
-> {
-	LinearSolve[t // Transpose, phi[s[[1]]]],
-	LinearSolve[t // Transpose, phi[s[[2]]]]
-  } // Transpose
-{
-  {1, 1},
-  {1, -1},
-  {0, 1}
-}
-\end{mat}
-
 \skript{Tutoraufgabe 30.5.16 a}$\mathrm{M}_{e,e}(\varphi_A) = A$
 
 \subsection{Basiswechselmatrix, Basiswechselformeln}
