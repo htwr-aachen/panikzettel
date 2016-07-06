@@ -1,7 +1,7 @@
 compile_pdf:
   image: blang/latex
   script:
-    - pdflatex panikzettel.tex
+    - make clean all
   artifacts:
     paths:
       - panikzettel.pdf
