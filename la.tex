@@ -47,6 +47,7 @@
 \newcommand{\Eig}{\mathrm{Eig}}
 \newcommand{\geo}{\mathrm{g}}
 \newcommand{\mul}{\mathrm{m}}
+\newcommand{\pr}{\mathrm{pr}}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 
@@ -98,6 +99,30 @@ Ein Tupel heißt linear unabhängig, wenn kein Eintrag eine Linearkombination de
 Für einen $K$-Vektorraum $V$ heißt ein Tupel $s$ in $V$ Erzeugendensystem von $V$ wenn jedes Element von $V$ eine Linearkombination von $s$ ist.	\\
 Für ein Tupel $s$ in $V$ bezeichnet $\langle s \rangle$ die Menge aller Linearkombinationen von $s$ und wird Erzeugnis von $s$ genannt. Das Erzeugnis eines belibigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.	\\
 Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endliche Basis von $V$ der länge $n$, dann nennen wir $V$ endlich erzeugt und sagen dass $V$ Dimension $n$ hat.
+
+\subsection{Unabhängigkeit von Untervektorräumen und innere direkte Summe}
+
+\skript{1.65} Für einen $K$-Vektorraum $V$ und Untervektorräume $U_1,\ldots,U_n$ von $V$ ist die innere Summe von $(U_1,\ldots,U_n)$:
+$$ U_1 + \ldots + U_n =  \sum_{i = 1}^n U_i := \left\{ \sum_{i=1}^n u_i \vert u_i \in U_i \right\}$$
+Sind für jedes $u \in U_1 + \ldots + U_n$ die $u_i \in U_i$ mit $u = \sum_{i=1}^n u_i$ eindeutig gegeben, heißt $(U_1,\ldots,U_n)$ unabhängig. In diesem fall nennen wir die innere Summe auch innere direkte Summe, geschrieben
+$$ U_1 \dot+ \ldots \dot+ U_n = \dot\sum_{i=1}^n U_i := \sum_{i=1}^n U_i$$
+
+\skript{1.68} Für $n$-Tupel $s = (s_1,\ldots,s_n)$ in $V$ gilt:
+\begin{enumerate}
+	\item $\langle s_1,\ldots,s_n\rangle = \sum_{i=1}{n} Ks_i$
+	\item $s$ ist Erzeugendensystem von V genau dann wenn $V = \sum_{i=1}^n Ks_i$ ist.
+	\item $s$ ist linear Unabhängig genau dann wenn alle $s_i \neq 0$ sind und $(Ks_1,\ldots,Ks_n)$ unabhängig ist.
+	\item $s$ ist eine Basis von V genau dann wenn $V = \dot\sum_{i=1}^n Ks_i$ ist.
+\end{enumerate}
+
+\skript{1.70} Ein Tupel $(U_1,\ldots,U_n)$ von Untervektorräumen von $V$ ist unabhängig genau dann wenn für alle $i \in \mathbb{N}, i \le n$ gilt: $U_i \cap \sum_{j \in \{1,\ldots,n\}\setminus\{i\}} U_j = \{0\}$
+
+Insbesondere sind zwei Untervektorräume $U_1$ und $U_2$ unabhängig genau dann wenn $U_1 \cap U_2 = \{0\}$ ist.
+
+\skript{1.74} Für einen $K$-Vektorraum $V$ und Untervektorräume $(U_1,\ldots,U_n)$ mit $V = \dot\sum_{i=1}^n U_i$ ist die Projektion von $V$ auf $U_i$ definiert als
+$$ \pr_i: V \to U_i, \left(\sum_{i=1}^n u_i\right) \mapsto u_i \text{ für } u_i \in U_i$$
+
+\skript{1.76} Für einen Untervektorraum $U$ von $V$ heißt $U^\prime$ Komplement von $U$ wenn $$V = U \dot+ U^\prime$$
 
 \subsection{Homomorphismen}
 
