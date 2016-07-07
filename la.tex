@@ -19,37 +19,26 @@
 \relpenalty=9999
 \binoppenalty=9999
 
-% Code blocks
-\lstnewenvironment{mat}
-{\lstset{language=Mathematica,
-	mathescape,
-    columns=flexible,
-    backgroundcolor=\color{lightgray!10},
-%    numberstyle=\tiny\color{gray},
-%    numbers=left,
-    basicstyle=\small\ttfamily}
-    }
-{}
-
 % Definitions
 \newlength{\hangwidth}
-\newcommand{\skript}[1]{\settowidth{\hangwidth}{\textbf{(#1)} }\hangpara{\hangwidth}{1}\textbf{(#1)} }
+\newcommand{\skript}[1]{\settowidth{\hangwidth}{\textbf{(#1)} }\hangpara{\hangwidth}{1}\textbf{(#1)} }% Für Referenzen auf das Skript. Benutzung: \skript{Stelle}Inhalt
 
-\newcommand{\id}{\mathrm{id}}
-\newcommand{\Sol}{\mathrm{Sol}}
-\newcommand{\Col}{\mathrm{Col}}
-\newcommand{\rk}{\mathrm{rk}}
-\newcommand{\defekt}{\mathrm{def}}
-\newcommand{\GL}{\mathrm{GL}}
-\newcommand{\Ker}{\mathrm{Ker}}
-\renewcommand{\Im}{\mathrm{Im}}
-\newcommand{\Field}{\mathbb{F}}
-\newcommand{\Eig}{\mathrm{Eig}}
-\newcommand{\geo}{\mathrm{g}}
-\newcommand{\mul}{\mathrm{m}}
-\newcommand{\pr}{\mathrm{pr}}
+\newcommand{\id}{\mathrm{id}}%Die Identitätsfunktion
+\newcommand{\Sol}{\mathrm{Sol}}%Lösungsraum
+\newcommand{\Col}{\mathrm{Col}}%Spaltenraum
+\newcommand{\rk}{\mathrm{rk}}%Rang
+\newcommand{\defekt}{\mathrm{def}}%Defekt
+\newcommand{\GL}{\mathrm{GL}}%Lineare Gruppe
+\newcommand{\Ker}{\mathrm{Ker}}%Kern
+\renewcommand{\Im}{\mathrm{Im}}%Bild
+\newcommand{\Field}{\mathbb{F}}%Endlicher Körper
+\newcommand{\Eig}{\mathrm{Eig}}%Eigenraum
+\newcommand{\geo}{\mathrm{g}}%Geometrische Vielfachheit
+\newcommand{\mul}{\mathrm{m}}%Algebraische Vielfachheit
+\newcommand{\pr}{\mathrm{pr}}%Projektion
 
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%Betrag
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%Norm
 
 
 \begin{document}
@@ -199,11 +188,6 @@ Für $m,n \in \mathbb{N}_0, A \in K^{m \times n}$:
 ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Hom.
 
 \textit{Beispiel.} Koordinatenspalte von $a \in K^2$ bzgl. $s = ((1,0), (1,1))$ ist $$\kappa_s(a) = \begin{pmatrix} a_1 - a_2 \\ a_2 \end{pmatrix}$$ denn $a = (a_1, a_2) = (a_1 - a_2) (1,0) + a_2 (1,1)$. Dazu einfach das LGS lösen mit $$\sum_{i \in [1,n]} (\kappa_s(v))_i s_i = v$$ d.h. die Basis spaltenweise in die LGS-Matrix eintragen und lösen.
-
-\begin{mat}
-> LinearSolve[{{1, 0}, {1, 1}} // Transpose, {a1, a2}]
-{a1-a2,a2}
-\end{mat}
 
 \subsection{Darstellungsmatrix}
 
