@@ -9,6 +9,8 @@
 \usepackage{calc}
 \usepackage{hyperref}
 \usepackage{bookmark}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows}
 \usepackage[ngerman]{babel}
 \title{Lineare Algebra Panikzettel}
 \author{Philipp Schröer, Tobias Polock, Caspar Zecha}
@@ -221,6 +223,38 @@ Homomorphismen lassen sich als Matrizen darstellen und umgekehrt. Daher das ganz
 $$\abs{\GL_n(\Field_q)} = \prod_{i=0}^{n-1} q^n-q^i$$
 $$\abs{\{A \in \Field_q^{m \times n} ~ | ~ \rk(A) = \min(m,n)\}} = \prod_{i=0}^{\min(m,n)-1} (q^{\max(m,n)}-q^i)$$
 Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ Stück mit Länge $\max(m,n)$. Die Erste ist dann bis auf die Null frei zu wählen, danach sollte jede folgende kein Vielfaches der Vorherigen sein.
+
+\subsection{Ähnlichkeit und Äquivalenz}
+
+\skript{3.41} \begin{itemize}
+	\item Für $A, B \in K^{m \times n}$ ist $A$ äquivalent zu $B$, wenn es $P \in \GL_n(K)$, $Q \in GL_m(K)$ gibt mit: $$Q^{-1} A P = B$$
+	\item Für $A, B \in K^{m \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff P A = P B$$
+\end{itemize}
+
+\skript{3.50} Für $A, B \in K^{m \times n}$ ist $A$ genau dann äquivalent zu $B$, wenn $$\rk(A) = \rk(B)$$
+
+Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Entscheidungsbaum prüfen. Der Baum sieht groß und kompliziert aus, ist aber eine schnelle Methode insbesondere um Ähnlichkeit zu widerlegen. Falls alle Bedingungen eines Knotens erfüllt sind, gehe weiter zum linken Kind, sonst zum rechten.
+
+% TODO: Nachweise wären ganz schön hier
+\begin{tikzpicture}[
+		->, level distance=1.3cm, sibling distance=3.7cm, growth parent anchor=south
+	]
+	\node {$\textrm{tr}(A) = \textrm{tr}(B)$}
+		child { node {$\det(A) = \det(B)$}
+			child { node {$\chi_A = \chi_B$}
+				child { node[align=center] {$\chi_A$ zerfällt in Linearfaktoren \\ $\mul_a(A) = \geo_a(A)$ \\ $\mul_a(B) = \geo_a(B)$ \\ $\forall$ EW $a$ von $A$ bzw. $B$}
+					child { node {ähnlich} }
+					child { node {$P \cdot A = B \cdot P$ lösbar}
+						child { node { ähnlich } }
+						child { node {nicht ähnlich} }
+					}
+				}
+				child { node {nicht ähnlich}}
+			}
+			child { node {nicht ähnlich}}
+		}
+		child { node {nicht ähnlich} };
+\end{tikzpicture}
 
 \section{Lineare Kodierungstheorie}
 
