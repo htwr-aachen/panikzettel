@@ -7,11 +7,21 @@
 \usepackage{xcolor}
 \usepackage{hanging}
 \usepackage{calc}
-\usepackage{hyperref}
+\usepackage[pdftex]{hyperref}
 \usepackage{bookmark}
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows}
 \usepackage[ngerman]{babel}
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+\makeatother
+
 \title{Lineare Algebra Panikzettel}
 \author{Philipp Schröer, Tobias Polock, Caspar Zecha}
 \date{\today}
