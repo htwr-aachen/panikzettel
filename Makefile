@@ -1,4 +1,4 @@
-all: la.pdf,stocha.pdf
+all: la.pdf stocha.pdf
 
 la.pdf: la.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
