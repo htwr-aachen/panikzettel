@@ -1,0 +1,286 @@
+\documentclass{scrartcl}% siehe <http://www.komascript.de>
+\usepackage{fontspec}% Schriftumschaltung mit den nativen XeTeX-Anweisungen
+\usepackage{polyglossia}% Sprachumschaltung
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\setdefaultlanguage{german}% Voreingestellte Dokumentsprache: Deutsch
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\title{FOSAP Blatt 9}% obligatorisch
+\author{der Dude}
+\maketitle% verwendet die zuvor gemachte Angaben zur Gestaltung eines Titelsi
+\tableofcontents
+\newpage
+\section{Wahrscheinlichkeitsrechnung}
+
+\subsection{Definitionen}
+
+\begin{itemize}
+	\item{Grundraum $\Omega$ (Grundmenge, Ergebnisraum)- Menge aller möglichen Ergebnisse eines Zufallsexperiments}
+	\item{$\omega \in \Omega$ Ergebnis.}
+	\item{Ereignis A (,B,\ldots)- Menge von Ergebnissen. Ein Eregnis, das genau ein Element besitzt heißt Elementarereignis}
+\end{itemize}
+
+
+\subsection{Wahrscheinlichkeitsmaß, Wahrscheinlichkeitsverteilung, Zähldichte}
+Sei $\mathfrak{P} = Pot(\Omega)$ (Menge aller Ereignisse über $\Omega$) und $p: \Omega \rightarrow [0,1]$ Abbildung mit $\sum_{\omega \in \Omega} p(\omega) = 1$. Dann ist 
+
+\[P(A) = \sum_{\omega \in A} p(\omega), A \in \mathfrak{P}\]
+
+Wahrscheinlichkeitsmaß/Wahrscheinlichkeitsverteilung auf $\mathfrak{P}$ (oder $\Omega$).
+
+\subsection{Diskreter Wahrscheinlichkeitsraum}
+Wenn $\vert \Omega\vert$ höchstens abzählbar unendlich dann ist $(\Omega, P)$ diskreter Wahrscheinlichkeitsraum.
+
+\subsection{Laplace-Raum}
+\[P(A) = \frac{\vert A\vert}{\vert \Omega\vert}\]
+
+Ziehen aus Urne ohne Wiederholung ohne Reihenfolge kein Laplace-Raum.
+
+\subsection{Träger eines diskreten Wahrscheinlichkeitsraum}
+\[T = \{\omega \in \Omega \mid P(\omega) > 0\}\]
+
+\subsection{Diskrete Wahrscheinlichkeitsverteilungen}
+Zur Festlegung der Verteilung wird jedem Element von $T = \{x_1, \ldots\}$ Wahrscheinlichkeit $p_k \in [0,1)$ zugewiesen mit $\sum_k p_k = 1$
+
+\subsection{Nicht-diskrete Wahrscheinlichkeitsmaße mit Riemann-Dichten}
+\begin{itemize}
+	\item{jedem Intervall wird eine Wahrscheinlichkeit zugewiesen}
+	\item{statt Potenzmenge neues Mengensystem $\sigma$-Algebra}
+\end{itemize}
+
+\subsection{$\sigma$-Algebra}
+$\Omega \neq \emptyset$. $\mathfrak{P} \subset Pot(\Omega)$ heißt $\sigma$-Algebra von Ereignissen über $\Omega$,falls:
+\begin{enumerate}
+	\item{$\Omega \in \mathfrak{P}$}
+	\item{$A \in \mathfrak{P} \Rightarrow A^c \in \mathfrak{P}$}
+	\item{Für jede Folge $A_1, A_2,\ldots$ in $\mathfrak{P}$ gilt: $\cup_{n=1}^{\infty} A_n \in \mathfrak{P}$}
+\end{enumerate}
+
+\subsection{Kolmogorov-Axiome}
+Sei $P:\mathfrak{P} \rightarrow [0,1]$ mit
+\begin{itemize}
+	\item{$P(A) \geq 0$, für $A \in \mathfrak{P}$}
+	\item{$P(\Omega) = 1$}
+	\item{$P(\cup_{n=1}^{\infty} A_n) = \sum_{n=1}^{\infty} P (A_n)$, für paarweise diskunkte Mengen} 
+\end{itemize}
+Dann heißt $P$ Wahrscheinlichkeitsmaß/Wahrscheinlichkeitsverteilung auf $\Omega$. $(\Omega,\mathfrak{P},P)$ heißt Wahrscheinlichkeitsraum, $(\Omega,\mathfrak{P}$ heißt messbarer Rauum oder Messraum.
+
+\subsection{Borelsche $\sigma$-Algebra}
+Die kleinstmögliche $\sigma$-Algebra über einem Intervall (hier z.B. $[a,b]$), welche alle Teilmengen des Intervalls enthält heißt Borelsche $\sigma$-Algebra $\mathcal{B}^1$. Für $\Omega \subset R^n$ entsprechend $\mathcal{B}^n$.
+
+\subsection{Riemann-Dichte, Verteilungsfunktion}
+Sei $f: \mathbb{R} \rightarrow \mathbb{R}$ mit $f(x) \geq 0, x \in \mathbb{R}$ und $\int_{\infty}^{\infty} f(x) dx = 1$ integrierbar, dann heißt $f$ Riemann-Dichtefunktion. Wahrscheinlichkeitsmaß festgelegt über
+
+\[F(x) = P((-\infty,x]) = \int_{-\infty}^{\infty} f(y) dy\]
+
+$F$ ist Verteilungsfunktion. Für Verteilungsfunktionen siehe Formelsammlung.
+
+\subsection{Träger einer Riemann-Dichtefunktion}
+Das größtmögliche Intervall $I$ mit $f(x) > 0, x \in I$ heißt Träger der zugehörigen Verteilungsfunktion.
+
+\subsection{Ereignisfolgen, limes superior, limes inferior}
+
+$(A_n)_n$ in $\mathfrak{P}$ heißt isoton (monoton wachsend), falls $A_n \subset A_{n+1}, \forall n \in \mathbb{N}$ oder antiton (monoton fallend), falls andersrum. Für eine Ereignisfolge ist:
+
+\[\limsup\limits_{n \rightarrow \infty}{a_n} = \lim\limits_{n \rightarrow \infty} (\bigcup\limits_{k=n}^{\infty} A_k) = \bigcap\limits_{n=1}^{\infty} \bigcup\limits_{k=n}^{\infty} A_k\]
+
+\[\liminf\limits_{n \rightarrow \infty} A_n = \lim\limits_{n \rightarrow \infty} (\bigcap\limits_{k=n}^\infty A_k = \bigcup\limits_{n=1}^\infty \bigcap\limits_{k=n}^\infty A_k)\]
+
+Es gilt: 
+
+
+\[\limsup\limits_{n \rightarrow \infty} A_n = \{\omega \in \Omega \mid \omega \textrm{ liegt in unendlich vielen der } A_i\} \]
+
+\[\liminf\limits_{n \rightarrow \infty} = \{\omega \in \Omega \mid \omega \textrm{ liegt in allen } A_i \textrm{ bis auf endlich viele}\}\]
+
+\subsection{Siebformel von Sylvester-Poincaré}
+\[P(\bigcup\limits_{k=1}^n A_k) = {\sum\limits_{k=1}^n P(A_k)} - \sum\limits_{1 \leq i_1 < i_2 \leq n} P(A_{i_1} \cap A_{i_2}) + \sum\limits_{1 \leq i_1 < i_2 < i_3 \leq n} P(A_{i_1} \cap A_{i_2} \cap A_{i_3}) - \ldots\]
+
+\subsection{Bedingte Wahrscheinlichkeit}
+$P(A\vert B) = \frac{P (A \cap B)}{P(B)}$ heißt elementar bedingte Wahrscheinlichkeit von $A$ und $B$. $P(A\vert B)$ bildet wiederrum eine Wahrscheinlichkeitsverteilung und $(\Omega, \mathfrak{P}, P(\cdot\vert B))$ ist ein Wahrscheinlichkeitsraum. Es gilt:
+
+\begin{itemize}
+	\item{$P(A\vert B) = P(B\vert A) \cdot \frac{P(A)}{P(B)}$}
+	\item{$P(\bigcap\limits_{i=1}^n A_i) = P(A_1) \cdot P(A_2\mid A_1) \cdot P(A_3\mid A_2 \cap A_2)$}
+\end{itemize}
+
+\subsection{Stochastische Unabhängigkeit}
+$A_1$ und $A_2$ heißen paarweise stochastisch unabhängig, falls $P(A_i \cup A_j) = P(A_1) \cdot P(A_2)$.\\
+$A_1, A_2, \ldots$ heißen (gemeinsam) stochastisch unabhängig, falls für jede endliche Auswahl von Indizes $\{i_1, \ldots, i_s\}$ gilt: $P(A_{i_1} \cap \ldots \cap A_{i_s}) = P(A_{i_1}) \cdot \ldots \cdot P(A_{i_s})$.
+
+\subsection{Produktraum}
+Für diskrete Wahrscheinlichkeitsräume $(\Omega_i, \mathfrak{P}_i, P_i)$ heißt $(\Omega, \mathfrak{P}, P)$ mit $\Omega = \{(\omega_i, \ldots, \omega_n \mid \omega_i \in \Omega_i)\}$, $\mathfrak{P} = Pot(\Omega)$ und $P(\{\omega\}) = \prod\limits_{i=1}^n P_i(\{\omega_i\}), \omega = (\omega_1, \ldots,\omega_n) \in \Omega$ heißt Produktraum.
+\[(\Omega, \mathfrak{P}, P) = (\Omega_1, \mathfrak{P}_1, P_1) \times \ldots \times (\Omega_n, \mathfrak{P}_n, P_n)\]
+
+\section{Zufallsvariablen und Wahrscheinlichkeitsmaße}
+Zufallsvorgänge hier wieder beschrieben durch den Wahrscheinlichkeitsraum $(\Omega,, \mathfrak{P}, P)$, wobei der Ausgang des Vorgangs $\omega \in \Omega$ ist. Dabei ist häufig nicht $\omega$ von Interesse sondern ein Funktionswert $X(\omega)$, wobei $X$ eine Abbildung auf $X: \omega \rightarrow \mathbb{R}^n$ ist.
+
+\[P(X = k) = P(\{\omega \in \Omega \mid X(\omega) = k\}) = P^X (\{k\}) \]
+
+und
+
+\[P^X: \mathcal{B} \rightarrow [0,1]\]
+
+$X$ heißt Zufallsvariable (falls $n = 1$), sonst Zufallsvektor. Eine Zufallsvariable erzeugt im Wertebreich der Funktion eine neue Wahrscheinlichkeitsverteilung.
+
+\subsection{Indikatorfunktion}
+$\mathfrak{I}_A: \Omega \rightarrow \mathbb{R} = 1$, falls $\omega \in A$, sonst $0$, heißt Indikatorfunktion von A. Und es gilt $\mathfrak{I}_A$ ist $bin(1,p)$ verteilt, $p = P(A)$.  
+
+\subsection{Stochastische Unabhängigkeit von Zufallsvariablen}
+Die Zufallsvariablen $X_i: (\Omega, \mathfrak{P},P) \rightarrow (\Omega_i, \mathfrak{P}_i, P^{X_i})$ heißen stochastisch unabhängig, falls
+
+\[ P(\bigcap\limits_i \{X_i \mid X_i \in A_i\}) = \prod\limits_i P (X_i \in A_i)), \forall A_i \in \mathfrak{P}_i \]
+
+\subsection{Summe unabhängiger Zufallsvariablen, Faltung}
+Für stochastisch unabhängige Zufallsvariablen $X,Y$ auf $\mathbb{Z}$ mit Zähldichten $f,g$ gilt, die Zähldichte von $X+Y = h$:
+
+\[h(k) = \sum\limits_{j \in \mathbb{Z}} f(j) \cdot g(k-j) = \sum\limits_{j \in \mathbb{Z}}f(k-j) \cdot g(j) = P(X+Y = k)\]
+
+$h = f*g$ ist Faltung der Dichten $f$ und $g$. In $\mathbb{R}$ ergibt sich die Zähldichte als Integral statt als Summe über obige Funktion.
+
+\subsection{Quantilfunktion}
+Die Umkehrfunktion $F^{-1} (y) = inf\{x \in \mathbb{R} \mid F(x) \geq y\}$ der Verteilungsfunktion $F$ heißt Quantilfunktion oder Pseudoinverse von $F$ (existiert nur, falls $F$ bijektiv, also streng monoton (wachsend)).
+
+\subsection{Multivariate/Mehrdimensionale Verteilungsfunktion}
+Sei $X = (X_1, \ldots, X_n)$ ein n-dimensionaler Zufallsvektor.Dann ist die multivariate/mehrdimensionale Verteilungsfunktion:
+
+\[F^X (x) = P(X_1 \in (-\infty,x_1], \ldots, X_n \in (-\infty,x_n]) = P(X_1 \leq x_1, \ldots, X_n \leq x_n)\]
+
+mit
+\[x = (x_1, \ldots, x_n) \in \mathbb{R}^n\]
+
+\subsection{Randverteilung, Marginalverteilung, Randdichte}
+Sei $X = (X_1, \ldots, X_n)$ ein Zufallsvektor und $m<n$. Dann heißt $(X_{i_1}, \ldots, X_{i_m})$ Rand- oder Marginalverteilung zu $(i_1, \ldots, i_m)$. Die Randverteilung wird bestimmt, indem man in die nicht benötigten Komponenten $\mathbb{R}$ einsetzt. Die $i$-te Randdichte wird wie folgt bestimmt:
+
+\[f^{X_i} (t) = \int\limits_{-\infty}^\infty\ldots\int\limits_{\infty}^\infty f^X (x_1,\ldots,x_{i-1},t,x_{i+1},\ldots,x_n) dx_1\ldots dx_{i-1} dx_{i+1}\ldots dx_n\]
+
+$X_1, \ldots, X_n$ sind genau dann stochastisch unabhängige Zufallsvariablen, wenn
+
+\[f^{(X_1,\ldots, X_n)} (x_1,\ldots,x_n) = \prod\limits_{i=1}^n f^{X_i} (x_i)\]
+
+Zudem sind $(X_1,X_2)$ genau dann stochastisch unabhängig, wenn sie normalverteilt sind, mit Parameter $\rho = 0$.
+
+\subsection{Erwartungswerte}
+Sei $X$ eine Zufallsvariable mit Zähldichte $p$ oder Riemann-Dichte $f$. Dann gilt für den Erwartngswert $EX$:
+
+\begin{enumerate}
+	\item{Sei $X(\Omega) \subset [0,\infty)$ oder $X(\omega) \subset (-\infty,0]$.}
+		\begin{enumerate}
+			\item{$EX = E(X) = \sum\limits_{x \in X(\Omega)} xp(x)$, oder}
+			\item{$EX = E(X) = \int\limits_{\infty}^\infty xf(x)dx$}
+		\end{enumerate}
+	\item{Ist $E(max(X,0)) < \infty$, oder $E(min(X,=)) > -\infty$, dann heißt $EX$ wie in 1 Erwartungswert von $X$ (unter $P$)}
+\end{enumerate}
+Für Zufallsvariablen mit Werten in $\mathbb{N}_0$ gilt auch:
+
+\[EX = \sum\limits_{n=1}^\infty P(X \geq n)\]
+
+\subsection{Moment}
+Als (allgemeines Moment) bezeichnet man den Erwartungswert einer Funktion $g(x) = E(g(x))$. Um ihn zu berechnen, berechnet man die Wahrscheinlichkeit des Auftretens jedes Ereignisses und multipliziert dies mit dem Wert von $g$ an dieser Stelle also:
+
+\[E(g(x)) = \sum\limits_{(t_1,\ldots,t_k) \in supp (P^X)} P^X((t_1,\ldots,t_k)) \cdot g(t_1,\ldots t_k))\]
+bzw.
+\[E(g(x)) = \int\limits_{-\infty}^\infty \ldots \int\limits_{\infty}^\infty f^X (t_1,\ldots,t_k) \cdot g(t_1,\ldots,t_k) dt_1\ldots dt_k\]
+
+Für stochastisch unabhängige Zufallsvariablen mit (endlichen) Erwartungswerten gilt:
+
+\[E(\prod\limits_{i=1}^n X_i) = \prod\limits_{i=1}^n E(X_i)\]
+
+\subsection{k-tes Moment, Varianz, Kovarianz}
+\begin{enumerate}
+	\item{$m_k(c) = E((X-c)^k)$ heißt $k$-tes Moment von $X$ um $c$ (unter $P$). (zentrales Moment, falls $c=0$)}
+	\item{$Var X = E((X-EX)^2)$ ist die Varianz (Streuung) von $X$}
+	\item{$Kov(X,Y) = E((X-EX)(Y-EY))$ ist die Kovarianz voon $X$ und $Y$}
+\end{enumerate}
+
+Zudem ist:
+
+\[Var(\sum\limits_{i=1}^n X_i) = \sum\limits_{i=1}^n Var X_i + 2 \sum\limits_{1\leq i < j \leq n} Kov(X_i,X_j)\]
+
+und $Kov(X,Y) = 0$, falls $X,Y$ stochastisch unabhängig.
+\subsection{Verschiebungssatz von Steiner}
+\[E((X-a)^2) = Var X + (EX-a)^2\]
+
+\subsection{Unkorreliertheit, Korrelationskoeffizient}
+\begin{enumerate}
+	\item{$X$,$Y$ heißen unkorreliert, falls $Kov(X,Y) = 0$}
+	\item{Der Korrelationskoeffizient ist $Korr(X,Y) = \frac{Kov(X,Y)}{\sqrt{Var X} \cdot \sqrt{Var Y}} \in [-1,1]$}
+\end{enumerate}
+Für unkorrelierte Zufallsvariablen gilt:
+
+\[Var (\sum\limits_{i=1}^n X_i) = \sum\limits_{i=1}^n Var(X_i)\]
+
+Stochastisch unabhängige Variablen sind unkorreliert. (aber nicht andersrum (außer bei Normalverteilungen))).
+
+\subsection{Ungleichungen mit Momenten}
+\begin{enumerate}
+	\item{Ungleichung von Jensen: Sei $h:\mathbb{R} \rightarrow \mathbb{R}$ eine konvexe Funktion (linksgekrümmt), und E(h(X)) und EX existieren und sind endlich. Dann ist $E(h(X)) \geq h(EX)$ (bzw. andersrum im konkaven Fall)}
+	\item{Ungleichung von Markov: Sei $g:[0,\infty) \rightarrow [0\infty]$ monoton wachsend. Dann ist: 
+		\[P(\vert X\vert > \epsilon) \leq P(\vert X\vert \geq \epsilon) \leq \frac{1}{g(\epsilon)} E(g(\vert X\vert)), \epsilon > 0\]}
+	\item{Ungleichung von Tschebyscheff: \[P(\vert X-EX\vert \geq \epsilon) \leq \frac{Var X}{\epsilon^2}\]}
+\end{enumerate}
+
+\subsection{Erwartungswertvektor, Kovarianzmatrix}
+Hier $X$ nicht Zufallsvariable, sondern Zufallsvektor.
+\begin{enumerate}
+	\item{$E(X) = (EX_1, \ldots, EX_n$ ist der Erwartungsvektor von $X$}
+	\item{$Kov (X)$ Kovarianzmatrix von $X$ mit $Kov(X)_{i,j} \coloneqq Kov(X_i,X_j))$}
+\end{enumerate}
+
+\subsection{Erzeugende Funktion}
+$g(t) = Et^X$ (für alle t, für die der Erwartungswert endlich existiert) heißt (wahrscheinlichkeits)erzeugende Funktion von $X$ (bzw. von $P^X$).
+
+Ist $(0,1+\epsilon) \subset K$ für ein $\epsilon > 0$, so existieren alle Momente $EX^k, k\in \mathbb{N}$ und es gilt:
+
+\[g^{(k)} (1) = E(\prod\limits_{i=0}^{k-1} (X-i)), k \in \mathbb{N}\]
+\[g'(1) = EX\]
+
+$K$ ist hier der Konvergenzbereich von $\sum_{k=0}^\infty t^kp_k = Et^X$. Und $X$ eine Zufallsvariable mit diskreter Wahrscheinlichkeitsverteilung auf $\mathbb{N}_0$.
+
+Falls $X,Y$ stochastich unabhängig mit diskreten Wahrscheinlichkeitsverteilungen auf $\mathbb{N}_0$ sind gilt $Et^{X+Y} = Et^X \cdot Et^Y$. $h$ mit:
+
+\[h(t) = Ee^{tX}\]
+
+heißt momenterzeugende Funktion von $X$. Existiere $h(t)$ für $t \in (-\epsilon, \epsilon), \epsilon >0$. Dann gilt:
+
+\begin{enumerate}
+	\item{$h$ bestimmt die zugrundeliegende Wahrscheinlichkeitsverteilung eindeutig.}
+	\item{Es existieren alle absoluten Momente $E(\vert X\vert^k), k \in \mathbb{N}$ endlich.}
+	\item{$h$ ist im Nullpunkt beliebig oft differenzierbar, und es gilt: $h^{(k)} (0) = EX^k, k\in \mathbb{N}$}
+\end{enumerate}
+
+\subsection{Bedingte Verteilungen}
+Sei $(X,Y)$ diskret verteilter Zufallsvektor. Dann heißt
+
+\[p^{Y\mid X} (y\mid x) = p^{Y\mid X=x} (y) = P(Y = y)\mid X = x) = \begin{cases}\frac{p^{(X,Y)} (x,y)}{p^X (x)}, &p^X (x) > 0\\ p^Y (y), &p^X(x) = 0 \end{cases}\]
+
+bedingte Wahrscheinlichkeitsverteilung von $Y$ unter (der Hypothese) $X = x$ und $p^{Y\mid X}$ heißt bedingte Zähldichte von $Y$ unter $X$. Für Dichte ist die Definition analog.
+
+\subsection{Bedingter Erwartungswert, bedingte Varianz}
+Erwartungswerte definiert wie im nicht bedingten Fall, als Wahrscheinlichkeit wird jedoch $p^{Y\mid X=x}(y)$ bzw. $f^{Y\mid X=x} (y)$ betrachtet.
+
+\subsection{Bedingte Erwartung}
+Analog wird die Bedingte Erwartung von $Y$ unter $X$ $E(Y\mid X)$ definiert.
+
+\subsection{Eine Version des Schwachen Gesetzes großer Zahlen}
+Seien $X_1, \ldots$ paarweise unkorrelierte Zufallsvariablen mit $EX_i = \mu$ und $Var X_i \leq M < \infty$ für Konstante $M > 0$. Dann ist:
+\[P\left(\left\vert {\frac{1}{n}\sum\limits_{i=1}^n X_i - \mu}\right\vert \geq \epsilon\right) \leq \frac{M}{n\epsilon^2} \xrightarrow{n \to \infty} 0, \epsilon > 0\]
+
+\subsection{1. Version des starken Gesetzes großer Zahlen}
+Seien $X_1,\ldots$ stochastisch unabhängige Zufallsvariablen auf einem Wahrscheinlichkeitsraum mit endlichen Varianzen und es gelte $\sum_{n=1}^\infty \frac{Var X_n}{n^2} < \infty$. Dann ist:
+
+\[P \left(\left \{ \omega \in \Omega \mid \frac{1}{n}\sum\limits_{i=1}^nX_i - \frac{1}{n} \sum\limits_{i=1}^n EX_i \xrightarrow{n \to \infty} 0 \right \} \right) = 1\]
+
+\subsection{2. Version des starken Gesetzes großer Zahlen}
+Seien $X_1, \ldots$ stochastisch unabhängig und identisch verteilt, mit $EX_1 = \mu$. Dann ist:
+
+\[\frac{1}{n}\sum\limits_{i=1}^n X_i \xrightarrow{n \to \infty} \mu\]
+
+\subsection{Eine Version des zentralen Grenzwertsatzes}
+Scheint mir nicht in der Klausur forzukommen, da Terme zu lang. Außerdem habe ich dann eine Ausrede um das mir nicht angucken zu müssen. 
+\end{document}
