@@ -12,6 +12,8 @@
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows}
 \usepackage[ngerman]{babel}
+\usepackage{ifthen}
+\usepackage{xifthen}
 
 \makeatletter
 \AtBeginDocument{
@@ -48,6 +50,11 @@
 \newcommand{\geo}{\mathrm{g}}%Geometrische Vielfachheit
 \newcommand{\mul}{\mathrm{m}}%Algebraische Vielfachheit
 \newcommand{\pr}{\mathrm{pr}}%Projektion
+\newcommand{\scp}[2]{\langle\ifthenelse{\isempty{#1}}{-}{#1},\ifthenelse{\isempty{#2}}{\ifthenelse{\isempty{#1}}{=}{-}}{#2}\rangle}% Skalarprodukt. Beide Argumente können leer gelassen werden, um partielle Anwendung (wie im Skript) auszudrücken.
+\newcommand{\conj}[1]{\overline{#1}}%Complexe Konjugation
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\transpose}[1]{#1^{\mathrm{tr}}}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%Betrag
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}%Norm
@@ -401,7 +408,7 @@ Dieser ist der beste Ansatz, um Determinanten per Hand auszurechen: Man vereinfa
 
 Nach diesem Satz gelten die folgenden Sätze für Zeilen analog wie für Spalten:
 
-\skript{5.4} $\det A^\mathrm{tr} = \det A$ \\
+\skript{5.4} $\det \transpose{A} = \det A$ \\
 
 \skript{5.5/1}\textit{Multilinearität.} \\
 $\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y+z & x_{k+1} & \ldots  & x_n \end{pmatrix} = \\
@@ -577,5 +584,29 @@ $$\chi_{\varphi\vert_U^U} \vert \chi_\varphi$$
 	\item Für eine Matrix $A \in K^{n \times n}$ ist
 		$$\chi_A(A) = 0$$
 \end{enumerate}
+
+\section{Skalarprodukträume}
+
+Skalarprodukträume betrachten wir nur über den Körpern $\C$ und $\R$. Daher ist im folgenden stets $K \in \{\C,\R\}$.
+
+\subsection{Skalarprodukt}
+\skript{7.1} Ein Skalarproduktraum ist ein $K$-Vektorraum $V$ mit einer Abbildung $$\scp{}{}: V \times V \to K, (v,w) \mapsto \scp{v}{w}$$ die die folgenden Axiome erfüllt:
+\begin{itemize}
+	\item Sesquilinearität: Für $a \in K$, $v,w,w^\prime \in V$ ist $\scp{v}{aw+w^\prime} = a \scp{v}{w} + \scp{v}{w^\prime}$ und $\scp{aw+w^\prime}{v} = \conj{a}\scp{w}{v} + \scp{w^\prime}{v}$.
+	\item Hermitizität: Für $v,w \in V$ gilt: $\scp{v}{w} = \conj{\scp{w}{v}}$.	\\
+		Im Fall von $K = \R$ gilt also $\scp{v}{w} = \scp{w}{v}$.	\\
+		Im Fall von $K = \C$ folgt, dass das Skalarprodukt eines Vektors mit sich selbst reel ist: $\scp{v}{v} = \conj{\scp{v}{v}}$.
+	\item Positive Definitheit: Für $v \in V$ gilt $\scp{v}{v} \geq 0$ und genau dann $\scp{v}{v} = 0$ wenn $v = 0$ ist.
+\end{itemize}
+
+\skript{7.4} Solange nichts anderes erwähnt ist, betrachten wir $K^n$ mit dem Standartskalarprodukt gegeben durch
+$$ \scp{v}{w} = \transpose{\conj{v}} w = \sum_{i=1}^n \conj{v_i} w_i$$
+
+\subsubsection{Cauchy-Schwarz-Ungleichung}
+\skript{7.6} In einem $K$-Skalarproduktraum gilt für $v,w \in V$:
+$$\abs{\scp{v}{w}}^2 \leq \scp{v}{v} \scp{w}{w}$$
+und genau dann
+$$\abs{\scp{v}{w}}^2 = \scp{v}{v} \scp{w}{w}$$
+wenn $(v,w)$ linear abhängig in $V$ ist.
 
 \end{document}
