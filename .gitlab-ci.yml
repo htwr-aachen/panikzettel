@@ -4,4 +4,5 @@ compile_pdf:
     - make clean all
   artifacts:
     paths:
-      - panikzettel.pdf
+      - la.pdf
+      - stocha.pdf
