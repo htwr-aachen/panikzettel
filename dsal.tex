@@ -1,0 +1,727 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[english,ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[pdftex]{hyperref}
+\usepackage{bookmark}
+\usepackage{adjustbox}
+\usepackage{array}
+\usepackage{qtree}
+\usepackage{tikz}
+\usepackage{tikz,fullpage}
+\usetikzlibrary{arrows, petri, topaths}
+\usepackage{tkz-berge}
+\usepackage[position=top]{subfig}
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+\makeatother
+
+\title{DSAL Panikzettel}
+\author{Caspar Zecha, Luca Oeljeklaus, Philipp Schröer}
+
+\setlength\parindent{0pt}
+\relpenalty=9999
+\binoppenalty=9999
+
+\newcolumntype{R}[2]{%
+    >{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+    l%
+    <{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{45}{1em}}}
+
+\begin{document}
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section{O-Notation}
+
+Die O-Notation schätzt Funktionen in Klassen ein, etwa für Komplexitätsabschätzungen.
+
+\begin{align*}
+g = O(f) &\approx g \text{ wächst langsamer als } f\\
+g = \Omega(f) &\approx g \text{ wächst schneller als } f \\
+g = \Theta(f) &\approx g \text{ wächst so schnell wie } f
+\end{align*}
+
+\begin{align*}
+O(f) &= \{g: \mathbb{N}\to \mathbb{R}|\exists c \in \mathbb{R}_{\ge 0},\exists N \in \mathbb{N}, \forall n \ge N:|g(n)| \leq c|f(n)|\} \\
+\Omega(f) &= \{g: \mathbb{N}\to \mathbb{R}|\exists c \in \mathbb{R}_{\ge 0},\exists N \in \mathbb{N}, \forall n \ge N:|g(n)| \ge c|f(n)|\} \\
+\Theta(f) &= \{g: \mathbb{N}\to \mathbb{R}|\exists c_1,c_2 \in \mathbb{R}_{\ge 0},\exists N \in \mathbb{N}, \forall n \ge N:c_1|f(n)| \leq |g(n)| \leq c_2|f(n)|\}
+\end{align*}
+
+\subsection{O-Notation-Rechenregeln}
+\begin{itemize}
+	\item $f(O(1)) = O(1)$
+	\item $O(c \cdot f(n))=O(f(n))$
+    \item $O(f(n)) + O(g(n)) = O(|f(n)| + |g(n)|)$
+    \item $O(f(n) + g(n)) = O(f(n)) + O(g(n))$
+    \item $O(f(n))O(g(n)) = O(f(n)g(n))$
+    \item $O(f(n)g(n)) = f(n)O(g(n))$
+\end{itemize}
+
+\subsection{log-Rechenregeln}
+
+Diese Regeln sind ganz praktisch und sollten für die O-Notation im Hinterkopf behalten werden. Natürlich sind diese nicht spezifisch für die O-Notation.
+
+\begin{itemize}
+	\item $x=\log_a y \Leftrightarrow y = a^x$
+    \item $\log(1) = 0$
+    \item $\log(x) + \log(y) = \log (xy)$
+    \item $-\log(x) = \log (\frac{1}{x})$
+    \item $\log(x)-\log(y)=\log\frac{x}{y}$
+    \item $n \cdot \log(x)=\log(x^n)$
+    \item $\frac{\log(x)}{\log(a)}=\log_a(x)$
+\end{itemize}
+
+Schätze $\log(n^2+3n+5)$ ab:
+$$\log(n^2+3n+5)=2 \cdot \log(n) + \log(1+\frac{3}{n}+\frac{5}{n^2})=2 \cdot \log(n)+O(\frac{1}{n})$$
+
+\section{Elementare Datenstrukturen}
+
+\subsection{Listen}
+
+\subsubsection{Doppelt verkettete Liste}
+
+\begin{itemize}
+	\item Daten in Knoten gespeichert
+    \item Zeiger auf Nachfolger und Vorgänger
+    \item Zyklisch geschlossen
+	\item Leerer Kopf-Knoten (um zu wissen, wann wir am Ende der Liste sind)
+\end{itemize}
+
+Arrays lassen sich mittels Listen simulieren.
+
+\subsubsection{Einfach verkettete Liste}
+
+\begin{itemize}
+	\item Zeiger nur auf Nachfolger, nicht auf Vorgänger
+    \item kompliziertere Operationen
+    \item zyklisch wie oben, mit leerem Kopf-Knoten
+\end{itemize}
+
+\subsubsection{Laufzeiten von Listen}
+
+\begin{itemize}
+	\item $\texttt{append}() = \Theta(1)$
+    \item $\texttt{delete}() = \Theta(n)$
+    \item $\texttt{find}() = \Theta(n)$
+    \item $\texttt{insert}() = \Theta(n)$
+\end{itemize}
+
+\section{Suchen und Sortieren}
+
+\subsection{Überblick}
+
+\small{\begin{tabular}{r|ccccccccccc}
+&
+\rot{Liste} &
+\rot{Sortierte Liste} &
+\rot{Array} &
+\rot{Sortiertes Array} &
+\rot{Binärer Suchbaum} &
+\rot{AVL-Baum} &
+\rot{Splay-Baum} &
+\rot{Treap} &
+\rot{Skip-List} &
+\rot{Hashtabelle} &
+\rot{Min-Heap}
+    \\ \hline
+Randomisiert    & N & N & N & N & N & N & N & J & J & J & N \\
+Einfügen        & 1 & $n$ & 1 & $n$ & $n$ & $\log n$ & $\log n$ & $\log n$ & $\log n$ & 1 & $n$\\
+Suchen          & $n$ & $n$ & $n$ & $\log n$ & $n$ & $\log n$ & $\log n$ & $\log n$ & $\log n$ & 1 & $n$ \\
+Löschen & $n$ & $n$ & $n$ & $n$ & $n$ & $\log n$ & $\log n$ & $\log n$ & $\log n$ & 1 & $n$ \\
+Minimum & $n$ & 1 & $n$ & 1 & $n$ & $\log n$ & $\log n$ & $\log n$ & 1 & $n$ & 1 \\
+Maximum & $n$ & 1 & $n$ & 1 & $n$ & $\log n$ & $\log n$ & $\log n$ & $\log n$ & $n$ & $n$ \\
+Sort. Ausgeben & $n \log n$ & $n$ & $n \log n$ & $n$ & $n$ & $n$ & $n$ & $n$ & $n$ & $n \log n$ & $n \log n$    \\ \hline
+\end{tabular}}
+
+\subsection{Lineare Suche}
+Suche $x$ im Array, indem alle Elemente durchlaufen werden.
+
+Mittelwert: $\frac{(n+1)}{2}$ Vergleiche.
+
+\subsection{Binäre Suche}
+Suche $x$ im \textbf{sortierten} Array, aber halbiere den Suchraum in jedem Durchlauf.
+
+Mittelwert: $\lfloor log(n) \rfloor+1=log(n)+O(1)$ Vergleiche im Worst-Case. \\
+Laufzeit: $O(log(n))$.
+
+Praktisches Lemma für Gauß-Klammern:
+\begin{itemize}
+	\item $\lfloor a+n \rfloor=\lfloor a \rfloor+n$
+    \item $\lceil a+n \rceil=\lceil a \rceil+n$
+    \item $\lfloor -a \rfloor=-\lceil a \rceil$
+\end{itemize}
+
+\subsection{Binäre Suchbäume}
+
+\begin{itemize}
+    \item Es gilt für alle Knoten: Linke Kinder kleiner, rechte Kinder größer als Elternknoten
+    \item Interne und Externe Knoten
+\end{itemize}
+
+\subsubsection{Einfügen}
+
+\begin{itemize}
+	\item In den richtigen externen Knoten
+\end{itemize}
+
+\subsubsection{Löschen}
+
+Hier ist eine Fallunterscheidung nötig, abhängig vom Typ des zu löschenden Knotens.
+
+Blatt:
+\begin{enumerate}
+	\item Einfaches Zeigerverbiegen
+\end{enumerate}
+
+Knoten hat kein linkes Kind:
+\begin{enumerate}
+	\item Kopieren oder Zeiger verbiegen
+\end{enumerate}
+
+Knoten hat ein linkes Kind:
+\begin{enumerate}
+	\item Finde den größten Knoten im linken Unterbaum
+    \item Kopiere seinen Inhalt
+    \item Lösche ihn
+\end{enumerate}
+
+\subsubsection{Höhe}
+
+Werden in einen leeren binären Suchbaum $n$ verschiedene Schlüssel in zufälliger Reihenfolge eingefügt, dann ist die erwartete Höhe des entstehenden Suchbaums $O(\log n)$.
+
+Laufzeit von Operationen: Einfügen, Löschen und Suchen benötigen $O(h)$ Zeit, bei einem binären Suchbaum mit Höhe $h$.
+
+\subsection{Optimale Suchbäume}
+
+\begin{itemize}
+	\item Es seien $k_1 < ... < k_n$ Schlüssel
+    \item $\sum_{i=1}^{n} p_i =1$
+    \item hat eine minimale Anzahl von Vergleichen im Erwartungswert
+    \item Konstruktion in $O(n^3)$
+    \item Wir suchen $k_i$ mit Wahrscheinlichkeit $p_i$:
+\begin{enumerate}
+	\item Stelle Tabelle mit Wahrscheinlichkeiten auf
+    \item Stelle gleichgroße Tabelle mit Erwartungswerten auf: $$e_{i,j}=\min_{i \leq r \leq j}(e_{i,r-1}+e_{r+1,j})+w_{i,j}$$
+    \item Den Baum von der Tabelle ablesen
+\end{enumerate}
+\end{itemize}
+
+\subsection{Rotationen}
+Rotationen können einen binären Suchbaum so umstrukturieren, dass sich die Höhe einzelner Teilbäume verändert, aber die Suchbaumeigenschaft erhalten bleibt. \\
+Die Rotationen sind ähnlich zur $Splay$-Operation.
+
+\subsection{AVL-Bäume}
+AVL-Bäume sind binären Suchbaume mit der Eigenschaft, dass die Höhe des rechten und linken Unterbaums sich höchstens um 1 unterscheiden. Falls die Eigenschaft nicht erfüllt ist, kann mithilfe von Rotationen  die Höhe so verändert werden, dass die Suchbaumeigenschaften erhalten bleiben.
+
+\subsection{Treaps}
+
+Ein Treap ist ein binärer Suchbaum mit Heap-Eigenschaft, wobei diese auf zufällig gewählte Schlüssel angewendet wird. Dadurch wird bei zufälligen Operationen die Höhe des Baumes wahrscheinlich logarithmisch (und das ist gut).
+
+\subsection{Splay-Bäume}
+
+\subsubsection{Definition}
+\begin{itemize}
+	\item Selbstorganisierende Datenstruktur; selbstlernend
+    \item armortisiert effizient
+    \item Restrukturierung ducrch Rotationen; ohne Zusatzinformationen
+\end{itemize}
+
+\subsubsection{\texttt{splay}-Operation}
+
+\begin{itemize}
+	\item zig auf x = Rechtsrotation auf den Vater von x, wenn x das linke Kind ist
+    \item zag auf x = Linksrotation auf den Vater von x, wenn x das rechte Kind ist
+    \item zig-zag = zig auf den Vater von x, gefolgt von zag auf den Opa
+    \item zag-zig = zag auf den Vater von x, gefolgt von zig auf den Opa
+    \item zig-zig auf x = zig auf den Opa von x, gefolgt von zig auf den Vater von x
+    \item zag-zag auf x = zag auf den Opa von x, gefolgt von zag auf den Vater von x
+\end{itemize}
+
+\subsubsection{Suchen}
+\begin{enumerate}
+	\item Normale Suche von $x$ im Baum
+    \item Wende $\texttt{splay}(x)$ auf den gefundenen Knoten an
+    \item Prüfe ob $x$ nun in der Wurzel steht
+\end{enumerate}
+
+\subsubsection{Einfügen}
+\begin{enumerate}
+	\item Normale Suche $x$ im Baum, falls gefunden weiter bei 3.
+    \item Füge $x$ als Blatt ein
+    \item Wende $\texttt{splay}(x)$ an
+\end{enumerate}
+
+\subsubsection{Löschen}
+\begin{enumerate}
+	\item Suche $x$ im Baum
+    \item Prüfe ob $x$ nun in der Wurzel steht
+    \item $\texttt{splay}(x^-)$ auf den größten Knoten im linken Unterbaum
+    \item Klassisches Löschen von $x$
+\end{enumerate}
+
+\subsection{(a,b)-Bäume}
+
+\subsubsection{Definition}
+\begin{itemize}
+	\item Jeder Knoten hat höchsten $b$ Kinder
+    \item Jeder innere Knoten außer der Wurzel hat mindestens $a$ Kinder
+    \item Alle Blätter haben die gleiche Tiefe
+    \item Als assoziatives Array: Schlüssel nur in den Blättern, von links nach rechts geordnet
+    \item Als Suchhilfe enthält ein innerer Knoten mit $m$ Kindern genau $m − 1$ Schlüssel
+    \item Hilfsschlüssel in den inneren Knoten müssen nicht in den Blättern stehen
+\end{itemize}
+
+\subsubsection{Einfügen}
+Neues Blatt an richtiger Stelle einfügen. \\
+Falls Elternknoten mehr als $b$ Kinder: Aufteilen in 2 Knoten mit $\lfloor \frac{b+1}{2} \rfloor$ und $\lceil \frac{b+1}{2} \rceil$. Eventuell ist der Vater überfüllt und muss auch behandelt werden.
+
+\subsubsection{Löschen}
+Blatt mit Schlüssel entfernen. \\
+Falls Elternknoten weniger als $a$ Kinder: Zusammenfügen mit Geschwisterknoten und ggf. wieder teilen. Eventuell ist der nächste Elternknoten auch unterbelegt.
+
+\subsection{B-Bäume}
+
+B-Bäume sind $(m, 2m)$-Bäume, d.h. spezielle $(a,b)$-Bäume.
+
+Dann beträgt die Zugriffszeit nur $O(\log_m(n))$.
+
+\subsection{Tries}
+In $Tries$ entspricht die $i$te Verzweigung dem $i$ten Zeichen des Schlüssels, es wird nicht in die Knoten hineingeschaut.
+
+\subsection{Hashtabellen}
+
+Hashtabellen bestehen einer Tabelle/Array von Listen. Die Einträge sind dann in der Liste der Position, die durch die Hashfunktion angegeben wird. In dieser Liste wird dann mit linerarer Suche gesucht.
+
+\begin{itemize}
+	\item Lastfaktor $\alpha = \frac{n}{m}$, bei einer Hashtabelle der Größe m mit n Elementen
+    \item Erfolglose Suche = $O(\alpha)$
+    \item Erfolgreiche Suche = $O(1+\frac{\alpha}{2})$
+\end{itemize}
+
+Wir haben als Hash-Funktion immer eine der folgenden Familie benutzt, wobei $m$ die Größe der Hashtabelle ist:
+
+$$f_{a,b}(x)=(ax+b) \mod p) \mod m \text{, mit } x \in [0,p-1]$$
+
+\section{Amortisierte Analyse}
+
+Bei der amortisierten Analyse sollen Komplexitäten von Algorithmen abgeschätzt werden, deren Operationen sich eine Art Bankkonto für Laufzeit bedienen; somit können wir Datenstrukturen abschätzen, wo die durchschnittlichen Kosten gering sind, obwohl wenige Operationen sehr teuer sind.
+
+Dazu suchen wir uns zuerst eine Art Bankkonto-Funktion oder Energie-Funktion aus. Diese hängt von der Zeit und von der Datenstruktur ab und muss zu Beginn 0 sein. Damit können wir dann die Komplexität der einzelnen Operationen ausrechnen, indem wir zu jeder Operation die Differenz der Potenzial-Funktion vom Zeitpunkt vor der Operation und nach der Operation hinzuaddieren.
+
+\section{Hashing}
+
+Für eine Familie von Hashfunktionen muss gelten:
+
+$\mathcal{H}$ sei eine nichtleere Menge von Funktionen $U \to \{1, \ldots, m\}$.
+
+Dann ist $\mathcal{H}$ eine universelle Familie von Hashfunktionen, wenn für jedes $x,y \in U, x \neq y$ gilt:
+
+$$\frac{|\{ h \in \mathcal{H}\ | h(x) = h(y) \}|}{|\mathcal{H}|} \leq \frac{1}{m}$$
+
+Wenn $S \subseteq U$ eine beliebige Untermenge ist und $x \in U, x \notin S$ und $h \in \mathcal{H}$ eine zufällig gewählte Hashfunktion ist, gilt:
+
+$$E(|\{ y \in S | h(x) = h(y) \}|) \leq \frac{|S|}{m}$$
+
+Weiterhin gilt für ein beliebiges $k \in \{1, \ldots, m\}$: $\textrm{P}(h(x) = k) = \frac{1}{m}$, falls $h$ zufällig aus $\mathcal{H}$.
+
+\section{Skip List}
+\begin{itemize}
+	\item Schlüssel nach Größe sortiert
+    \item Suchen: Von Oben nach Unten
+    \item Anzahl ist geometrisch verteilt
+    \item Einfügen, Löschen und Suchen in $O(\log n)$
+    \item Speicherverbrauch = $O(n)$
+\end{itemize}
+
+\section{Mengen}
+\begin{itemize}
+	\item Bitarrays: Universum $U$ kann als Menge durch Bitarrays implementiert werden
+    \item Suchen, Einfügen und Löschen: $O(1)$
+    \item Vereinigung und Schnitt: $O(|U|)$
+    \item Auswahl, begrenzte Teilmenge: $O(|U|)$
+\end{itemize}
+
+
+\section{Sortieren}
+
+\subsection{Überblick}
+
+\begin{tabular}{r|cccccc}
+&
+\rot{Quicksort} &
+\rot{Heapsort} &
+\rot{Mergesort} &
+\rot{Insertion-Sort} &
+\rot{Straight-Radix} &
+\rot{Radix-Exchange}
+    \\ \hline
+in-place & I & J & N & J & N & I \\
+stabil   & N & N & J & J & J & N \\
+Laufzeit (worst-case) & $n^2$ & $n \log n$ & $n \log n$ & $n^2$ & $nw$ & $nw$ \\
+Laufzeit (Durchschnitt) & $n \log n$ & $n \log n$ & $n \log n$ & $n^2$ & $nw$ & $nw$ \\
+vergleichsbasiert & J & J & J & J & N & N \\\hline
+\end{tabular} \\
+
+in-place = Speicherverbrauch von $O(1)$ \\
+stabil = Elemente mit gleichem Schlüssel bleiben in der ursprünglichen Reihenfolge \\
+I = Implementationsabhängig
+
+\subsection{Insertion Sort} % Abschnitt zu Inversionen?
+
+\begin{itemize}
+\item Beispiel
+$\newline$
+(2,4,1,3) $\to$ (\textbf{2},4,1,3) $\to$ (\textbf{2},\textbf{4},1,3) $\to$ (\textbf{1},\textbf{2},\textbf{4},3) $\to$ (\textbf{1},\textbf{2},\textbf{3},\textbf{4})
+\item Vorgehen
+\begin{enumerate}
+\item Die ersten n Elemente sind eine sortierte Teilliste.
+\item nehme das n+1. Element, und füge es an der richtigen Stelle ein.
+\item und zack fettig, Aixzellenz.
+\end{enumerate}
+\item Inversionen
+$\newline$
+Die Anzahl der Inversionen (Paare der $(a_i,a_j)$, wobei $i<j$, sodass $a_i>a_j$) bestimmt, wieviele Schritte der Algorithmus benötigt (hier vertiefen).
+\end{itemize}
+
+\subsection{Vergleichsbäume}
+Vergleichsbäume gibt es, um darzustellen, über welche Vergleichskombinationen man letztendlich eine Sortierung erreicht. Der Vergleichsbaum hat dann mindestens $n!$ Blätter. Jeder vergleichsbasierte Algorithmus benötigt für das Sortieren einer zufällig permutierten Eingabe im Erwartungswert mindestens $\log(n!)$ Schritte.
+
+\subsection{Mergesort}
+\begin{itemize}
+\item Beispiel
+$\newline$
+(4,2,1,3) $\to$ (4,2),(1,3) $\to$ (4),(2),(1,3) $\to$ (2,4),(1,3) $\to$ (2,4),(1),(3) $\to$ (2,4),(1,3) $\to$ (1,2,3,4)
+
+\item Vorgehen
+\begin{enumerate}
+\item Liste in zwei Teillisten aufteilen
+\item Rekursiv Mergesort auf dem linken, danach auf dem rechten Teilliste aufrufen.
+\item Die Teillisten \textit{mergen}, d.h. so zusammenfügen, dass immer das kleinere Element der beiden Teillisten in die neue Liste eingefügt wird.
+\end{enumerate}
+
+\end{itemize}
+\subsection{Quicksort}
+\begin{itemize}
+\item Beispiel
+$\newline$ (4,7,5,6,9,1,2,8,3) $\xrightarrow{\textrm{Pivot 4, $7\geq4$, $3\leq4$, vertauschen}}$ (4,\textbf{3},5,6,9,1,2,8,\textbf{7}) \\ $\xrightarrow{\textrm{$5\geq4$, $2\leq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},6,9,1,\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{$6\geq4$, $1\leq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},\textbf{1},9,\textbf{6},\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{$9\geq4$, $1\geq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},\textbf{9},\textbf{1},\textbf{6},\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{Tausch rückgänig machen, und Pivot mit dem dann linken Elemnt tauschen}}$ (1,3,2,\textbf{4},9,6,5,8,7) \\
+Vorgang für (1,3,2) und (9,6,5,8,7) wiederholen.
+
+\item Vorgehen:
+\begin{enumerate}
+\item Pivot Element wählen (bei uns immer das linkeste Element in dem Teil-Array).
+\item Von beiden Rändern nach innen gehen, bis links auf das erste Element gezeigt wird, welches größer als der Pivot ist, und rechts auf das erste Element gezeigt wird, welches kleiner als der Pivot ist, beide Elemente vertauschen.
+\item Wiederhole Schritt 2, bis der rechte Zeiger auf links vom Linken ist. Dann den letzten Tausch rückgänig machen, und den Pivot mit dem letzen Element aus der linken Teilliste tauschen.
+\item Erst die linke, dann die rechte Teilliste jeweils mit Quicksort sortieren.
+\end{enumerate}
+\end{itemize}
+\subsection{Heap}
+
+Ein Heap ist ein Baum, bei dem die sog. Heap-Eigenschaft gilt: Jedes Element muss größer/gleich als sein Kindknoten (Max-Heap) sein (analog für Min-Heap). Außerdem sind alle Zeilen gefüllt, außer die unterste, wobei in dieser die Knoten von links aufgefüllt werden.
+
+\subsection{Heapsort}
+\begin{itemize}
+\item Beispiel (an einem Maxheap)
+\Tree [.9 [.8 3 \ 5 ] [.6 4 ] ] \\
+Array : $[\varnothing,\varnothing,\varnothing,\varnothing,\varnothing,\varnothing]$\\
+$\xrightarrow{\textrm{Oberstes Element ins Array, Heapeigenschaft fixen}}$
+\Tree [.8 [.5 3 \ 4 ] 6 ] \\
+Array : $[\varnothing,\varnothing,\varnothing,\varnothing,\varnothing,9]$\\
+$\xrightarrow{\textrm{Oberstes Element ins Array, Heapeigenschaft fixen}}$
+\Tree [.6 [.5 3 ] 4 ] \\
+Array : $[\varnothing,\varnothing,\varnothing,\varnothing,8,9]$\\
+$\xrightarrow{\textrm{Oberstes Element ins Array, Heapeigenschaft fixen}}$
+\Tree [.5 3 \ 4 ] \\
+Array : $[\varnothing,\varnothing,\varnothing,6,8,9]$\\
+$\xrightarrow{\textrm{Oberstes Element ins Array, Heapeigenschaft fixen}}$
+\Tree [.4 3 ] \\
+Array : $[\varnothing,\varnothing,5,6,8,9]$\\
+$\xrightarrow{\textrm{Oberstes Element ins Array, Heapeigenschaft fixen}}$
+\Tree [.3 ' ] \\
+Array : $[\varnothing,4,5,6,8,9]$\\
+$\xrightarrow{\textrm{Oberstes Element ins Array, Heapeigenschaft fixen}}$\\
+Array : $[3,4,5,6,8,9]$\\
+\item Vorgehen (für einen Maxheap)
+\begin{enumerate}
+\item Maxheap bauen.
+\item Oberstes Element rausnehmen, und in ein Array packen.
+\item Heapeigenschaft wiederherstellen.
+\item Ab 1. wiederholen, bis der Heap leer ist.
+\end{enumerate}
+\end{itemize}
+\subsection{Radixsort-Exchange}
+
+\subsubsection{Vorgehen}
+Sortiere Elemente nach der ersten Stelle in-place mit dem Vertauschungsprinzip von Quicksort. Iteriere nach diesem Prinzip alle Stellen durch.
+
+\subsubsection{Beispiel}
+(010,110,111,001,101,011) \\
+$\xrightarrow{\textrm{sortieren nach Stelle 1}}$ (010,011,001$|$111,101,110) \\
+$\xrightarrow{\textrm{sortieren nach Stelle 2}}$ (001$|$011,010$|$101$|$111,110) \\
+$\xrightarrow{\textrm{sortieren nach Stelle 3}}$ (001$|$010$|$011$|$101$|$110$|$111) \\
+$\to$ (001,010,011,101,110,111)
+
+\subsection{Straight-Radixsort}
+\begin{itemize}
+\item Beispiel
+$\newline$
+(010,110,111,001,101,011) \\
+$\xrightarrow{\textrm{sortieren nach Stelle 3}}$ (010,110)(111,001,101,011) \\
+$\xrightarrow{\textrm{sortieren nach Stelle 2}}$ (001,101)(010,110,111,011) \\
+$\xrightarrow{\textrm{sortieren nach Stelle 1}}$ (001)(010)(011)(101)(110)(111) \\
+$\to$ (001,010,011,101,110,111)
+
+\item Vorgehen
+\begin{enumerate}
+\item Zahlen nach der letzten Stelle sortieren.
+\item Zahlen nach der vorletzten Stelle sortieren, wobei die vorherige Reihenfolge unter den Zahlen mit gleicher vorletzter Ziffer die gleiche wie vorher sein soll (\textit{stabil} nach Ziffer sortieren).
+\item Wiederholen, bis nach der ersten Stelle sortiert wurde.
+\end{enumerate}
+\end{itemize}
+
+\subsection{Quickselect}
+
+Eine Art Quicksort, bei der man aber nur das $k$-te Element sucht, bspw. den Median.
+Es wird also nur rekursiv Quicksort auf dem Teil gemacht, in dem das $k$-te Element ist. Am Ende wird dann das $k$-te Element zurückgegeben, wenn es das Pivot-Element ist.
+
+\section{Graphen}
+
+\subsection{Darstellung}
+\begin{itemize}
+	\item Ungerichteter Graph $G=(V,E)$, $V$ ist die Menge der Knoten und $E \subseteq \binom V 2$ die der Kanten
+    \item Gerichteter Graph $G=(V,E)$, mit $E \subseteq V \times V$
+    \item Speicherung als Adjazenzmatrix mit Speicherbedarf von $\Theta (|V|^2)$
+    \item Als Adjazenzliste mit Speicherbedarf $\Theta (|V|+|E|)$
+    \item Wechsel zwischen beiden Darstellungen: $O(n^2)$
+\end{itemize}
+
+\subsection{Tiefensuche}
+
+Ein Algorithmus in Linearzeit, welcher viele Anwendungen hat.
+
+\begin{itemize}
+\item Vorgehen
+\begin{enumerate}
+\item Alle Knoten weiß markieren, und einen Knoten als Startpunkt auswählen, seine Discovery-Zeit auf 1 setzen. Weiter zu Schritt 3.
+\item Falls vorhanden, einen weiteren weißen Knoten auswählen, seine Discovery-Zeit setzen, ihn grau färben und weiter zu Schritt 3. Falls nicht, weiter zu Schritt 6.
+\item Falls es einen weiß markierten inzidenten Knoten gibt, diesen auswählen und weiter zu Schritt 4, sonst zu Schritt 5.
+\item Die Discovery-Zeit setzen, ihn grau markieren. Weiter zu Schritt 3.
+\item Die Finish-Zeit setzen, den Knoten schwarz markieren, und falls vorhanden, den Vorgänger auswählen und weiter zu Schritt 3. Falls nicht vorhanden, weiter zu Schritt 2.
+\item Jetzt sollten alle Knoten schwarz markiert sein und eine Discovery- und Finish-Zeit besitzen. Jede Kante (u,v) nun wie folgt kategorisieren:
+\begin{itemize}
+\item falls $d(u)+1=d(v)$ und $f(u)>f(v) \Rightarrow$ Baumkante
+\item falls $d(u)<d(v)$ und $f(u)>f(v) \Rightarrow$ Vorwärtskante
+\item falls $d(u)>d(v)$ und $f(u)<f(v) \Rightarrow$ Rückwärtskante
+\item sonst Querkante
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+
+\subsection{Starke Zusammenhangskomponenten}
+
+Eine starke Zusammenhangskomponenten sind die Teilmengen der Knoten eines Graphen, die sich gegenseitig von jedem Knoten dieser Komponente über entsprechend gerichtete Kanten erreichen können.
+
+\subsection{Kreise}
+Wende Tiefensuche auf den Graphen an. Wenn eine Rückwärtskante exisitiert, dann ist der Graph nicht kreisfrei.
+
+\subsection{Kosaraju}
+Findet starke Zusammenhangskomponenten in gerichteten Graphen.
+
+Vorgehen:
+\begin{enumerate}
+\item Kehrgraphen bilden. (Also alle Kanten einfach umdrehen)
+\item Eine Tiefensuche darauf ausführen.
+\item Knoten nach Finishtime sortieren.
+\item In dieser Reihenfolge auf dem Originalgraphen eine Tiefensuche ausführen. (Also bei Schritt 1 und 2 der Tiefensuche den Knoten wählen, der die größte Finish-Zeit hat)
+\item Jeder Baum, der im Wald aus den Baumkante der Tiefensuche ist, spannt eine starke Zusammenhangskomponente auf.
+\end{enumerate}
+\subsection{Topologisches Sortieren}
+Topologische Sortierung bezeichnet in der Mathematik eine Reihenfolge von Dingen, bei der vorgegebene Abhängigkeiten erfüllt sind.
+G sei ein DAG. Wenn wir die Knoten von G nach den Finish-Zeiten einer Tiefensuche umgekehrt anordnen, sind sie topologisch sortiert.
+
+\subsection{Dijkstra}
+Diser Algorithmus berechnet die kürzesten Pfade zu einem Startknoten in einem gewichteteten Graphen.
+\begin{enumerate}
+	\item Wähle Startknoten und setze seine Distanz auf 0 und die der anderen Knoten auf $\infty$
+    \item Solange es unbesuchte Knoten gibt, wähle den mit der minimalen Distanz aus:
+    \begin{itemize}
+		\item Markiere den Knoten als besucht
+        \item Aktualisiere für alle Nachbarknoten die Distanz, wenn jeweils mit diesem Knoten die Distanz verringert werden kann
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Bellman und Ford}
+
+Berechnung der kürzesten Pfade mit negativen Kantengewichten. Dijkstra kann das nicht.
+
+Die Idee ist einfach: Wir relaxieren alle Kanten soweit, bis es keine Änderung mehr gibt. Relaxieren ist einfach das Verringern der gespeicherten Distanz eines Nachbarknotens auf Basis des Gewichtes der Kante dorthin.
+
+Bei Kreisen mit negativem Gewicht terminiert der Algorithmus nicht.
+
+\subsection{Floyd-Warshall}
+
+Floyd Berechnet die kürzesten Wege zwischen allen Knotenpaaren in $O(|V|^3)$. Warshall ist der Spezialfall, bei dem nur auf Existenz eines Weges geprüft wird. Dies geht in $O(|V| + |E^\prime| + k^3)$ wobei $k$ die Anzahl der starken Zusammenhangskomponenten des Graphen mit Knoten $V$ und $E^\prime$ die Kanten der transitiven Hülle sind.
+
+\subsection{Transitive Hülle}
+
+Beispiel: \\
+\begin{tikzpicture}[scale=1.00]
+\tikzstyle{LabelStyle}=[fill=white]
+\Vertex[x=0,y=0]A
+\Vertex[x=2,y=0]B
+\Vertex[x=4,y=0]C
+\Vertex[x=6,y=1]D
+\Vertex[x=6,y=-1]E
+\tikzstyle{EdgeStyle}=[post]
+\Edge(A)(B)
+\Edge(B)(C)
+\Edge(C)(D)
+\Edge(C)(E)
+\tikzstyle{EdgeStyle}=[post,bend left,dashed]
+\Edge(A)(C)
+\Edge(A)(D)
+\Edge(B)(D)
+\tikzstyle{EdgeStyle}=[post,bend right,dashed]
+\Edge(A)(E)
+\Edge(B)(E)
+\end{tikzpicture}\\
+Gegeben sei eine Relation „Direkter-Vorgesetzter“ mit folgenden Beziehungen: \\
+
+C ist direkter Vorgesetzter von D und E \\
+B ist direkter Vorgesetzter von C \\
+A ist direkter Vorgesetzter von B \\
+
+Die transitive Hülle dieser Relation enthält nun zusätzlich auch die indirekten Vorgesetzten: \\
+
+A ist Vorgesetzter von B, C, D, E \\
+B ist Vorgesetzter von C, D, E \\
+C ist Vorgesetzter von D und E \\
+
+Man verwendet die Warshall Version des Floyd-Warshall-Algorithmus' um sie zu bestimmen.
+
+\subsection{Breitensuche}
+Vorgehen:
+\begin{enumerate}
+\item Startknoten $k$ wählen.
+\item Für jede zu $k$ inzidente Kante prüfen, obe der gegenüberliegende Knoten schon entdeckt wurde, bzw. ob es der gesuchte Knoten ist.
+\item Falls nicht, Knoten in Warteschlange einreihen.
+\item Schritt 2. für alle Elemente der Warteschlange durchführen, wobei immer erst alle direkten Nachfolger bearbeitet werden.
+\end{enumerate}
+
+\subsection{Prioritätswarteschlangen}
+
+Eine Warteschlange, bei der Elemente bestimmte Gewichte haben. Hier implementiert mit einem Heap: Das Einfügen ist unverändert wie beim Heap, das Auslesen ist \texttt{extract-min}. Weil die Warteschlange auf einem Heap basiert, liegen alle Operationen in $O(\log n)$.
+
+\subsection{s-t-Netzwerke}
+Gerichteter Graph mit gewichteten Kanten, mit einer Quelle $s$ und einer Senke $t$, wobei man bequemlicherweise annimmt, dass jeder Knoten auf einem Pfad von $s$ nach $t$ liegt. Zwei Kanten $(u,v)$ und $(v,u)$ können verschiedene Gewichte haben.
+
+\subsubsection{Residualnetzwerk}
+
+``Netzwerk minus Fluß = Residualnetzwerk''
+
+Im Residualnetzwerk stellen wir die Kanten folgendermaßen für alle $u,v \in V_G$ mit $G$ als originales s-t-Netzwerk:
+
+$$c_f(u,v) = \begin{cases}
+	c(u,v) - f(u,v) & \text{falls } (u,v) \in E_G, \\
+    f(v,u) & \text{falls } (v,u) \in E_G, \\
+    0 & \text{sonst}
+\end{cases}$$
+
+Also für jede Kante schreibe in die ursprüngliche Richtung die Restkapazität und in die entgegengesetzte Richtung den Fluss. Es muss dann natürlich immer gelten, dass die Gewichte der beiden Kanten zwischen zwei Knoten zusammen die Kapazität ergeben.
+
+\subsubsection{Augmentierende Pfade}
+Ein augmentierender Pfad in $G$ ist ein $s$-$t$-Pfad mit Restkapazität größer 0.
+
+\subsubsection{Ford-Fulkerson-Algorithmus}
+Initialisiere $f=0$. Solange es einen augmentierenden Pfad $f$ von $s$ nach $t$ gibt, augmentiere $f$ entlang $p$. Mithilfe des Residualnetzwerks lässt sich feststellen, ob es noch augmentierende Pfade gibt. Gib $f$ schließlich zurück.
+
+\subsection{Schnitte in Netzwerken}
+
+In einem s-t-Netzwerk mit maximalem Fluss alle Kanten als sicher betrachten, welche noch Restkapazitäten haben. Achtung, auch bei voller Kapazität einer Kante besitzt die Gegenrichtung noch Restkapazität und ist somit noch sicher. Alle Knoten, weche noch von s aus über sichere Kanten erreicht werden können gehören zur Menge S. Die restlichen gehören zu T. Alle Kanten, die S und T verbinden gehören zum minimalen Schnitt.
+
+\subsection{Bipartites Matching}
+Der Algorithmus von Edmond und Karp dient dem finden des maximalen Flusses zwischen zwei Knoten $s$ und $t$ in einem gerichteten Graphen. \\
+Vorgehen:
+\begin{enumerate}
+\item Einen Pfad von $s$ nach $t$ finden.
+\item das geringste Gewicht des Pfades durchschieben.
+\item Wiederholen, bis keine Pfade mehr da sind. $(much formalismus, so eindeutig, wow)$
+\end{enumerate}
+
+\subsection{Minimaler Spannbaum}
+Für einen zusammenhängenden, gewichteten Graphen $G(V,E)$ ist ein minimaler Spannbaum ein Teilgraph von $G$, sodass dieser kreisfrei ist, alle Knoten V enthält und für $F \subseteq E$ gilt, dass die Summe der Kantenlängen aus F die kleinstmögliche ist, die alle anderen Bedingungen erfüllt. \\
+\\
+Kann auch bei Bipartitem Matching erweitert werden auf zwei Teilmengen von $E$, genannt $S$ und $T$, wobei in dem Fall die Lösung allgemein nicht eindeutig ist.
+
+\subsection{Algorithmus von Prim}
+Verwendung: minimalen Spannbaum berechnen für zusammenhängende Graphen.
+Anleitung:
+\begin{enumerate}
+\item Beliebigen Knoten auswählen.
+\item Kleinste zu diesem Knoten inzidente Kante in den Teilgraphen mit aufnehmen, durch die kein Kreis entsteht.
+\item Kleinste zu dem Teilgraphen inzidente Kante in den Teilgraphen aufnehmen, durch die kein Kreis ensteht. Ende falls das nicht möglich ist.
+\end{enumerate}
+\subsection{Greedy-Algorithmen}
+
+Greedy-Algorithmen sind an jeder Stelle \textit{gierig}, sie wählen immer die lokal am besten scheinende Option. In Matroiden (siehe nächster Abschnitt) ist diese Strategie nachweislich optimal, während als Gegenbeispiel bei Schach die nur im aktuellen Schritt beste Aktion (bspw. gemessen an eliminierten Figuren) zu kurzsichtig ist.
+
+\subsection{Matroid}
+
+Mit Matroiden lassen sich Greedy-Algorithmen beweisen. Dabei besteht der Matroid $M = (S, \mathcal{I})$ aus Basis $S$ und Familie $\mathcal{I} \subseteq \textrm{Pot}(S)$ von \textit{unabhängigen Mengen} mit
+
+\begin{itemize}
+\item Falls $A \subseteq B$ und $B \subseteq \mathcal{I}$, dann $A \in \mathcal{I}$ ($M$ ist \textit{hereditary})
+\item Falls $A, B \subseteq \mathcal{I}$ und $|A| < |B|$, dann gibt es ein $x \in B$ sodass $A \cup \{x\} \in \mathcal{I}$ (\textit{Austauscheigenschaft})
+\end{itemize}
+
+Dazu noch:
+\begin{itemize}
+\item Eine Menge ist \textit{maximal}, wenn keine echte Obermenge von ihr unabhängig ist.
+\item Ein \textit{gewichtetes} Matroid hat eine Gewichtsfunktion $w : S \to \mathbb{Q}$.
+\item Eine Menge maximalen Gewichts unter allen unabhängigen Mengen heißt \textit{optimal}.
+\end{itemize}
+
+Jetzt gibt es mit diesen Axiomen einige schöne Lemmata, aber für uns ist ein Satz wichtig: Der Greedy-Algorithmus berechnet eine optimale Menge in einem gewichteten Matroid.
+
+Praktisch können wir das Matroid etwa nutzen, um zu beweisen, dass der minimale Spannbaum sich durch einen Greedy-Algorithmus berechnen lässt, weil er die optimale Menge im graphischen Matroid ist.
+
+\subsection{Kruskal}
+Dieser Algorithmus ist geeignet für kantengewichtete, zusammenhängende Graphen. Er dient dem Aufstellen minimaler Spannbäume.
+
+Führe den folgenden Schritt so oft wie möglich aus: Wähle unter den noch nicht ausgewählten Kanten von G die kürzeste Kante, die mit den schon gewählten Kanten keinen Kreis bildet.
+
+\subsection{Union Find}
+
+Praktisch für Dijkstra oder Prim, wo man viel mit Mengen arbeitet.
+Union-Find-Strukturen beinhalten \textbf{paarweise disjunkte} Mengen und haben drei Operationen:
+
+\begin{enumerate}
+\item $\texttt{MakeSet}(x)$: Erstellt eine neue Menge, dass nur aus dem Element aus $x$ besteht.
+\item $\texttt{Union}(x,y)$: Erstellt eine neue Menge aus Mengen $x$ und $y$. In der Regel werden $x$ und $y$ dafür konsumiert, d.h. unbrauchbar, damit alle in der Struktur enthaltenen Mengen disjunkt bleiben.
+\item $\texttt{Find}(x)$: Findet die (eindeutige) Menge, die das Element $x$ enthält.
+\end{enumerate}
+
+Wir implementieren Union-Find mit Wäldern (es geht auch anders): Zunächst ist jedes einzelne Element eine frei stehende Wurzel; \texttt{Union} hängt zwei Bäume aneinander. Außerdem verwenden wir \textit{union by rank} und \textit{Pfadkompression}, um die Bäume der Mengen möglichst flach zu halten. Wir merken uns bei jedem Baum den sogenannten \textit{Rang}, der einfach die Tiefe des Baumes ist.
+
+\begin{enumerate}
+\item $\texttt{MakeSet}(x)$: Ein Baum bestehend nur aus der Wurzel $x$.
+\item $\texttt{Union}(x,y)$: Hänge den kleineren Baum $\texttt{Find}(x)$ oder $\texttt{Find}(y)$ unter die Wurzel im größeren Baum. Das ist \textit{union by rank}: Wir hängen immer den kleineren Baum in den größeren hinein. Wenn beide Bäume gleichen Rang haben, hänge $\texttt{Find}(x)$ in $\texttt{Find}(y)$ und nur in diesem Fall müssen wir den Rang um eins erhöhen.
+\item $\texttt{Find}(x)$: Durchlaufe alle Bäume und suche darin nach dem Element. Dabei \textit{Pfadkompression}: Setze den Elternknoten des gesuchten Knotens und die aller Knoten auf dem Weg zur Wurzel auf die Wurzel des Baumes.
+\end{enumerate}
+
+Es ergibt sich schöne Performance: Ein Baum mit $m$ Elementen in einer solchen Datenstruktur hat höchstens die Höhe $\log(m) + 1$. Außerdem sind Operationen in einem anfangs leeren Baum in $O(m \log m)$; \texttt{Union} und \texttt{Find} sind dann in $O(\log m)$.
+
+\end{document}

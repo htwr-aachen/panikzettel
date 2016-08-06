@@ -6,3 +6,4 @@ compile_pdf:
     paths:
       - la.pdf
       - stocha.pdf
+      - dsal.pdf
