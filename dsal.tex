@@ -719,7 +719,7 @@ Wir implementieren Union-Find mit Wäldern (es geht auch anders): Zunächst ist 
 \begin{enumerate}
 \item $\texttt{MakeSet}(x)$: Ein Baum bestehend nur aus der Wurzel $x$.
 \item $\texttt{Union}(x,y)$: Hänge den kleineren Baum $\texttt{Find}(x)$ oder $\texttt{Find}(y)$ unter die Wurzel im größeren Baum. Das ist \textit{union by rank}: Wir hängen immer den kleineren Baum in den größeren hinein. Wenn beide Bäume gleichen Rang haben, hänge $\texttt{Find}(x)$ in $\texttt{Find}(y)$ und nur in diesem Fall müssen wir den Rang um eins erhöhen.
-\item $\texttt{Find}(x)$: Durchlaufe alle Bäume und suche darin nach dem Element. Dabei \textit{Pfadkompression}: Setze den Elternknoten des gesuchten Knotens und die aller Knoten auf dem Weg zur Wurzel auf die Wurzel des Baumes.
+\item $\texttt{Find}(x)$: Durchlaufe alle Bäume und suche darin nach dem Element. Dabei \textit{Pfadkompression}: Setze den Elternknoten des gesuchten Knotens und die aller Knoten auf dem Weg zu $x$ auf $x$.
 \end{enumerate}
 
 Es ergibt sich schöne Performance: Ein Baum mit $m$ Elementen in einer solchen Datenstruktur hat höchstens die Höhe $\log(m) + 1$. Außerdem sind Operationen in einem anfangs leeren Baum in $O(m \log m)$; \texttt{Union} und \texttt{Find} sind dann in $O(\log m)$.
