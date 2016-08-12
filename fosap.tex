@@ -189,11 +189,11 @@ Beachte: Mit dem Pumping-Lemma lässt sich \textbf{nicht} beweisen, dass Sprache
 \section{Algorithmen auf DFAs/NFAs}
 
 \subsection{Myhill-Nerode Äquivalenz}
-Äquivalenzrelation $\sim$ auf Wörter einer Sprache $L$. Es gilt $x \sim y \Leftrightarrow \text{ für alle } x \in \Sigma^*: (vx \in L \Leftrightarrow wx \in L)$ für $x,y \in L$. Anschaulich: $x$ und $y$ sind äquivalent, falls sie sich genau durch die gleichen $w \in \Sigma^*$ ergänzen lassen und $xw, yw \in L$. \\
+Äquivalenzrelation $\sim$ auf Wörter einer Sprache $L$. Es gilt $x \sim y \Leftrightarrow \text{ für alle } w \in \Sigma^*: (xw \in L \Leftrightarrow yw \in L)$ für $x,y \in L$. Anschaulich: $x$ und $y$ sind äquivalent, falls sie sich genau durch die gleichen $w \in \Sigma^*$ ergänzen lassen sodass $xw, yw \in L$. \\
 
 Der Index $\textrm{index}(L) \coloneqq \textrm{index}(\sim_L)$ einer Sprache ist die Anzahl ihrer Äquivalenzklassen. Notation der Äquivalenzklassen: $w/_L$ bezeichnet die Äquivalenzklasse mit dem Repräsentanten $w$ auf $L$. \\
 
-Eine Sprache ist genau dann regulär, wenn $\textrm{index}(L) < \infty$ und es ist $\textrm{index}(L) \leq \vert Q\vert$.
+Eine Sprache ist genau dann regulär, wenn $\textrm{index}(L) < \infty$ und es ist $\textrm{index}(L) \leq \vert Q\vert$ für jede Zustandsmenge $Q$ eines Automaten, der $L$ erkennt.
 
 \subsection{Minimale/Myhill-Nerode DFAs}
 Der Myhill-Nerode DFA ist wie folgt definiert:
