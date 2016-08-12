@@ -1,0 +1,446 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[english,ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[pdftex]{hyperref}
+\usepackage{bookmark}
+\usepackage{adjustbox}
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+\makeatother
+
+\title{FoSAP-Panikzettel}
+\author{Caspar Zecha, Philipp Schröer, Fabian Meyer, \\ Christoph von Oy, Tobias Polock}
+
+\setlength\parindent{0pt}
+\relpenalty=9999
+\binoppenalty=9999
+
+\begin{document}
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section{Grundlagen}
+\begin{itemize}
+	\item $\mathbb{N}=\mathbb{N} \cup \{0\}$
+	\item Alphabet $\Sigma$ = $\{Symbole, Buchstaben, Zeichen\}$
+    \item Wörter bestehen aus diesem Alphabet (z.B. $u,v,w$)
+    \item $|w|$ = Länge des Wortes $w$
+    \item $\varepsilon$ ist das leere Wort; $|\varepsilon|$=0
+    \item $|w|_a$ = Anzahl der $a$ in $w$
+    \item Menge von Wörtern bilden eine Sprache (z.B. $\Sigma^*$)
+    \item Sprache $\overline{L}=\Sigma^*\setminus L$
+    \item $u$ ist ein Prä-/In-/Suffix von $v$, falls $v = uw$ / $v = w_1uw_2$ / $v = wu$ gilt
+\end{itemize}
+
+\section{DFAs}
+Ein DFA $A$ = $(Q, \Sigma, \delta, q_0, F)$ besteht aus
+\begin{itemize}
+	\item Menge der Zustände $Q$
+    \item Alphabet $\Sigma$
+    \item Transitionsfunktion $\delta:Q \times \Sigma \to Q$
+    \item Anfangszustand $q_0$
+    \item Menge der Endzustände $F$ mit $F \subseteq Q$
+\end{itemize}
+
+Ein Lauf $(r_0, a_1, r_1, a_2, r_2, \ldots, a_n, r_n)$ mit $\delta(r_{i-1}, a_i)=r_i$ und $r_0=q_0$ wird genau dann akzeptiert, wenn $r_n \in F$. \\
+
+$L(A)=\{w \in \Sigma^*|A$ akzeptiert $w\}$
+
+Die Erreichbarkeitsrelation ist $q \stackrel{w}{\to} q'$ und beschreibt die Zustände, die man über einen ``Pfad'' im DFA erreichen kann.
+
+\subsection{Produktkonstruktion}
+Für $A_1 = (Q_1, \Sigma, \delta_1, q_{0,1}, F_1)$ und $A_2 = (Q_2, \Sigma, \delta_2, q_{0,2}, F_2)$ ist
+$A = (Q_1 \times Q_2,\Sigma, \delta, (q_{0,1},q_{0,2}), F)$ mit Transitionsfunktion
+$$\delta:(Q_1 \times Q_2)\times \Sigma \to Q_1 \times Q_2,\delta((r_1,r_2),a) \mapsto (\delta_1(r_1,a),\delta_2(r_2,a))$$ sowie mit $F=F_1 \times F_2$ / $(Q_1 \times F_2)\cup(F_1 \times Q_2)$ / $F_1 \times (Q_2 \setminus F_2)$ die Produktkonstruktion von $A_1$ und $A_2$.
+
+\subsection{Abschlusseigenschaften}
+\begin{itemize}
+    \item Ist $L$ DFA-erkennbar, so ist auch $\overline{L}$ DFA-erkennbar (über Vertauschung von End- und nicht Endzuständen)
+	\item{$L_1 \cap L_2$ (über Produktkonstruktion mit $(q_1, q_2) \in F \Leftrightarrow q_1 \in F_1 \land q_2 \in F_2$)}
+	\item{$L_1 \cup L_2$ (über Produktkonstruktion mit $(q_1, q_2) \in F \Leftrightarrow q_1 \in F_1 \lor q_2 \in F_2$)}
+	\item{Konkatenation: $LK$ (Hintereinanderausführung beider Automaten)}
+	\item{Iteration: $L^*=\cup_{n \in \mathbb(N)} L^n$, $L^0=\{\varepsilon\}$, $\varnothing^*=\{\varepsilon\}$}
+\end{itemize}
+
+\section{NFAs}
+Ein NFA $A = (Q, \Sigma, \Delta, q_0, F)$ besteht aus
+\begin{itemize}
+	\item Menge der Zustände $Q$
+    \item Alphabet $\Sigma$
+    \item Transitions\underline{relation} $\Delta \subseteq Q \times \Sigma \times Q$
+    \item Anfangszustand $q_0$
+    \item Menge der Endzustände $F$ mit $F \subseteq Q$
+\end{itemize}
+
+Erreichbarkeitsmengen: $E(A,w):=\{q \in Q| q_o \stackrel{w}{\to} q \}$
+
+\subsection{$\varepsilon$-NFAs}
+Ein $\varepsilon$-NFA $A$=$(Q, \Sigma, \Delta, q_0, F)$ mit
+\begin{itemize}
+	\item Menge der Zustände $Q$
+    \item Alphabet $\Sigma$
+    \item Transitionsrelation $\Delta: Q \times(\Sigma \cup \{\varepsilon\}) \times Q$
+    \item Anfangszustand $q_0$
+    \item Menge der Endzustände $F$ mit $F \subseteq Q$
+\end{itemize}
+
+Ein Lauf wird ohne $\varepsilon$ angegeben.
+
+\subsection{Äquivalenz von DFAs und NFAs (Potenzmengenkonstruktion)}
+Jeder DFA ist offensichtlich ein NFA. Und zu jedem NFA $(Q,\Sigma,\Delta,q_0,F)$ kann man wie folgt einen äquivalenten DFA $(Q', \Sigma, \delta', q'_0, F')$ konstruieren:
+\begin{enumerate}
+	\item Setze die Zustandsmenge des DFAs $Q' := \mathrm{Pot}(Q)$
+	\item $\delta'(q',a) = \{q \in Q' \mid \exists p \in q': (p,a,q) \in \Delta \}$
+	\item $q'_0 = \{q_0\}$
+    \item $F' = \{q \in Q' \vert F \cap q \neq \emptyset \}$
+\end{enumerate}
+
+Allgemein gilt: $L$ ist DFA-erkennbar $\Leftrightarrow$ $L$ ist NFA-erkennbar $\Leftrightarrow$ $L$ ist $\varepsilon$-NFA-erkennbar $\Leftrightarrow$ $L$ ist FA-erkennbar
+
+\subsection{Reduzierte Automaten}
+Reduzierte Automaten enthalten keine Zustände, die nicht vom Startzustand erreicht werden können.
+
+\subsection{Transformation von $\varepsilon$-NFAs in normale NFAs}
+\begin{enumerate}
+	\item{Ersetze jede $\varepsilon$-Transition von $q$ auf $q'$ so, dass die Erreichbarkeitsmengen von $q$ gleich der von $q'$ ist. (Man "rückverlagert" die Transitionen also) (Formal: $\Delta' \coloneqq \{(q,a,q') \in Q \times \Sigma \times Q\mid \mathcal{A}: q \stackrel{a}{\rightarrow} q'\}$)}
+	\item{Wenn eine $\varepsilon$-Transition von $q$ nach $q' \in F$ geht, füge $q$ zu $F$ hinzu}
+\end{enumerate}
+
+\subsection{Komplement}
+Sei $A$ ein $\varepsilon$-NFA. Führe folgende Schritte aus um $L(\overline{A})$ zu finden:
+\begin{enumerate}
+	\item Konstruiere zu $A$ äquivalenten NFA $A'$
+    \item Konstruiere zu $A'$ äquivalenten DFA $A''$ mit der Potenzmengenkonstruktion
+    \item Konstruiere DFA $A'''$ mit $L(A''')=\overline{L(A'')}$
+\end{enumerate}
+
+\section{Reguläre Sprachen}
+Reguläre Sprachen lassen sich durch reguläre Ausdrücke beschreiben und sind genau die FA-erkennbaren Sprachen.
+
+\subsection{Sprachen von regulären Ausdrücken}
+Rekursive Definition mit $r, s$ reguläre Ausdrücke und $a \in \Sigma$:
+\begin{align*}
+L(\emptyset) &\coloneqq \emptyset \\
+L(\varepsilon) &\coloneqq \{\varepsilon\} \\
+L(a) &\coloneqq \{a\} \\
+\\
+L((r+s)) &\coloneqq L(r) \cup L(s) \\
+L((r\cdot s)) &\coloneqq L(r)L(s) \\
+L(r^*) &\coloneqq L(r)^* \\
+\end{align*}
+
+
+\subsection{Von einem regulären Ausdruck zu einem $\varepsilon$-NFA}
+Siehe Beispiel 4.13 in den Vorlesungsfolien für ein einfaches Schema. Lässt sich auch einfach selber herleiten. %TODO: Grafiken?
+
+\subsection{Vom NFA zum regulären Ausdruck}
+
+\subsubsection{Formal}
+
+$r_X (p,q)$ ist ein regulärer Ausdruck welcher die Sprache $\{w \in \Sigma^*\mid p \overset{w}{\underset{X}{\rightarrow}} q\}$ beschreibt. $p \overset{w}{\underset{X}{\rightarrow}} q$ meint dabei $p \overset{w}{\rightarrow} q$ nur unter Betrachtung von Zuständen aus $X$. Berechne die Ausdrücke $r_Q (q_0,q), q \in Q$, dann ist $L(\sum r_Q(q_0, q)) = L(A)$. Die regulären Ausdrücke werden wie folgt rekursiv berechnet: Wähle $x \in X$:
+
+\[r_X(q,q') = r_{X \setminus x}(q,q') + r_{X \setminus x}(q,x)r_{X \setminus x}(x,x)^*r_{X \setminus x}(x,q')\]
+\subsubsection{Graphisch}
+
+Man arbeitet auf dem Transitionsgraphen des NFAs
+
+\begin{enumerate}
+	\item Füge einen neuen Startzustand hinzu, der mit einer $\varepsilon$-Transition auf den orginalen Startzustand zeigt.
+    \item Füge einen neuen Endzustand hinzu. Jeder orginale Endzustand zeigt nun mit einer $\varepsilon$-Transition auf den neuen Endzustand.
+    \item Schreibe auf jeder Transition, die mehr als einen Buchstaben hat, diese in einen regulären Ausdruck (dh. aus $a,b$ wird $a + b$).
+    \item Nehme einen der orginalen Zustände herraus.
+    \item Wähle ein Paar von Zuständen so, dass der zweite vom ersten über den herraugenommenen Knoten erreichbar ist.
+    \item Füge, falls nicht vorhanden eine Transition vom ersten zum zweiten Knoten ein, und beschrifte sie mit $\varepsilon$.
+    \item Erweitere den regulären Ausdruck auf den neuen Transition um einen neuen +-Term, der wie folgt aussieht $rs*t$ wobei $r$ der Ausdruck vom ersten zum herrausgenommen Knoten, $s$ der Ausdruck vom herrausgenommenen zum herrausgenommenen Knoten, $t$ der Ausdruck vom herrausgenommenen zum zweiten Knoten ist (der entstandene Ausdruck kann vereinfacht werden).
+    \item Wiederhole Schritte 5 bis 7 für jedes weitere Knotenpaar.
+    \item Wiederhole Schritte 4 bis 8 für jeden orginalen Knoten.
+\end{enumerate}
+Jetzt sollte nur noch der neue Start und Endknoten übrig sein. Der Reguläre Ausdruck auf der Transition ist das Ergebnis.
+
+\subsection{Pumping-Lemma für reguläre Sprachen}
+
+Wird benutzt, um Regularität von Sprachen zu widerlegen. \\
+
+Kernidee: Wenn ein Automat Wörter akzeptiert, deren Länge größer als die Anzahl der Zustände sind, gibt es irgendwo einen Kreis im Automaten. \\
+
+Wenn $L$ eine reguläre Sprache ist, besitzt sie eine Pumping-Zahl $n \geq 1$, sodass jedes Wort $w \in L$ mit $\vert w\vert \geq n$ zerlegbar ist in $w = xyz$ mit:
+\begin{enumerate}
+	\item{$y \neq \varepsilon$}
+	\item{$|xy| \leq n$}
+	\item{$xy^kz \in L, k \in \mathbb{N}$}
+\end{enumerate}
+
+Wenn man widerlegen soll, dass eine Sprache regulär ist, sollte man prüfen, ob man nicht leicht einen Widerspruch mit dem Pumping-Lemma herleiten kann. Dabei beißt sich dann meist die dritte Aussage mit den ersten zweien. \\
+
+Beachte: Mit dem Pumping-Lemma lässt sich \textbf{nicht} beweisen, dass Sprachen regulär sind!
+
+\section{Algorithmen auf DFAs/NFAs}
+
+\subsection{Myhill-Nerode Äquivalenz}
+Äquivalenzrelation $\sim$ auf Wörter einer Sprache $L$. Es gilt $x \sim y \Leftrightarrow \text{ für alle } x \in \Sigma^*: (vx \in L \Leftrightarrow wx \in L)$ für $x,y \in L$. Anschaulich: $x$ und $y$ sind äquivalent, falls sie sich genau durch die gleichen $w \in \Sigma^*$ ergänzen lassen und $xw, yw \in L$. \\
+
+Der Index $\textrm{index}(L) \coloneqq \textrm{index}(\sim_L)$ einer Sprache ist die Anzahl ihrer Äquivalenzklassen. Notation der Äquivalenzklassen: $w/_L$ bezeichnet die Äquivalenzklasse mit dem Repräsentanten $w$ auf $L$. \\
+
+Eine Sprache ist genau dann regulär, wenn $\textrm{index}(L) < \infty$ und es ist $\textrm{index}(L) \leq \vert Q\vert$.
+
+\subsection{Minimale/Myhill-Nerode DFAs}
+Der Myhill-Nerode DFA ist wie folgt definiert:
+\begin{itemize}
+	\item{$Q \coloneqq \Sigma^*/_L = \{v/_L\mid v \in \Sigma^*$\}}
+	\item{$\delta(v/_L, a) = va/_L$}
+	\item{$q_0 \coloneqq \varepsilon/_L$}
+	\item{$F \coloneqq \{v/_L \mid v/_L \cap L \neq \emptyset\}$}
+\end{itemize}
+
+Da für jeden DFA $\mid Q\mid \geq \textrm{index}(L)$ gilt, ist der Myhill-Nerode DFA ein minimaler DFA. Alle minimalen DFAs sind bis auf Isomorphie eindeutig. \\
+
+Der Minimierungsalgorithmus für einen DFA $\mathcal{A}$ geht wie folgt:
+\begin{enumerate}
+	\item{Reduziere den DFA auf die erreichbaren Zustände}
+	\item{Berechne die Äquivalenzklassen von $\mathcal{A}$ mittels des Verfeinerungsalgorithmus}
+	\item{Berechne den Myhill-Nerode-DFA}
+\end{enumerate}
+
+Der Verfeinerungsalgorithmus ist der folgende:
+\begin{enumerate}
+	\item{Teile $Q$ in die beiden Partitionen $F$ und $Q\setminus F$ auf}
+	\item{Wenn es in einer Partition 2 Zustände $p,q$ gibt, so dass $\delta(p,a)$ und $\delta(q,a)$ in verschiedenen Klassen sind, so unterteile die Klasse.}
+	\item{Wenn noch eine Verfeinerung möglich, gehe zu 2}
+\end{enumerate}
+
+\subsection{Unendlichkeitsproblem}
+$L(\mathcal{A}) \text{ unendlich} \Leftrightarrow \exists q \in Q, w \in \Sigma^*\setminus \{\varepsilon\}: \mathcal{A}:  q_0 \stackrel{\ast}{\rightarrow} q \stackrel{w}{\rightarrow} q \stackrel{\ast}{\rightarrow}F$
+
+\subsection{Inklusionsproblem}
+Es ist $L_1 \subset L_2 \Leftrightarrow L_1 \cap \overline{L_2} = \emptyset$
+
+\subsection{Äquivalenzproblem}
+$L_1 = L_2 \Leftrightarrow L_1 \subset L_2 \land L_2 \subset L_1$
+
+\section{Kontextfreie Sprachen}
+
+\subsection{Kontextfreie Grammatiken}
+
+Eine Kontextfreie Grammatik $G = (N, \Sigma, P, S)$ besteht aus
+
+\begin{enumerate}
+	\item Einer Menge von Nichtterminalsymbolen $N$
+    \item Einer Menge von Terminalsymbolen $\Sigma$
+    \item Einer Menge von Produktionsregeln $P$ der Form \[A \to \alpha\] mit $A \in N$ und $\alpha \in (N \cup \Sigma)^\ast$\
+    \item Einem Startsymbol $S \in N$
+\end{enumerate}
+
+Eine Ableitung eines Wortes $w \in \Sigma^\ast$ ist eine Folge von Ersetzungen von Nichtterminalen nach den Produktionsregeln um von $S$ zu $w$ zu kommen. \\
+
+Die Sprache einer Kontextfreien Grammatik ist die Menge aller Wörter, die in dieser Grammatik abgeleitet werden können.
+
+\subsection{Chomsky-Normalform}
+
+Bei einer Grammatik in Chomsky-Normalform (kurz CNF) gibt es nur Produktionsregeln der Form \[ A \to a \] oder \[A \to BC\] mit $A,B,C \in N, a \in \Sigma$.
+
+\subsubsection{Von kontextfreier Grammatik zu CNF}
+
+\begin{enumerate}
+	\item Elimination der $\varepsilon$-Regeln
+    \item Terminalsymbole nur in Regeln der Form $A \to a$
+    \item Elimination der Regeln $A \to B$
+    \item Elimination der Regeln $A \to A_1 \ldots A_n$ mit $n > 2$
+\end{enumerate}
+
+\subsection{Pumping-Lemma für kontextfreie Sprachen}
+
+Genau wie für reguläre Sprachen gibt es für kontextfreie Sprachen ein Pumping-Lemma, mit dem Kontextfreiheit widerlegt werden kann. Wie zuvor lässt sich damit jedoch \textbf{nicht} Kontextfreiheit zeigen! \\
+
+Die Kernidee ist ähnlich zu der des Pumping-Lemmas für reguläre Sprachen: Wenn das Wort länger als die Anzahl der Nichtterminale in CNF ist, dann müssen sich Teilbäume der Ableitung wiederholen. \\
+
+Sei $L \subseteq \Sigma^\ast$ kontextfrei. Dann gibt es eine Zahl $n \geq 1$, so dass jedes Wort $z \in L$ mit $|z| \geq n$ zerlegbar ist in Wörter $u, v, w, x, y \in \Sigma^\ast$ mit $$z = uvwxy$$
+die folgende Eigenschaften haben
+\begin{enumerate}
+	\item $vx \neq \varepsilon$
+    \item $|vwx| \leq n$
+    \item $uv^kwx^ky \in L$ für alle $k \geq 0$
+\end{enumerate}
+
+\subsection{Kellerautomanten}
+Kellerautomaten akzeptieren kontextfreie Sprachen. Ein Kellerautomat $\mathcal{A}$ ist als 7-Tupel definiert:
+$\mathcal{A} = (Q, \Sigma, \Gamma, \Delta, q_0, Z_0, F)$ mit
+
+\begin{itemize}
+	\item Die endliche Zustandsmenge $Q$
+    \item Das Eingabealphabet $\Sigma$
+    \item Das Stapelalphabet $\Gamma$
+    \item Die Transitionsrelation $\Delta \subseteq Q \times (\Sigma \cup \{\varepsilon\}) \times \Gamma \times Q \times \Gamma^\ast$.\\
+    	  Bspw. Transition $(p,a,Z,q,\gamma)$: Im Zustand $p$, bei Eingabesymbol $a$ und Stapelsymbol $Z$ gehe in den Zustand $q$ über und lege alle Symbole in $\gamma \in \Gamma^\ast$ auf den Stapel, so dass das erste Symbol von $\gamma$ oben auf dem Stapel liegt.
+    \item Der Anfangszustand $q_0 \in Q$
+    \item Das Stapelanfangssymbol $Z_0 \in \Gamma$
+    \item Die Endzustände $F \subseteq Q$
+\end{itemize}
+
+Ein solcher Kellerautomat kann sich in einem aktuellem ``Ausführungszustand'' befinden, der \textit{Konfiguration}. Die Konfiguration $\kappa$ ist definiert als $$\kappa = (\underbrace{q}_\textrm{Zustand}, \underbrace{\gamma}_\textrm{Stapelinhalt}, \underbrace{w}_\textrm{Rest des Eingabeworts})$$
+
+PDAs sind nichtdetermenistisch und können $\varepsilon$-Transitionen haben. Es gibt jedoch auch deterministische PDAs (DPDAs), jedoch bilden die DPDA erkennbaren Sprachen eine \underline{echte} Teilmenge der von PDAs erkennbaren.\\
+
+Ein PDA der mit leerem Stapel akzeptiert ist ein 6-Tupel $(Q,\Sigma, \Gamma,\Delta, q_0, Z_0)$ und akzeptiert ein Wort, falls es einen Lauf gibt, der in einem Zustand mit mit leerem Stapel endet. Eine Sprache ist genau dann PDA-erkennbar, wenn sie erkennbar ist durch einen PDA, der mit leerem Stapel akzeptiert.
+
+\subsection{Von einer Grammatik in CNF zum PDA}
+Für eine Grammatik $(N, \Sigma, P, S)$ in CNF:\\
+Setze
+\begin{align*}
+	Q &\coloneqq \{q_0\}\\
+    \Delta &\coloneqq\{(q_0,\varepsilon,q_0,BC) \mid A \rightarrow BC \in P\} \cup \{(q_0, a, A, q_0, \varepsilon) \mid A \rightarrow a \in P\}
+\end{align*}
+Dann ist $(Q, \Sigma, N, \Delta, q_0, S)$ ein PDA, der mit leerem Stapel akzeptiert und die selbe Sprache erkennt.
+
+\subsection{Von PDAs zu Grammatiken}
+Zu einem PDA, der mit leerem Stapel akzeptiert, wollen wir eine Grammatik konstruieren.
+
+\begin{enumerate}
+	\item $S$ ist ein neues Symbol
+	\item $N \coloneqq \{S\} \cup \{[pZq] \mid p,q \in Q, Z \in \Gamma\}$
+	\item $\{[pZp_m] \rightarrow \sigma[p_0Z_1p_1][p_1Z_2p_2]\ldots [p_{m-1}Z_mp_m] \mid \\ (p, \sigma, Z,p_0,Z_1\ldots Z_m) \in \Delta,  m \geq 1, p_1,\ldots,p_m \in Q\} \\ \cup \{[pZ_0p_0] \rightarrow \sigma \mid (p,\sigma,Z,p_0,\varepsilon) \in \Delta\} \\ \cup \{S \rightarrow [q_0Z_0q] \mid q \in Q$\}
+\end{enumerate}
+
+\subsection{CYK-Algorithmus}
+Der CYK-Algorithmus löst das Problem für eine kontextfreie Sprache in Chomsky-Normalform in $\mathcal{O}(n^3)$
+Für ein Wort $w = a_1\ldots a_n$. \\
+Distanz $d = j-i$ Mengen: $N_{i,j} = \{A \in N\mid A \stackrel{\ast}{\rightarrow} a_i\ldots a_j\}$
+\begin{enumerate}
+	\item Berechne alle $N_{i,j}$ mit $d=0$
+    \item Berechne für alle $N_{i,j}$ mit $d=1$ (dh. für alle $A \in N_{i,j}$ gibt es eine Regel $A \rightarrow BC$ und ein $k$ mit $i \leq k < j$, so dass $B \in N_{i,k}$ und $C \in N_{k+1,j}$ )
+    \item Wiederhole Schritt 2 mit jeweis incrementierter Distanz, bis $d+1=|w|$
+	\item Überprüfe $S \in N_{1,n}$
+\end{enumerate}
+
+\subsection{Markierungsalgorithmus}
+
+Ein ``terminierendes Nichtterminal'' ist ein Nichtterminal, aus welchem sich ein Wort ableiten lässt, oder eine Satzform bestehend aus Zeichen aus $\Sigma$ und terminierenden Nichtterminalen. \\
+
+Der Markierungsalgorithmus markiert nun rekursiv die terminierenden Nichtterminale. Wenn $S$ kein terminierendes Nichtterminal ist, ist die Sprache leer.
+
+Die Laufzeit ist quadratisch, das Problem lässt sich aber auch in Linearzeit lösen.
+
+\subsection{Weitere Abschlusseigenschaften}
+Das Unendlichkeitsproblem lässt sich in Polynomialzeit lösem (Pumping-Lemma). Das Äquivalenzproblem, das Inklusionsproblem, das Universilatitätsproblem ($L(\mathcal{G}) = \Sigma^*$), das Durchschnittsproblem ($L(\mathcal{G}) \cap L(\mathcal G') = \emptyset$), das Regularitätsproblem (Ist $L(\mathcal{G})$ regulär?) und das Eindeutigkeitsproblem sind unentscheidbare Probleme.
+
+\section{Kontextsensitive Grammatiken}
+
+Kontextsensitive Grammatiken sind eine Erweiterung von kontextfreien Grammatiken, bei denen Regeln der Form \[\alpha_1A\alpha_2 \to \alpha_1\beta\alpha_2\] mit $\alpha_1, \alpha_2, \beta \in (\Sigma \cup N)^\ast, A \in N$ erlaubt sind.\\
+
+Das Wortproblem ist für kontextsensitive Sprachen entscheidbar. Das Leerheitsproblem ist jedoch unentscheidbar. Die kontextsensitiven Grammatiken entsprechen im Automatenmodell den linear beschränkten Automaten (eine Turingmaschine mit linear zur Eingabelänge beschränkten Band).
+
+\section{Allgemeine Grammatiken}
+
+Allgemeine Grammatiken sind eine Erweiterung von kontextsensitiven Grammatiken, bei denen Regeln der Form \[\alpha \to \beta\] mit $\alpha, \beta \in (\Sigma \cup N)^\ast$ erlaubt sind.\\
+
+Das Wortproblem für allgemeine Grammatiken ist unendscheidbar. Die allgemeinen Grammatiken entsprechen im Automatenmodell den Turingmaschinen.
+
+\subsection{Chomsky-Hierarchie}
+Die Chomsky-Hierarchie klassiert unsere Sprachen in einer Hierarchie:
+
+\begin{itemize}
+	\item Allgemeine Grammatiken sind vom Typ 0
+    \item Kontextsensitive Grammatiken sind vom Typ 1
+    \item Kontextfreie Grammatiken sind vom Typ 2
+    \item Rechtslineare Grammatiken (erkennen reguläre Sprachen) sind vom Typ 3
+\end{itemize}
+
+\begin{tabular}{ r|c|c|c|c }
+              & allgemin & kontextsensitiv & kontextfrei & regulär \\
+  Wortproblem & U & E & E & E \\
+  Leerheit    & U & U & E & E \\
+  Äquivalenz  & U & U & U & E
+\end{tabular} \\
+E = entscheidbar, U = unentscheidbar
+
+\section{Nebenläufige Systeme}
+
+\subsection{Transitionssysteme}
+
+Transitionssysteme dienen zur Modelierung von Prozessen. Sie sind ähnlich aufgebaut wie ein $\varepsilon$-NFA nur ohne Endzustände.\\
+Der Prozess kann sich in einem Zustand befinden - und beginnt immer in einem festen Startzustand - um dann von dort aus Aktionen ausführen. Für die Interpretation des Modelles sind nicht nur mögliche Abfolgen von Aktionen wichtig, die der Prozess theoretisch vom Startzustand aus durchlaufen kann, sondern auch die dabei durchlaufenen Zustände. \\
+Das heißt, wenn zwei Transitionssysteme als $\varepsilon$-NFAs aufgefasst, die selbe Sprache erzeugen würden, könnte das Verhalten des modellierten Prozesses unterschiedlich sein.
+
+\subsubsection{Das freie Produkt von Transitionssystemen}
+
+Das freie Produkt von Transitionssystemen modelliert die parallele Ausführung dieser Systeme.
+
+Für Transitionssysteme $A_1, \ldots, A_n$ mit $A_i = (Q_i, \Sigma_i, q_{i,0}, \Delta_i)$ ist das freie Produkt definiert als \[\prod\limits_{i=1}^n \mathcal A_i \coloneqq \mathcal A_1 \times \ldots \times \mathcal A_n \coloneqq (Q, \Sigma,q_0, \Delta)\] mit
+\begin{align*}
+	Q &:= \bigtimes_{i=1}^n Q_i	\\
+    \Sigma &:= \bigtimes_{i=1}^n (\Sigma_i \cup \{\varepsilon\}) \\
+    q_0 &:= (q_{1,0}, \ldots, q_{n,0}) \\
+    \Delta &:= \{ ((q_1,\ldots,q_n),(a_1,\ldots,a_n),(q'_1,\ldots,q'_n)) \vert \forall 1 \leq i \leq n: (q_i,a_i,q'_i) \in \Delta_i \vee (q_i = q'_i \wedge a_i = \varepsilon) \}
+\end{align*}
+
+Also kommen wir von einem Zustand in einen anderen, wenn es in jedem einzelnen Faktor-Automaten eine entsprechende Transition gibt, oder wir nichts ändern ($\varepsilon$).
+
+\subsubsection{Synchronisierte Produkte}
+Idee: Erlaube im Produkt nur gewisse Transitionen um die Synchronisierung zu steuern und sinnlose Läufe auszuschließen. Ein Synchronisierungsschema ist eine Teilmenge $S \subset \Sigma$. Das synchronisierte Produkt mit Synchronisierungsschema $S$ ist das Transitionssystem, das aus dem freien Produkt entsteht, wenn man nur Transitionen $(q,a,q')$ mit $a \in S$ zulässt:
+
+\[(\mathcal A_1 \times \ldots \times \mathcal A_n \mid S)\]
+
+Enthält $S$ die Transitionen $(a, \varepsilon), (\varepsilon,b)$, so können wir die Transition $(a,b)$ hinzufügen oder weglassen, ohne das System zu wesentlich zu verändern. Dadurch kann jedoch das Synchronisierungsschemata verkleinert werden.
+
+\subsection{Prozesskalküle}
+
+Wir beschreiben die Transitionsrelationen nun als Gleichungssystem. Für die Transitionen $(q,a_1,q_1),\ldots, (q,a_n,q_n)$ von $q$ fügen wir folgende Gleichungen hinzu.
+
+\[q \equiv a_1.q_1 + \ldots + a_n.q_n\]
+
+Durch Einsetzen von Gleichungen kann man weitere Gleichungen ableiten. Zur Modellierung von Nebenläufigkeit fügen wir eine neue zweistellige Operation $\mid$ hinzu, wobei $A\mid B$ bedeutet, dass $A$ und $B$ nebenläufig ausgeführt werden.
+
+\subsection{Petrinetze}
+
+Idee: Prozesse verbrauchen und erzeugen lokal Ressourcen
+Ein Petrinetz $N=(P,T,F)$ mit
+\begin{enumerate}
+	\item Menge an Plätzen $P$
+    \item Menge an Transitionen $T$
+    \item Flussrelation $F\subseteq (P \times T) \cup (T \times P)$
+\end{enumerate}
+
+$\begin{array}{lc}
+\text{Vorbereich einer Transition } t\in T:		& {}^\bullet t := \{ p \in P | (p,t) \in F\} \\
+\text{Vorbereich eines Platzes } p\in P:		& {}^\bullet p := \{ t \in T | (t,p) \in F\} \\
+\text{Nachbereich einer Transition } t \in T:	& t^\bullet := \{ p \in P | (t,p) \in F\} \\
+\text{Nachbereich eines Platzes } p \in P:		& p^\bullet := \{ t \in T | (p,t) \in F\}
+\end{array}$ \\
+
+Markierung eines Petrinetzes $M: P \rightarrow \mathbb{N}$ ordnet jedem Platz $p\in P$ eine Markenzahl $M(p)$ zu. \\
+Haben wir die Plätze fest aufgezählt z.B. $(P_1,\dots,P_n)$ so können wir eine Markierung als Vektor in $\mathbb{R}^n$ auffassen $M=(M(p_1),\dots M(p_n))$ \\
+
+$t\in T$ ist aktiviert, wenn für alle $p\in {}^\bullet t $ gilt $M(p)>0$ \\
+
+$t$ schaltet von $M$ nach $M'$ (geschrieben $M \stackrel{t}{\rightarrow}_N M'$) wenn $t$ in $M$ aktiviert ist für $M'$ gilt \[M'(p) \left\{
+\begin{array}{lc}
+M(p)-1 & p \in {}^\bullet t \setminus t^\bullet \\
+M(p)+1 & p \in t^\bullet \setminus {}^\bullet t \\
+M(p) & \text{sonst}
+\end{array} \right. \]
+
+Ein Lauf von $M$ nach $M'$ der länge $l$ ist eine Folge $M_0,P_1,\dots,P_l,M_l$ mit
+\[l \geq 0, M=M_0, M=M_l\] und
+\[M_0\stackrel{t_1}{\rightarrow}_N M_1 \stackrel{t_2}{\rightarrow}_NM_2 \dots M_{l-1} \stackrel{t_l}{\rightarrow}_NM_l\] \\
+Die Notation ist ähnlich zur Erreichbarkeitsrelation von NFAs. \\
+
+Eine Markeirung M ist erreichbar wenn gilt $M_0 \stackrel{\ast}{\rightarrow}_N M$ wobei $M_0$ die Startmarkierung des Netzes ist. \\
+
+$M$ ist eine Verklemmung von $N$ wenn es keine Transition $t \in T$ gibt, die aktiv ist. \\
+
+$(N,M)$ ist beschränkt, wenn nur endlich viele Markeirung von $M$ erreicht werden können. \\
+
+Wenn man Markierungen als Knoten in einen Baum einzeichnet, in dem die Kinder alle Markierungen sind, die mit einem Lauf der länge 1 erreicht werden können, kann man für beschrkänkte Netze entscheiden ob $M \stackrel{\ast}{\rightarrow}_N M'$ gilt.
+
+\end{document}

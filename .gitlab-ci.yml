@@ -7,3 +7,4 @@ compile_pdf:
       - la.pdf
       - stocha.pdf
       - dsal.pdf
+      - fosap.pdf
