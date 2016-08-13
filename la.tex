@@ -55,6 +55,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\transpose}[1]{#1^{\mathrm{tr}}}
+\newcommand{\ortho}{\bot}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%Betrag
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}%Norm
@@ -608,5 +609,86 @@ $$\abs{\scp{v}{w}}^2 \leq \scp{v}{v} \scp{w}{w}$$
 und genau dann
 $$\abs{\scp{v}{w}}^2 = \scp{v}{v} \scp{w}{w}$$
 wenn $(v,w)$ linear abhängig in $V$ ist.
+
+\subsection{Normierte Vektorräume}
+
+\skript{7.7} Ein normierter Vektorraum ist ein $K$-Vektorraum mit einer Abbildung $\norm{-}: V \to \R, v \mapsto \norm{v}$ mit den folgenden Eigenschaften:\\
+\begin{itemize}
+	\item Positive Definitheit: Für alle $v \in V$ ist $$\norm{v} \ge 0$$ und genau dann $\norm{v} = 0$ wenn $v = 0$ ist.
+	\item Absolut-Homogenität: Für alle $k \in K, v \in V$ ist $$ \norm{kv} = \abs{k} \norm{v}$$
+	\item Dreiecksungleichung: Für alle $v,w \in V$ ist $$\norm{v+w} \le \norm{v} + \norm{w}$$
+\end{itemize}
+
+\skript{7.9} Jeder $K$-Skalarproduktraum wird zu einem normierten $K$-Vektorraum mit der Norm gegeben durch $$\norm{v} = \sqrt{\scp{v}{v}}$$
+
+Wenn keine andere Norm angegeben ist, wird diese Norm angenommen.
+
+\skript{7.12} Ein Vektor $v$ in einem normierten $K$-Vektorraum heißt normiert, wenn $$\norm{v} = 1$$ ist.
+
+\skript{7.15} Für $v,w \in V$ ist $$\norm{v+w}^2 + \norm{v - w}^2 = 2\norm{v}^2 + 2\norm{w}^2$$
+
+\skript{7.16 a)} In einem $\R$-Skalarproduktraum $V$ gilt $$\scp{v}{w} = \frac{1}{2}(\norm{v + w}^2 - \norm{v}^2 - \norm{w}^2) = \frac{1}{4}(\norm{v + w}^2 - \norm{v - w}^2)$$
+
+\skript{7.16 b)} In einem $\C$-Skalarproduktraum $V$ gilt $$\scp{v}{w} = \frac{1}{4}(\norm{v + w}^2 - \norm{v - w}^2) + i\frac{1}{4}(-\norm{v + iw}^2 + \norm{v -iw}^2)$$
+
+\subsection{Winkel}
+
+\skript{7.17} In einem $\R$-Skalarproduktraum ist der Winkel zwischen zwei Vektoren $v,w \in V \setminus \{0\}$ gegeben durch $$\angle(v,w) := \arccos\left(\frac{\scp{v}{w}}{\norm{v}\norm{w}}\right)$$
+
+\subsection{Orthogonalität}
+
+\skript{7.19} Für $v,w \in V$ ist $v$ orthogonal zu $w$, geschrieben $v \ortho w$ wenn $$\scp{v}{w} = 0$$ ist.
+
+\skript{7.21} Satz der Pythagoras: Für $v,w \in V$ mit $v \ortho w$ ist $$\norm{v + w}^2 = \norm{v}^2 + \norm{w}^2$$
+
+\skript{7.23} Für eine Teilmenge $S$ von $V$ ist $$S^\ortho := \{v \in V \vert \forall s \in S: s \ortho v\}$$ ein $K$-Untervektorraum von $V$. Dieser Vektorraum heißt Orthogonalraum zu $S$ in $V$.
+
+\skript{7.26} In einem  $K$-Vektorraum $V$ sind für jeden Untervektorraum $U$ von $V$ die beiden Vektorräume $(U,U^\ortho)$ unabhängig.
+
+\skript{7.27} Für einen $K$-Untervektorraum $U$ von $V$ mit $V = U + U^\ortho$ (für endlichdimensionale $V$ ist dies stets der Fall) bezeichnet $\pr_U: V \to U$ die Projektion auf $U$ bezüglich $(U,U^\ortho)$.
+
+\subsubsection{Orthogonalbasen}
+
+\skript{7.29} Ein Tupel $(s_1,\ldots,s_n)$ in $V$ heißt orthogonal, wenn für alle $i,j \in \{1,\ldots,n\}$ mit $i \neq j$ $s_i \ortho s_j$ gilt. Ein soches Tupel heißt orthonormal wenn es orthogonal ist und jeder eintrag normiert ist.
+
+\skript{7.32} Ein orthogonales Tupel, das nicht die Null enthält, ist stets linear unabhängig.
+
+\skript{7.31} Für ein Tupel $s = (s_1, \ldots, s_n)$ in $V$ mit allen $s_i \neq 0$ und einen Vektor $v \in \langle s \rangle$ mit $a \in K^n$ sodass $\sum_{i=1}^n a_i s_i = v$ gilt $$a_i = \frac{\scp{s_i}{v}}{\scp{s_i}{s_i}}$$ für alle $i \in \{1,\ldots,n\}$.
+
+\skript{7.33} Eine orthogonale Basis von $V$ heißt Orthogonalbasis von $V$. Eine orthonormale Basis von $V$ heißt Orthonormalbasis von $V$.
+
+\skript{7.36} Parsevalscher Entwicklungssatz: Es sei $(s_1,\ldots,s_n)$ eine Orthogonalbasis von $V$. Dann gilt für $v \in V$:
+$$v = \sum_{i=1}^n \frac{\scp{s_i}{v}}{\scp{s_i}{s_i}}$$
+
+\skript{7.37} Es sei ein $K$-Untervektorraum $U$ von $V$ mit einer Orthogonalbasis $(s_1,\ldots,s_n)$ von $U$ gegeben. Dann ist $V = U + U^\ortho$ und für $v \in V$ gilt:
+\begin{align*}
+	\pr_U(v) &= \sum_{i=1}^n \frac{\scp{s_i}{v}}{\scp{s_i}{s_i}} s_i	\\
+	\pr_{U^\ortho}(v) &= v - \sum_{i=1}^n \frac{\scp{s_i}{v}}{\scp{s_i}{s_i}} s_i
+\end{align*}
+
+\subsubsection{Gram-Schmidt-Orthogonalisierung}
+
+\skript{7.38} Es sei ein linear unabhängiges $n$-Tupel $(s_1,\ldots,s_n)$ gegeben. Dann ist ein Tupel $(t_1,\ldots,t_n)$ gegeben durch $$t_i = \pr_{\langle s_1, \ldots, s_{i-1} \rangle^\ortho}(s_i)$$ und für jedes $j \in \{1,\ldots,n\}$ ist $(t_1,\ldots,t_j)$ eine Orthogonalbasis von $\langle s_1,\ldots,s_j \rangle$.
+
+\subsubsection{QR-Zerlegung}
+
+\skript{7.46} Es sei $A \in K^{m \times n}$ mit $\rk(A) = n$ gegeben. Dann sind $n$-Tupel $(t_1, \ldots, t_n)$ und $(t^\prime_1, \ldots, t^\prime_n)$ gegeben durch
+\begin{align*}
+	t^\prime_i &= \pr_{\langle A_{-,1},\ldots,A_{-,i-1} \rangle^\ortho}(A_{-,i})	\\
+	t_i &= \frac{1}{\norm{t^\prime_i}} t^\prime_i
+\end{align*}
+Außerdem sind $Q \in K^{m \times n}, R \in K^{n \times n}$ gegeben durch
+$$Q = (t_1 ~ \ldots ~ t_n), R = \left(\begin{array}{ccc}
+\scp{t_1}{A_{-,1}}	&	\cdots	&	\scp{t_1}{A_{-,n}}	\\
+	&	\ddots	&	\vdots	\\
+0	&	&	\scp{t_n}{A_{-,n}}
+\end{array}\right)$$
+Dann heißen $Q$ und $R$ die QR-Zerlegung von $A$ und es gilt $R \in \GL_n(K)$ sowie $A = QR$.
+
+\subsection{Beste Approximation}
+
+\skript{7.49} Es seien eine Teilmenge $S$ von $V$ und ein Vektor $v \in V$ gegeben. Ein $s \in S$ heißt beste Approximation von $v$ in $S$ wenn $$\norm{v - s} = \min\{\norm{v - s^\prime} \vert s^\prime \in S\}$$ gilt.
+
+\skript{7.53} Für einen Untervektorraum $U$ von $V$ mit $V = U + U^\ortho$ ist $\pr_U(v)$ die eindeutige beste Approximation von $v$ in $U$.
 
 \end{document}
