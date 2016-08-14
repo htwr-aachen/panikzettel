@@ -149,7 +149,7 @@ Siehe Beispiel 4.13 in den Vorlesungsfolien für ein einfaches Schema. Lässt si
 
 \subsubsection{Formal}
 
-$r_X (p,q)$ ist ein regulärer Ausdruck welcher die Sprache $\{w \in \Sigma^*\mid p \overset{w}{\underset{X}{\rightarrow}} q\}$ beschreibt. $p \overset{w}{\underset{X}{\rightarrow}} q$ meint dabei $p \overset{w}{\rightarrow} q$ nur unter Betrachtung von Zuständen aus $X$. Berechne die Ausdrücke $r_Q (q_0,q), q \in Q$, dann ist $L(\sum r_Q(q_0, q)) = L(A)$. Die regulären Ausdrücke werden wie folgt rekursiv berechnet: Wähle $x \in X$:
+$r_X (p,q)$ ist ein regulärer Ausdruck welcher die Sprache $\{w \in \Sigma^*\mid p \overset{w}{\underset{X}{\rightarrow}} q\}$ beschreibt. $p \overset{w}{\underset{X}{\rightarrow}} q$ meint dabei $p \overset{w}{\rightarrow} q$ nur unter Betrachtung von Zuständen aus $X$. Berechne die Ausdrücke $r_Q (q_0,q), q \in F$, dann ist $L(\sum r_Q(q_0, q)) = L(A)$. Die regulären Ausdrücke werden wie folgt rekursiv berechnet: Wähle $x \in X$:
 
 \[r_X(q,q') = r_{X \setminus x}(q,q') + r_{X \setminus x}(q,x)r_{X \setminus x}(x,x)^*r_{X \setminus x}(x,q')\]
 \subsubsection{Graphisch}
