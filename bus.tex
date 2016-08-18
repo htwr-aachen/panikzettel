@@ -1,0 +1,579 @@
+\documentclass[11pt]{scrartcl}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[english,ngerman]{babel}
+\usepackage{listings}  %Code-Listings
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[pdftex]{hyperref}
+\usepackage{bookmark}
+\usepackage{adjustbox}
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+\makeatother
+
+\title{BuS Panikzettel}
+\author{``der Dude'', ``Walter Sobchak'', Caspar Zecha, Philipp Schröer}
+
+\setlength\parindent{0pt}
+\relpenalty=9999
+\binoppenalty=9999
+
+\lstset{
+	basicstyle=\ttfamily,
+    literate={|} {$\vert$}{1},
+    %breakatwhitespace=true,
+    %breaklines=true,
+    showspaces=false,
+    showstringspaces=false
+}
+\lstset{emph={Variable,Bedingung,Liste,Anweisungen}, emphstyle=\itshape}
+
+\begin{document}
+\maketitle
+\let\thefootnote\relax\footnotetext{Pseudonyme gehören anonymen Autoren, die anonym bleiben wollen.}
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section{Aufbau von Betriebssystemen}
+
+\subsection{Kernel-/Usermode}
+Bei Betriebssystemen kann man zwischen zwei Modi unterscheiden, unter welchen Code laufen kann:
+
+\begin{enumerate}
+\item{Kernel-Mode: Der Kernel-Mode ist ein privilegierter Modus, welcher unbeschränkten Zugriff auf alle Betriebsmittel zur Verfügung stellt. In ihm laufen die Kernel-Module.}
+\item{User-Mode: In diesem restriktiven Modus laufen die Anwendungsprogramme. Wenn ein Systemprogramm Zugriff auf (in diesem Modus) beschränkte Betriebsmittel, braucht, so muss es mittels Syscalls auf dieses zugreifen.}
+\end{enumerate}
+
+\subsection{Zwiebelschalenmodell}
+Im Zwiebelschalenmodell werden Zugriffsrechte nach Applikationen geordnetet. Im innersten Ring (0, mit vollem Zugriff) läuft der Kernel. In Ring 1  \& 2 Gerätetreiber und im 3. Ring laufen die Anwendungsapplikationen. \\
+
+In der Praxis wird einfach zwischen Kernel- und Usermode unterschieden, wobei Ring 1 und 2 dann ausgelassen werden.
+
+\subsection{Verschiedene Kernelmodelle}
+Man unterscheidet im Allgemeinen zwischen 3 verschiedenen Kernelmodellen:
+
+\begin{enumerate}
+\item{Monolithischer Kernel: In einem Monolithischen Kernel sind nicht nur Funktionen zur Verwaltung von Betriebssystemen direkt eingebaut, sondern auch Gerätetreiber und eventuell weitere Funktionen. Er ist relativ Fehleranfällig, da alle BS-Komponenten im priviligierten Modus laufen. Beispiel: Linux}
+\item{Mikrokernel: Ein Mikrokernel verfügt dagegen nur über grundlegende Funktionalitäten. Weitere Funktionalitäten werden in den Usermode ausgelagert. Er ist somit schlank, aber langsam, da oft zwischen User- und Kernelmode gewechselt werden muss. Beispiel: Minix}
+\item{Hybridkernel: Ein Hybrid-Kernel ist eine Mischung beider oben genannten Modelle, und daher eine "gesunde" Mischung aus Geschwindigkeit und Stabilität. Dabei sind einige performancekritische Teile im Kernel-Modus, andere hingegen in eigenen Prozessen im User-Mode. Beispiel: Windows}
+\end{enumerate}
+
+\section{Die Bash}
+Bash-Programmierung muss zum ordentlichen Verständnis selber geübt werden.
+
+\subsection{Übliche Struktur von Befehlsaufrufen}
+Programme werden auf der Bash überlicherweise wie folgt aufgerufen: \\
+\lstinline[language=Bash]{$ command -option -option2 arg1 arg2}. (Das Dollar-Zeichen gehört nicht zum Kommando)\\
+
+Beispiel:\\
+\lstinline[language=Bash]{$ ls -l /var}\\
+Gibt den Verzeichnisinhalt von dem Argument (\lstinline{/var}) als Liste aus (Option \lstinline{-l}).
+
+\subsection{Pipes}
+Mit Pipes lassen sich die Ein- und Ausgaben von Programmen umleiten. \\
+
+\begin{tabular}{l|p{5cm}|p{3cm}|p{4cm}}
+\textit{Zeichen} & \textit{Erklärung} & \textit{Beispiel} & \textit{Erklärung des Beispiels} \\
+\hline
+$\vert$ & Leitet die Ausgabe eines Programmes in die Eingabe des nächsten um & {\lstinline[language=Bash]!echo "Test" | wc!} & Führt \underline word \underline count für die Zeichenkette "Test'' aus\\
+\hline
+$>$ & Schreibt in Datei & {\lstinline[language=Bash]!echo "Test" > a!} & In der Datei a steht die Zeichenkette "Test"\\
+\hline
+$<$ & Liest aus Datei & {\lstinline[language=Bash]!wc < a!} & Ruft \underline{w}ord \underline count für den Inhalt der Datei a auf\\
+\hline
+$>>$ & Wie $>$ nur dass an die Datei angehangen wird & {\lstinline[language=Bash]!echo "Test" >> a!} & In der Datei a wird die Zeichenkette "Test'' angehangen
+\end{tabular}
+
+\subsection{Ein-/Ausgabe Streams}
+Jedes Kommando verfügt über drei Kanäle
+
+\begin{itemize}
+\item{0 - die Standardeingabe (Tastatur)}
+\item{1 - die Standardausgabe (Bildschirm)}
+\item{2 - Fehlerkanal (Bildschirm)}
+\end{itemize}
+
+Kanäle können auch umgeleitet werden, bspsw. \lstinline[language=Bash]{$ (echo "Test2"  1 > &2) 2> a}. Dies leitet die Zeichenkette "Test" von der Standardausgabe (1) auf die Fehlerausgabe (referenziert durch \& 2) und leitet die Fehlerausgabe (2) in die Datei a.
+
+\subsection{Variablen}
+In einem Bash-Skript kann man auf Parameter mit \lstinline[language=Bash]{$1}, \lstinline[language=Bash]{$2}, \lstinline[language=Bash]{$3} usw. zugreifen.
+
+\subsection{Kommandosubstitution}
+Im Kommando \lstinline[language=Bash]{echo $(ls)} wird zuerst \lstinline[language=Bash]{ls} aufgerufen und die Ausgabe dann als Parameter in \lstinline[language=Bash]{echo} eingesetzt.
+
+\subsection{Bedingungen, Schleifen}
+
+\subsubsection{If-Bedingungen}
+Syntax: \lstinline[language=Bash]!if [ Bedingung ]; then Anweisungen; fi;! \\
+Beispiel:\\
+
+\begin{lstlisting}[language=Bash]
+if [ $1 = $2 ]; then
+	echo "Die beiden Argumente sind gleich"
+    else
+	echo "Die beiden Argumente sind nicht gleich"
+fi
+\end{lstlisting}
+
+\subsubsection{For-Schleifen}
+Syntax: \lstinline[language=Bash]!for Variable in Liste do Anweisungen; done;!
+
+Beispiel:\\
+\begin{lstlisting}[language=Bash]
+for i in "Test"
+do
+	echo $i
+done
+\end{lstlisting}
+
+\subsubsection{While/Until-Schleifen}
+Syntax: \lstinline[language=Bash]! while [ Bedingung ] do Anweisungen; done;!\\
+\lstinline[language=Bash]!until [ Bedingung ] do Anweisungen; done;!\\
+
+\section{C}
+C verwendet im Gegensatz zum Java manuelle Speicherverwaltung. Dabei muss man besonders aufpassen. % TODO
+
+\subsection{Normale Pointer} % TODO
+Pointer finden in C rege Verwendung, so ist z.B. jedes Array im Prinzip ein Pointer auf die erste Position des Arrays. Pointer sind Variablen, welche Speicheradressen (z.B. von anderen Variablen oder von Funktionen) beinhalten.
+Dereferenzieren (also auf die hinterlegte Speicheradresse zugreifen) kann man einen Pointer durch den Sternchenoperator \textbf{*}. Die Adresse einer Variable erhält man in C durch den \textbf{\&}-Operator. Beispiel:\\
+
+\begin{lstlisting}[language=C]
+int a = 5;
+int *b = &a;
+int c = *a;
+\end{lstlisting}
+
+Hier besitzt die Integer-Variable \textbf a den Wert 5, \textbf b beinhaltet die Speicheradresse der Variable \textbf a und \textbf c ist eine Integer-Variable mit dem Wert 5.
+
+\subsection{Funktionspointer}
+Wie oben schon erwähnt sind in C auch Pointer auf Funktionen möglich, welche meist verwendet werden um z.B. Funktionen als Argument an eine andere Funktion zu übergeben. Beispiel:\\
+
+\lstinline[language=C]!int *func (int d) { ... }!\\
+
+\lstinline[language=C]!int * (*funcptr)(int d) = &func;! \\
+
+Hier ist \lstinline[language=C]!funcptr! ein Pointer auf die Funktion \lstinline[language=C]!func! mit dem Rückgabetyp \lstinline[language=C]!int*!
+
+\subsection{Speicherverwaltung}
+C unterscheidet in der Speicherverwaltung zwischen dem Heap und dem Stack. Variablen werden normalerweise auf dem Stack alloziert (z.B. \lstinline[language=C]{int a = 5;}). Dem gegenüber steht der Heap. Alloziert wird hier mit \lstinline[language=C]{void* malloc(size_t)} jedoch muss der Speicher auch wieder mit \lstinline[language=C]{free(void*)} freigegeben werden. Beispiel:\\
+
+\begin{lstlisting}[language=C]
+int *a = malloc(sizeof(int)*2);
+a[0] = 1; a[1] = 2;
+free(a);
+\end{lstlisting}
+
+\subsection{structs}
+Mit einem \texttt{struct} lassen sich Datentypen abstrahieren. Beispiel:\\
+
+\begin{lstlisting}[language=C]
+struct Point {
+	int x; int y;
+}
+\end{lstlisting}
+
+Auf die Member eines \texttt{struct} wird mittels des Punktoperator zugegriffen: \lstinline[language=C]{point.x = 5} oder falls \texttt{point} ein Zeiger auf ein \texttt{struct} ist, kann man sich mittels des \lstinline!->! Operators das Dereferenzieren sparen: \texttt{point-$>$x = 5}
+
+\section{Prozessverwaltung}
+
+\subsection{Process Control Block (PCB)}
+In dem PCB (in Linux implementiert als \texttt{struct task\_struct}) speichert das Betriebssystem alle relevanten Informationen eines Prozesses. So enthält ein PCB z.B.:
+
+\begin{itemize}
+\item{PID (\underline Process \underline{ID}})
+\item{Prozesszustand (ready, running, waiting, terminated)}
+\item{Informationen zum virtuellen Speicher}
+\item{Verwendete Dateien}
+\item{Signalbehandlungsroutinen}
+\item{Threadinformationen}
+\item{$\ldots$}
+\end{itemize}
+
+\subsection{Interprozesskomunikation}
+\subsubsection{Pipes}
+Es wird mittels \texttt{pipe(int fd{[}2{]})} eine neue Pipe angelegt. Dabei ist \texttt{fd{[}0{]}} der Leseingang und \texttt{fd{[}1{]}} der Schreibeingang. Geschrieben/Gelesen werden kann auf Pipes wie bei Dateien. Der Syscall \texttt{dup2(int fd1, int fd2)} verbindet zwei Pipes.
+
+\subsubsection{Named-Pipes}
+Named-Pipes sind nichts anderes als Dateien, welche Pipes repräsentieren. Erstellt werden diese mittels \lstinline[language=Bash]!$ mkfifo test_pipe!.
+
+\subsubsection{Message-Passing/Message-Queueing}
+Bei diesem Konzept werden Nachrichten an eine Queue oder einen Empfänger (mittels \texttt{send}) gesendet und mittels (\texttt{receive}) empfangen. % TODO
+
+\subsubsection{Shared-Memory}
+Beim Konzept des Shared-Memorys haben alle Prozesse Zugriff auf einen gemeinsamen Speicher um sich hierüber auszutauschen. Da Zugriffoperationen auf den Speicher jedoch nicht atomar sind, ist hier Vorsicht geboten, und man sollte die auf den Speicher zugreifenden Prozesse \textit{synchronisieren}.
+
+\subsection{Threads}
+Threads sind einzelne unabhängige Kontrollflüsse innerhalb eines Prozesses. Da Threads mehr Kontext als Prozesse teilen, ist unter anderem auch der Kontextwechsel schneller und Kommunikation einfacher. Threads teilen sich untereinander:
+
+\begin{itemize}
+\item{den Adressraum des zugrundliegenden Prozesses}
+\item{globale Variablen und geöffnete Dateien}
+\item{die CPU-Zeit}
+\end{itemize}
+
+Jedoch hat jeder Thread:
+
+\begin{itemize}
+\item{einen eigenen Stack}
+\item{einen eigenen \underline Program \underline Counter (PC)}
+\item{einen eigenen Status}
+\item{eigene Registerwerte}
+\end{itemize}
+
+Unter *nix-Betriebssysten wird ein Thread mit dem Syscall \lstinline[language=C]!clone()! (ähnlich zu \lstinline!fork!) erstellt. Meistens wird dabei die PThreads-Implementierung verwendet.
+
+\subsubsection{Threadkonzepte}
+Es gibt zwei grundlegende Thread-Konzepte:
+
+\begin{itemize}
+  \item{User-Threads}
+    \begin{itemize}
+    \item{Thread-Management in der Applikation (mittels Libraries)}
+    \item{Kernel sieht nur den Prozess}
+    \item{Geringer Aufwand für den Wechsel zwischen Threads}
+    \item{Blockiert ein Thread blockiert der komplette Prozess}
+    \end{itemize}
+  \item{Kernel-Threads}
+  \begin{itemize}
+    \item{Thread-Management durch den Kernel}
+    \item{Nötig für Multicore-Berechnungen}
+    \item{Wechsel zwischen Kernel-Threads aufwendiger}
+  \end{itemize}
+\end{itemize}
+
+\section{CPU-Scheduling}
+Der CPU-Scheduler entscheidet darüber, welcher Prozess als nächstes Rechenzeit auf der CPU erhält, indem er die Prozesse, welche Rechenzeit benötigen, in sog. Ready-Queues organisiert. \\
+
+Man unterscheidet insbesondere zwischen \textit{präemptiven} und \textit{nicht präemptiven/kooperativen} Scheduling-Strategien: Bei präemptiven Strategien kann der Scheduler momentan auf der CPU bearbeitete Prozesse unterbrechen und erneut in die Ready-Queue einordnen. Bei nicht präemptiven Strategien muss der Prozess die Rechenzeit selber freigeben (möglich z.B. durch den Befehl \texttt{sched\_yield()}) oder terminieren.
+
+\subsection{FIFO/FCFS}
+\textbf{\underline First \underline In \underline First \underline Out/\underline First \underline Come \underline First \underline Serve. Nicht präemptiv.}\\
+
+Prozesse werden in der Reihenfolge abgearbeitet, in der sie beim CPU-Scheduler ankommen.\\
+
+\textbf{Vorteil:} simple Implementation\\
+\textbf{Nachteil:} Prozesse mit langer Laufzeit blockieren die CPU, kurze Prozesse werden benachteiligt.
+
+\subsection{LIFO/LCFS}
+\textbf{\underline Last \underline In \underline First \underline Out/\underline Last \underline Come \underline First \underline Serve. Nicht präemptiv.}\\
+
+Es wird der Prozess bedient, der als letztes in den Zustand "ready" übergegangen ist\\
+
+\textbf{Vorteil:} simple Implementation\\
+\textbf{Nachteil:} Probleme wie bei FIFO
+
+\subsection{LIFO-PR}
+\textbf{LIFO \underline Preemptive \underline Resume. Präemptive Variante von LIFO.}\\
+
+Gleiches Prinzip wie bei LIFO, nur können laufende Prozesse suspendiert werden, sobald ein neuer Prozess in den Zustand "ready"  übergeht.
+
+\subsection{SPT/SJF}
+\textbf{\underline Shortest \underline Processing \underline Time/\underline Shortest \underline Job \underline First. Nicht präemptiv.}\\
+
+Bedient stets den Prozess, der am schnellsten abzuarbeiten ist. Setzt voraus, dass die Bedienzeit der Prozesse vorhersehbar ist.\\
+
+\textbf{Vorteil:} Realisiert die kürzestmögliche mittlere Wartezeit unter den nicht präemptiven Strategien.\\
+\textbf{Nachteil:} Benachteiligt lange Prozesse. Praktisch nicht umsetzbar, da die Bedienzeit der Prozesse nicht exakt vorhergesehen werden kann.
+
+\subsection{SRPT}
+\textbf{\underline Shortest \underline Remaining \underline Processing \underline Time. Präemptive Variante von SPT.}\\
+
+Gleiches Prinzip wie bei SPT. Kommt ein Prozess an, der eine niedrigere Bedienzeit besitzt als die verbleibende Bedienzeit des laufenden Prozesses, so wird dieser unterbrochen.
+
+\subsection{HRN}
+\textbf{\underline Highest \underline Response Ratio \underline Next. Nicht präemptiv.}\\
+
+Lange wartende Prozesse steigern nach und nach ihre Priorität. Dazu berechne für jeden Prozess die Response Ratio \(r = \frac{\textrm{Wartezeit} + \textrm{Bedienzeit}}{\textrm{Bedienzeit}}\). Der Prozess mit größtem $r$ wird als nächster bedient.\\
+
+\textbf{Vorteil:} Verhindert, dass Prozesse lange Zeit nicht oder sogar nie bearbeitet werden.\\
+\textbf{Nachteil:} Prozesse mit langer Laufzeit blockieren die CPU.
+
+\subsection{RR}
+\textbf{\underline Round \underline Robin. Präemptiv.}\\
+\\
+Die Ready-Queue wird nach FIFO organisiert. Bekommt ein Prozess die CPU zugeteilt, so darf er diese jedoch nur für ein bestimmtes Quantum Q nutzen, bevor er unterbrochen und wieder hinten in die Ready-Queue eingereiht wird. FIFO ist ein Spezialfall von RR mit \(Q = \infty\).\\
+\\
+\textbf{Vorteil:} Fairste Aufteilung der Rechenzeit zwischen den Prozessen.\\
+\textbf{Nachteil:} Bei zu kleinem Quantum geringe CPU-Auslastung durch zu häufige Kontextwechsel. Bei zu großem Quantum schlechte Antwortzeiten (tendiert zu FIFO).
+
+\subsection{EDF}
+\textbf{\underline Earliest \underline Deadline \underline First. Präemptiv.}\\
+\\
+Für diese sowie die folgende Strategie erhält jeder Prozess eine Deadline zugewiesen, zu der der Prozess nach Möglichkeit abgearbeitet sein soll. EDF bearbeitet immer den Prozess mit der frühesten Deadline. Bei Ankunft eines neuen Prozesses mit früherer Deadline wird der aktuell bearbeitete Prozess suspendiert.
+
+\subsection{LLF}
+\textbf{\underline Least \underline Laxity \underline First. Präemptiv.}\\
+\\
+Diese Strategie betrachtet die Laxity, die ''Entspanntheit``, der wartenden Prozesse. Dies bezeichnet die Differenz zwischen Deadline und Restlaufzeit des Prozesses, also die Zeit, die der Prozess maximal warten kann um vor Ablauf der Deadline abgearbeitet zu sein. Es wird immer der Prozess als nächstes bearbeitet, bei dem diese Differenz am kleinsten ist (also der Prozess, welcher ''am wenigsten entspannt``'' ist).
+
+\section{Synchronisation}
+\subsection{Anforderungen an wechselseitigen Ausschluss}
+Es müssen 3 Bedingungen erfüllt werden:
+
+\begin{itemize}
+\item{Mutual Exclusion: Der wechselseitige Ausschluss selber}
+\item{Progress: Wenn mehrere Prozesse auf Eintritt in den kritischen Block warten, hängt die Wahl nur von den wartenden Prozessen selber ab, und wird in endlicher Zeit durchgeführt}
+\item{Bounded Waiting: Es gibt eine obere Grenze für Prozesse, die einen wartenden Prozess überholen können}
+\end{itemize}
+
+\subsection{Peterson-Algorithmus (für zwei Prozesse)}
+Folgendes Listing bezieht sich auf Prozess $P_i$:
+\begin{lstlisting}[language=C]
+while TRUE {
+	flag[i] = TRUE;
+	turn = j; //anderen Prozess Vorzug geben
+	while (flag[j] && turn==j) { noop; } //anderer Prozess rechnet
+	//kritischer Bereich;
+	flag[i] = FALSE;
+	//weitere Operationen;
+}
+\end{lstlisting}
+
+\subsection{Bakery-Algorithmus (für n-Prozesse)}
+\begin{enumerate}
+\item{Jeder Prozess zieht eine aufsteigende Nummer (kritisch!)}
+\item{Für jeden Prozess $j$}
+\begin{enumerate}
+\item{Gucke ob $j$ gerade eine Nummer zieht, wenn ja warte bis j gezogen hat}
+\item{Überprüfe ob $j$'s Nummer ($\neq 0$) kleiner als die des aktuellen Prozesses, wenn ja warte. Wenn die Nummern gleich sind (1. war kritisch) gebe dem Prozess mit der kleineren PID Vorrang}
+\end{enumerate}
+\item{Führe den kritischen Bereich aus}
+\end{enumerate}
+
+\subsection{Test-and-Set als atomare Operation}
+Auf den meisten Architekturen gibt es eine atomare Operation TSL (Test-and-Set), welche eine Variable auf \texttt{true} setzt und den alten Wert der Variablen zurückgibt. Damit lassen sich u.a. Semaphore einfach implementieren.
+
+\subsection{Semaphore/Mutexe}
+Die Synchronisierungsmechanismen von Semaphoren funktionieren über 3 grundlegende Funktionen:
+
+\begin{itemize}
+\item{\texttt{init(s,n)}: initialisiert den Semaphor \texttt{s} mit dem Anfangswert \texttt{n}}
+\item{\texttt{wait(s)}: Wartet bis ein "Platz'' in dem Semaphor \texttt{s} frei wird und nimmt diesen in Anspruch}
+\item{\texttt{signal(s)}: Gibt einen "Platz'' frei}
+\end{itemize}
+
+Mutexe sind Semaphore, mit Höchstwert 1. Um Bounded Waiting nicht zu verletzen ist es sinnvoll, bei der Implementation von Semaphoren wartende Prozesse in eine Warteschlange einzureihen.
+
+\subsection{(Bedingte) kritische Regionen}
+Eine kritische Region ist ein Bereich, in dem Variablen synchronisiert manipuliert werden. (Wie die Synchronisierung erfolgt ist implementationsabhängig). \texttt{region v do S} bedeutet: Führe \texttt{S} unter Synchronisation der Variablen in \texttt{v} aus.\\
+
+Eine bedingte kritische Region ist \texttt{region v when w do S} und führt \texttt{S} aus, wenn zu den Einschränkungen einer normalen kritischen Region zusätzlich noch \texttt{w = True} gilt.
+
+\subsection{Monitore}
+Monitore bestehen aus einer Menge von Funktionen und Daten, wobei der Zugriff auf alle Bestandteile eines Monitors immer synchronisiert erfolgt. Der Monitor selbst hat hier die Aufgabe die Synchronisierung zu übernehmen. Dieses Konzept ist in Java z.B. mit dem Schlüsselwort \texttt{synchronized} realisiert.
+
+\subsection{Synchronisationsprobleme}
+\subsubsection{Erzeuger/Verbraucher}
+Das Erzeuger/Verbraucher-Problem kann man lösen, indem man mit einem Mutex den beiden Parteien jeweils exklusiven Zugriff gewährt. Über einen weiteren Mutex lässt sich zudem signalisieren, ob ein Lager voll ist.
+
+\subsubsection{Reader/Writer}
+Beim Reader/Writer Problem dürfen Prozesse einer Klasse einen gleichzeitigen Zugriff auf einen Ressource bekommen. Das Problem wird gelöst, indem man einen Mutex für die Schreibphase und einen für die Lesephase einführt. Der Reader muss auch den Writer Mutex in Anspruch nehmen. Um die Freigabe der Mutexe zu lösen, muss man die Anzahl der aktiven Leser mitzählen.
+
+\subsubsection{Fünf Philosophen}
+Es gibt fünf Philosophen, welche an einem Tisch sitzen und denken. Zwischen ihnen liegen 5 Stäbchen. Die Philosophen essen und denken. Denken ist eine unkritische Phase, beim Essen hingegen wartet ein Philosoph bis das linke Stäbchen frei ist, nimmt es sich, und verfährt ebenso mit dem Rechten. Wenn jedoch alle Philosophen gleichzeitig essen, entsteht ein Deadlock.
+
+\subsubsection{3-Raucher-Problem}
+3 Raucher besitzen jeweils eins von 3 notwendigen Betriebsmitteln (Pfeife, Tabak, Feuerzeug). Eine unbekannte Person legt zwei zufällige Betriebsmittel hin. Der Raucher, dem die beiden Betriebsmittel fehlen nimmt sich diese, raucht, legt sie zurück, und der Agent tauscht die beiden von ihm ausgelegten Betriebsmittel gegen 2 zufällig gewählte Betriebsmittel.
+
+\section{Deadlocks}
+Die Deadlock-Vermeidung ist im Allgemeinen relativ schwierig und ressourcenverbrauchend.
+
+\subsection{Ressource-Allocation-Graph}
+Der Ressource-Allocation-Graph ist ein nützliches Tool zur Untersuchung von Deadlocks. Er besteht aus:
+
+\begin{itemize}
+  \item{Knoten: Prozesse (als Kreis dargestellt), Betriebsmittel (als Viereck dargestellt, gefüllt mit Punkten, welche für die Anzahl der Exemplare des Betriebsmittels stehen}
+  \item{Kanten: Betriebsmittel $\rightarrow$ Prozess (wenn der Prozess das Betriebsmittel belegt), Prozess $\rightarrow$ Betriebsmittel (der Prozess wartet auf das Betriebsmittel)}
+\end{itemize}
+
+\subsection{Bedingungen für einen Deadlock}
+Damit ein Deadlock eintreten kann, müssen folgende Bedingungen erfüllt sein:
+
+\begin{enumerate}
+  \item{Circular-Wait: Kreis im Ressource-Allocation-Graph}
+  \item{Exclusive-Use: Keine gemeinsame Nutzung der Betriebsmittel möglich}
+  \item{Hold and Wait: Ein Prozess kann weitere Betriebsmittel anfordern, ohne welche zurückzugeben}
+  \item{Non-Preemption: Kein Entzung von Betriebsmitteln möglich}
+\end{enumerate}
+
+\subsection{Banker-Algorithmus}
+Der Banker-Algorithmus wird zur Deadlock-Avoidance und Deadlock-Detection eingesetzt.
+
+% TODO
+
+\begin{enumerate}
+  \item{Für jeden nicht markierten Prozess $P_i$}
+  \begin{enumerate}
+    \item{Prüfe ob es einen Prozess gibt, der insgesamt weniger Betriebsmittel in Anspruch nehmen muss, als zur Verfügung stehen. Wenn ja, erhöhe die zur Verfügung stehenden Betriebsmittel um die Menge, welcher $P_i$ gerade hält, und markiere $P_i$ (Wegen 1. kann $P_i$ zu Ende laufen und alle seine Ressourcen frei geben}
+  \end{enumerate}
+\end{enumerate}
+Wenn der Algorithmus für jede Betriebsmittelart immer alle Prozesse markiert, ist der Systemzustand sicher.
+
+\section{Speicherverwaltung}
+Bei der Speicherverwaltung unterscheidet man zwischen Paging und Segmentierung. Beim \textbf{Paging} wird der zu Verfügung stehende Speicher in kleine Rahmen aufgeteilt in die Seiten geladen werden können. Bei der \textbf{Segmentierung} werden die Daten, welche von einem Programm benötigt werden in große Segmente zusammengefasst und diese an eine freie Stelle im Hauptspeicher geladen. Um virtuelle Seiten- und Segmentadressen physischen Adressen zuzuordnen befindet sich in modernen CPUs eine \textit{Memory Management Unit (MMU)}.
+
+\subsection{Segmentierungsstrategien}
+\begin{itemize}
+	\item{First-Fit: Platziere das Segment in die erste passende Lücke}
+    \item{Rotating-First-Fit: Wie First-Fit, suche jedoch ab der letzten Einfügeposition}
+    \item{Best-Fit: Platziere das Segment in die kleinste passende Lücke}
+    \item{Worst-Fit: Platziere das Segment in die größte passende Lücke}
+\end{itemize}
+
+\subsection{Buddy-Systeme bei Segmentierung} %TODO
+Das Buddy-System beruht auf einer Binärbaumstruktur und jede mögliche Segmentlänge ist eine 2er-Potenz. Die Wurzel wird so gewählt, dass der durch die Wurzel abgebildete Speicherbereich eine maximale Zweierpotenz bezüglich des verbauten Hauptspeichers ist. \\
+Am Anfang eines jeden Buddy-Systems besteht der Baum nur aus der Wurzel. In jeder Ebene wird der Speicher aufgespalten und die Größe der einzelnen Knoten halbiert.\\
+Je nach Anforderung an das System, wird der Baum so aufgeteilt, dass der Knoten mit dem kleinsten, aber ausreichend großen Speicherbereich, dem Segment zugeordnet wird. Defragmentierung lässt sich teilweise durch Vereinen leerer benachbarter Knoten erzielen.
+
+\subsubsection{Gewichtete Buddy-Syteme}
+Wenn in einem gewichteten Buddysystem ein Knoten der Größe $2^{r+2}$ gespalten wird, so haben die Kindknoten die Größen $2^r$ und $3 \cdot 2^r$. Dadurch lässt sich die Größe eines Segments feiner an die eventuellen Bedürfnisse anpassen.
+
+\subsection{Paging-Strategien}
+
+\begin{itemize}
+	\item{FIFO (\underline First \underline In \underline First \underline Out): Bei Bedarf wird die älteste Seite im Hauptspeicher ersetzt.}
+	\item{LRU (\underline Least \underline Recently \underline Used): Ersetzt die Seite im Hauptspeicher, auf die am längsten nicht mehr zugegriffen wurde.}
+	\item{Second Chance: Wird auf eine bereits im Hauptspeicher liegende Seite erneut zugegriffen, so wird das A-Bit auf 1 gesetzt. Im Bedarfsfall wird dann die älteste Seite mit nicht gesetztem A-Bit (A=0) verdrängt. Sind alle A-Bits gesetzt, so werden alle auf 0 zurückgesetzt.}
+	\item{Second Chance - Clock: Die Seiten werden in einem Ringpuffer angeordnet. Bei Bedarf sucht ein Zeiger beginnend bei der ältesten Seite reihum nach einer Seite mit nicht gesetztem A-Bit. Währenddessen bewegt sich ein zweiter Zeiger mit festem Abstand zum ersten voraus und setzt jeweils das A-Bit an seiner aktuellen Position zurück. Dies begrenzt die Dauer der Suche nach einer Seite mit nicht gesetztem A-Bit.}
+	\item{NRU (\underline Not \underline Recently \underline Used): Erweiterung zu Second Chance: Zusätzlich zum A-Bit wird außerdem das D-Bit ("Dirty-Bit") nachgehalten. Dieses gibt an, ob die Seite verändert wurde (D=1) oder nicht (D=0), ob also \underline{schreibend} auf die Seite zugegriffen wurde. So lässt sich eine Einteilung in vier Klassen vornehmen:
+    \begin{itemize}
+    	\item{Klasse 1: A=0, D=0}
+        \item{Klasse 2: A=0, D=1}
+        \item{Klasse 3: A=1, D=0}
+        \item{Klasse 4: A=1, D=1}
+    \end{itemize}
+    Bei Bedarf wird die älteste Seite aus der niedrigsten nicht-leeren Klasse ersetzt.}
+	\item{CLIMB: Die Seiten werden zunächst nach FIFO in einer Liste angeordnet (älteste Seite "{}unten"{}). Bei erneutem Zugriff auf eine Seite steigt diese um eine Position in der Liste nach oben. Bei Bedarf wird die unterste Seite verdrängt.}
+	\item{Strategien mit Zugriffszähler: Diese Strategien nutzen für jede Seite einen Zähler, der auf verschiedene Weisen die Häufigkeit der Seitenzugriffe nachhält. Bei Bedarf wird die Seite mit dem kleinsten Zählerwert verdrängt.
+    \begin{itemize}
+    	\item{LFU (\underline Least \underline Frequently \underline Used): Bei jedem Zugriff wird der Zähler inkrementiert.}
+        \item{NFU (\underline Not \underline Frequently \underline Used): Es werden periodisch die Zähler aller Seiten inkrementiert, auf die im vergangenen Zeitintervall zugegriffen wurde.}
+        \item{MFU (\underline Most \underline Frequently \underline Used): Selbe Vorgehensweise wie LRU, jedoch wird bei Bedarf die Seite mit dem zweitniedrigsten Zählerwert verdrängt, da den niedrigsten Wert meist gerade erst geladene Seiten besitzen.}
+	\end{itemize}
+    \item{OPT (\underline{Opt}imale Paging-Strategie): Verdrängt die Seite, die am längsten nicht mehr gebraucht werden wird. Dazu wird Wissen über zukünftige Seitenzugriffe benötigt, daher im allgemeinen Fall nicht verwendbar.}
+    }
+\end{itemize}
+
+\subsection{Lifetime-Funktion} %TODO..warum (0,1) als Startpunkt
+Lifetime-Funktion $L(m) \coloneqq$ Anzahl der Seitenfehler pro Zugriffe (gemittelt) bei $m$ zur Verfügung gestellten Rahmen.
+
+Das \textit{ominöse-Knie-Kriterium}: Zeichnet man den Graphen der Lifetime-Funktion und legt eine Tangente beginnend bei dem Punkt $(0,1)$ an die Lifetime-Funktion an. Dieser Schnittpunkt ist die optimale Rahmenzahl für diesen Prozess.
+
+\section{Dateien}
+Wichtig: Bevor auf ein Dateisystem zugegriffen werden kann, muss es im System in den aktuellen Verzeichnisbaum eingegliedert werden (\textit{Mounten}).
+
+\subsection{Zugriffsrechte}
+Die Zugriffsrechte werden in $3 \cdot 3 = 9$ Bits gespeichert. Die ersten 3 Bits, geben die Zugriffsrechte des Eigentümers an, die zweiten 3 Bits die Zugriffsrechte der Gruppe der Datei und die letzten 3 Bits die Zugriffsrechte für alle anderen. Die 3 Bits stehen jeweils für Schreibzugriff, Lesezugriff, Ausführungsrecht. Der Einfachheit halber werden diese im Oktalsystem angegeben. Beispiele:
+
+\begin{itemize} %TODO, weniger rechte für Gruppe als alle Anderen haben?!?
+	\item{$740_8=111|100|000_2$ - der zugehörige Benutzer darf die Datei lesen, schreiben und ausführen, die zugeordnete Gruppe darf die Datei lesen und schreiben, alle anderen dürfen nichts.}
+	\item{$755_8=111|101|101_2$ - der zugehörige Benutzer darf alles, alle anderen dürfen die Datei lesen und ausführen}
+\end{itemize}
+
+\subsection{Links}
+Man unterscheidet unter Linux zwei Arten von Links:
+
+\begin{enumerate}
+	\item{Symbolische (\lstinline[language=Bash]{$ ln -s Ziel Quelle}): In einem symbolischen Link ist der Pfad der Datei hinterlegt, auf welche verwiesen wird.}
+	\item{Hardlinks (\lstinline[language=Bash]{$ ln Ziel Quelle}): Hardlinks zeigen hingegen direkt auf den I-Node. Damit funktioniert der Link auch noch nach z.B. einem Umbenennen der eigentlichen Datei.}
+\end{enumerate}
+
+\subsection{File Descriptor Table}
+Beim Öffnen einer Datei wird unter Linux-System immer ein neuer File Descriptor angelegt. Die Verwaltung dieser File Deskriptoren (und damit die Verwaltung der geöffneten Dateien) erfolgt in der File Descriptor Table. In dieser Tabelle stehen für jeden File Descriptor u.a. Zugriffsrechte, Eigentümer, aktuelle Position des ''Cursors'' innerhalb der Datei $\ldots$. Wenn man z.B. eine Datei mittels \textbf{read} liest, wird immer von der letzten Position die man gelesen hat weitergelesen.
+
+\section{Dateisystemaufbau (ext2)}
+\subsection{I-Nodes}
+\textit{I-Nodes} (\underline Index-\underline Nodes), im Allgemeinen auch FCB (\underline File \underline Control \underline Block) genannt, dienen zur Repräsentation von Datein und Verzeichnissen und speichern wichtige Eigenschaften einer Datei(/Verzeichnis) (z.B. Typ, Zugriffsrechte Größe, letzte Änderung, $\ldots$). Auf die Datei wird wie folgt referenziert:
+
+\begin{enumerate}
+	\item{direct: 12 Pointer auf Blöcke}
+	\item{single indirect: Adresse eines Blockes der die Adressen der DateiBlöcke beeinhaltet}
+	\item{double indirect: Adresse eines Blockes der die Adressen weiterer Blöcke beeinhaltet, die die Adresser der finalen Dateiblöcke beeinhalten}
+	\item{triple indirect: Eine Indirektionsstufe mehr als double indirect}
+\end{enumerate}
+
+\subsection{Blockgruppen}
+Die Festplatte wird in sogenannte Blockgruppen unterteilt. Die ersten 512 Bytes der Festplatte enthalten den MBR (\underline Master \underline Boot \underline Record) (zum Laden des Bootloaders), und die erste Blockgruppe den Bootloader. Jede andere Blockgruppe ist folgendermaßen unterteilt:
+
+\begin{enumerate}
+	\item{Superblock: Enthält Informationen über das Dateisystem (Bspsw.: Root-Inode, wie viele I-Nodes und Datenblöcke die Gruppe enthält, etc.)}
+	\item{Group Descriptor: Informationen über die Position Block-Bitmap, Anzahl freier I-Nodes und Informationen der anderen Blockgruppen (Redundanz)}
+	\item{Block-Bitmap/I-Node Bitmap: Kennzeichnen welche Blocks/I-Nodes frei/belegt sind}
+	\item{I-Nodes}
+	\item{Data Blocks}
+\end{enumerate}
+
+\subsection{Journaling}
+Operationen auf Dateisystemen können verzögert stattfinden (Effizienzgründe) und im Falle eines Absturzes zu \textit{Inkonsistenz} führen. Lösung: Führe ein \textit{Journal} (Tagebuch) ein, indem alle Operationen dokumentiert werden. Ausgeführte Einträge werden wieder gelöscht, im Falle eines Absturzes reicht es also das Journal durchzugehen, um die Konsistenz wiederherzustellen.
+
+\section{I/O}
+\subsection{I/O-Hardware}
+Zur Steuerung des I/O-Systems enthalten Rechner häufig:
+
+\begin{itemize}
+	\item{Controller: Chip auf Motherboard oder (PCI-)Karte, welcher Anschlüsse für I/O-Geräte bereitstellt und diesen Gerätetyp steuert (etwa USB-Controller). Ein Controller kann zudem über einen \textit{Buffer} verfügen (Performanz)}
+	\item{I/O-Werk: Dient zur Steuerung der I/O-Geräte und sitzt zwischen CPU und Controller. Vorteil: Da das I/O-Werk die Steuerung übernehmen kann, spart man CPU-Zeit}
+\end{itemize}
+
+\subsection{I/O-Controller}
+Die Kommunikation mit dem Controller erfolgt über spezielle Register. Man unterscheidet zwischen \textit{Kontrollregistern} (Status und Control) und \textit{Datenregister} (Data-In und Data-Out).
+
+\subsection{I/O-Werk}
+Einfachster Fall: CPU simuliert das I/O-Werk. Dies nennt sich PIO (\underline Programmed \underline Input \underline Output)\\
+
+Moderne autonome I/O-Werke verwenden meistens das Prinzip \textit{DMA} (\underline Direct \underline Memory \underline Access) zur Kommunikation mit der CPU. Das I/O-Werk kann so Daten zwischen Controller und Hauptspeicher hin- und herbewegen. Die I/O-Geräte selbst können über Register addressiert werden oder in dem man ihnen eine Adresse im Hauptspeicher zuordnet (Memory-mapped I/O).
+
+\section{Disk-Scheduling}
+\begin{itemize}
+	\item{FCFS (\underline First \underline Come \underline First \underline Serve): Zugriffsoperationen werden der Reihe nach abgearbeitet}
+	\item{SSTF (\underline Shortest \underline Seek \underline Time \underline First): Als nächstes die Zugriffsoperation bedienen, die am nächsten am aktuellen Zylinder liegt}
+	\item{SCAN: Bewege den Zylinderkopf von links nach rechts und zurück und arbeite dabei die Zugriffsoperationen ab}
+	\item{LOOK: Wie Scan nur ändere die Richtung schon bei der äußersten Zugriffsoperation}
+	\item{C-SCAN: In einer Richtung Abarbeitung der Zugriffsoperationen, in der Rückrichtung nur bewegen (Definition C-Look analog)}
+	\item{Noop: Wie \textit{FCFS}, nur wenn bei Zylinder $i$ auch eine Zugriffsanfrage auf Zylinder $i+1$ vorliegt, führe diese Anfrage als nächstes aus}
+	\item{Deadline: Führe für eine festgelegte Zeitdauer \textit{C-Look} aus und bediene dann alle Anfragen mit abgelaufener Deadline. Repeat.}
+	\item{Anticipatory: C-Look jedoch nach jeder ausgeführten Operation kurzzeitig SSTF ausführen}
+	\item{Completely Fair Queuing: \textit{Antipatory-Scheduling} mit unterschiedlich priorisierten Warteschlangen}
+\end{itemize}
+
+%Tabellen zum Ende
+\section{Anhang}
+
+\subsection{Shell Befehlstabelle}
+\begin{tabular}{|p{4.5cm}|p{9cm}|}
+	\hline
+	\textit{Befehl} & \textit{Erklärung}\\
+	\hline
+	{\lstinline[language=Bash]!wc!} & \underline Word \underline Count\\
+	\hline
+	{\lstinline[language=Bash]!echo!} & Gibt die Argumente aus\\
+	\hline
+	{\lstinline[language=Bash]!awk!} & Praktisches Tool das als Argument eine Zeichenkette einer eigenen Turingvollständigen Sprache übergeben bekommt und diese auswertet. Beispiel: {\lstinline[language=Bash]!ls -l | awk '{print $3}'!}\\
+	\hline
+	{\lstinline[language=Bash]!stat!} & Informationen zu Dateien anzeigen (funktioniert über \textit{I-Nodes})\\
+	\hline
+\end{tabular}
+
+\subsection{Syscall-Tabelle}
+\begin{tabular}{|p{4.5cm}|p{9cm}|}
+\hline
+\textit{Befehl} & \textit{Erklärung}\\
+\hline
+{\lstinline[language=C]!pid_t fork(void)!} & Klont den aktuellen Prozess. Der Vaterprozess erhält die PID des Kindes als Rückgabewert und das Kind 0.\\
+\hline
+{\lstinline[language=C]!int pipe(int fd[2])!} & Erstellt eine Pipe mit Leseeingang \texttt{fd{[}0{]}} und Schreibeingang \texttt{fd{[}1{]}}.\\
+\hline
+\texttt{int dup2(int oldfd, int newfd)} & Stellt eine Verbindung von dem Filedeskriptor \texttt{oldfd} zum Fildeskriptor \texttt{newfd} her.\\
+\hline
+\end{tabular}
+
+\end{document}

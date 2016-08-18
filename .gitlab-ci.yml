@@ -8,3 +8,4 @@ compile_pdf:
       - stocha.pdf
       - dsal.pdf
       - fosap.pdf
+      - bus.pdf
