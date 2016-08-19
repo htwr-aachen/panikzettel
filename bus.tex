@@ -475,7 +475,7 @@ Wichtig: Bevor auf ein Dateisystem zugegriffen werden kann, muss es im System in
 Die Zugriffsrechte werden in $3 \cdot 3 = 9$ Bits gespeichert. Die ersten 3 Bits, geben die Zugriffsrechte des Eigentümers an, die zweiten 3 Bits die Zugriffsrechte der Gruppe der Datei und die letzten 3 Bits die Zugriffsrechte für alle anderen. Die 3 Bits stehen jeweils für Schreibzugriff, Lesezugriff, Ausführungsrecht. Der Einfachheit halber werden diese im Oktalsystem angegeben. Beispiele:
 
 \begin{itemize} %TODO, weniger rechte für Gruppe als alle Anderen haben?!?
-	\item{$740_8=111|100|000_2$ - der zugehörige Benutzer darf die Datei lesen, schreiben und ausführen, die zugeordnete Gruppe darf die Datei lesen und schreiben, alle anderen dürfen nichts.}
+	\item{$760_8=111|110|000_2$ - der zugehörige Benutzer darf die Datei lesen, schreiben und ausführen, die zugeordnete Gruppe darf die Datei lesen und schreiben, alle anderen dürfen nichts.}
 	\item{$755_8=111|101|101_2$ - der zugehörige Benutzer darf alles, alle anderen dürfen die Datei lesen und ausführen}
 \end{itemize}
 
