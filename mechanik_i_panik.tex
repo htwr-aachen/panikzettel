@@ -1,0 +1,145 @@
+\documentclass[a4paper,parskip=half*,DIV=7,fontsize=11pt]{scrartcl}
+\usepackage[head=27.2pt]{geometry}
+\usepackage[english,ngerman]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{scrlayer-scrpage}
+\usepackage{braket}
+\usepackage{listings}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\lstset{
+    mathescape=true,
+%    numbers=left
+}
+
+\lstset{literate=%
+    {Ö}{{\"O}}1
+    {Ä}{{\"A}}1
+    {Ü}{{\"U}}1
+    {ß}{{\ss}}1
+    {ü}{{\"u}}1
+    {ä}{{\"a}}1
+    {ö}{{\"o}}1
+    {~}{{\textasciitilde}}1
+}
+
+\ihead{Mechanik I Panikzettel}
+\title{Mechanik I Panikzettel}
+\author{N00bZ}
+\cfoot{\thepage\ / \pageref{LastPage}}
+
+\lstset{basicstyle=\ttfamily}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+\section{Grundlagen}
+\ihead{Grundlagen}
+$\textit{Wirkungslinie}$ $W_{F_1}$: Gestrichelte Linie die die Richtung eines Vektors angibt. Auf dieser kann bei starren Körpern die Kraft ohne Verformung verschoben werden.\\
+
+Dreidimensionale Einheitsvektoren: $$\overrightarrow{i}=\begin{pmatrix}
+1\\
+0\\
+0\\
+\end{pmatrix},\overrightarrow{j}=\begin{pmatrix}
+0\\
+1\\
+0\\
+\end{pmatrix},\overrightarrow{k}=\begin{pmatrix}
+0\\
+0\\
+1\\
+\end{pmatrix}$$
+
+Länge eines 2-dimensionalen Vektors in eine Richtung:\\
+x-Richtung: $F_x=F \cdot cos(\beta)$\\
+y-Richtung: $F_y=F \cdot sin(\beta)$\\
+
+Stab: Ein Bauteil an dem die Kräfte in Richtung Bauteilachse verlaufen.\\
+
+Balken: Ein Bauteil auf dem Kräfte nicht in Richtung Bauteilachse verlaufen.\\
+
+
+\pagebreak
+
+\section{Statik}
+\ihead{Statik}
+\subsection{Kraft}
+Eine Kraft hate folgende Eigenschaften:\\
+\begin{itemize}
+	\item Größe
+	\item Richtung
+	\item Richtungssinn
+	\item Angriffspunkt
+\end{itemize}
+Einheit: 1 Newton = 1 N = 1 kg m/$s^2$\\
+Symbol: $\overrightarrow{F}$\\
+
+\subsection{Lageplan}
+Maßstäbliche Darstellung der Geometrie mit Angriffspunkt $P$, der Wirkungslinie $W_F$ und dem Richtungssinn einer Kraft.\\
+Eintragung aller bekannten und unbekannten Kräfte und Momente in geometrisch richtiger Anordnung.\\
+Für die grafische Lösung ist besonders auf Maßstäblichkeit zu achten.\\
+
+\subsection{Kraftplan}
+Tritt dem Lageplan bei grafischer Lösung zur Seite.\\
+Neben Richtung und Richtungssinn wird zusätzlich die Größe des Kraftvektors maßstäblich eingetragen.\\
+Durch Parallelverschiebung  der Wirkungslinien nimmt der Kraftplan Bezug auf die Richtung der Kräfte aus dem Lageplan.\\
+
+\subsection{Zentrales Kräftesystem und Resultierende}
+Schneiden sich die Wirkungslinien aller Kräfte in einem Punkt $P$, so bilden sie ein zentrales Kräftesystem.\\
+In solch einem System kann man die Kräfte zu einer Resultierenden zusammenfassen, indem man Richtung, Richtungssinn und Größe bestimmt.\\
+Symbolische Darstellung der Resultierenden: $$\overrightarrow{R}=\sum_{i=1}^n \overrightarrow{F_i}$$
+\textbf{Rechnerische Zusammenfassung:}\\
+Kräfte:  $\overrightarrow{F_i}=F_{ix}\overrightarrow{i}+F_{iy}\overrightarrow{j}+F_{iz}\overrightarrow{k}$\\
+Resultierende: $\overrightarrow{R}=R_x\overrightarrow{i}+R_y\overrightarrow{j}+R_z\overrightarrow{k}$, mit $R_x=\sum_i^n F_{ix},...$\\
+Betrag der Resultierenden: $|\overrightarrow{R}|=\sqrt[]{R_x^2+R_y^2+R_z^2}$\\
+Richtungssinn: cos $\alpha=\frac{R_x}{|\overrightarrow{R}|}$, cos $\beta=\frac{R_y}{|\overrightarrow{R}|}$, cos $\gamma=\frac{R_z}{|\overrightarrow{R}|}$
+
+\subsection{Zerlegung einer Kraft}
+Voraussetzung: Es schneiden sich die Wirkungslinie der zu zerlegenden Kraft mit zwei weiteren Wirkungslinien in einem gemeinsamen Punkt.\\
+\textbf{Grafische Lösung:}
+\begin{enumerate}
+	\item Erstelle Lageplan mit der Kraft $\overrightarrow{F}$ und der korrekten Lage ihrer Wirkungslinie
+	\item Trage die Wirkungslinien der gesuchten Kräfte ein
+	\item Übertrage $\overrightarrow{F}$ in einen maßstäblichen Kraftplan
+	\item Parallelverschiebung der Wirkungslinien der gesuchten Kräfte in den Kraftplan, sodass alle Linien ein Dreieck bilden
+	\item Konstruktion des Kraftecks: Festlegung der Richtung, des Richtungssinns und der Größe der gesuchten Kräfte
+\end{enumerate}
+\textbf{Rechnerische Lösung:}
+\begin{enumerate}
+	\item Erstelle Lageplan mit $\overrightarrow{F}$ und ihrer Wirkungslinie
+	\item Eintragen der Wirkungslinien der gesuchten Kräfte
+	\item Wahl eines rechtwinkligen $x,y$-Koordinatensystems
+	\item Eintragen der gesuchten Kräfte mit gegebener Richtung, aber beliebigem Richtungssinn
+	\item Auswertung von $\overrightarrow{F}=\overrightarrow{F_1}+\overrightarrow{F_2}$, als Aufteilung in zwei Kräfte, für $x$- und $y$-Richtung
+	\item Aufstellen weiterer Gleichungen über Richtung und Richtungssinn der gesuchten Kräfte
+	\item Lösen des LGS für die Koordinaten oder skalaren Faktoren der unbekannten Kräfte
+\end{enumerate}
+
+\subsection{Gleichgewicht eines zentralen Kräftesystems}
+Ein zentrales Kräftesystem ist dann im Gleichgewicht wenn die Resultierende aller Kräfte verschwindet.\\
+Grafisch sieht man, dass das Krafteck einen geschlossenen Kurvenzug darstellt.\\
+Symbolisch: $$\overrightarrow{R}=\sum_{i=1}^n \overrightarrow{F_i}=0$$
+Rechnerisch: $$\sum_{i=1}^n F_{ix}=0,\sum_{i=1}^n F_{iy}=0,\sum_{i=1}^n F_{iz}=0$$
+
+\subsection{Gleichgewicht haltende Kraft}
+
+
+
+\pagebreak
+
+\section{Festigkeitslehre}
+\ihead{Festigkeitslehre}
+Platzhalter
+
+\end{document}
