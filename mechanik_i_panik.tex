@@ -29,8 +29,8 @@
 }
 
 \ihead{Mechanik I Panikzettel}
-\title{Mechanik I Panikzettel}
-\author{N00bZ}
+\title{Mechanik I Panikzettel \\ \Large für Informatiker und Materialwissenschaftler}
+\author{Caspar Zecha}
 \cfoot{\thepage\ / \pageref{LastPage}}
 
 \lstset{basicstyle=\ttfamily}
@@ -39,13 +39,17 @@
 
 \maketitle
 
+\begin{abstract}
+	Dieser Panikzettel ist über die Vorlesung Mechanik I für Informatiker und Materialwissenschaftler. Er basiert auf dem Vorlesungsskript von Bernd Binninger im WS 16/17 vom Institut für Technische Verbrennung.
+\end{abstract}
+
 \tableofcontents
 
 \pagebreak
 
 \section{Grundlagen}
 \ihead{Grundlagen}
-$\textit{Wirkungslinie}$ $W_{F_1}$: Gestrichelte Linie die die Richtung eines Vektors angibt. Auf dieser kann bei starren Körpern die Kraft ohne Verformung verschoben werden.\\
+$\textit{Wirkungslinie}$ $W_{F_1}$: Gestrichelte Linie die die Richtung eines Vektors angibt. Auf dieser kann bei starren Körpern die Kraft ohne Verformung verschoben werden.
 
 Dreidimensionale Einheitsvektoren: $$\overrightarrow{i}=\begin{pmatrix}
 1\\
@@ -61,13 +65,17 @@ Dreidimensionale Einheitsvektoren: $$\overrightarrow{i}=\begin{pmatrix}
 1\\
 \end{pmatrix}$$
 
-Länge eines 2-dimensionalen Vektors in eine Richtung:\\
+Länge eines zweidimensionalen Vektors in eine Richtung:\\
 x-Richtung: $F_x=F \cdot cos(\beta)$\\
-y-Richtung: $F_y=F \cdot sin(\beta)$\\
+y-Richtung: $F_y=F \cdot sin(\beta)$
 
-Stab: Ein Bauteil an dem die Kräfte in Richtung Bauteilachse verlaufen.\\
+Stab: Ein Bauteil an dem die Kräfte in Richtung Bauteilachse verlaufen.
 
-Balken: Ein Bauteil auf dem Kräfte nicht in Richtung Bauteilachse verlaufen.\\
+Balken: Ein Bauteil auf dem Kräfte nicht in Richtung Bauteilachse verlaufen.
+
+Gelenk:
+
+Reibungsfreie Umlenkrolle: Lenkt die die Richtung von Seilkräften reibungsfrei um, ohne die Größe zu verändern.
 
 
 \pagebreak
@@ -83,17 +91,17 @@ Eine Kraft hate folgende Eigenschaften:\\
 	\item Angriffspunkt
 \end{itemize}
 Einheit: 1 Newton = 1 N = 1 kg m/$s^2$\\
-Symbol: $\overrightarrow{F}$\\
+Symbol: $\overrightarrow{F}$
 
 \subsection{Lageplan}
 Maßstäbliche Darstellung der Geometrie mit Angriffspunkt $P$, der Wirkungslinie $W_F$ und dem Richtungssinn einer Kraft.\\
 Eintragung aller bekannten und unbekannten Kräfte und Momente in geometrisch richtiger Anordnung.\\
-Für die grafische Lösung ist besonders auf Maßstäblichkeit zu achten.\\
+Für die grafische Lösung ist besonders auf Maßstäblichkeit zu achten.
 
 \subsection{Kraftplan}
 Tritt dem Lageplan bei grafischer Lösung zur Seite.\\
 Neben Richtung und Richtungssinn wird zusätzlich die Größe des Kraftvektors maßstäblich eingetragen.\\
-Durch Parallelverschiebung  der Wirkungslinien nimmt der Kraftplan Bezug auf die Richtung der Kräfte aus dem Lageplan.\\
+Durch Parallelverschiebung  der Wirkungslinien nimmt der Kraftplan Bezug auf die Richtung der Kräfte aus dem Lageplan.
 
 \subsection{Zentrales Kräftesystem und Resultierende}
 Schneiden sich die Wirkungslinien aller Kräfte in einem Punkt $P$, so bilden sie ein zentrales Kräftesystem.\\
@@ -105,7 +113,7 @@ Resultierende: $\overrightarrow{R}=R_x\overrightarrow{i}+R_y\overrightarrow{j}+R
 Betrag der Resultierenden: $|\overrightarrow{R}|=\sqrt[]{R_x^2+R_y^2+R_z^2}$\\
 Richtungssinn: cos $\alpha=\frac{R_x}{|\overrightarrow{R}|}$, cos $\beta=\frac{R_y}{|\overrightarrow{R}|}$, cos $\gamma=\frac{R_z}{|\overrightarrow{R}|}$
 
-\subsection{Zerlegung einer Kraft}
+\subsubsection{Zerlegung einer Kraft}
 Voraussetzung: Es schneiden sich die Wirkungslinie der zu zerlegenden Kraft mit zwei weiteren Wirkungslinien in einem gemeinsamen Punkt.\\
 \textbf{Grafische Lösung:}
 \begin{enumerate}
@@ -126,14 +134,52 @@ Voraussetzung: Es schneiden sich die Wirkungslinie der zu zerlegenden Kraft mit 
 	\item Lösen des LGS für die Koordinaten oder skalaren Faktoren der unbekannten Kräfte
 \end{enumerate}
 
-\subsection{Gleichgewicht eines zentralen Kräftesystems}
+\subsubsection{Gleichgewicht eines zentralen Kräftesystems}
 Ein zentrales Kräftesystem ist dann im Gleichgewicht wenn die Resultierende aller Kräfte verschwindet.\\
 Grafisch sieht man, dass das Krafteck einen geschlossenen Kurvenzug darstellt.\\
 Symbolisch: $$\overrightarrow{R}=\sum_{i=1}^n \overrightarrow{F_i}=0$$
 Rechnerisch: $$\sum_{i=1}^n F_{ix}=0,\sum_{i=1}^n F_{iy}=0,\sum_{i=1}^n F_{iz}=0$$
 
-\subsection{Gleichgewicht haltende Kraft}
+\subsubsection{Gleichgewicht haltende Kraft}
+Die Gleichgewicht haltende Kraft ist genau entgegengesetzt gleich groß zur Resultierenden $\overrightarrow{R}$, und schließt damit das Krafteck:\\
+$$\overrightarrow{F}_G=-\overrightarrow{R} \Leftrightarrow \sum_{i=1}^{n} \overrightarrow{F}_i+\overrightarrow{F}_G=\overrightarrow{0}$$
+Für einen starren Körper ist dies, als würde gar keine Kraft angreifen.
 
+\subsection{Wechselwirkungsgesetz}
+$\textit{Drittes Newtonsches Gesetz: actio = reactio (Kraft gleich Gegenkraft)}$\\
+Jeder Körper , der eine Kraft auf einen anderen ausübt, erfährt eine gleich große Gegenkraft mit entgegengesetztem Richtungssinn.
+
+\subsection{Schnittprinzip}
+Körper die sich in einem System berühren üben innere Kräfte aufeinander auf. Diese müssen entgegengesetzt gleich groß sein. Sie üben deshalb keine Kraft außerhalb des Systems aus.\\
+Um diese trotzdem Berechnen zu können zerlegen wir unser System in Teilsysteme.\\
+Mithilfe eines Freischnittdiagramms trennen wir einen Körper vollständig von seiner Umgebung. In dieses müssen die Wirkungen der Umgebung auf unser Teilsystem eingetragen werden.\\
+Die inneren Strukturen können im Freischnitt als "Black Box" behandelt werden, es müssen nur äußere Belastungen, wie Schnittreaktionen und äußere Belastungen, eingetragen werden.
+
+\subsection{Nichtzentrale Kraftsysteme}
+Im folgenden befinden wir uns im zweidimensionalen Raum.
+
+\subsubsection{Zusammensetzen ebener Kräfte}
+Die grafische Lösung folgt in mehreren Schritten, da wir die Kräfte, deren Wirkungslinien sich schneiden, nach und nach zusammen setzen, bis wir eine einzelne Resultierende Kraft haben. Dazu benötigen wir einen Kraftplan in dem wir die Teilresultierenden eintragen und mittels Parallelverschieben alle Kräfte zusammenfassen und so die Richtung, den Richtungssinn sowie die Größe herausfinden.
+
+\subsubsection{Parallele Kräfte}
+Grafische von Kräften mit parallelen oder fast parallelen Wirkungslinien.
+Wir fügen eine Gleichgewichtsgruppe, also ein Paar entgegengesetzt gleicher Kräfte $\overrightarrow{H}$ und $-\overrightarrow{H}$ hinzu, deren gemeinsame Wirkungslinie die der parallelen Kräfte kreuzt.\\
+Dann fassen wir je eine Kraft mit einer Hilfskraft zu einer Teilresultierenden zusammen, und fassen schließlich diesen beiden zusammen, um Richtung, Größe und Richtungssinn der Resultierenden herauszufinden. Die Wirkungslinie der Resultierenden geht durch den Schnittpunkt der Teilresultierenden.
+
+\subsubsection{Dreikräftesatz}
+Für ein Gleichgewicht von drei Kräften gilt folgendes:
+\begin{enumerate}
+	\item $\overrightarrow{F}_1+\overrightarrow{F}_2+\overrightarrow{F}_3=\overrightarrow{0}$
+	\item Die drei Kräfte liegen in einer Ebene
+	\item Ihre Wirkungslinien schneiden sich in einem Punkt
+\end{enumerate}
+%eventuell kommentar zu rechnerischen Lösung %TO-DO
+
+\subsubsection{Gleichgewicht von vier Kräften}
+Vier Kräfte müssen kein zentrales Kräftesystem bilden um im Gleichgewicht zu sein, jedoch müssen die Teilresultierenden aus je zwei Kräften entgegengesetzt gleich groß sein. Außerdem müssen die Teilresultierenden auf der $\textit{Cullmanschen Gerade}$, also der Gerade die jeweils durch die Schnittpunkte der zwei Kräfte geht, liegen.
+
+\subsection{Räumliches Kräftesystem}
+\subsubsection{Moment einer Kraft bezüglich eines Punktes}
 
 
 \pagebreak
