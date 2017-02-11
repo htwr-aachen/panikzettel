@@ -1,4 +1,4 @@
-all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf mechanik_i.pdf
+all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf mechanik_i.pdf maschinengestaltung_i.pdf
 
 la.pdf: la.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
@@ -17,6 +17,9 @@ bus.pdf: bus.tex
 
 mechanik_i.pdf: mechanik_i.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make mechanik_i.tex
+	
+maschinengestaltung_i.pdf: maschinengestaltung_i.tex
+	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make maschinengestaltung_i.tex
 
 clean:
 	latexmk -CA

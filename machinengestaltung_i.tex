@@ -1,0 +1,626 @@
+\documentclass[a4paper,parskip=half*,DIV=7,fontsize=11pt]{scrartcl}
+\usepackage[head=27.2pt]{geometry}
+\usepackage[english,ngerman]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{scrlayer-scrpage}
+\usepackage{braket}
+\usepackage{listings}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{ragged2e} 
+\usepackage{array}
+\usepackage{rotating}
+
+\lstset{
+	mathescape=true,
+	%    numbers=left
+}
+
+\lstset{literate=%
+	{Ö}{{\"O}}1
+	{Ä}{{\"A}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
+	{ü}{{\"u}}1
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+	{~}{{\textasciitilde}}1
+}
+
+\ihead{MG I Panikzettel}
+\title{MG I Panikzettel}
+\author{Caspar Zecha}
+\cfoot{\thepage\ / \pageref{LastPage}}
+
+\lstset{basicstyle=\ttfamily}
+
+\begin{document}
+	
+\maketitle
+	
+\begin{abstract}
+	Dieser Panikzettel ist über die Vorlesung Maschinengestaltung I und basiert auf der Vorlesung von Univ.-Prof. Dr.-Ing. Georg Jacobs vom Institut für Allgemeine Konstruktionstechnik.\\
+	Der aktuelle Master liegt $\href{http://panikzettel.philworld.de/}{hier}$.\\
+	Möge eure Leistung in der Klausur reibungsfrei übertragen werden und das Ergebnis in eurer Toleranzzone liegen.\\
+\end{abstract}
+	
+\tableofcontents
+	
+\pagebreak
+	
+\section{Einleitung}
+\begin{itemize}
+	\item Normen: DIN(National), EN(Regional), ISO(International)
+	\item Geometrische Produktspezifikation: Geometrie ermöglicht Funktion, Tolerierung stellt Funktion sicher
+\end{itemize}
+	
+\subsection{Dreitafelprojektion}
+"Koordinatensystem" mit 4 Quadranten:
+\begin{itemize}
+	\item Oben Links: Vorderansicht
+	\item Oben Rechts: Seitenansicht von links
+	\item Unten Links: Draufsicht
+	\item Linie in 45° zum Spiegeln
+\end{itemize}
+	
+\subsection{Darstellung}
+\begin{itemize}
+	\item Dimetrische Darstellung: Ansicht mit 7°/42°, Kanten nach hinten nur 50 \%
+	\item Isometrische Darstellung: Ansicht mit 30°/30°, alle Kanten 100 \%
+\end{itemize}
+	
+\section{Elemente der technischen Zeichnung}
+Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
+	
+\subsection{Liniengruppen}
+\begin{itemize}
+	\item 0,5: breite Volllinie = 0,5, schmale Volllinie = 0,25, Maß-, Textangaben = 0,35, Blattformate = A2, A3, A4
+	\item 0,7: breite Volllinie = 0,7, schmale Volllinie = 0,35, Maß-, Textangaben = 0,5, Blattformate = A0, A1
+\end{itemize}
+	
+\subsection{Linienarten}
+\begin{itemize}
+	\item Breite Volllinie: Körperkanten
+	\item Schmale Volllinie: Bemaßung, Gewinde, Schraffur
+	\item Freihandlinie: Unterbrochen dargestellte Schnittansicht, trifft Volllinie in 90°
+	\item Schmale Strichpunktlinie: Symmetrielinie
+	\item Breite Strichpunktlinie: Schnittebenen und Schnittverläufe
+\end{itemize}
+	
+\section{Fertigungsgerechte Bemaßung}
+\subsection{Allgemein}
+\begin{itemize}
+	\item Fertigungsgerechte Bemaßung bedeutet, dass alle Maße ohne Rechnung ablesbar sind.
+	\item Lesbarkeit immer von unten oder rechts
+	\item Maßlinien sind dünne Volllinien, mit ausgefüllten 15° Pfeilen an beiden Enden, dürfen nicht geschnitten werden
+	\item die Maßangabe in $mm$ liegt auf der Maßlinie
+	\item Maßhilfslinien sind ebenfalls dünne Volllinien und dürfen sich schneiden
+	\item Die Pfeile sind je nach Liniengruppe 3,5 bis 5 mm lang
+	\item Hinweißlinien die auf einer Fläche enden, enden mit einem Punkt
+	\item Kettenbemaßung ist nicht zulässig
+	\item Maßzahlen müssen frei stehen, ggf. Schraffur unterbrechen
+\end{itemize}
+	
+\subsection{Bauteile}
+\begin{itemize}
+	\item Runde Bauteile, wie Wellen, mit dem Durchmessersymbol vor der Maßangabe
+	\item Gewindebemaßung mit M, Radien mit R, Kugeln mit S jeweils vor der Maßangabe
+	\item Fasen nur bei 45° mit Maßangabe: z.B. 2x45°, sonst Winkel und Länge
+	\item Neigungssymbol und Kegelverjüngung in Richtung des Gefälle
+\end{itemize}
+
+\subsection{Vorgehen}
+\begin{itemize}
+	\item Wellen: Bemaßung von beiden Seiten + Durchmesser + Gesamtlänge
+	\item Bleche: Bemaßung von zwei nicht gegenüberliegenden Seiten + Tiefe
+\end{itemize}
+	
+	
+\section{Schnitt- und Bruchdarstellungen}
+\subsection{Allgemein}
+\begin{itemize}
+	\item Schnitte stellen innere Besonderheiten des Bauteils dar
+	\item dünne Schraffur von Schnittflächen in 45° bzw. 135°, angrenzende Flächen verschieden schraffieren, zusammengehörende Flächen aber gleich
+	\item Bruchkanten durch schmale Freihandlinie
+\end{itemize}
+		
+\subsection{Schnittarten}
+\begin{itemize}
+	\item Halbschnitt: Darstellung eines symmetrischen Körpers zur unteren Hälfte als Schnitt, obere Hälfte ganz; horizontal liegt der geschnittene Bereich rechts
+	\item Vollschnitt: Schnitt durch das gesamte Bauteil in der gekennzeichneten Ebene
+	\item Teilschnitt: Freihandlinie um z.B. Wellennuten darzustellen
+	\item Teilausschnitt: Darstellung eines Teilbereichs ohne Begrenzung
+	\item Profilschnitt: Geschnittene Ansicht ins Bauteil gedreht
+	\item Einzelheiten: Stelle mit Kreis und Buchstaben(z.B. X) kennzeichnen, und an anderer Vergrößerung in Teilausschnitt mit Vergrößerungsverhältnis darstellen 
+\end{itemize}
+
+\subsection{Schnittverlauf}
+\begin{itemize}
+	\item Dicke Strichpunktlinie an Anfang, Ende und allen Knicken des Verlaufs
+	\item Bei mehreren Schnitten mit Buchstaben bezeichnen
+	\item Blickrichtung: Dicke 30° Pfeile an Anfang und Ende des Verlaufs
+\end{itemize}
+		
+\subsection{Ungeschnittene Bauteile}
+\begin{itemize}
+	\item Schrauben und Muttern
+	\item Scheiben, Nieten und Stifte
+	\item Bolzen, Federn und Keile
+	\item Wälzkörper
+	\item Teile ohne verdeckte Elemente oder Hohlräume
+	\item Auch Elemente die sich vom Körperprofil abheben:\\
+	      Rippen, Stege, Speichen, Wellen und Achsen
+\end{itemize}
+	
+\section{Gewinde und Schraubenverbindungen}
+\begin{itemize}
+	\item Befestigen Bauteile durch Klemmkraft
+	\item Schrauben sind selbst hemmend, lösen sich also nicht durch Zugkräfte
+	\item Nehmen normal keine Querkräfte auf, außer Paßschraube
+	\item Gewinde verwandeln rotatorische in translatorische Bewegung um
+	\item Standard: Rechtsgewinde, sonst Kennzeichnung mit LH für Linksgewinde
+	\item Regel: Innengewinde vor Außengewinde beim Zeichnen!
+\end{itemize}
+		
+\subsection{Schraubenköpfe}
+\begin{itemize}
+	\item Sechskant, ggf. mit Telleransatz
+	\item Zylinderschraube mit Innensechskant
+	\item Senkschraube mit Innensechskant
+	\item (Linsen-)Zylinderkopf
+	\item (Linsen-)Senkkopf
+\end{itemize}
+	
+\subsection{Schraubenschäfte}
+\begin{itemize}
+	\item Vollschaftschraube: Schaftdurchmesser =
+	      Gewindedurchmesser 
+	\item Dünnschaftschraube: Schaftdurchmesser =
+	      Flankendurchmesser 
+	\item Paßschraube: Schaftdurchmesser $>$ Gewindedurchmesser 
+\end{itemize}
+	
+\subsection{Schraubenenden}
+\begin{itemize}
+	\item ohne Kuppe
+	\item Spitze (120° im Normalfall)
+	\item Linsen-/Kegelkuppe
+	\item Zapfen
+	\item Ringschneide
+\end{itemize}
+	
+\subsection{Mutternarten}
+\begin{itemize}
+	\item (Flache) Sechskantmutter
+	\item Vierkantmutter
+	\item Kronenmutter
+	\item Hutmutter
+\end{itemize}
+	
+\subsection{Gewindegeometrie}
+\begin{itemize}
+	\item Teilung: Abstand von zwei Flanken
+	\item Steigung: Höhengewinn bei einer vollen Umdrehung, relevant bei mehreren unabhängigen Flanken
+	\item Flankenwinkel: Winkel zwischen zwei Flanken
+	\item Kerndurchmesser: Durchmesser ohne Gewinde
+	\item Außengewinde: Gesamtdurchmesser
+	\item Schnittschraffur: Bis zur Gewindelinie, ggf. über äußere Gewindelinie
+\end{itemize}
+	
+\subsection{Gewindeprofile}
+\begin{itemize}
+	\item Spitzgewinde: Standard für Schraube und Muttern
+	\item Trapezgewinde: Bewegungs- und Verstellspindeln
+	\item Sägegewinde: Spindeln mit einseitig hoher Belastung
+	\item Rundgewinde: Spindeln mit hoher Abnutzung
+\end{itemize}
+	
+\subsection{Außengewinde}
+\begin{itemize}
+	\item Gewindelänge: Nutzbare Länge mit Gewinde, einschließlich Kuppe
+	\item Kegelkuppe: Ende der Schraube mit kleiner werdendem Gewinde
+	\item Gewindeabschlusslinie(Volllinie): Zwischen Gewindeende und Schaft, ggf. Gewindeauslauf
+	\item Sicht auf Stirnfläche: $\frac{3}{4}$-tel Kreis mit Kerndurchmesser
+	\item Gewindefreistich: innerhalb der Gewindelänge
+\end{itemize}
+	
+\subsection{Innengewinde}
+\begin{itemize}
+	\item Frontalsicht: Innendurchmesser = Volllinie, Außen dünner $\frac{3}{4}$-tel Kreis
+	\item Sacklochbohrung: Tiefer als Gewindelänge bohren
+\end{itemize}
+	
+\subsection{Schraubensicherung}
+\begin{itemize}
+	\item Spannscheibe: Baut durch axiale Stauchung Kraft auf
+	\item Formschlüssige Verliersicherung: Kronenmutte+Spint, Drahtsicherung, Sicherungsblech
+	\item Kraftschlüssige Verliersicherung: Federringe und -scheiben
+\end{itemize}
+	
+\section{Welle-Nabe-Verbindung}
+\begin{itemize}
+	\item Stiftverbindungen: Nehmen Scherkräfte auf, sichern Lage aneinander liegender Teile, z.B. bei Naben, neben Schrauben oder als Steckstifte
+	\item Bolzenverbindungen: Gelenkverbindung mit einem Freiheitsgrad, ggf. mit Kopf
+	\item Keilverbindungen: vorgespannte Welle-Nabe-Verbindung, Wirkung durch Formschluß und Reibung
+	\item Pass- und Scheibenfeder: für konstante Lasten, Kräfte nur an seitlichen Flächen übertragen
+	\item Zahn- und Keilwellenverbindung: Übertragen von Drehmomenten, nur Profilierung von Nabe und Welle; Innenzentrierung: besserer Rundlauf, Flankenzentrierung: kleines Verdrehspiel und bessere Momentübertragung
+	\item Prinzip von Druckhülse(ggf. mit Medium) und Sternscheibe: Druckkraft $\rightarrow$ Querkraft
+\end{itemize}	
+	
+\section{Lagerung von Wellen}
+\subsection{Fest-Los-Lagerung}
+\begin{itemize}
+	\item Festlager fixiert Welle in radialer und axialer Richtung, Loslager nur in radialer
+	\item Zweck: Ausgleich der Wellenausdehnung
+\end{itemize}
+
+	
+\subsection{Stütz-Traglagerung}
+\begin{itemize}
+	\item beide Lager nehmen Kräfte in je eine Richtung auf
+	\item nur bei kurzen Wellen
+	\item O- oder X-Anordnung, je nach Kraftfluss
+\end{itemize}
+	
+\subsubsection{Schwimmende Lagerung}
+Stütz-Traglagerung mit axialem Spiel:
+Keine eindeutige Lagerung, aber unempfindlich und günstig
+	
+\subsection{Lagerungsprinzipien}
+\begin{itemize}
+	\item Gleitreibung durch Flüssigkeit
+	\item Rollreibung durch Wälzkörper
+\end{itemize}
+	
+\subsection{Wälzlager}
+\begin{itemize}
+	\item Käfig hält Wälzkörper seitlich in Lage
+	\item Wälzkörper: Kegel, Kugel, Nadel
+	\item Innenring, Außenring als Anlageflächen
+\end{itemize}
+	
+\subsection{Kugellager}
+\begin{itemize}
+	\item Rillenkugellager (ein-/zweireihig)
+	\item Schulter-/Schrägkugellager (ein-/zweireihig)		
+\end{itemize}
+	
+\subsection{Rollenlager}
+\begin{itemize}
+	\item Zylinder-/Kegelrollenlager (ein-/zweireihig)
+	\item Nadellager		
+\end{itemize}
+	
+\subsection{Axiale Sicherung von Wälzlagern}
+\begin{itemize}
+	\item Mutter und Sicherungsscheibe
+	\item Sicherungsring
+	\item Endscheibe
+\end{itemize}
+	
+\subsection{Sicherungsringe}
+\begin{itemize}
+	\item Sichern gegen Verschieben
+	\item Können Kräfte entlang der Welle aufnehmen
+	\item für Wellen und Bohrungen 
+\end{itemize}
+	
+\subsection{Umlaufverhältnisse}
+\begin{tabular}{|c|p{5cm}|p{5cm}|}
+	\hline
+	Belastung $\downarrow$ \ Umlaufender Ring $\rightarrow$ & Innenring                                                                              & Außenring                                                                             \\
+	\hline
+	Unveränderliche Richtung                               & Umfangslast Innen + Punktlast Außen  $\rightarrow$  Feste Passung Innen + Lose Außen & Punktlast Innen + Umfangslast Außen  $\rightarrow$  Lose Passung Innen + Feste Außen \\
+	\hline
+	Umlaufender Ring                                        & Punktlast Innen + Umfangslast Außen  $\rightarrow$ Lose Passung Innen + Feste Außen  & Umfangslast Innen + Punktlast Außen  $\rightarrow$ Feste Passung Innen + Lose Außen  \\
+	\hline
+\end{tabular}
+	
+\subsection{Dichtungen}
+\subsubsection{Dynamische Dichtungen}
+\begin{itemize}
+	\item Labyrinthdichtung
+	\item Dichtung mit Flüssigkeitssperrung 
+\end{itemize}
+	
+\subsubsection{O-Ring}
+\begin{itemize}
+	\item Einbau in Rechtecknut
+	\item Darstellung unter Druck gequetscht
+\end{itemize}
+	
+\subsubsection{Radialwellendichtring}
+\begin{itemize}
+	\item Versteifungsring aus Metall für Stabilität
+	\item Außenmantel und Schutzlippe zum Abdichten
+	\item Zugfeder innen
+\end{itemize}
+	
+\section{Leistungsübertragung}
+Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
+\subsection{Zugmittelgetriebe}
+\begin{itemize}
+	\item Reibschlüssig: Riemenscheibe mit Flach-, Rund oder Keilriemen
+	\item Formschlüssig: Hülsenkette auf Kettenrad, Zahnkette auf Zahnrad und Synchronriemen auf Synchronscheibe
+\end{itemize}
+	
+\subsection{Zahnradgetriebe}
+\begin{itemize}
+	\item zwischen zwei oder mehr parallelen oder kreuzenden Wellen
+	\item geringe Verluste
+	\item kleines Zahnrad: Ritzel (antreibend), großes Zahnrad: Rad (angetrieben)
+	\item Schrägverzahnung: Laufruhe, aber teurer und benötigt besseres Lager
+	\item Pfeilverzahnung: Mit schwimmender Lagerung
+	\item Zähnezahl $z$, Modul $m$, Teilkreisdurchmesser $d= m \cdot z$
+	\item Formeln: $i=\frac{\omega_1}{\omega_2}, i_{ges}=\prod_{j}{} i_j, M_{ein} \cdot i_{ges}=M_{aus}$
+\end{itemize}
+	
+\subsubsection{Arten}
+\begin{itemize}
+	\item Stirnradgetriebe: Zähnezahl von Ritzel und Rad teilerfremd
+	\item Kegelradgetriebe: Achsen der Kegelräder schneiden sich
+	\item 	Schneckengetriebe: Kreuzende Achsen; meist selbst hemmend; Achsen liegen nicht in einer Ebene
+	\item 	Planetengetriebe: mehrstufige Stirnrädergetriebe, große Übersetzungsverhältnisse; geringe Belastung
+\end{itemize}	
+	
+\section{Maßtoleranzen und Passungen}
+\subsection{Toleranzen}
+\begin{itemize}
+	\item Direktes Antragen ans Maß mittels kleiner Zahlen oben und unten rechts
+	\item Allgemeintoleranzen: Toleranzklassen enthalten Toleranzen für viele Maße, gelten nicht für bereits tolerierte Elemente.
+	\item ISO-Toleranzfelder: Toleranzintervalle mit Toleranztabelle
+\end{itemize}
+	
+\subsection{Passungen}
+\begin{itemize}
+	\item Spiel: Positive Differenz zwischen Bohrung und Welle
+	\item Übermaß: Negative Differenz vor dem Fügen
+	\item Spielpassung: Mindestmaß der Bohrung $\geq$ Höchstmaß der Welle
+	\item Übergangspassung: Beim Fügen entsteht Spiel oder Übermaß
+	\item Übermaßpassung: Höchstmaß der Bohrung $\leq$ Mindestmaß der Welle
+	\item Passtoleranz: Betragsmäßige Summe der Toleranzen von Bohrung und Welle
+\end{itemize}
+Einführung von Einheitsbohrung und Einheitswelle, mit Toleranzfeldlage H/h, um Kosten zu sparen. 
+	
+Bei gegebenem Durchmesser, sowie den gewünschten Spielen/Übermaßen: Auswahl der Passung mithilfe der Passungsauwahl DIN 7157.
+	
+\section{Form- und Lagetoleranzen}
+Es gibt Gestaltabweichung in Maß, Form, Lage und Oberfläche.
+	
+Allgemeintoleranzen tolerieren mit Toleranzklassen nicht alle Eigenschaften, z.B. Koaxialität nicht.
+\subsection{Grundsätze}
+\begin{itemize}
+	\item Unabhängigkeit: Maß- und Formtoleranz können jeweils unabhängig ihr Maximum erreichen
+	\item Hüllbedingung: Maßtoleranzen begrenzen Toleranzzone der Form
+	\item Ausnahmen z.B. durch $\textcircled{\tiny E}$ hinter der Maßangabe
+\end{itemize}
+	
+\subsection{Zeichnungseintragung}
+\begin{itemize}
+	\item Rechteckiger Rahmen mit 15° Pfeil senkrecht auf zu tolerierendes Bauteil
+	\item Mehrere Felder im Rechteck:
+	      \begin{enumerate}
+	      	\item Feld: Symbol für toleriertes Merkmal
+	      	\item Feld: Toleranzwert, ggf. mit Durchmessersymbol, oder $S$ für Kugeln
+	      	\item und ggf. weitere Felder: Buchstabe als Bezug
+	      \end{enumerate}
+	\item Bezug auf Teil mit ausgefüllter Pyramide und dünner Volllinie auf Rechteck mit Großbuchstaben
+\end{itemize}
+
+\subsection{Toleriertes Element}
+\begin{tabular}{|c|c|}
+	\hline
+	\textbf{Hinweislinie zeigt auf:} & \textbf{Toleriertes Geometrieelement}\\
+	\hline
+	Zylinder, aber nicht auf Maßlinie & Teil des Zylinders\\
+	\hline
+	Verlängerung der Maßlinie des Zylinders & Teil der Achse des Zylinders\\
+	\hline
+	Ebene, aber nicht auf Maßlinie & Teil der Ebene\\
+	\hline
+	Maßlinie zwischen zwei entgegengesetzt & Teil der Mittelebene von zwei Ebenen \\ gerichteten parallelen Ebenen & \\
+	\hline
+\end{tabular}
+	
+\subsection{Formtoleranzen}
+Tolerierte Elemente:
+\begin{itemize}
+	\item Geradheit
+	\item Ebenheit
+	\item Rundheit
+	\item Zylinderform
+\end{itemize}
+Jeder Punkt muss sich innerhalb der Toleranzzone befinden. Die Lage relativ zum Nennmaß ist nicht vorgegeben.
+	
+\subsection{Lagetoleranzen}
+Tolerierte Elemente:
+\begin{itemize}
+	\item Richtung: Parallelität, Rechtwinkligkeit, Neigung
+	\item Ort: Position, Koaxialität, Symmetrie
+	\item Lauf: Plan-/Rundlauftoleranz
+\end{itemize}
+Jeder Punkt muss sich innerhalb der Toleranzzone befinden. Nur in Bezug auf andere Geometrieelemente.
+	
+\section{Technische Oberflächen und Kanten}
+\subsection{Ordnungssystem für Gestaltabweichungen}
+\begin{enumerate}
+	\item Ordnung: Formabweichungen(Geradheit, Ebenheit, Rundheit)
+	\item Ordnung: Welligkeit(Wellen)
+	\item Ordnung: Rauheit(Rillen)
+	\item Ordnung: Rauheit(Riefen, Schuppen, Kuppen)
+\end{enumerate}
+
+Ist-Oberfläche: Überlagerung von 1. bis 4. Ordnung
+
+\subsection{Oberflächenkenngrößen}
+\begin{itemize}
+	\item Rz: Gemittelte Rautiefe aus 5 Messstrecken 
+	\item Ra: Mittenrauwert
+\end{itemize}
+	
+\subsection{Oberflächensymbole}
+\begin{itemize}
+	\item Grundsymbol: kein vorgeschriebenes Fertigungsverfahren
+	\item mit geschlossenem Dreieck: Materialabtrennendes Verfahren
+	\item mit Kreis unten: Kein Materialabtrennendes Verfahren
+	\item mit Kreis oben: Gleiche Oberflächenbeschaffenheit für alle Flächen eines Teils
+	\item Vereinfachte Eintragung mit $x$ oder $y$ und Erklärung an anderer Stelle
+	\item Vereinfachte Legende mit normaler Beschaffenheit und ggf. leerer Klammer für explizit eingetragene Werte
+\end{itemize}
+	
+\subsection{Darstellung von Kanten}
+\begin{tabular}{|c|c|c|}
+	\hline
+	Außenkante & Innenkante & Zeicheneintragungssymbol \\
+	\hline
+	gratig      & Übergang  & +                        \\
+	\hline
+	gratfrei    & Abtragung  & -                        \\
+	\hline 
+\end{tabular}
+
+Darstellung in der Zeichnung mit Hinweispfeil und -linie auf Kante, sowie Innen-/Außenkante und +/- Wert, z.B. +0,1.
+	
+\section{Schweißen}
+Schweißen ist das Vereinigen von Werkstoffen in der Schweißzone unter
+Anwendung von Wärme und/oder Kraft ohne oder mit Schweißzusatz.
+\begin{itemize}
+	\item Verbindungsschweißen: Zusammenfügen von Teilen mit Schweißnähten am Schweißstoß zum Schweißteil
+	\item Schweißgruppe: Mehrere Schweißteile ergeben die Schweißgruppe
+	\item Schweißkonstruktion: Besteht aus mehreren Schweißkonstruktionen
+\end{itemize}
+
+\subsection{Schweißverfahren}
+\subsubsection{MIG-/MAG-Schweißen}
+\begin{itemize}
+	\item Metall-Schutzgas-Schweißen
+	\item hohe Abschmelzleistung und Schweißgeschwindigkeit
+	\item gut automatisierbar
+	\item Nachteil Wärme: Anfangsbindefehler und Endkraterrisse
+\end{itemize}
+	
+\subsubsection{WIG-Schweißen}
+\begin{itemize}
+	\item Trennung von Wärme und Zusatzwerkstoff: Schmelzbad besser beeinflussbar
+	\item In vielen Schweißposition nutzbar, z.B. Reparatur
+	\item hochwertige Schweißverbindungen
+	\item geringe Leistung ud Geschwindigkeit
+	\item schwierige Automation
+\end{itemize}
+
+\subsubsection{Laserstrahlschwißen}
+\begin{itemize}
+	\item wenig Wärme; hohe Leistung und Geschwindigkeit
+	\item Präzise und gut automatisierbar
+	\item Teurer als andere Verfahren
+\end{itemize}
+
+\subsection{Stoßarten}
+\begin{itemize}
+	\item Stumpfstoß: \textbf{- -}
+	\item Parallelstoß: \textbf{=}
+	\item T-Stoß: \textbf{T}
+	\item Kreuzstoß: \textbf{-$\mid$-}
+	\item Eckstoß: \textbf{L}
+	\item Überlappungsstoß, Mehrfachstoß, Schrägstoß
+\end{itemize}
+	
+\subsection{Nähte}
+\begin{itemize}
+	\item V-Naht: \textbf{V}
+	\item Kehlnaht
+\end{itemize}
+	
+\subsection{Zeichnungseintragung}
+\begin{itemize}
+	\item dünne Pfeillinie mit 15° Pfeil auf Fügekante
+	\item Bezugslinie und ggf. Bezugslinie-Strichlinie für Gegenseite untereinander an Pfeillinie
+	\item Nahtzeichen auf gewünschte Linie setzen
+	\item Doppelkehlnaht: Zeichen auf und unter Bezugslinie anstatt Strichlinie
+	\item Kreis an Treffpunkt von Bezugs- und Pfeillinie: Umlaufende Naht
+	\item Bemaßung mit $a$, Dicke der Naht, Symbol und Länge, z.B.: $a4V20$
+\end{itemize}
+Die beste Schweißnaht ist keine Schweißnaht, wegen Veränderung durch Wärme an Steifigkeit und Festigkeit.
+
+\pagebreak
+\section{Lösungswege für Aufgaben}
+Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeben:
+\subsection{Dreitafelprojektion}
+\begin{enumerate}
+	\item Zeichnung und gegebene Ansicht solange hart anstarren, bis ein drehbares Modell im Kopf ist
+	\item Auf die Blickrichtung der schon gegebenen Ansicht achten und das Modell entsprechend drehen
+	\item Mithilfe der Spiegellinie und der gegebenen Ansicht die restlichen Ansichten herleiten
+	\item Zuerst die Außenkanten zeichnen und dann ins Detail arbeiten
+\end{enumerate}
+
+\subsection{Bemaßung}
+\subsubsection{Bleche}
+\begin{itemize}
+	\item Von zwei nicht gegenüberliegenden Seiten alle Maße antragen
+	\item Dicke angeben, ggf. Wert ausdenken
+	\item Bohrungen, Fasen, Radien etc. mit Symbol und ggf. Lage vom Rand bemaßen
+\end{itemize}
+
+\subsubsection{Wellen}
+\begin{itemize}
+	\item Von beiden Seiten bis zum dicksten Absatz bemaßen und Gesamtlänge angeben
+	\item Bohrungen, Fasen etc. mit Symbol und ggf. Lage vom Rand bemaßen
+\end{itemize}
+
+\subsection{Schnittdarstellung}
+\begin{itemize}
+	\item An einer Seite anfangen und zur anderen durcharbeiten
+	\item Geschnittene Flächen dünn schraffieren
+	\item Gewinde mit Symmetrielinien einzeichnen
+	\item An nicht geschnittene Bauteile denken, falls nicht anders angegeben
+	\item ggf. Schnittverlauf und Blickrichtung in gegebener Ansicht einzeichnen
+\end{itemize}
+
+\subsection{Schrauben und Gewinde}
+\begin{itemize}
+	\item Außengewinde vor Innengewinde
+	\item Bohrungen tiefer als Gewinde und mit 120° Spitze, sowie Gewinde länger als Schraubenlänge
+\end{itemize}
+
+\subsection{Passungen}
+\begin{itemize}
+	\item Tabellen mitnehmen, Zahlen mit Starren heraussuchen und ausrechnen
+	\item Passung gesucht: Passung mit größtmöglichem Bereich wählen
+	\item ggf. auf Kosten achten, z.B. h6 Einheitswelle
+\end{itemize}
+
+\subsection{Welle-Nabe-Verbindung}
+\begin{itemize}
+	\item Freihandlinie für Darstellung der Nut mit Schraffur
+	\item Freihandlinie trifft Kante mit 90°
+\end{itemize}
+
+\subsection{Lagerung von Wellen}
+\begin{itemize}
+	\item Lagerart und ggf. Anordnung erkennen
+	\item Meist nur mit Sicherungsringen und Wellenabsätzen befestigen
+	\item Bei Deckeln etc. auf Doppelpassung achten
+\end{itemize}
+
+\subsection{Leistungsübertragung}
+	Formeln %TO-DO
+	
+\subsection{Form- und Lagetoleranzen, Oberflächen und kanten}
+\begin{itemize}
+	\item Zeichen und Toleranzen zuordnen können
+	\item Mit Kästchen nach und nach die geforderten Toleranzen anhand der IT Qualität einzeichnen
+	\item Oberflächen meist mit Ra und ggf. auf Verfahren achten
+	\item sinnvolle Werte für Kanten: $\pm$0.1
+\end{itemize}
+
+\subsection{Schweißen}
+noch keine Tipps %TO-DO
+
+\subsection{Multiple Choice}
+Panikzettel hart anstarren und auswendig können!
+	
+\end{document}
