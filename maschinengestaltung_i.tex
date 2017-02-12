@@ -126,6 +126,7 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	\item Schnitte stellen innere Besonderheiten des Bauteils dar
 	\item dünne Schraffur von Schnittflächen in 45° bzw. 135°, angrenzende Flächen verschieden schraffieren, zusammengehörende Flächen aber gleich
 	\item Bruchkanten durch schmale Freihandlinie
+	\item Spitze außerhalb der Bohrlänge
 \end{itemize}
 		
 \subsection{Schnittarten}
@@ -158,7 +159,7 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	
 \section{Gewinde und Schraubenverbindungen}
 \begin{itemize}
-	\item Befestigen Bauteile durch Klemmkraft
+	\item Befestigen Bauteile durch Klemmkraft und Reibung
 	\item Schrauben sind selbst hemmend, lösen sich also nicht durch Zugkräfte
 	\item Nehmen normal keine Querkräfte auf, außer Paßschraube
 	\item Gewinde verwandeln rotatorische in translatorische Bewegung um
@@ -355,8 +356,10 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 	\item kleines Zahnrad: Ritzel (antreibend), großes Zahnrad: Rad (angetrieben)
 	\item Schrägverzahnung: Laufruhe, aber teurer und benötigt besseres Lager
 	\item Pfeilverzahnung: Mit schwimmender Lagerung
-	\item Zähnezahl $z$, Modul $m$, Teilkreisdurchmesser $d= m \cdot z$
-	\item Formeln: $i=\frac{\omega_1}{\omega_2}, i_{ges}=\prod_{j}{} i_j, M_{ein} \cdot i_{ges}=M_{aus}$
+	\item Zähnezahl $z$, Modul $m$, Drehmoment $M$, Leistung $P$, Drehzahl $n$
+	\item Winkelgeschwindigkeit $\omega$, Achsenabstand $a$, Übersetzung $i$
+	\item Formeln: $i=\frac{\omega_1}{\omega_2}=\frac{d_2}{d_1}=\frac{z_2}{z_1}=\frac{n_1}{n_2}, i_{ges}=\prod_{j}{} i_j$
+	\item $M_{ein} \cdot i_{ges}=M_{aus}$, Teilkreisdurchmesser $d= m \cdot z$
 \end{itemize}
 	
 \subsubsection{Arten}
@@ -379,9 +382,9 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 \begin{itemize}
 	\item Spiel: Positive Differenz zwischen Bohrung und Welle
 	\item Übermaß: Negative Differenz vor dem Fügen
-	\item Spielpassung: Mindestmaß der Bohrung $\geq$ Höchstmaß der Welle
-	\item Übergangspassung: Beim Fügen entsteht Spiel oder Übermaß
-	\item Übermaßpassung: Höchstmaß der Bohrung $\leq$ Mindestmaß der Welle
+	\item Spielpassung: Mindestmaß der Bohrung $\geq$ Höchstmaß der Welle, $S_g,S_k$
+	\item Übergangspassung: Beim Fügen entsteht Spiel oder Übermaß, $S_g,U_g$
+	\item Übermaßpassung: Höchstmaß der Bohrung $\leq$ Mindestmaß der Welle, $U_g,U_k$
 	\item Passtoleranz: Betragsmäßige Summe der Toleranzen von Bohrung und Welle
 \end{itemize}
 Einführung von Einheitsbohrung und Einheitswelle, mit Toleranzfeldlage H/h, um Kosten zu sparen. 
@@ -546,6 +549,9 @@ Anwendung von Wärme und/oder Kraft ohne oder mit Schweißzusatz.
 \end{itemize}
 Die beste Schweißnaht ist keine Schweißnaht, wegen Veränderung durch Wärme an Steifigkeit und Festigkeit.
 
+\subsection{Gestaltungsrichtlinien}
+Eckenabbrand und Nahtanhäufungen vermeiden.
+
 \pagebreak
 \section{Lösungswege für Aufgaben}
 Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeben:
@@ -607,7 +613,7 @@ Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeb
 \end{itemize}
 
 \subsection{Leistungsübertragung}
-	Formeln %TO-DO
+	Formeln nachschlagen, umstellen und einsetzen.
 	
 \subsection{Form- und Lagetoleranzen, Oberflächen und kanten}
 \begin{itemize}
