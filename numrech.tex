@@ -1,0 +1,566 @@
+\documentclass[a4paper,parskip=half*,DIV=7,fontsize=11pt]{scrartcl}
+\usepackage[head=27.2pt]{geometry}
+\usepackage[english,ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{scrlayer-scrpage}
+\usepackage{braket}
+\usepackage{listings}
+\usepackage{lastpage}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\DeclareMathOperator*\argmin{arg\,min}
+\DeclareMathOperator\sign{sign}
+
+
+\lstset{
+    mathescape=true,
+%    numbers=left
+}
+
+\lstset{literate=%
+    {Ö}{{\"O}}1
+    {Ä}{{\"A}}1
+    {Ü}{{\"U}}1
+    {ß}{{\ss}}1
+    {ü}{{\"u}}1
+    {ä}{{\"a}}1
+    {ö}{{\"o}}1
+    {~}{{\textasciitilde}}1
+}
+
+\newcommand{\defeq}{\vcentcolon =}
+\newcommand{\eqdef}{=\vcentcolon}
+\newcommand{\eps}{\mathrm{eps}}
+\newcommand{\grad}{\nabla}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\newcolumntype{C}{>{$}c<{$}}
+
+\ihead{NumRech Panikzettel}
+\title{NumRech Panikzettel}
+\author{``der Dude'', Luca Oeljeklaus,\\ Tobias Polock, Philipp Schröer, Caspar Zecha \blfootnote{Pseudonyme gehören anonymen Autoren, die anonym bleiben wollen.}}
+\cfoot{\thepage\ / \pageref{LastPage}}
+
+\lstset{basicstyle=\ttfamily}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Dieser Panikzettel ist über die Vorlesung Numerisches Rechnen. Er basiert auf dem Foliensatz von Prof. Dr. Martin Grepl aus dem Wintersemester 16/17.	\\
+Dieser Panikzettel ist Open Source. Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\section{Fehleranalyse: Kondition, Rundungsfehler, Stabilität (Folien Kap. 2)}
+
+Wir betrachten Algorithmen (i.e. Funktionen) auf fehlerbehafteten Eingabedaten. Dabei möchten wir trotz der Störung in den Eingaben möglichst ``gute'' Ergebnisse erzielen. Um dies formal beschreiben zu können, müssen wir zunächst die Fehler quantifizieren:
+
+Wir unterscheiden absolute und relative Fehler. Dabei ist der \emph{absolute Fehler} in Daten $x$ und gestörten Daten $\tilde{x}$ die Abweichung, d.h. $\abs{\tilde{x}-x} =: \abs{\Delta_x}$, bzw. im mehrdimensionalen
+\[\norm{\tilde{x}-x} =: \norm{\Delta_x}\]
+Der zugehörige \emph{relative Fehler} ist dann $\frac{\abs{\Delta_x}}{\abs{x}} =: \delta_x$, bzw. im mehrdimensionalen
+\[\frac{\norm{\Delta_x}}{\norm{x}} =: \delta_x\]
+
+Für eine Funktion $f$ betrachten wir neben dem Fehler in den Eingabedaten $x$ auch den Fehler in den Ausgabedaten $y = f(x)$, $\tilde{y} = f(\tilde{x})$.
+
+Die Kondition eines Problems ist dann das Verhältnis von Ein- und Ausgabefehler. Auch hier unterscheiden wir zwischen der relativen Kondition $\frac{\delta_y}{\delta_x}$ und der absoluten Kondition $\frac{\norm{\Delta_y}}{\norm{\Delta_x}}$. Wir sagen, dass ein Problem \emph{gut konditioniert} ist, wenn seine Kondition klein ist.
+
+Als Approximation an die Kondition benutzen wir die \emph{Konditionszahl}
+\[\kappa_{\text{rel}}(x) := \abs*{f'(x)\frac{x}{f(x)}}.\]
+
+\subsection{Gleitpunktdarstellung}
+
+Da die Menge der Reellen Zahlen nicht im Computer darstellbar ist${}^{\textrm{[Citation needed]}}$, approximieren wir diese durch die sogennanten Maschinenzahlen
+\[\mathbb{M}(b,m,r,R) = \left\{\,\pm\sum_{i=1}^m d_{i}b^{e-i}\,\middle\vert\,r \le e \le R,\,0 \le d_i < b \,\right\}\]
+
+Die relative Maschinengenauigkeit ist dann
+\[\eps := \frac{b^{1-m}}{2}\]
+
+Die betragsmäßig kleinste ($\neq 0$) Zahl: 
+\[x_\mathrm{MIN} = b^{r-1}\] 
+Die betragsmäßig größte Zahl: \[x_\mathrm{MAX} = (1 - b^{-m}) b^R\]
+
+Für IEEE Double-precision floating point-Zahlen ist $\eps = 2.2204 \times 10^{-16}$.
+
+Für Multiplikation und Division von Maschinenzahlen gilt, dass $\kappa_\text{rel} \leq 1$ ist. Diese Operationen sind also immer gut konditioniert. Bei Addition und Subtraktion gilt dagegen $\kappa_\text{rel} \gg 1$, wenn das Ergebnis gegen Null geht.
+
+\subsection{Stabilität}
+
+Ein Verfahren $\tilde{f}$, das eine Funktion $f$ approximiert, heißt \emph{(rückwärts) stabil}, wenn für alle $x \in X$ gilt 
+\[\tilde{f}(x) = f(\tilde{x}) \] 
+für ein $\tilde{x}$ mit $\frac{\norm{x-\tilde{x}}}{\norm{x}} = \mathcal{O}(\eps)$, d.h. er gibt die exakte Antwort auf eine nahezu richtige Frage.
+
+\subsection{Taylorentwicklung}
+
+Funktionen lassen sich als die Taylorentwicklung darstellen. Für ein $\xi$ zwischen $x$ und $x_0$ ist
+
+\[f(x) = \sum_{i=0}^{n-1} \frac{f^{(i)}(x_0)}{i!}(x-x_0)^i + \frac{f^{(n)}(\xi)}{n!}(x-x_0)^n\]
+
+Somit lässt sich eine Funktion $f$ durch das sogenannte Taylorpolynom $n$-ten Grades approximieren:
+\[p_n(x) = \sum_{i=0}^{n} \frac{f^{(i)}(x_0)}{i!}(x-x_0)^i\]
+
+\section{Lineare Gleichungssysteme, direkte Lösungsverfahren (Folien Kap. 3)}
+
+\subsection[Kondition und Störungssätze]{Kondition und Störungssätze}
+Für ein lineares Gleichungssystem $Ax = b$ mit Störung in $b$ bzw. in $A$ und $b$ gilt:
+\begin{align*}
+	\frac{\norm{\Delta x}}{\norm{x}} &\leq \kappa(A) \frac{\norm{\Delta b}}{\norm{b}}	\\
+    \frac{\norm{\Delta x}}{\norm{x}} &\leq \frac{\kappa(A)}{1-\kappa(A)\frac{\norm{\Delta A}}{\norm{A}}}\left(\frac{\norm{\Delta A}}{\norm{A}}+\frac{\norm{\Delta b}}{\norm{b}}\right)
+\end{align*}
+wobei
+\[\kappa = \norm{A^{-1}}\norm{A}\]
+bzgl. der Norm $\norm{\cdot}$ ist.
+
+\subsection[LR-Zerlegung]{$LR$-Zerlegung (Gauß-Elimination)}
+
+Bei der Gauß-Elimination wird eine Matrix und die zugehörige rechte Seite durch elementare Zeilentransformationen in rechte obere Dreiecksform gebracht, die anschließend durch Rückwärtseinsetzen einfach gelöst werden kann.
+
+Bei der LR Zerlegung werden diese Zeilentransformationen zusätzlich in einer Matrix $L$ gespeichert, sodass sich für eine Matrix $A \in \mathbb{R}^{n \times n}$ die Zerlegung
+\[A = LR\]
+ergibt (wobei $L$ eine normierte linke untere und $R$ eine rechte obere Dreiecksmatrix ist).
+
+Ein Gleichungssystem
+\[Ax = b\]
+lässt sich mithilfe der $LR$-Zerlegung vereinfacht als
+\[Ly = b,~Rx = y\]
+lösen.
+
+\subsection[Cholesky-Zerlegung]{Cholesky-Zerlegung ($LDL^T$-Zerlegung)}
+
+Für eine symmetrisch positiv definite Matrix $A \in \mathbb{R}^{n \times n}$ existiert eine Zerlegung
+\[A = LDL^T\]
+wobei $L$ eine normierte linke untere Dreiecksmatrix und $D$ eine Diagonalmatrix ist. Diese Zerlegung lässt sich mit etwa der Hälfte des Aufwandes der $LR$-Zerlegung berechnen:	\\
+Für $n = 3$ ergibt sich beispielsweise
+\begin{align*}
+LDL^T &= \begin{pmatrix}
+	1	\\
+    l_{2,1}	&	1	\\
+    l_{3,1}	&	l_{3,2}	&	1
+\end{pmatrix} \begin{pmatrix}
+	d_{1,1}	\\
+    	&	d_{2,2}	\\
+        &	&	d_{3,3}
+\end{pmatrix} \begin{pmatrix}
+	1	&	l_{2,1}	&	l_{3,1}	\\
+    	&	1	&	l_{3,2}	\\
+    	&	&	1
+\end{pmatrix}	\\
+&= \begin{pmatrix}
+	d_{1,1}	&	l_{2,1}d_{1,1}	&	l_{3,1}d_{1,1}	\\
+    l_{2,1}d_{1,1}	&	l_{2,1}^2d_{1,1} + d_{2,2}	&	l_{2,1}l_{3,1}d_{1,1}+l_{3,2}d_{2,2}	\\
+    l_{3,1}d_{1,1}	&	l_{2,1}l_{3,1}d_{1,1}+l_{3,2}d_{2,2}	&	l_{3,1}^2d_{1,1} + l_{3,2}^2d_{2,2} + d_{3,3}
+\end{pmatrix}
+\end{align*}
+was sich durch einfaches Einsetzen lösen lässt.
+
+%Einfachere Methode? TODO
+
+\section{Lineare Ausgleichsrechnung (Folien Kap. 4)}
+
+Ein lineares Ausgleichsproblem ist ein Problem der Form
+\[x^\ast = \argmin_{x \in \mathbb{R}^{m}} \norm*{Ax-b}\]
+für eine gegebene Matrix $A \in \mathbb{R}^{n \times m}$ und rechte Seite $b \in \mathbb{R}^n$, wobei $m < n$ ist, d.h. es handelt sich um ein überbestimmtes lineares Gleichungssystem. Im Folgenden werden wir annehmen, dass es sich bei der gewählten Norm um die $2$-Norm handelt, da das Problem sonst auch wenn die Matrix $A$ vollen Rang hat nicht eindeutig lösbar ist.
+
+\subsection{Normalengleichungen}
+
+Falls die Matrix $A$ vollen Rang hat, lösen die sogenannten Normalengleichungen das Lineare Ausgleichsproblem
+\[\left(A^TA\right)x^\ast = A^Tb\]
+bzw.
+\[x^\ast = \left(A^TA\right)^{-1}A^Tb\]
+
+Dies ist allerdings numerisch instabil.
+
+\subsection[QR-Zerlegung]{$QR$-Zerlegung}
+
+Ein numerisch stabiles Verfahren zur Lösung des Linearen Ausgleichsproblems ergibt sich mithilfe der $QR$-Zerlegung:
+
+Gegeben eine Zerlegung
+\[A = QR,\]
+wobei $Q \in \mathbb{R}^{n \times n}$ orthogonal, d.h. $Q^{-1} = Q^T$, $R \in \mathbb{R}^{n \times m} = \begin{pmatrix} \hat{R}	\\	0 \end{pmatrix}$ und $\hat{R} \in \mathbb{R}^{m \times m}$ eine rechte obere Dreiecksmatrix ist, ist das lineare Ausgleichsproblem
+\[x^\ast = \argmin_{x \in \mathbb{R}^{m}} \norm*{Ax-b}_2\]
+äquivalent zu dem Problem
+\[x^\ast = \argmin_{x \in \mathbb{R}^m} \norm*{Rx-Q^Tb}_2\]
+da die Multiplikation mit einer orthogonalen Matrix die $2$-Norm nicht ändert. Dieses lässt sich aber, wenn wir
+\[Q^Tb = \begin{pmatrix}
+	\hat{b}	\\	r
+\end{pmatrix}, \hat{b} \in \mathbb{R}^n\]
+aufspalten als
+\[\hat{R}x^\ast = \hat{b}\]
+lösen.
+
+\subsection[Berechnung der QR-Zerlegung]{Berechnung der $QR$-Zerlegung}
+
+Zur geometrischen Intuition:	\\
+Bei der $QR$-Zerlegung wird eine Matrix $A$ durch orthogonale Transformationen $Q^T$ in rechte obere Dreiecksform gebracht. Rechte obere Dreiecksform bedeutet, dass die ersten $k$ Spalten von $R$ den selben Raum wie die ersten $k$ Einheitsvektoren aufspannen. Es geht also bei der $QR$-Zerlegung darum, durch orthogonale Transformationen den Raum, der von den ersten $k$ Spalten von $A$ aufgespannt wird in die von den ersten $k$ Einheitvektoren aufgespannte Hyperebene abzubilden.
+
+Da orthogonale Transformationen genau Kombinationen von Rotationen und Spiegelungen sind, ergeben sich die folgenden drei Optionen für die Transformationen:
+
+\subsubsection{Gram-Schmidt-Orthogonalisierung}
+
+Ausführlich erklärt in unserem \href{http://panikzettel.philworld.de/la.pdf#page=18}{Panikzettel zu Lineare Algebra}.
+
+Dieses Verfahren ist allerdings nicht stabil.
+
+\subsubsection{Givens-Rotation}
+
+Die Givens-Rotationsmatrix $G_{i,k}$ rotiert in der $x_i$-$x_k$-Ebene die Matrix $A$ so, dass in $G_{i,k} A$ der Eintrag an Position $i, k$ Null wird.
+
+\[
+  G_{i,k} = \left(\begin{array}{ccccccccccc}
+    1 \\
+    &	\ddots	&	&	&	&	&	&	&	&	0	\\
+    &	&	1	\\
+    &	&	&	c	&	0	&	\cdots	&	0	&	s	\\
+    &	&	&	0	&	1	&	&	&	0	\\
+    &	&	&	\vdots	&	&	\ddots	&	&	\vdots	\\
+    &	&	&	0	&	&	&	1	&	0	\\
+    &	&	&	-s	&	0	&	\cdots	&	0	&	c	\\
+    &	&	&	&	&	&	&	&	1	\\
+    &	0	&	&	&	&	&	&	&	&	\ddots	\\
+    &	&	&	&	&	&	&	&	&	&	1
+  \end{array}\right)
+\]
+
+\begin{align*}
+   r &= \pm\norm*{\left(\begin{array}{c}
+   A_{i,i}	\\	A_{i,k}
+   \end{array}\right)}_2	&
+   c &= \frac{A_{i,i}}{r}	&
+   s &= \frac{A_{i,k}}{r}
+\end{align*}
+
+Wir wenden also diese Rotationsmatrizen auf alle Elemente unterhalb der Diagonalen von $A$ an, sodass wir mit $\underbrace{G_{1,2} \ldots G_{2,3} \ldots}_{Q^T} A = R$ eine QR-Zerlegung für $A$ erhalten:
+\[ \underbrace{\left(G_{1,2} \ldots G_{2,3} \ldots\right)^T}_Q R = A \]
+
+\subsubsection{Householder-Transformation}
+
+Die Householder-Transformation ist geometrisch als Spiegelungen zu interpretieren.
+
+Dazu definieren wir
+\[ Q_v = I - 2 \frac{v v^T}{v^T v} \]
+
+Diese Matrizen repräsentieren Spiegelungen an der zu $v$ orthogonalen Hyperebene.
+
+Es gilt für die Transformationen (sehr schön als Beweisaufgaben!):
+
+\begin{itemize}
+  \item Orthogonalität: $Q_v^{-1} = Q_v^T$.
+  \item Selbstinverse: $Q_v^2 = I$.\\Zweimalige Spiegelung ergibt den ursprünglichen Punkt.
+  \item $Q_{\alpha v} = Q_v, \alpha \in \mathbb{R}, a \neq 0$.\\Skalierung des Normalenvektors ändert nicht die Spiegelebene.
+  \item $Q_v y \Leftrightarrow y^T v = 0$.\\
+        Ursprünglicher und gespiegelter Punkt sind nur identisch, wenn der Punkt in der Spiegelebene liegt.
+  \item $Q_v v = -v$.\\
+        Spiegelung des Normalenvektors vertauscht das Vorzeichen.   
+\end{itemize}
+
+Um also eine $QR$-Zerlegung für eine Matrix $A$ zu berechnen, spiegelt man zunächst die erste Spalte auf das Erzeugnis des ersten Einheitsvektors $e$. Wenn $y$ die erste Spalte von $A$ ist, ist dazu 
+\[v = y + \sign(y_1) \norm{y}e.\]
+Anschließend wird die erste Spalte und Zeile ignoriert. Dabei werden, um die Spiegelungen auf die gesamte Matrix anzuwenden in $v$ oben passend Nullen eingefügt. So wird in jedem Schritt die erste betrachtete Spalte auf einen Einheitsvektor gespiegelt, was am Ende zu einer rechten oberen Dreiecksform führt.
+
+\subsection{Singulärwertzerlegung (SVD)}
+
+Die Singulärwertzerlegung einer Matrix $A \in \mathbb{R}^{n \times m}$ ist
+\[A = U\Sigma V^T\]
+mit orthogonalen Matrizen $U \in \mathbb{R}^{n \times n}, V \in \mathbb{R}^{m \times m}$ und einer Diagonalmatrix $\Sigma \in \mathbb{R}^{n \times m}$. Die nicht-null Einträge von $\Sigma$ heißen Singulärwerte von $A$, die Spalten von $U$ heißen Linkssingulärvektoren, die Spalten von $V$ heißen Rechstsingulärvektoren.
+
+Mit der Singulärwertzerlegung lässt sich die Pseudoinverse $A^+ := V\Sigma^+ U^T$ mit $\Sigma^+$ der Diagonalmatrix, die die invertierten Singulärwerte von $A$ enthält. Mit der Pseudoinversen lässt sich das Lineare Ausgleichsproblem als
+\[x^\ast = \argmin_{x \in \mathbb{R}^m} \norm*{Ax-b} \impliedby x^\ast = A^+ b\]
+lösen. Sind die Singulärvektoren nach betragsmäßiger Größe geordnet, ergibt sich die Lösung mit kleinster $2$-Norm.
+
+% TODO: weitere Anwendungen
+
+\section{Nichtlineare Gleichungssysteme (Folien Kap. 5)}
+
+\subsection{Fixpunktiteration}
+
+Für eine Funktion $\Phi: \mathbb{R}^n \to \mathbb{R}^n$  heißt $x \in \mathbb{R}^n$ Fixpunkt von $\Phi$ genau dann wenn
+\[\Phi(x) = x\]
+gilt.
+
+Es sei eine abgeschlossene nichtleere Teilmenge $M \subseteq \mathbb{R}^n$, auf der $\Phi$ eine Selbstabbildung und Kontraktion ist, d.h. $\Phi(M) \subseteq M$ und es gibt ein $\theta < 1$ sodass für alle $x,y \in M$, $x \ne y$ $\norm{\Phi(x)-\Phi(y)} \le \theta \norm{x-y}$ ist.	\\
+Dann hat $\Phi$ einen eindeutigen Fixpunkt $x^\ast \in M$ und die Fixpunktiteration
+\[x_{i+1} = \Phi(x_i)\]
+konvergiert für alle $x_0 \in M$ mit
+\begin{align*}
+	\norm{x_k-x^\ast} &\le \frac{\theta^k}{1-\theta}\norm{x_1-x_0}	&&	\text{(a priori)}	\\
+	\norm{x_k-x^\ast} &\le \frac{\theta}{1-\theta} \norm{x_k-x_{k-1}}	&&	\text{(a posteriori)}
+\end{align*}
+
+\subsection{Newton-Verfahren}
+
+Es sei $F : \mathbb{R}^n \to \mathbb{R}^n$ stetig differenzierbar. Dann ist
+\[x_{k+1} = x_k - F'(x_k)^{-1}F(x_k)\]
+die Newton-Iteration zum Startwert $x_0$. Diese konvergiert lokal quadratisch.
+
+\section{Nichtlineare Ausgleichsrechnung (Folien Kap. 6)}
+
+Beim nichtlinearen Ausgleichsproblem such man für eine Funktion $F : \mathbb{R}^n \to \mathbb{R}^m$ ein $x^\ast$ sodass
+\[x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{F(x)}_2\]
+
+Dies Formulieren wir um als Suche nach dem Minimum von
+\[\phi(x) : \mathbb{R}^n \to \mathbb{R}, x \mapsto \frac{1}{2} \norm{F(x)}_2^2 \]
+
+Diese hat an einer Stelle $x^\ast$ ein lokales Minimum, wenn
+\begin{align*}
+	\grad\phi(x^\ast) &= 0	\\
+    \phi''(x^\ast) &~\text{s.p.d.}
+\end{align*}
+
+\subsection{Gauß-Newton-Verfahren}
+
+Im Gauss-Newton-Verfahren bestimmen wir diese Nullstelle von $\grad\phi(x^\ast) = 0$ über eine Newton-Iteration. Allerdings ersetzen wir dabei in jedem Schritt die Funktion $F$ durch eine lineare Approximation mithilfe der Taylorentwicklung. Die Iteration geht also wie folgt, hier als Matlab/Octave-Code:
+
+\begin{lstlisting}[language=octave]
+function [x_star] = gauss_newton(f, df, x0, tolerance, maxIterations):
+    x = x0;
+    iterations = 0;
+    fx = eval(f,x);
+    dfx = eval(df,x);
+    while (norm(dfx' * fx) > tolerance && iterations < maxIterations):
+        step = least_squares(dfx,-fx);
+        x = x + step;
+        fx = eval(f,x);
+        dfx = eval(df,x);
+        iterations = iterations + 1;
+    end
+    x_star = x;
+end
+\end{lstlisting}
+
+wobei \lstinline[language=octave]{least_squares(A,b)} das Lineare Ausgleichsproblem
+\[x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{Ax-b}_2\]
+löst.
+
+\subsection{Levenberg-Marquardt-Verfahren}
+
+Das Levenberg-Marquardt-Verfahren ist eine Modifikation des Gauß-Verfahrens bei dem bei der Berechnung der Schrittweite ein Dämpfungsfaktor $\mu$ eingefügt wird. Statt des lineare Ausgleichsproblems
+\[s^k = \argmin_{s \in \mathbb{R}^n} \norm*{DF(x^k)s + F(x^k)}\]
+lösen wir also das Problem
+\[s^k = \argmin_{s \in \mathbb{R}^n} \norm*{\left(\begin{array}{c}
+    F'(x^k)	\\	\mu I
+\end{array}\right)s + \left(\begin{array}{c}
+    F(x^k)	\\	0
+\end{array}\right)}\]
+
+\section{Interpolation (Folien Kap. 8)}
+Den Raum der Polynome vom Grad $n$ bezeichnen wir als $\Pi_n$, und deren Elemente als $P_n (x)$. Zudem haben wir Daten (z.B. Messwerte) $(x_i,f(x_i) = y_i),\, i \in \{0,\ldots,n\}$ gegeben, und wollen diese durch ein Polynom $P_n (f|x_0,\ldots, x_n) = P_n (x)$ darstellen, es soll also $P_n (x_i) = y_i$ sein. Ein solches Polynom existiert immer eindeutig. 
+
+\subsection{Lagrange-Fundamentalpolynome}
+Die Lagrange-Fundamentalpolynome (erfüllen unsere Interpolationsbedingung), sind gegeben durch:
+
+\[\ell_i(x) = \prod_{\substack{k = 0 \\ k \neq i}}^n \frac{x - x_k}{x_i - x_k}\]
+
+Diese bilden eine Orthogonalbasis von $\Pi_n$.
+
+Dann ist das Interpolationspolynom
+
+\[P_n (x) = \sum_{j=0}^n f (x_j) \ell_j\]
+
+\subsection{Auswertung des Polynoms durch das Neville-Aitken Schema}
+Wir wollen nun den Wert unseres Interpolationspolynoms an der festen Stelle $x$ durch ein rekursives Schema auswerten. Dazu setzen wir:
+
+\[P_{i,k} = P(f|x_{i-k},\ldots,x_i)\]
+also
+\[P_{i,0} = P(f|x_i)(x) = f(x_i)\]
+und
+\[P_{n,n} = P(f|x_0,\ldots,x_n)\]
+
+Insbesondere wollen wir also $P_{n,n}$ bestimmen. Das Schema lässt sich dann rekursiv berechnen durch:
+
+\[P_{i,k} = P_{i,k-1} + \frac{x - x_i}{x_i - x_{i-k}} (P_{i,k-1} - P_{i-1,k-1})\]
+
+Die Rekursionsendpunkte sind dann $P_{i,0}$.
+
+\subsection{Berechnung der Potenzform über ein LGS}
+Wir können das Interpolationspolynom $P_n(x)$ auch über das folgende Gleichungssystem bestimmen:
+
+\[\underbrace{\begin{pmatrix} 1 & x_0 & x_0^2 & \cdots & x_0^n \\ \vdots & \vdots & \vdots & \vdots & \vdots \\ 1 & x_n & x_n^2 & \ldots & x_n^n\end{pmatrix}}_{\text{Vandermonde-Matrix $V_n$}} \cdot \begin{pmatrix} a_0 \\ \vdots \\ a_n \end{pmatrix} = \begin{pmatrix} y_0 \\ \vdots \\ y_n \end{pmatrix}\]
+
+Jedoch hat dies den gravierenden Nachteil, dass die Vandermonde-Matrix im Allgemeinen sehr schlecht konditioniert ist. 
+
+\subsection{Auswertung der Potenzform mittels Horner-Schema}
+Falls die Potenzform des Polynoms $P_n (x)$ vorliegt, kann diese durch geschickte Klammerung sehr schnell für ein $x$ ausgewertet werden.
+
+\[a_0 + a_1x + \hdots + a_nx^n = a_0 + x\cdot (a_1 + x\cdot (a_2 + (\hdots  x\cdot (a_{n_1} + xa_n) \hdots) ) )\]
+
+\subsection{Newtonsche Interpolationsformel}
+Sei $P(f|x_0,\ldots,x_{n-1})$ gegeben und wir wollen nun mit möglichst wenig Aufwand $P(f|x_0,\ldots,x_n)$ berechnen. Dies können wir wie folgt erreichen:
+
+\[P(f|x_0,\ldots,x_n)(x) = P(f|x_0,\ldots,x_{n-1}) (x) + \delta_n(x-x_0)\ldots (x-x_{n-1})\]
+
+mit
+
+\[\delta_n = \frac{f(x_n) - P(f|x_0,\ldots,x_{n-1})}{(x_n -x_0)\ldots (x_n-x_{n-1})} \eqdef [x_0,\ldots,x_n]f\]
+
+Mit dieser sogenannten Newtonschen Interpolationsformel lässt sich rekursiv beginnend bei einer Stützstelle (z.B. $P(f|x_0)$) das komplette Polynom $P(f|x_0,\ldots,x_n)$ bestimmen. Als Knotenpolynome $\omega_i (x)$ bezeichnen wir die hierbei entstehende Polynome:
+
+\begin{eqnarray}
+\omega_0 &\defeq& 1 \nonumber \\
+\omega_1 &\defeq& (x-x_0) \nonumber \\
+&\vdots& \nonumber \\
+\omega_n &\defeq& (x-x_0)\ldots (x-x_{n-1}) \nonumber
+\end{eqnarray}
+
+Diese bilden die Newton-Basis von $\Pi_n$.
+
+Mit der Rekursionsformel von Aitken lässt sich zudem zeigen, dass für verschiedene Stützstellen $x_0,\ldots,x_n$ folgendes gilt:
+
+\[ [x_0,\ldots,x_n] = \frac{[x_1,\ldots, x_n]f - [x_0,\ldots, x_{n-1}]}{x_n - x_0} \]
+
+Diese Terme werden auch als dividierte Differenzen bezeichnet.
+
+\subsection{Fehlerabschätzung}
+Der Fehler der Polynominterpolation $P_n (f|x_0,\ldots,x_n) (x)$ zur interpolierten Funktion $f(x)$, auf dem Intervall $[a,b]$, kann abgeschätzt werden durch:
+
+\[\max_{x \in [a,b]} \abs*{f(x) - P_n (x)} \leq \max_{x \in [a,b]} \abs*{\omega_n} \max_{x \in [a,b]} \frac{\abs*{f^{(n+1)}(x)}}{(n+1)!}\]
+
+\section{Numerische Differentiation}
+
+Der nummerischen Differentiation liegt folgender Gedanke zugrunde:
+
+\[P(f|x_0, \ldots, x_n)^{(n)} (x) = n![x_0,\ldots,x_n]f \approx f^{(n)} (x)\]
+
+\subsection{Complex Step Differentiation}
+
+Für analytische $f: \mathbb{C} \to \mathbb{C}$ mit $f(\mathbb{R}) \subseteq \mathbb{R}$ und $x \in \mathbb{R}$ ist
+
+\[ f'(x) = \lim_{h \to 0} \frac{f(x+ih)}{h} \]
+
+Dies kann durch kleine $h$ angenähert werden. Dabei wird Auslöschung durch Wahl von zu kleinen $h$ vermieden.\footnote{Martins, Joaquim RRA, Peter Sturdza, and Juan J. Alonso. ``The complex-step derivative approximation.'' ACM Transactions on Mathematical Software (TOMS) 29.3 (2003): 245-262.}
+
+\section{Numerische Integration (Folien Kap. 10)}
+
+Der Ansatz bei der numerischen Integration ist der Folgende: Das Integral $\int_a^b f(x) dx$ wird in Teilstücke aufgeteilt und dann werden diese Teilintegrale mithilfe einer einfach integrierbaren Funktion approximiert. 
+
+Formal teilen wir also das Intervall $[a, b]$ in Teilintervalle $[t_{k-1}, t_k]$ auf und approximieren wie folgt:
+
+\[
+	\int_a^b f(x) dx = \sum_{k=1}^n \int_{t_{k-1}}^{t_k} f(x) dx \approx \sum_{k=1}^n \int_{t_{k-1}}^{t_k} g_k(x)dx
+\]
+
+\subsection{Kondition}
+
+Betrachten wir nun die Kondition des Approximierens von Integranden. Wenn wir $f$ durch $\tilde{f}$ approximieren:
+
+\begin{align*}
+	I = \int_a^b f(x) dx & & \tilde{I} = \int_a^b \tilde{f}(x) dx
+\end{align*}
+
+Dann gilt: $\abs{I - \tilde{I}} \leq (b - a) \norm{f - \tilde{f}}_\infty$. Also ist die Kondition:
+
+\[
+  \frac{\abs{I - \tilde{I}}}{\abs{I}} \leq \underbrace{\frac{\int_a^b \norm{f}_\infty dx}{\norm{\int_a^b f(x) dx}}}_{\kappa_\mathrm{rel}} \cdot \frac{\norm{f - \tilde{f}}_\infty}{\norm{f}_\infty}
+\]
+
+\subsection{Quadraturformeln}
+
+Wenn über einem Intervall $[c, d]$ mithilfe der Punkte $x_0, \ldots, x_m \in [c, d]$ die Funktion $f$ approximiert wird, ergibt sich eine sogenannte \emph{Quadraturformel}:
+
+\[
+  I_m(f) = \int_c^d P(f \vert x_0, \ldots, x_m)(x) dx
+\]
+
+Diese Quadraturformel ist für Polynome mit bis zu Grad $m$ exakt. Formal: Für $g \in \Pi_m$ gilt $I_m(g) = \int_c^d g(x) dx$.
+
+\subsection{Newton-Cotes-Formeln}
+
+Wir können die Quadraturformel mithilfe der Lagrange-Fundamentalpolynome $c_j$ auch folgendermaßen schreiben, wobei $h = d - c$:
+
+\[
+  I_m(f) = h \sum_{j=0}^m c_j f(x_j)
+\]
+
+Die Lagrange-Fundamentalpolynome $\ell_{jm}$ sind nur von den Stützstellen, aber \emph{nicht von den Funktionswerten} abhängig.
+
+\[
+  c_j = \frac{1}{h} \int_c^d \prod_{\substack{k=0 \\ k\neq j}}^m \frac{x - x_k}{x_j - x_k} dx = \frac{1}{h} \int_c^d \ell_{jm}(x) dx
+\]
+
+Man kann jetzt die Stützstellen äquidistant wählen und erhält dann die Newton-Cotes-Formeln mit \emph{normierten} Stützstellen $\xi_j$ und Gewichten $c_j$. Diese sind unabhängig vom Intervall $[c, d]$.
+
+\[
+  I_m(f) = h \sum_{j=0}^m c_j f(c + \xi_j h)
+\]
+
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabular}{|C|c|C|C|C|}
+\hline
+m	&	&	\xi_j	&	c_j	&	I_m(f) - \int_c^d f(x) dx	\\\hline
+0	&	Mittelpunktsregel	&	\frac{1}{2}	&	1	&	-\frac{1}{24}h^3 f^{(2)}(\xi)	\\
+1	&	Trapezregel	&	0, 1	&	\frac{1}{2}, \frac{1}{2}	&	\frac{1}{12}h^3 f^{(2)}(\xi)	\\
+2	&	Simpson-Regel	&	0, \frac{1}{2}, 1	&	\frac{1}{6}, \frac{4}{6}, \frac{1}{6}	&	\frac{1}{90} \left ( \frac{1}{2} h \right)^5 f^{(4)}(\xi)	\\
+3	&	$\frac{3}{8}$-Regel	&	0, \frac{1}{3}, \frac{2}{3},~1	&	\frac{1}{8}, \frac{3}{8}, \frac{3}{8}, \frac{1}{8}	&	\frac{3}{80} \left( \frac{1}{3} h \right)^5 f^{(4)}(\xi)	\\
+4	&	Milne-Regel	&	0, \frac{1}{4}, \frac{1}{2}, \frac{3}{4}, 1	&	\frac{7}{90}, \frac{32}{90}, \frac{12}{90}, \frac{32}{90}, \frac{7}{90}	&	\frac{8}{945}\left(\frac{1}{4}h\right)^7f^{(6)}(\xi)	\\
+\hline
+\end{tabular}\\
+
+Der Exaktheitsgrad der Newton-Cotes-Formeln ist also immer gerade, d.h. entweder $m$ oder $m+1$.
+
+Nun lässt sich, wie in der Kapiteleinleitung beschrieben, die Integralaufteilung zur Approximation durchführen. Damit kommen wir zu den summierten Newton-Cotes-Formeln. Mit $h = \frac{b - a}{n}$:
+
+\[
+  \int_a^b f(x) dx \approx \sum_{k=1}^n h \sum_{j=0}^m c_j f(a + (k-1) h + \xi_j h)
+\]
+
+\subsection{Gauß-Quadratur}
+
+Anstatt äquidistante Gewichte zu wählen, können wir auch andere Gewichte verwenden. Diese Verallgemeinerung, die Gauß-Quadratur, der Newton-Cotes-Formeln erreicht dann einen Exaktheitsgrad von bis zu $2m + 1$. 
+
+Genauer können wir sagen: Es existieren Stützstellen $\omega_0, \ldots, \omega_m \in (c, d)$ (hier im \emph{offenen} Intervall!), so dass mit $h = d - c$ gilt
+
+\[ 
+  h \sum_{i=0}^m \omega_i f(x_i) = \int_c^d f(x) dx + E_f(x)
+\]
+
+Dabei ist $E_g(x)$ der Fehler, welcher bei allen $g \in \Pi_{2m+1}$ gleich null ist. Sonst gilt für passendes $\xi \in [c, d]$
+
+\[
+  \abs*{E_f(h)} = \frac{((m+1)!)^4}{((2m+2)!)^3 (2m+3)} h^{2m+3} \abs*{f^{(2m+3)}}
+\]
+
+Wir schreiben auch auch $I_{k,n} \approx \int_a^b f(x) dx$, wobei $[a, b]$ in $n$ Teilintervalle mit Länge $\frac{b-a}{n} = h$ und auf jedem Teilintervall eine Gauß-Quadratur mit $k = m + 1$ Stützstellen angewandt wird.
+
+Jetzt stellt sich die Frage: Mehr oder weniger Teilintervalle für größere Präzision? Für $I_{2k,n}$ und $I_{k,2n}$ wird die Anzahl der Funktionsauswertungen verdoppelt im Vergleich zu $I_{k,n}$. Außerdem kann man herausfinden, dass $\abs{I - I_{2k,n}} \ll \abs{I - I_{k,2n}}$. Also wird in der Praxis oft $n$ klein gewählt, oft auch $n = 1$.
+
+\section{Lineare Gleichungssysteme: Iterative Lösungsverfahren (Folien Kap. 13)}
+
+Die Lösung eines linearen Gleichungssystems lässt sich iterativ als
+\[x^{k+1} = x^k+ C(b-Ax^k)\]
+bestimmen, wobei $C$ eine ``gute'' Approximation für $A^{-1}$ ist.
+
+Dieses Verfahren konvergiert, wenn $\rho(I-CA) < 1$ ist. Dabei ist $\rho(A)$ der Spektralradius, also der Betrag des betragsmäßig größten Eigenwertes von $A$.
+
+Da $\rho(A) \le \norm{A}$ für jede Vektornorm-induzierte Matrixnorm $\norm{\cdot}$ ist, konvergiert das Verfahren also insbesondere wenn $\norm{A} < 1$ für eine beliebige Matrixnorm $\norm{\cdot}$ ist.
+
+Im folgenden sei $A = D-L-U$ wobei $D$ nur Einträge auf, $L$ unterhalb und $U$ oberhalb der Diagonalen enthält.
+
+\subsection{Jacobi-Verfahren}
+
+Beim Jacobi-Verfahren ist $C = D^{-1}$.
+
+\subsection{Gauß-Seidel-Verfahren}
+
+Beim Gauß-Seidel-Verfahren ist $C = (D-L)^{-1}$.
+
+\subsection{SOR-Verfahren}
+
+Beim SOR-Verfahren wählt man ein $\omega \in (0,2)$. Dann ist $C = (\omega D - L)^{-1}$.
+
+\end{document}
