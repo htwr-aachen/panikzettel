@@ -407,7 +407,7 @@ Sei $P(f|x_0,\ldots,x_{n-1})$ gegeben und wir wollen nun mit möglichst wenig Au
 
 mit
 
-\[\delta_n = \frac{f(x_n) - P(f|x_0,\ldots,x_{n-1})}{(x_n -x_0)\ldots (x_n-x_{n-1})} \eqdef [x_0,\ldots,x_n]f\]
+\[\delta_n = \frac{f(x_n) - P(f|x_0,\ldots,x_{n-1})(x_n)}{(x_n -x_0)\ldots (x_n-x_{n-1})} \eqdef [x_0,\ldots,x_n]f\]
 
 Mit dieser sogenannten Newtonschen Interpolationsformel lässt sich rekursiv beginnend bei einer Stützstelle (z.B. $P(f|x_0)$) das komplette Polynom $P(f|x_0,\ldots,x_n)$ bestimmen. Als Knotenpolynome $\omega_i (x)$ bezeichnen wir die hierbei entstehende Polynome:
 
@@ -422,14 +422,14 @@ Diese bilden die Newton-Basis von $\Pi_n$.
 
 Mit der Rekursionsformel von Aitken lässt sich zudem zeigen, dass für verschiedene Stützstellen $x_0,\ldots,x_n$ folgendes gilt:
 
-\[ [x_0,\ldots,x_n] = \frac{[x_1,\ldots, x_n]f - [x_0,\ldots, x_{n-1}]}{x_n - x_0} \]
+\[ [x_0,\ldots,x_n]f = \frac{[x_1,\ldots, x_n]f - [x_0,\ldots, x_{n-1}]f}{x_n - x_0} \]
 
 Diese Terme werden auch als dividierte Differenzen bezeichnet.
 
 \subsection{Fehlerabschätzung}
 Der Fehler der Polynominterpolation $P_n (f|x_0,\ldots,x_n) (x)$ zur interpolierten Funktion $f(x)$, auf dem Intervall $[a,b]$, kann abgeschätzt werden durch:
 
-\[\max_{x \in [a,b]} \abs*{f(x) - P_n (x)} \leq \max_{x \in [a,b]} \abs*{\omega_n} \max_{x \in [a,b]} \frac{\abs*{f^{(n+1)}(x)}}{(n+1)!}\]
+\[\abs*{f(x) - P_n (x)} \leq \abs*{\omega_n} \max_{\xi \in [a,b]} \frac{\abs*{f^{(n+1)}(\xi)}}{(n+1)!}\]
 
 \section{Numerische Differentiation}
 
@@ -493,11 +493,13 @@ Die Lagrange-Fundamentalpolynome $\ell_{jm}$ sind nur von den Stützstellen, abe
   c_j = \frac{1}{h} \int_c^d \prod_{\substack{k=0 \\ k\neq j}}^m \frac{x - x_k}{x_j - x_k} dx = \frac{1}{h} \int_c^d \ell_{jm}(x) dx
 \]
 
-Man kann jetzt die Stützstellen äquidistant wählen und erhält dann die Newton-Cotes-Formeln mit \emph{normierten} Stützstellen $\xi_j$ und Gewichten $c_j$. Diese sind unabhängig vom Intervall $[c, d]$.
+Man erhält dann die Newton-Cotes-Formeln mit \emph{normierten} Stützstellen $\xi_j$ und Gewichten $c_j$. Diese sind unabhängig vom Intervall $[c, d]$.
 
 \[
   I_m(f) = h \sum_{j=0}^m c_j f(c + \xi_j h)
 \]
+
+Mit äquidistanten Stützstellen:
 
 \renewcommand{\arraystretch}{1.2}
 
