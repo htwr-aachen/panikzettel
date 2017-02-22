@@ -264,7 +264,7 @@ Es gilt für die Transformationen (sehr schön als Beweisaufgaben!):
   \item Orthogonalität: $Q_v^{-1} = Q_v^T$.
   \item Selbstinverse: $Q_v^2 = I$.\\Zweimalige Spiegelung ergibt den ursprünglichen Punkt.
   \item $Q_{\alpha v} = Q_v, \alpha \in \mathbb{R}, a \neq 0$.\\Skalierung des Normalenvektors ändert nicht die Spiegelebene.
-  \item $Q_v y \Leftrightarrow y^T v = 0$.\\
+  \item $Q_v y = y \Leftrightarrow y^T v = 0$.\\
         Ursprünglicher und gespiegelter Punkt sind nur identisch, wenn der Punkt in der Spiegelebene liegt.
   \item $Q_v v = -v$.\\
         Spiegelung des Normalenvektors vertauscht das Vorzeichen.   
@@ -522,7 +522,7 @@ Nun lässt sich, wie in der Kapiteleinleitung beschrieben, die Integralaufteilun
 
 \subsection{Gauß-Quadratur}
 
-Anstatt äquidistante Gewichte zu wählen, können wir auch andere Gewichte verwenden. Diese Verallgemeinerung, die Gauß-Quadratur, der Newton-Cotes-Formeln erreicht dann einen Exaktheitsgrad von bis zu $2m + 1$. 
+Anstatt äquidistante Stützstellen zu wählen, können wir auch andere Stützstellen verwenden. Diese Verallgemeinerung, die Gauß-Quadratur, der Newton-Cotes-Formeln erreicht dann einen Exaktheitsgrad von bis zu $2m + 1$. 
 
 Genauer können wir sagen: Es existieren Stützstellen $\omega_0, \ldots, \omega_m \in (c, d)$ (hier im \emph{offenen} Intervall!), so dass mit $h = d - c$ gilt
 
@@ -530,10 +530,10 @@ Genauer können wir sagen: Es existieren Stützstellen $\omega_0, \ldots, \omega
   h \sum_{i=0}^m \omega_i f(x_i) = \int_c^d f(x) dx + E_f(x)
 \]
 
-Dabei ist $E_g(x)$ der Fehler, welcher bei allen $g \in \Pi_{2m+1}$ gleich null ist. Sonst gilt für passendes $\xi \in [c, d]$
+Dabei ist $E_g(h)$ der Fehler, welcher bei allen $g \in \Pi_{2m+1}$ gleich null ist. Sonst gilt für passendes $\xi \in [c, d]$
 
 \[
-  \abs*{E_f(h)} = \frac{((m+1)!)^4}{((2m+2)!)^3 (2m+3)} h^{2m+3} \abs*{f^{(2m+3)}}
+  \abs*{E_g(h)} = \frac{((m+1)!)^4}{((2m+2)!)^3 (2m+3)} h^{2m+3} \abs*{g^{(2m+3)}}
 \]
 
 Wir schreiben auch auch $I_{k,n} \approx \int_a^b f(x) dx$, wobei $[a, b]$ in $n$ Teilintervalle mit Länge $\frac{b-a}{n} = h$ und auf jedem Teilintervall eine Gauß-Quadratur mit $k = m + 1$ Stützstellen angewandt wird.
@@ -546,11 +546,11 @@ Die Lösung eines linearen Gleichungssystems lässt sich iterativ als
 \[x^{k+1} = x^k+ C(b-Ax^k)\]
 bestimmen, wobei $C$ eine ``gute'' Approximation für $A^{-1}$ ist.
 
-Dieses Verfahren konvergiert, wenn $\rho(I-CA) < 1$ ist. Dabei ist $\rho(A)$ der Spektralradius, also der Betrag des betragsmäßig größten Eigenwertes von $A$.
+Dieses Verfahren konvergiert, wenn $\rho(I-CA) < 1$ ist. Dabei ist $\rho(A)$ der Spektralradius, der Betrag des betragsmäßig größten Eigenwertes von $A$.
 
 Da $\rho(A) \le \norm{A}$ für jede Vektornorm-induzierte Matrixnorm $\norm{\cdot}$ ist, konvergiert das Verfahren also insbesondere wenn $\norm{A} < 1$ für eine beliebige Matrixnorm $\norm{\cdot}$ ist.
 
-Im folgenden sei $A = D-L-U$ wobei $D$ nur Einträge auf, $L$ unterhalb und $U$ oberhalb der Diagonalen enthält.
+Im Folgenden sei $A = D-L-U$ wobei $D$ nur Einträge auf, $L$ unterhalb und $U$ oberhalb der Diagonalen enthält.
 
 \subsection{Jacobi-Verfahren}
 
