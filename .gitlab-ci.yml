@@ -12,3 +12,4 @@ compile_pdf:
       - mechanik_i.pdf
       - maschinengestaltung_i.pdf
       - numrech.pdf
+      - buk.pdf
