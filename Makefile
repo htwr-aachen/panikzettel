@@ -22,10 +22,10 @@ maschinengestaltung_i.pdf: maschinengestaltung_i.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make maschinengestaltung_i.tex
 
 numrech.pdf: numrech.tex
-	latexmk -xelatex numrech.tex
+	latexmk -pdflatex="xelatex -interaction=nonstopmode" -pdf numrech.tex
 
 buk.pdf: buk.tex
-	latexmk -pdflatex=lualatex -pdf buk.tex
+	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf buk.tex
 
 clean:
 	latexmk -CA
