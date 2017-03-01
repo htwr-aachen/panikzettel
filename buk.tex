@@ -345,6 +345,8 @@ $\EXP$ oder EXPTIME ist die Klasse der Entscheidungsprobleme $L$, für die es ei
 
 \subsection[P, NP und EXP]{$\P$, $\NP$ und $\EXP$}
 \[ \P \subseteq \NP \subseteq \EXP \]
+Wir wissen auch, dass $\P \neq \EXP$ (Zeithierarchiesatz).
+
 Es ist $\P \subseteq \NP$, weil eine deterministische TM als Spezialfall einer NTM gesehen werden kann.
 
 $\NP \subseteq \EXP$ gilt, weil wir NTMs auf TMs in exponentieller Zeit simulieren können, indem wir den Berechnungsbaum der NTM durchlaufen.
@@ -427,17 +429,17 @@ Für metrisches TSP dagegen, das heißt TSP, wo die Knoten des zu durchwandernde
 \hline
 Problem & Beschreibung & entscheidbar? \\
 \hline
-Halteproblem $H$ & $H=\{\langle M\rangle w \mid \text{$M$ hält auf $w$}\}$ & semi \\
+Halteproblem $H$ & $H=\{\goedel{M} w \mid \text{$M$ hält auf $w$}\}$ & semi \\
 \hline
-$\comp H$ & $\comp H = \{\langle M \rangle w \mid \text{$M$ hält nicht auf $w$}\}$ & \xmark \\
+$\comp H$ & $\comp H = \{\goedel{M} w \mid \text{$M$ hält nicht auf $w$}\} \cup \overline{\text{Syn}}$ & \xmark \\
 \hline
-spez. Halteprob. $H_\varepsilon$ & $H_\varepsilon = \{\langle M \rangle \mid \text{$M$ hält auf $\varepsilon$}\}$ & semi \\
+spez. Halteprob. $H_\varepsilon$ & $H_\varepsilon = \{\goedel{M} \mid \text{$M$ hält auf $\varepsilon$}\}$ & semi \\
 \hline
-$\comp H_\varepsilon$ & $\comp H_\varepsilon = \{\langle M\rangle \mid \text{$M$ hält nicht auf $\varepsilon$}\}$ & \xmark \\
+$\comp H_\varepsilon$ & $\comp H_\varepsilon = \{\goedel{M} \mid \text{$M$ hält nicht auf $\varepsilon$}\} \cup \overline{\text{Syn}}$ & \xmark \\
 \hline
-$H_\text{all}$ & $H_\text{all} = \{\langle M \rangle \mid \text{$M$ hält auf jeder Eingabe}\}$ & \xmark \\
+$H_\text{all}$ & $H_\text{all} = \{\goedel{M} \mid \text{$M$ hält auf jeder Eingabe}\}$ & \xmark \\
 \hline
-$\comp H_\text{All}$ & $\comp H_\text{All} = \{\langle M \rangle \mid \text{$M$ hält auf keiner Eingabe}\}$ & \xmark \\ 
+$\comp H_\text{All}$ & $\comp H_\text{All} = \{\goedel{M} \mid \text{$M$ hält auf keiner Eingabe}\} \cup \overline{\text{Syn}}$ & \xmark \\ 
 \hline
 Nullstellenproblem & Für ganzzahliges Polynom: ex. Nullstelle in $\mathbb{Z}$? & semi \\
 \hline
@@ -449,6 +451,8 @@ Modifiziertes PKP & PKP mit festem Startdomino & semi \\
 \hline
 \end{tabular}
 \end{adjustbox}
+~\\~\\
+Mit $\overline{\text{Syn}}$ sind hier die Elemente aus $\{ 0, 1 \}^\ast$ gemeint, die nicht die Form $\goedel{M} w$ resp. $\goedel{M}$ haben.
 
 \section{Komplexitätstabelle}
 \label{sec:komplexitaetstabelle}
@@ -466,13 +470,13 @@ Klasse & Problem & Beschreibung \\
 \hline
 \NP & Graph Isomorphismus & \\
 \hline
-\NPC & \textsc{Sat} & Lösbarkeit logischer Formeln  \\
+\NPC & \textsc{Sat} & Erfüllbarkeitsproblem der Aussagenlogik.  \\
 \hline
 \NPC & \textsc{Clique} & Hat ein Graph eine Clique?   \\
 \hline
 \NPC & \textsc{TSP-E} & Gibt es eine Eulertour einer maximalen Länge?  \\
 \hline
-\NPC & \textsc{Knapsack-E} & Gibt es Objekte unter einer Gewichtsschranke mit min. Nutzen? \\
+\NPC & \textsc{Knapsack-E} & Gibt es Objekte unter einer Gewichtsschranke mit mindestem Nutzen? \\
 \hline
 \NPC & \textsc{Bin-Packing-E} & Passen Objekte in max. Anzahl von Behältern? \\
 \hline
