@@ -78,7 +78,7 @@ Damit wir uns mit Themen wie Berechenbarkeit und Komplexität von Problemen ause
 Eine Turingmaschine $M$ wird definiert durch das 7-Tupel $$M= (Q, \Sigma,\Gamma, B, q_0, \overline{q}, \delta),$$ wobei $Q$ eine endliche Zustandsmenge, $\Sigma$ das Eingabealphabet, $\Gamma$ das Bandalphabet, $B$ das Leerzeichen, $q_0$ der Anfangszustand, $\overline{q}$ der Stoppzustand und \[\delta : (Q \setminus \overline{q}) \times \Gamma \to Q \times \Gamma \times \{R,L,N\}\]
 die Zustandsübergangsfunktion ist.
 
-Als \textbf{Konfiguration} einer TM ist ein String $\alpha q\beta$ mit $q \in Q, \alpha,\beta \in \Gamma^* $ und bedeutet, dass die TM sich im Zustand $q$ befindet, während der Lesekopf auf dem ersten Symbol von $\beta$ und eine Position hinter dem letzten Symbol $\beta$ ruht. $\alpha_1\ldots \alpha_n \underbrace{\beta_1}_{\text{Kopf}}\ldots \beta_n$. 
+Eine \textbf{Konfiguration} einer TM ist ein String $\alpha q\beta$ mit $q \in Q, \alpha,\beta \in \Gamma^* $. $\alpha_1\ldots \alpha_n q \underbrace{\beta_1}_{\text{Kopf}}\ldots \beta_n$ bedeutet, dass die TM sich im Zustand $q$ befindet, während der Lesekopf auf dem ersten Symbol von $\beta$ und eine Position hinter dem letzten Symbol von $\alpha$ steht.
 
 Eine Konfiguration $k'$ ist die direkte Nachfolgekonfiguration einer Konfiguration $k$, falls  diese durch einen Rechenschritt der betrachteten TM aus $k$ entsteht. Wir schreiben $k \vdash k'$.  Falls $k'$ in einer beliebigen Anzahl an  Rechenschritten aus $k$ entsteht so ist $k'$ eine Nachfolgekonfiguration von $k$: $k \vdash^* k'$.
 
