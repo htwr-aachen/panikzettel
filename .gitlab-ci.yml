@@ -9,3 +9,7 @@ compile_pdf:
       - dsal.pdf
       - fosap.pdf
       - bus.pdf
+      - mechanik_i.pdf
+      - maschinengestaltung_i.pdf
+      - numrech.pdf
+      - buk.pdf
