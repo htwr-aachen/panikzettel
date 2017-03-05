@@ -44,7 +44,7 @@
 	
 \begin{abstract}
 	Dieser Panikzettel ist über die Vorlesung Maschinengestaltung I und basiert auf der Vorlesung von Univ.-Prof. Dr.-Ing. Georg Jacobs vom Institut für Allgemeine Konstruktionstechnik.\\
-	Der aktuelle Master liegt $\href{http://panikzettel.philworld.de/}{hier}$.\\
+	Der aktuelle Master liegt auf $\href{http://panikzettel.philworld.de/}{panikzettel.philworld.de}$.\\
 	Möge eure Leistung in der Klausur reibungsfrei übertragen werden und das Ergebnis in eurer Toleranzzone liegen.\\
 \end{abstract}
 	
@@ -52,10 +52,12 @@
 	
 \pagebreak
 	
-\section{Einleitung}
+\section{Zeichnungen und Ansichten}
 \begin{itemize}
 	\item Normen: DIN(National), EN(Regional), ISO(International)
 	\item Geometrische Produktspezifikation: Geometrie ermöglicht Funktion, Tolerierung stellt Funktion sicher
+	\item Zentralprojektion: Vergrößerung/Verkleinerung
+	\item Parallelprojektion: Orthogonal/Schief
 \end{itemize}
 	
 \subsection{Dreitafelprojektion}
@@ -74,7 +76,7 @@
 \end{itemize}
 	
 \section{Elemente der technischen Zeichnung}
-Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
+Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	
 \subsection{Liniengruppen}
 \begin{itemize}
@@ -87,6 +89,7 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	\item Breite Volllinie: Körperkanten
 	\item Schmale Volllinie: Bemaßung, Gewinde, Schraffur
 	\item Freihandlinie: Unterbrochen dargestellte Schnittansicht, trifft Volllinie in 90°
+	\item Schmale Strichlinie: Verdeckte Kanten
 	\item Schmale Strichpunktlinie: Symmetrielinie
 	\item Breite Strichpunktlinie: Schnittebenen und Schnittverläufe
 \end{itemize}
@@ -103,6 +106,8 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	\item Hinweißlinien die auf einer Fläche enden, enden mit einem Punkt
 	\item Kettenbemaßung ist nicht zulässig
 	\item Maßzahlen müssen frei stehen, ggf. Schraffur unterbrechen
+	\item Nicht maßstäblich: $\underline{[Zahl]}$
+	\item Hilfsmaß: ([Zahl]) z.B. (80)
 \end{itemize}
 	
 \subsection{Bauteile}
@@ -111,22 +116,17 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	\item Gewindebemaßung mit M, Radien mit R, Kugeln mit S jeweils vor der Maßangabe
 	\item Fasen nur bei 45° mit Maßangabe: z.B. 2x45°, sonst Winkel und Länge
 	\item Neigungssymbol und Kegelverjüngung in Richtung des Gefälle
-\end{itemize}
-
-\subsection{Vorgehen}
-\begin{itemize}
-	\item Wellen: Bemaßung von beiden Seiten + Durchmesser + Gesamtlänge
-	\item Bleche: Bemaßung von zwei nicht gegenüberliegenden Seiten + Tiefe
-\end{itemize}
-	
+\end{itemize}	
 	
 \section{Schnitt- und Bruchdarstellungen}
 \subsection{Allgemein}
 \begin{itemize}
 	\item Schnitte stellen innere Besonderheiten des Bauteils dar
-	\item dünne Schraffur von Schnittflächen in 45° bzw. 135°, angrenzende Flächen verschieden schraffieren, zusammengehörende Flächen aber gleich
+	\item erzeugen keine neuen Körperkanten
+	\item dünne Schraffur von Schnittflächen in 45° bzw. 135°, angrenzende Flächen verschieden schraffieren, zusammengehörende Flächen aber gleich, kleine Flächen geschwärzt
 	\item Bruchkanten durch schmale Freihandlinie
 	\item Spitze außerhalb der Bohrlänge
+	\item Aufeinandertreffende Bohrungen: Diagonale bei gleichem Durchmesser; sonst Rundung in größerer Bohrung
 \end{itemize}
 		
 \subsection{Schnittarten}
@@ -148,6 +148,7 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 		
 \subsection{Ungeschnittene Bauteile}
 \begin{itemize}
+	\item Normteile
 	\item Schrauben und Muttern
 	\item Scheiben, Nieten und Stifte
 	\item Bolzen, Federn und Keile
@@ -239,7 +240,7 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 \begin{itemize}
 	\item Spannscheibe: Baut durch axiale Stauchung Kraft auf
 	\item Formschlüssige Verliersicherung: Kronenmutte+Spint, Drahtsicherung, Sicherungsblech
-	\item Kraftschlüssige Verliersicherung: Federringe und -scheiben
+	\item Kraftschlüssige Verliersicherung: Federringe und -scheiben, Sperrkantring
 \end{itemize}
 	
 \section{Welle-Nabe-Verbindung}
@@ -248,8 +249,10 @@ Maßstäbliche Darstellung, z.B. 2:1, Vergrößerung, oder 1:5, Verkleinerung.
 	\item Bolzenverbindungen: Gelenkverbindung mit einem Freiheitsgrad, ggf. mit Kopf
 	\item Keilverbindungen: vorgespannte Welle-Nabe-Verbindung, Wirkung durch Formschluß und Reibung
 	\item Pass- und Scheibenfeder: für konstante Lasten, Kräfte nur an seitlichen Flächen übertragen
+	\item Pass- vs. Scheibenfeder: Passfeder kann mehr Moment aufnehmen, ist aber teurer
 	\item Zahn- und Keilwellenverbindung: Übertragen von Drehmomenten, nur Profilierung von Nabe und Welle; Innenzentrierung: besserer Rundlauf, Flankenzentrierung: kleines Verdrehspiel und bessere Momentübertragung
 	\item Prinzip von Druckhülse(ggf. mit Medium) und Sternscheibe: Druckkraft $\rightarrow$ Querkraft
+	\item Stoffschluss: Kleben, Schweißen, Löten
 \end{itemize}	
 	
 \section{Lagerung von Wellen}
@@ -359,7 +362,7 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 	\item Zähnezahl $z$, Modul $m$, Drehmoment $M$, Leistung $P$, Drehzahl $n$
 	\item Winkelgeschwindigkeit $\omega$, Achsenabstand $a$, Übersetzung $i$
 	\item Formeln: $i=\frac{\omega_1}{\omega_2}=\frac{d_2}{d_1}=\frac{z_2}{z_1}=\frac{n_1}{n_2}, i_{ges}=\prod_{j}{} i_j$
-	\item $M_{ein} \cdot i_{ges}=M_{aus}$, Teilkreisdurchmesser $d= m \cdot z$
+	\item $M_{ein} \cdot i_{ges}=M_{aus}$, Teilkreisdurchmesser $d= m \cdot z$, $P=M \cdot \omega$
 \end{itemize}
 	
 \subsubsection{Arten}
@@ -373,6 +376,7 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 \section{Maßtoleranzen und Passungen}
 \subsection{Toleranzen}
 \begin{itemize}
+	\item ``So ungenau wie möglich, aber so genau wie nötig."
 	\item Direktes Antragen ans Maß mittels kleiner Zahlen oben und unten rechts
 	\item Allgemeintoleranzen: Toleranzklassen enthalten Toleranzen für viele Maße, gelten nicht für bereits tolerierte Elemente.
 	\item ISO-Toleranzfelder: Toleranzintervalle mit Toleranztabelle
@@ -380,6 +384,8 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 	
 \subsection{Passungen}
 \begin{itemize}
+	\item Kleinbuchstabe: Außenmaße Welle
+	\item Großbuchstabe: Innenmaße Bohrung
 	\item Spiel: Positive Differenz zwischen Bohrung und Welle
 	\item Übermaß: Negative Differenz vor dem Fügen
 	\item Spielpassung: Mindestmaß der Bohrung $\geq$ Höchstmaß der Welle, $S_g,S_k$
@@ -389,12 +395,10 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 \end{itemize}
 Einführung von Einheitsbohrung und Einheitswelle, mit Toleranzfeldlage H/h, um Kosten zu sparen. 
 	
-Bei gegebenem Durchmesser, sowie den gewünschten Spielen/Übermaßen: Auswahl der Passung mithilfe der Passungsauwahl DIN 7157.
-	
 \section{Form- und Lagetoleranzen}
 Es gibt Gestaltabweichung in Maß, Form, Lage und Oberfläche.
 	
-Allgemeintoleranzen tolerieren mit Toleranzklassen nicht alle Eigenschaften, z.B. Koaxialität nicht.
+Allgemeintoleranzen tolerieren nicht alle Eigenschaften.
 \subsection{Grundsätze}
 \begin{itemize}
 	\item Unabhängigkeit: Maß- und Formtoleranz können jeweils unabhängig ihr Maximum erreichen
@@ -431,6 +435,7 @@ Allgemeintoleranzen tolerieren mit Toleranzklassen nicht alle Eigenschaften, z.B
 	
 \subsection{Formtoleranzen}
 Tolerierte Elemente:
+%TO-DO Symbole nachtragen?
 \begin{itemize}
 	\item Geradheit
 	\item Ebenheit
@@ -547,7 +552,7 @@ Anwendung von Wärme und/oder Kraft ohne oder mit Schweißzusatz.
 	\item Kreis an Treffpunkt von Bezugs- und Pfeillinie: Umlaufende Naht
 	\item Bemaßung mit $a$, Dicke der Naht, Symbol und Länge, z.B.: $a4V20$
 \end{itemize}
-Die beste Schweißnaht ist keine Schweißnaht, wegen Veränderung durch Wärme an Steifigkeit und Festigkeit.
+Die beste Schweißnaht ist keine Schweißnaht, da Veränderung durch Wärme an Steifigkeit und Festigkeit.
 
 \subsection{Gestaltungsrichtlinien}
 Eckenabbrand und Nahtanhäufungen vermeiden.
@@ -573,7 +578,7 @@ Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeb
 
 \subsubsection{Wellen}
 \begin{itemize}
-	\item Von beiden Seiten bis zum dicksten Absatz bemaßen und Gesamtlänge angeben
+	\item Von beiden Seiten bis zum dicksten Absatz bemaßen und Gesamtlänge angeben, Durchmesser und ggf. Nuttiefe angeben
 	\item Bohrungen, Fasen etc. mit Symbol und ggf. Lage vom Rand bemaßen
 \end{itemize}
 
@@ -590,6 +595,8 @@ Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeb
 \begin{itemize}
 	\item Außengewinde vor Innengewinde
 	\item Bohrungen tiefer als Gewinde und mit 120° Spitze, sowie Gewinde länger als Schraubenlänge
+	\item Draufsicht auf Gewinde mit dünnem $\frac{3}{4}$-Kreis
+	\item Auf Doppelpassung achten
 \end{itemize}
 
 \subsection{Passungen}
@@ -615,6 +622,9 @@ Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeb
 \subsection{Leistungsübertragung}
 	Formeln nachschlagen, umstellen und einsetzen.
 	
+\subsection{Maßtoleranzen und Passungen}
+Bei gegebenem Durchmesser, sowie den gewünschten Spielen/Übermaßen: Auswahl der Passung mithilfe der Passungsauwahl DIN 7157.
+	
 \subsection{Form- und Lagetoleranzen, Oberflächen und kanten}
 \begin{itemize}
 	\item Zeichen und Toleranzen zuordnen können
@@ -622,11 +632,5 @@ Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeb
 	\item Oberflächen meist mit Ra und ggf. auf Verfahren achten
 	\item sinnvolle Werte für Kanten: $\pm$0.1
 \end{itemize}
-
-\subsection{Schweißen}
-noch keine Tipps %TO-DO
-
-\subsection{Multiple Choice}
-Panikzettel hart anstarren und auswendig können!
 	
 \end{document}
