@@ -28,6 +28,7 @@ buk.pdf: buk.tex
 	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf buk.tex
 
 swt.pdf: swt.tex
+	cp deps/tikz-uml.sty tikz-uml.sty
 	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf swt.tex
 
 clean:
