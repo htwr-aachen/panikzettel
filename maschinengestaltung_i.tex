@@ -86,12 +86,13 @@ Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5
 	
 \subsection{Linienarten}
 \begin{itemize}
-	\item Breite Volllinie: Körperkanten
+	\item Breite Volllinie: Körperkanten, Gewindeabschlusslinie
 	\item Schmale Volllinie: Bemaßung, Gewinde, Schraffur
 	\item Freihandlinie: Unterbrochen dargestellte Schnittansicht, trifft Volllinie in 90°
 	\item Schmale Strichlinie: Verdeckte Kanten
-	\item Schmale Strichpunktlinie: Symmetrielinie
+	\item Schmale Strichpunktlinie: Symmetrielinie, Mittellinie
 	\item Breite Strichpunktlinie: Schnittebenen und Schnittverläufe
+	\item Schmale Strichzweipunktlinie: Endposition beweglicher Teile
 \end{itemize}
 	
 \section{Fertigungsgerechte Bemaßung}
@@ -102,7 +103,9 @@ Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5
 	\item Maßlinien sind dünne Volllinien, mit ausgefüllten 15° Pfeilen an beiden Enden, dürfen nicht geschnitten werden
 	\item die Maßangabe in $mm$ liegt auf der Maßlinie
 	\item Maßhilfslinien sind ebenfalls dünne Volllinien und dürfen sich schneiden
-	\item Die Pfeile sind je nach Liniengruppe 3,5 bis 5 mm lang
+	\item Die Pfeile sind je nach Liniengruppe 0,35 bis 0,5 mm lang
+	\item Abstand Maßlinie-Umriss > 10mm
+	\item Abstand Maßlinie-Maßlinie > 7mm
 	\item Hinweißlinien die auf einer Fläche enden, enden mit einem Punkt
 	\item Kettenbemaßung ist nicht zulässig
 	\item Maßzahlen müssen frei stehen, ggf. Schraffur unterbrechen
@@ -136,7 +139,8 @@ Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5
 	\item Teilschnitt: Freihandlinie um z.B. Wellennuten darzustellen
 	\item Teilausschnitt: Darstellung eines Teilbereichs ohne Begrenzung
 	\item Profilschnitt: Geschnittene Ansicht ins Bauteil gedreht
-	\item Einzelheiten: Stelle mit Kreis und Buchstaben(z.B. X) kennzeichnen, und an anderer Vergrößerung in Teilausschnitt mit Vergrößerungsverhältnis darstellen 
+	\item Stufenschnitt: bei prismatischen Bauteilen; Schnittverlauf einzeichnen
+	\item Einzelheiten: Stelle mit dünnem Kreis und Buchstaben(z.B. X) kennzeichnen; an anderer Stelle im Teilausschnitt mit Vergrößerungsverhältnis darstellen
 \end{itemize}
 
 \subsection{Schnittverlauf}
@@ -167,41 +171,17 @@ Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5
 	\item Standard: Rechtsgewinde, sonst Kennzeichnung mit LH für Linksgewinde
 	\item Regel: Innengewinde vor Außengewinde beim Zeichnen!
 \end{itemize}
-		
-\subsection{Schraubenköpfe}
-\begin{itemize}
-	\item Sechskant, ggf. mit Telleransatz
-	\item Zylinderschraube mit Innensechskant
-	\item Senkschraube mit Innensechskant
-	\item (Linsen-)Zylinderkopf
-	\item (Linsen-)Senkkopf
-\end{itemize}
 	
 \subsection{Schraubenschäfte}
 \begin{itemize}
 	\item Vollschaftschraube: Schaftdurchmesser =
-	      Gewindedurchmesser 
-	\item Dünnschaftschraube: Schaftdurchmesser =
-	      Flankendurchmesser 
+	      Gewindedurchmesser  
 	\item Paßschraube: Schaftdurchmesser $>$ Gewindedurchmesser 
 \end{itemize}
+
+In der Regel ist ein Schraubenende eine Spitze von 120°.
 	
-\subsection{Schraubenenden}
-\begin{itemize}
-	\item ohne Kuppe
-	\item Spitze (120° im Normalfall)
-	\item Linsen-/Kegelkuppe
-	\item Zapfen
-	\item Ringschneide
-\end{itemize}
-	
-\subsection{Mutternarten}
-\begin{itemize}
-	\item (Flache) Sechskantmutter
-	\item Vierkantmutter
-	\item Kronenmutter
-	\item Hutmutter
-\end{itemize}
+Es gibt viele Kombinationen aus verschiedenen Schäften, Köpfen und Spitzen.
 	
 \subsection{Gewindegeometrie}
 \begin{itemize}
@@ -245,6 +225,7 @@ Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5
 	
 \section{Welle-Nabe-Verbindung}
 \begin{itemize}
+	\item Verbindung durch Stoff-,Kraft- oder, im folgenden besonders, Formschluss:
 	\item Stiftverbindungen: Nehmen Scherkräfte auf, sichern Lage aneinander liegender Teile, z.B. bei Naben, neben Schrauben oder als Steckstifte
 	\item Bolzenverbindungen: Gelenkverbindung mit einem Freiheitsgrad, ggf. mit Kopf
 	\item Keilverbindungen: vorgespannte Welle-Nabe-Verbindung, Wirkung durch Formschluß und Reibung
@@ -253,6 +234,7 @@ Maßstäbliche Darstellung nach DIN ISO 5455, z.B. 2:1, Vergrößerung, oder 1:5
 	\item Zahn- und Keilwellenverbindung: Übertragen von Drehmomenten, nur Profilierung von Nabe und Welle; Innenzentrierung: besserer Rundlauf, Flankenzentrierung: kleines Verdrehspiel und bessere Momentübertragung
 	\item Prinzip von Druckhülse(ggf. mit Medium) und Sternscheibe: Druckkraft $\rightarrow$ Querkraft
 	\item Stoffschluss: Kleben, Schweißen, Löten
+	\item Kraftschluss: Reibung fixiert Bauteile
 \end{itemize}	
 	
 \section{Lagerung von Wellen}
@@ -361,16 +343,17 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 	\item Pfeilverzahnung: Mit schwimmender Lagerung
 	\item Zähnezahl $z$, Modul $m$, Drehmoment $M$, Leistung $P$, Drehzahl $n$
 	\item Winkelgeschwindigkeit $\omega$, Achsenabstand $a$, Übersetzung $i$
-	\item Formeln: $i=\frac{\omega_1}{\omega_2}=\frac{d_2}{d_1}=\frac{z_2}{z_1}=\frac{n_1}{n_2}, i_{ges}=\prod_{j}{} i_j$
-	\item $M_{ein} \cdot i_{ges}=M_{aus}$, Teilkreisdurchmesser $d= m \cdot z$, $P=M \cdot \omega$
 \end{itemize}
+Formeln: $$i=\frac{\omega_1}{\omega_2}=\frac{d_2}{d_1}=\frac{z_2}{z_1}=\frac{n_1}{n_2}, i_{ges}=\prod_{j}{} i_j,a=\frac{d_1+d_2}{2}$$
+$$M_{ein} \cdot i_{ges}=M_{aus}, \textnormal{Teilkreisdurchmesser } d= m \cdot z, P=M \cdot \omega$$
+
 	
 \subsubsection{Arten}
 \begin{itemize}
 	\item Stirnradgetriebe: Zähnezahl von Ritzel und Rad teilerfremd
 	\item Kegelradgetriebe: Achsen der Kegelräder schneiden sich
-	\item 	Schneckengetriebe: Kreuzende Achsen; meist selbst hemmend; Achsen liegen nicht in einer Ebene
-	\item 	Planetengetriebe: mehrstufige Stirnrädergetriebe, große Übersetzungsverhältnisse; geringe Belastung
+	\item Schneckengetriebe: Kreuzende Achsen; meist selbst hemmend; Achsen liegen nicht in einer Ebene
+	\item Planetengetriebe: mehrstufige Stirnrädergetriebe, große Übersetzungsverhältnisse; geringe Belastung
 \end{itemize}	
 	
 \section{Maßtoleranzen und Passungen}
@@ -381,11 +364,18 @@ Einteilung in gleichmäßig und ungleichmäßig übersetzende Getriebe
 	\item Allgemeintoleranzen: Toleranzklassen enthalten Toleranzen für viele Maße, gelten nicht für bereits tolerierte Elemente.
 	\item ISO-Toleranzfelder: Toleranzintervalle mit Toleranztabelle
 \end{itemize}
+
+\subsection{Begriffe}
+\begin{itemize}
+	\item Höchstmaß $ULS$ und Mindestmaß $LLS$; $ULS$-$LLS$=$Toleranzzone$
+	\item Oberes Grenzmaß $es$ = $ULS$-$Nennmaß$
+	\item Unteres Grenzmaß $ei$ = $Nennmaß$-$LLS$
+\end{itemize}
 	
 \subsection{Passungen}
 \begin{itemize}
-	\item Kleinbuchstabe: Außenmaße Welle
-	\item Großbuchstabe: Innenmaße Bohrung
+	\item Kleinbuchstabe: Außenmaße z.B. Welle
+	\item Großbuchstabe: Innenmaße z.B. Bohrung
 	\item Spiel: Positive Differenz zwischen Bohrung und Welle
 	\item Übermaß: Negative Differenz vor dem Fügen
 	\item Spielpassung: Mindestmaß der Bohrung $\geq$ Höchstmaß der Welle, $S_g,S_k$
@@ -437,23 +427,24 @@ Allgemeintoleranzen tolerieren nicht alle Eigenschaften.
 Tolerierte Elemente:
 %TO-DO Symbole nachtragen?
 \begin{itemize}
-	\item Geradheit
-	\item Ebenheit
-	\item Rundheit
-	\item Zylinderform
+	\item Geradheit: $\textendash$
+	\item Ebenheit: [liegendes Trapez]
+	\item Rundheit: $\bigcirc$
+	\item Zylinderform: \begin{rotate}{40} $\eqcirc$ \end{rotate}
 \end{itemize}
 Jeder Punkt muss sich innerhalb der Toleranzzone befinden. Die Lage relativ zum Nennmaß ist nicht vorgegeben.
 	
 \subsection{Lagetoleranzen}
 Tolerierte Elemente:
 \begin{itemize}
-	\item Richtung: Parallelität, Rechtwinkligkeit, Neigung
-	\item Ort: Position, Koaxialität, Symmetrie
-	\item Lauf: Plan-/Rundlauftoleranz
+	\item Richtung: Parallelität $\diagup \diagup$, Rechtwinkligkeit $\bot$, Neigung $\angle$
+	\item Ort: Position, Koaxialität $\circledcirc$, Symmetrie
+	\item Lauf: Plan-/Rundlauftoleranz \begin{rotate}{60} $\rightarrow$ \end{rotate}, Gesamtlauf  \begin{rotate}{60} $\rightrightarrows$ \end{rotate}
 \end{itemize}
 Jeder Punkt muss sich innerhalb der Toleranzzone befinden. Nur in Bezug auf andere Geometrieelemente.
 	
 \section{Technische Oberflächen und Kanten}
+Der Oberflächenzustand teilt sich in chemische, physikalische und für uns relevante geometrische Eigenschaften auf. 
 \subsection{Ordnungssystem für Gestaltabweichungen}
 \begin{enumerate}
 	\item Ordnung: Formabweichungen(Geradheit, Ebenheit, Rundheit)
@@ -466,8 +457,8 @@ Ist-Oberfläche: Überlagerung von 1. bis 4. Ordnung
 
 \subsection{Oberflächenkenngrößen}
 \begin{itemize}
-	\item Rz: Gemittelte Rautiefe aus 5 Messstrecken 
-	\item Ra: Mittenrauwert
+	\item Rz: Gemittelte Rautiefe aus $n$ Messstrecken 
+	\item Ra: Mittenrauwert (Integral)
 \end{itemize}
 	
 \subsection{Oberflächensymbole}
@@ -531,7 +522,7 @@ Anwendung von Wärme und/oder Kraft ohne oder mit Schweißzusatz.
 \begin{itemize}
 	\item Stumpfstoß: \textbf{- -}
 	\item Parallelstoß: \textbf{=}
-	\item T-Stoß: \textbf{T}
+	\item T-Stoß: $\bot$
 	\item Kreuzstoß: \textbf{-$\mid$-}
 	\item Eckstoß: \textbf{L}
 	\item Überlappungsstoß, Mehrfachstoß, Schrägstoß
@@ -630,7 +621,7 @@ Bei gegebenem Durchmesser, sowie den gewünschten Spielen/Übermaßen: Auswahl d
 	\item Zeichen und Toleranzen zuordnen können
 	\item Mit Kästchen nach und nach die geforderten Toleranzen anhand der IT Qualität einzeichnen
 	\item Oberflächen meist mit Ra und ggf. auf Verfahren achten
-	\item sinnvolle Werte für Kanten: $\pm$0.1
+	\item sinnvolle Werte für Kanten: $+0.1$ oder $-$
 \end{itemize}
 	
 \end{document}
