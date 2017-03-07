@@ -1,4 +1,4 @@
-all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf mechanik_i.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf
+all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf mechanik_i.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf
 
 la.pdf: la.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
@@ -26,6 +26,9 @@ numrech.pdf: numrech.tex
 
 buk.pdf: buk.tex
 	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf buk.tex
+
+swt.pdf: swt.tex
+	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf swt.tex
 
 clean:
 	latexmk -CA
