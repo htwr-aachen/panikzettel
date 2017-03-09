@@ -100,7 +100,7 @@ Die meisten Abschnitte solltest du wahrscheinlich nur ein- oder zweimal gelesen 
 \draw[->] (c7) edge (c8);
     \end{tikzpicture}
 \end{center}
-Diese Zeichnung nennt man \emph{Aktivitätsdiagramm}, man nutzt es um Abläufe und Kausalitäten zu beschreiben. Rauten ermöglichen es, \emph{Fallunterscheidungen} zu signalisieren, während die schwarzen Balken darauf hindeuten, dass verschiedene Ereignisse \emph{parallel} stattfinden. 
+Diese Zeichnung nennt man \emph{Aktivitätsdiagramm}, man nutzt es um Abläufe und Kausalitäten zu beschreiben. Rauten ermöglichen es, \emph{Fallunterscheidungen} zu signalisieren, während die schwarzen Balken darauf hindeuten, dass verschiedene Ereignisse \emph{parallel} stattfinden.
 
 \subsection{Use-Case-Diagramm}
 \label{sec:usecasediagramm}
@@ -147,7 +147,7 @@ Es gibt verschieden Arten von Use-Case-Beziehungen:
 \begin{tikzpicture}
 \umlusecase[name=A]{A}
 \umlusecase[name=B,x=4]{B}
-\umlinclude{B}{A}
+\umlinclude{A}{B}
 \end{tikzpicture}
 
 \textbf{Erweiterung:} Use-Case \lstinline{A} wird durch \lstinline{B} erweitert. Es muss spezielle \emph{extension points} geben, an die die Erweiterungen anknüpfen. Hier heißt unser extension point ``Korrekturtyp''.
@@ -201,7 +201,7 @@ Allgemein kann eine Klasse nur von einer (abstrakten) Klasse erben, aber von meh
 \node (a)[xshift = 7]{Rolle};
 \end{tikzpicture}
 
-Diese Assozation verbindet die Klassen $\textit{A}$ und $\textit{B}$. Die Assozationsrolle von $\textit{B}$ ist hier als $\textit{arg2}$ (Platzhalter) bzgl. \textit{A} bezeichnet bzw. als \textit{arg1} bezeichnet. Die Kardinalität (wieviele ``Instanzen''  der Assoziation vorliegen) sieht man unterhalb des Assoziationspfeils und kann folgende Werte annehmen:
+Diese Assozation verbindet die Klassen $\textit{A}$ und $\textit{B}$. Die Assozationsrolle von $\textit{B}$ ist hier als $\textit{arg1}$ (Platzhalter) bzgl. \textit{A} bezeichnet bzw. als \textit{arg2} bezeichnet. Die Kardinalität (wieviele ``Instanzen''  der Assoziation vorliegen) sieht man unterhalb des Assoziationspfeils und kann folgende Werte annehmen:
 \begin{itemize}
 \item genau a: a (oben z.B. 1)
 \item Intervall: a\ldots b
@@ -220,9 +220,8 @@ Eine Komposition ist eine spezielle Form der Assoziation.
 \umlunicompo[arg2=1]{A}{B}
 \umlunicompo[arg2=1]{A}{C}
 \end{tikzpicture}
-%TODO der folgende Satz..ka
 
-In diesem Klassendiagramm beinhaltet $\textit{A}$ immer genau ein $\textit{B}$  und $\textit{C}$. Falls $\textit{A}$, $\textit{B}$ oder $\textit{B}$ gelöscht werden, sollten alle Objekte gelöschte werden.
+In diesem Klassendiagramm beinhaltet $\textit{A}$ immer genau ein $\textit{B}$  und $\textit{C}$. Falls $\textit{A}$, $\textit{B}$ oder $\textit{C}$ gelöscht werden, sollten alle Objekte gelöschte werden.
 
 \subsubsection{Sichtbarkeit}
 \begin{tabular}{|l|c|c|c|c|}
@@ -232,15 +231,15 @@ UML & + & \# & - & \\
 Java & public & protected & private & (default)\\
 \hline
 \hline
-Gleiche Klasse & \cmark & \cmark & \cmark & \cmark\\ 
+Gleiche Klasse & \cmark & \cmark & \cmark & \cmark\\
 \hline
-Andere Klasse (gleiches Paket) & \cmark & UML: \xmark, Java: \cmark & \xmark & \cmark\\ 
+Andere Klasse (gleiches Paket) & \cmark & UML: \xmark, Java: \cmark & \xmark & \cmark\\
 \hline
-Andere Klasse (anderes Paket) & \cmark & \xmark & \xmark & \xmark\\ 
+Andere Klasse (anderes Paket) & \cmark & \xmark & \xmark & \xmark\\
 \hline
-Unterklasse (gleiches Paket) & \cmark & \cmark & \xmark & \cmark\\ 
+Unterklasse (gleiches Paket) & \cmark & \cmark & \xmark & \cmark\\
 \hline
-Unterklasse (anderes Paket) & \cmark & \cmark & \xmark & \xmark\\ 
+Unterklasse (anderes Paket) & \cmark & \cmark & \xmark & \xmark\\
 \hline
 \end{tabular}
 
@@ -318,7 +317,7 @@ Zusammengesetze Zustände können ihre eigenen Start- und Endpunkte sowie Transi
 
 \subsection{Weitere Diagramme}
 
-Es gibt auch weitere Diagramme aus der Vorlesung, die möglicherweise relevant sein könnten: 
+Es gibt auch weitere Diagramme aus der Vorlesung, die möglicherweise relevant sein könnten:
 
 \begin{itemize}
 \item \textbf{Blockdiagramm:} Man zeichnet (möglicherweise geschachtelte) Blöcke, die Subsysteme strukturieren. Diese werden durch Linien, die Schnittstellen repräsentieren, verbunden.
@@ -326,7 +325,7 @@ Es gibt auch weitere Diagramme aus der Vorlesung, die möglicherweise relevant s
 \item \textbf{Konfigurationsdiagramm:} Grobe schematische Zeichnung physikalischer Verteilung von Komponenten.
 \item \textbf{UML-Verteilungsdiagramm:} UML-Variante von Konfigurationsdiagrammen. Komponenten werden durch Linien verbunden. Die Namen haben zusätzlich ``Stereotypen'' wie etwa \lstinline{<<processor>>} oder \lstinline{<<network>>}.
 \end{itemize}
-
+abc
 \section{Vorgehensmodelle}
 \label{sec:vorgehensmodelle}
 
@@ -438,8 +437,8 @@ Objektverhalten soll durch einen endlichen Zustandsraum und Transitionen modelli
 
 Eine Komponente ist ein Teil einer Software die \emph{explizite Schnittstellen} besitzt, von der Umgebung \emph{unabhängig} ist und \emph{kombinierbar} ist. Man versucht die Komponenten so zu entwerfen, dass man eine hohe Kohäsion und eine schwache Kopplung erreicht.
 
-\textbf{Kohäsion}: Bezeichnet wie gut ein Programmkomponenten eine logische Einheit bildet. 
-\textbf{Kopplung}: Unter Kopplung versteht man, wie stark eine Programmkomponente von anderen abhängt. 
+\textbf{Kohäsion}: Bezeichnet wie gut ein Programmkomponenten eine logische Einheit bildet.
+\textbf{Kopplung}: Unter Kopplung versteht man, wie stark eine Programmkomponente von anderen abhängt.
 
 \section{Muster}
 \label{sec:muster}
@@ -450,7 +449,7 @@ Erfahrung zeigt, dass sich manche Muster in der objektorientierten Softwareentwi
 
 \subsubsection{Adapter/Wrapper}
 
-\begin{wrapfigure}[10]{R}{0pt} 
+\begin{wrapfigure}[10]{R}{0pt}
 \begin{tikzpicture}
 % TODO: abstrakt?
 \umlclass{Target}{}{
@@ -489,17 +488,17 @@ Vergleiche hierzu das Beispiel der \lstinline{Monster}-Klasse, wo in einem fikti
 \umlclass[x=5]{EinMonster}{
   int HP
 }{}
-\umlclass[x=10]{MonsterTyp}{}{
+\umlclass[x=10]{MonsterTyp}{
   Image bild \\
   int angriffspunkte \\
   int verteidigungspunkte
-}
+}{}
 \umluniassoc{EinMonster}{MonsterTyp}
 \end{tikzpicture}
 
 \subsubsection{Koordinator}
 
-Das Koordinator-Muster fasst Eigenschaften einer Beziehung zwischen zwei Klassen zusammen, die so wirklich nicht zu einer der beiden Klassen allein passen. 
+Das Koordinator-Muster fasst Eigenschaften einer Beziehung zwischen zwei Klassen zusammen, die so wirklich nicht zu einer der beiden Klassen allein passen.
 
 Man kann sich etwa die Beziehung ``gebucht haben'' zwischen den Klassen  \lstinline{Kunde} und \lstinline{Veranstaltung} vorstellen. Das Buchungsdatum gehört weder zum Kunden noch zur Veranstaltung selber, also führt man den Koordinator \lstinline{Buchung} hinzu.
 
@@ -514,7 +513,7 @@ Ein Objekt einer Unterklasse kann in eine andere Unterklasse wechseln. Man führ
 \subsubsection{Komposition}
 \label{sec:komposition}
 
-\begin{wrapfigure}[6]{R}{0pt} 
+\begin{wrapfigure}[6]{R}{0pt}
 \begin{tikzpicture}
 \umlemptyclass[x=2]{Baum}
 \umlemptyclass[y=-2]{Blatt}
@@ -531,7 +530,7 @@ Angenommen, man kann kein Haskell\footnote{\lstinline[language=Haskell]{data Bau
 
 \subsubsection{Factory Method}
 
-\begin{wrapfigure}[15]{R}{0pt} 
+\begin{wrapfigure}[15]{R}{0pt}
 \begin{tikzpicture}
 \umlemptyclass[x=2]{Auto} % TODO: abstract
 \umlemptyclass[y=-2]{Porsche}
@@ -552,7 +551,7 @@ Jahrhunderte alte Tradition zwingt uns an dieser Stelle, die klassische Autometa
 
 \subsubsection{Decorator}
 
-\begin{wrapfigure}[11]{R}{0pt} 
+\begin{wrapfigure}[11]{R}{0pt}
 \begin{tikzpicture}
 \umlclass[x=2]{Lautsprecher}{}{
   play(Song song)
@@ -602,7 +601,7 @@ Auch praktisch: ``Override Static''. Um sich die ganzen Aufrufe á la \lstinline
 
 \subsubsection{Observer}
 
-\begin{wrapfigure}[11]{R}{0pt} 
+\begin{wrapfigure}[11]{R}{0pt}
 \begin{tikzpicture}
 \umlclass{Observable}{}{
   addObserver() \\
@@ -640,7 +639,7 @@ Man erinnere sich an das TCP/IP-Modell.
 
 \subsubsection{Blackboard}
 
-\begin{wrapfigure}[15]{R}{0pt} 
+\begin{wrapfigure}[15]{R}{0pt}
 \begin{tikzpicture}
 \umlclass{Blackboard}{data}{
   getUpdates() \\
@@ -667,7 +666,7 @@ Man stelle sich einen Compiler vor, der mit verschiedenen Strategien versucht, d
 
 \subsubsection{Proxy}
 
-\begin{wrapfigure}[12]{R}{0pt} 
+\begin{wrapfigure}[12]{R}{0pt}
 \begin{tikzpicture}
 \umlclass[x=2]{Subject}{}{
   doStuff()
@@ -758,7 +757,7 @@ Nun kann das Webserver-Framework einfach immer den Dispatcher nutzen und das Sys
 
 Von einer Anforderungsspezifikation (Pflichtenheft) und einer Funktionalen Spezifikation (Produktdefinition) wollen wir zu genauen Aussagen über eine Implementierung kommen.
 
-Ein guter Entwurf erfüllt die Kriterien der \emph{Korrektheit}, \emph{Verständlichkeit und Präzision}, \emph{Hohe Kohäsion}, \emph{Schwacher Kopplung} zwischen Komponenten. 
+Ein guter Entwurf erfüllt die Kriterien der \emph{Korrektheit}, \emph{Verständlichkeit und Präzision}, \emph{Hohe Kohäsion}, \emph{Schwacher Kopplung} zwischen Komponenten.
 
 \subsection{``4+1 Sichten''-Modell aus dem Rational Unified Process}
 
@@ -1022,7 +1021,7 @@ pic [fill=white!30, angle radius=4mm,draw] {angle = A--O--B};
 \end{forest}
 \par
 
-Legende: 
+Legende:
 \begin{itemize}
 \item weißer Kreis = optional
 \item schwarzer Kreis = notwendig
