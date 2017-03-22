@@ -1,5 +1,5 @@
 compile_pdf:
-  image: guusk/docker-latex:latest
+  image: guusk/docker-latex:xenial
   script:
     - make clean all
   artifacts:
