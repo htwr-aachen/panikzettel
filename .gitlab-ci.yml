@@ -1,7 +1,6 @@
 compile_pdf:
   image: guusk/docker-latex:xenial
   script:
-    - lsb_release -a
     - make clean all
   artifacts:
     paths:
