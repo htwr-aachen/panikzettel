@@ -69,7 +69,9 @@
 
 \section{Einleitung}
 
-Dieser ``Panikzettel'' für Lineare Algebra ist eine mehr oder weniger informelle Zusammenfassung des Skriptes von \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/photo.jpg}{Dr. Sebastian Thomas} und der Vorlesung Lineare Algebra im SS 2016 bei PD Dr. Viktor Levandovskyy. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen, wie etwa offensichtliche $n \in \mathbb{N}$.
+Dieser ``Panikzettel'' für Lineare Algebra ist eine mehr oder weniger informelle Zusammenfassung des Skriptes der Vorlesung Lineare Algebra im SS 2017 bei von \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/photo.jpg}{Dr. Sebastian Thomas}. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen, wie etwa offensichtliche $n \in \mathbb{N}$.
+
+Dieser Panikzettel kommt ursprünglich aus dem SS 2016 und wird im Laufe der Vorlesung aktualisiert. Referenzen beziehen sich auf das neue Skript vom 23. April 2017.
 
 Dieses Projekt ist lizenziert unter \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC-BY-SA-4.0} und wird auf dem Git-Server der RWTH verwaltet: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}
 
@@ -89,7 +91,7 @@ $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapst
 
 \subsection{Untervektorräume}
 
-\skript{1.10} Für $K$-Vektorräume $U$ und $V$ heißt $U$ Untervektorraum von $V$ wenn die Menge der Vektoren von $U$ Teilmenge der Menge der Vektoren von $V$ ist und für $k \in K, u,u^\prime \in U$ gilt:
+\skript{1.10} Für $K$-Vektorräume $U$ und $V$ heißt $U$ Untervektorraum von $V$, wenn die Menge der Vektoren von $U$ Teilmenge der Menge der Vektoren von $V$ ist und für $k \in K, u,u^\prime \in U$ gilt:
 
 \begin{align*}
 	u {+}^{U} u^\prime &= u {+}^{V} u^\prime	\\
@@ -109,9 +111,9 @@ Für einen $K$-Vektorraum $V$ heißt ein Tupel $s$ in $V$ Erzeugendensystem von 
 Für ein Tupel $s$ in $V$ bezeichnet $\langle s \rangle$ die Menge aller Linearkombinationen von $s$ und wird Erzeugnis von $s$ genannt. Das Erzeugnis eines belibigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.	\\
 Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endliche Basis von $V$ der länge $n$, dann nennen wir $V$ endlich erzeugt und sagen dass $V$ Dimension $n$ hat.
 
-\skript{1.46} (Basisergänzungssatz) Jede linear unabhängige Teilmenge eines endlich erzeugten Vektorraums kann zu einer Basis dieses Vektorraums ergänzt werden.
+\skript{1.48} (Basisergänzungssatz) Jede linear unabhängige Teilmenge eines endlich erzeugten Vektorraums kann zu einer Basis dieses Vektorraums ergänzt werden.
 
-\skript{1.51} (Steinitzscher Austauschsatz) Für ein linear unabhängiges Tupel $s = (s_1,\ldots,s_k)$ in $V$ und ein Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ gibt es $i_1,\ldots,i_k$ mit $1 \le i_1 < \ldots < i_k \le n$ sodass $t^\prime \in V^n$ mit Einträgen gegeben durch
+\skript{1.53} (Steinitzscher Austauschsatz) Für ein linear unabhängiges Tupel $s = (s_1,\ldots,s_k)$ in $V$ und ein Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ gibt es $i_1,\ldots,i_k$ mit $1 \le i_1 < \ldots < i_k \le n$ sodass $t^\prime \in V^n$ mit Einträgen gegeben durch
 $$t^\prime_j = \left\{\begin{array}{lr}
 		s_r	&	j = i_r\\
 		t_j	&	\text{sonst}
@@ -121,12 +123,12 @@ Anders gesagt: Man kann Einträge aus $t$ gegen Einträge aus $s$ austauschen.
 
 \subsection{Unabhängigkeit von Untervektorräumen und innere direkte Summe}
 
-\skript{1.65} Für einen $K$-Vektorraum $V$ und Untervektorräume $U_1,\ldots,U_n$ von $V$ ist die innere Summe von $(U_1,\ldots,U_n)$:
+\skript{1.67} Für einen $K$-Vektorraum $V$ und Untervektorräume $U_1,\ldots,U_n$ von $V$ ist die innere Summe von $(U_1,\ldots,U_n)$:
 $$ U_1 + \ldots + U_n =  \sum_{i = 1}^n U_i := \left\{ \sum_{i=1}^n u_i \vert u_i \in U_i \right\}$$
 Sind für jedes $u \in U_1 + \ldots + U_n$ die $u_i \in U_i$ mit $u = \sum_{i=1}^n u_i$ eindeutig gegeben, heißt $(U_1,\ldots,U_n)$ unabhängig. In diesem fall nennen wir die innere Summe auch innere direkte Summe, geschrieben
 $$ U_1 \dot+ \ldots \dot+ U_n = \dot\sum_{i=1}^n U_i := \sum_{i=1}^n U_i$$
 
-\skript{1.68} Für $n$-Tupel $s = (s_1,\ldots,s_n)$ in $V$ gilt:
+\skript{1.70} Für $n$-Tupel $s = (s_1,\ldots,s_n)$ in $V$ gilt:
 \begin{enumerate}
 	\item $\langle s_1,\ldots,s_n\rangle = \sum_{i=1}{n} Ks_i$
 	\item $s$ ist Erzeugendensystem von V genau dann wenn $V = \sum_{i=1}^n Ks_i$ ist.
@@ -134,14 +136,14 @@ $$ U_1 \dot+ \ldots \dot+ U_n = \dot\sum_{i=1}^n U_i := \sum_{i=1}^n U_i$$
 	\item $s$ ist eine Basis von V genau dann wenn $V = \dot\sum_{i=1}^n Ks_i$ ist.
 \end{enumerate}
 
-\skript{1.70} Ein Tupel $(U_1,\ldots,U_n)$ von Untervektorräumen von $V$ ist unabhängig genau dann wenn für alle $i \in \mathbb{N}, i \le n$ gilt: $U_i \cap \sum_{j \in \{1,\ldots,n\}\setminus\{i\}} U_j = \{0\}$
+\skript{1.72} Ein Tupel $(U_1,\ldots,U_n)$ von Untervektorräumen von $V$ ist unabhängig genau dann wenn für alle $i \in \mathbb{N}, i \le n$ gilt: $U_i \cap \sum_{j \in \{1,\ldots,n\}\setminus\{i\}} U_j = \{0\}$
 
 Insbesondere sind zwei Untervektorräume $U_1$ und $U_2$ unabhängig genau dann wenn $U_1 \cap U_2 = \{0\}$ ist.
 
-\skript{1.74} Für einen $K$-Vektorraum $V$ und Untervektorräume $(U_1,\ldots,U_n)$ mit $V = \dot\sum_{i=1}^n U_i$ ist die Projektion von $V$ auf $U_i$ definiert als
+\skript{1.76} Für einen $K$-Vektorraum $V$ und Untervektorräume $(U_1,\ldots,U_n)$ mit $V = \dot\sum_{i=1}^n U_i$ ist die Projektion von $V$ auf $U_i$ definiert als
 $$ \pr_i: V \to U_i, \left(\sum_{i=1}^n u_i\right) \mapsto u_i \text{ für } u_i \in U_i$$
 
-\skript{1.76} Für einen Untervektorraum $U$ von $V$ heißt $U^\prime$ Komplement von $U$ wenn $$V = U \dot+ U^\prime$$
+\skript{1.78} Für einen Untervektorraum $U$ von $V$ heißt $U^\prime$ Komplement von $U$ wenn $$V = U \dot+ U^\prime$$
 
 \subsection{Homomorphismen}
 
@@ -182,9 +184,9 @@ Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\var
 
 Es seien $K$-Vektorräume $V$ und $W$, ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$ und ein Tupel $s \in K^n$.
 
-\skript{HA. 24 c)} $\varphi(\langle s_1,\ldots,s_n \rangle) = \langle \varphi(s_1), \ldots, \varphi(s_n) \rangle$
+\skript{2016 HA. 24 c)} $\varphi(\langle s_1,\ldots,s_n \rangle) = \langle \varphi(s_1), \ldots, \varphi(s_n) \rangle$
 
-\skript{HA. 24 d),e)} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear Unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
+\skript{2016 HA. 24 d),e)} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear Unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
 
 \section{Matrixkalkül}
 
@@ -215,7 +217,7 @@ Für $m,n \in \mathbb{N}_0, A \in K^{m \times n}$:
 \subsection{Koordinatenspalte}
 
 \skript{3.6}$\kappa_s : V \to K^{n \times 1}, v \mapsto \kappa_s(v)$ \\
-ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Hom.
+ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Iso.
 
 \textit{Beispiel.} Koordinatenspalte von $a \in K^2$ bzgl. $s = ((1,0), (1,1))$ ist $$\kappa_s(a) = \begin{pmatrix} a_1 - a_2 \\ a_2 \end{pmatrix}$$ denn $a = (a_1, a_2) = (a_1 - a_2) (1,0) + a_2 (1,1)$. Dazu einfach das LGS lösen mit $$\sum_{i \in [1,n]} (\kappa_s(v))_i s_i = v$$ d.h. die Basis spaltenweise in die LGS-Matrix eintragen und lösen.
 
@@ -254,12 +256,12 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 
 \subsection{Ähnlichkeit und Äquivalenz}
 
-\skript{3.41} \begin{itemize}
+\skript{3.43} \begin{itemize}
 	\item Für $A, B \in K^{m \times n}$ ist $A$ äquivalent zu $B$, wenn es $P \in \GL_n(K)$, $Q \in GL_m(K)$ gibt mit: $$Q^{-1} A P = B$$
 	\item Für $A, B \in K^{m \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff A P = P B$$
 \end{itemize}
 
-\skript{3.50} Für $A, B \in K^{m \times n}$ ist $A$ genau dann äquivalent zu $B$, wenn $$\rk(A) = \rk(B)$$
+\skript{3.52} Für $A, B \in K^{m \times n}$ ist $A$ genau dann äquivalent zu $B$, wenn $$\rk(A) = \rk(B)$$
 
 Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Entscheidungsbaum prüfen. Der Baum sieht groß und kompliziert aus, ist aber eine schnelle Methode insbesondere um Ähnlichkeit zu widerlegen. Falls alle Bedingungen eines Knotens erfüllt sind, gehe weiter zum linken Kind, sonst zum rechten.
 
@@ -301,11 +303,11 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 	\item $\mathrm{d}(a,c) \leq \mathrm{d}(a,b)+\mathrm{d}(b,c)$
 \end{itemize}
 
-\skript{4.10}(Offene) Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) < r\}$ mit $r \in \mathbb{R}_{\geq 0}$
+\skript{4.10}Offene Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) < r\}$ mit $r \in \mathbb{R}_{\geq 0}$. Abgeschlossene Kugel analog mit $\leq$.
 
 \subsection{Minimalabstand eines Blockcodes}
 
-\skript{4.11}Minimalabstand: $\mathrm{d}(C):=\min\{\mathrm{d}(c,c^\prime)|c,c^\prime \in C$ mit $c \neq c^\prime \}$, falls $|C| \ge 1$
+\skript{4.12}Minimalabstand: $\mathrm{d}(C):=\min\{\mathrm{d}(c,c^\prime)|c,c^\prime \in C$ mit $c \neq c^\prime \}$, falls $|C| \ge 1$
 \begin{itemize}
 	\item $\mathrm{B}_{\mathrm{d}(C)}(c) \cap C = \{c\}$
 \end{itemize}
@@ -319,7 +321,7 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \skript{4.19}$C$ ist ein linearer $[n,k,d]$-Code, wenn die Länge $n$, $\dim_K C=k$ und $\mathrm{d}(C)=d$ ist.
 
-\skript{4.21}$\mathrm{d}(C) = \min \{\mathrm{wt}(c)|c \in C\setminus\{0\}\}$, falls $C \neq \{0\}$
+\skript{4.21}$\mathrm{d}(C) = \min \{\mathrm{wt}(c)|c \in C\setminus\{0\}\}$, falls $C \neq \{0\}$ sonst $0$.
 
 \subsection{Erzeugermatrizen}
 
@@ -549,7 +551,7 @@ Eine Matrix $A$ heißt diagonalisierbar, wenn $\varphi_A$ diagonalisierbar ist.
 
 \skript{6.53} Wenn ein Endomorphismus $\varphi: V \to V$ $\dim V$ verschiedene Eigenwerte hat, ist er diagonalisierbar.
 
-\skript{6.55} Für $f \in K[X]$ und $A \in K^{n \times n}$ mit einem $P \in \GL_n(K)$ sodass
+\skript{6.56} Für $f \in K[X]$ und $A \in K^{n \times n}$ mit einem $P \in \GL_n(K)$ sodass
 $$P^{-1} A P = \left(\begin{array}{ccc}
 		a_0 & & 0	\\
 		& \ddots &	\\
@@ -564,7 +566,7 @@ $$f(A) = P^{-1} \left(\begin{array}{ccc}
 
 \subsection{Invariante Untervektorräume}
 
-\skript{6.76} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ heißt ein Untervektorraum $U$ von $V$ invariant unter $\varphi$ wenn
+\skript{6.77} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ heißt ein Untervektorraum $U$ von $V$ invariant unter $\varphi$ wenn
 $$\varphi(U) \subseteq U$$
 gilt. Für eine Matrix $A \in K^{n \times n}$ heißt ein Untervektorraum $U$ von $K^{n \times 1}$ invariant unter $A$, wenn er invariant unter $\varphi_A$ ist.
 
@@ -575,11 +577,11 @@ $$M_{s,s}(\varphi) = \left(\begin{array}{cc}
 	\end{array}\right)$$
 mit $A \in K^{m \times m}$ hat. In diesem Fall ist $M_{s^\prime,s^\prime}(\varphi\vert_U^U) = A$.
 
-\skript{6.79} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen $\varphi$-invarianten Untervektorraum $U$ von $V$ gilt
+\skript{6.80} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen $\varphi$-invarianten Untervektorraum $U$ von $V$ gilt
 $$\chi_{\varphi\vert_U^U} \vert \chi_\varphi$$
 
 \subsubsection{Satz von Cayley/Hamilton}
-\skript{6.80}\begin{enumerate}
+\skript{6.81}\begin{enumerate}
 	\item Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ ist
 		$$\chi_\varphi(\varphi) = 0$$
 	\item Für eine Matrix $A \in K^{n \times n}$ ist
