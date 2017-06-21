@@ -263,6 +263,13 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 	\item Für $A, B \in K^{m \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff A P = P B$$
 \end{itemize}
 
+\skript{3.50} Für $\varphi : V \to W$ sollen Basen $(s_1, \ldots, s_n)$ von $V$ und $(t_1, \ldots, t_m)$ von $W$ bestimmt werden, sodass $M_{t,s}(\varphi) = Q_r$ mit $r \leq \min(n, m)$. \begin{enumerate}
+    \item Basis $(t_1, \ldots, t_r)$ von $\Im \varphi$ berechnen
+    \item Zur Basis von $V$ erweitern: $(t_1, \ldots, t_n)$
+    \item Urbilder $s_j$ von Kernbasis berechnen: $t_j = \varphi(s_j)$ für $j \in [1, r]$
+    \item Basis $(s_{r+1}, \ldots, s_n)$ von $\Ker \varphi$ bestimmen
+\end{enumerate}
+
 \skript{3.52} Für $A, B \in K^{m \times n}$ ist $A$ genau dann äquivalent zu $B$, wenn $$\rk(A) = \rk(B)$$
 
 Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Entscheidungsbaum prüfen. Der Baum sieht groß und kompliziert aus, ist aber eine schnelle Methode insbesondere um Ähnlichkeit zu widerlegen. Falls alle Bedingungen eines Knotens erfüllt sind, gehe weiter zum linken Kind, sonst zum rechten.
