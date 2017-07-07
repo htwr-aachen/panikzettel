@@ -1,4 +1,4 @@
-\documentclass[a4paper]{scrartcl}
+\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
 \usepackage[utf8]{inputenc}
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -31,7 +31,6 @@
 \date{\today}
 
 % Formatting
-\setlength\parindent{0pt}
 \relpenalty=9999
 \binoppenalty=9999
 
@@ -62,8 +61,8 @@
 \DeclarePairedDelimiter\abs{\lvert}{\rvert} % Betrag
 \DeclarePairedDelimiter\norm{\lVert}{\rVert} % Norm
 
-
 \begin{document}
+
 \maketitle
 
 \setcounter{tocdepth}{2}
@@ -94,7 +93,6 @@ $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapst
 \subsection{Untervektorräume}
 
 \skript{1.10} Für $K$-Vektorräume $U$ und $V$ heißt $U$ Untervektorraum von $V$, wenn die Menge der Vektoren von $U$ Teilmenge der Menge der Vektoren von $V$ ist und für $k \in K, u,u^\prime \in U$ gilt:
-
 \begin{align*}
 	u {+}^{U} u^\prime &= u {+}^{V} u^\prime	\\
 	k \cdot u^\prime &= k \cdot u^\prime
@@ -104,30 +102,27 @@ Wir schreiben $U \leq V$ für ``$U$ ist ein Untervektorraum von $V$'' und $U \nl
 
 \subsection{Linearkombinationen und Lineare Unabhängigkeit}
 
-Eine linearkombination eines Tupels $s = (s_1,s_2, \ldots, s_n)$ in einem $K$-Vektorraum $V$ ist eine Summe der Einträge von $s$ mit Vorfaktoren aus $K$.	\\
+Eine Linearkombination eines Tupels $s = (s_1,s_2, \ldots, s_n)$ in einem $K$-Vektorraum $V$ ist eine Summe der Einträge von $s$ mit Vorfaktoren aus $K$.
+
 Ein Tupel heißt linear unabhängig, wenn kein Eintrag eine Linearkombination der anderen Einträge ist.
 
 \subsection{Erzeugendensysteme, Basen und Dimension}
 
-Für einen $K$-Vektorraum $V$ heißt ein Tupel $s$ in $V$ Erzeugendensystem von $V$ wenn jedes Element von $V$ eine Linearkombination von $s$ ist.	\\
-Für ein Tupel $s$ in $V$ bezeichnet $\langle s \rangle$ die Menge aller Linearkombinationen von $s$ und wird Erzeugnis von $s$ genannt. Das Erzeugnis eines belibigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.	\\
-Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endliche Basis von $V$ der länge $n$, dann nennen wir $V$ endlich erzeugt und sagen dass $V$ Dimension $n$ hat.
+Ein Tupel $s$ in Vektorraum $V$ ist Erzeugendensystem von $V$, wenn jedes Element von $V$ eine Linearkombination von $s$ ist.
+
+Das Erzeugnis von $s$, $\langle s \rangle$, ist für ein Tupel $s$ in $V$ die Menge aller Linearkombinationen von $s$. Das Erzeugnis eines beliebigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.
+
+Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endliche Basis von $V$ der Länge $n$, dann nennen wir $V$ endlich erzeugt und sagen, dass $V$ Dimension $n$ hat.
 
 \skript{1.48} (Basisergänzungssatz) Jede linear unabhängige Teilmenge eines endlich erzeugten Vektorraums kann zu einer Basis dieses Vektorraums ergänzt werden.
 
-\skript{1.53} (Steinitzscher Austauschsatz) Für ein linear unabhängiges Tupel $s = (s_1,\ldots,s_k)$ in $V$ und ein Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ gibt es $i_1,\ldots,i_k$ mit $1 \le i_1 < \ldots < i_k \le n$ sodass $t^\prime \in V^n$ mit Einträgen gegeben durch
-$$t^\prime_j = \left\{\begin{array}{lr}
-		s_r	&	j = i_r\\
-		t_j	&	\text{sonst}
-	\end{array}\right.$$
-ein Erzeugendensystem von $V$ ist.\\
-Anders gesagt: Man kann Einträge aus $t$ gegen Einträge aus $s$ austauschen.
+\skript{1.53} (Steinitzscher Austauschsatz) In einem Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ darf man Einträge durch beliebige Einträge eines in $V$ linear unabhängigen Tupels $s = (s_1,\ldots,s_k)$ austauschen.
 
 \subsection{Unabhängigkeit von Untervektorräumen und innere direkte Summe}
 
 \skript{1.67} Für einen $K$-Vektorraum $V$ und Untervektorräume $U_1,\ldots,U_n$ von $V$ ist die innere Summe von $(U_1,\ldots,U_n)$:
 $$ U_1 + \ldots + U_n =  \sum_{i = 1}^n U_i := \left\{ \sum_{i=1}^n u_i \vert u_i \in U_i \right\}$$
-Sind für jedes $u \in U_1 + \ldots + U_n$ die $u_i \in U_i$ mit $u = \sum_{i=1}^n u_i$ eindeutig gegeben, heißt $(U_1,\ldots,U_n)$ unabhängig. In diesem fall nennen wir die innere Summe auch innere direkte Summe, geschrieben
+Sind für jedes $u \in U_1 + \ldots + U_n$ die $u_i \in U_i$ mit $u = \sum_{i=1}^n u_i$ eindeutig gegeben, heißt $(U_1,\ldots,U_n)$ unabhängig. In diesem Fall nennen wir die innere Summe auch innere direkte Summe, geschrieben
 $$ U_1 \dot+ \ldots \dot+ U_n = \dot\sum_{i=1}^n U_i := \sum_{i=1}^n U_i$$
 
 \skript{1.70} Für $n$-Tupel $s = (s_1,\ldots,s_n)$ in $V$ gilt:
@@ -145,38 +140,37 @@ Insbesondere sind zwei Untervektorräume $U_1$ und $U_2$ unabhängig genau dann 
 \skript{1.76} Für einen $K$-Vektorraum $V$ und Untervektorräume $(U_1,\ldots,U_n)$ mit $V = \dot\sum_{i=1}^n U_i$ ist die Projektion von $V$ auf $U_i$ definiert als
 $$ \pr_i: V \to U_i, \left(\sum_{i=1}^n u_i\right) \mapsto u_i \text{ für } u_i \in U_i$$
 
-\skript{1.78} Für einen Untervektorraum $U$ von $V$ heißt $U^\prime$ Komplement von $U$ wenn $$V = U \dot+ U^\prime$$
+\skript{1.78} Für einen Untervektorraum $U$ von $V$ heißt $U^\prime$ Komplement von $U$ wenn $V = U \dot+ U^\prime$ gilt.
 
 \subsection{Homomorphismen}
 
-Ein Vektorraumhomomorphismus ist eine Funktion $\varphi : V \to W$ zwischen zwei Vektorräumen, welcher folgende Axiome für $K$-Vektorräume $V$ und $W$ erfüllt:
-
-\skript{2.2b} \begin{enumerate}
-	\item Additivität: Für $v, v^\prime \in V$ ist $\varphi(v + v^\prime) = \varphi(v) + \varphi(v^\prime)$
-	\item Homogenität: Für $a \in K, v \in V$ ist $\varphi(av) = a \varphi(v)$
-\end{enumerate}
-
-Oder direkt in einem Axiom:
-
-\skript{2.2c} Für $a \in K, v, v^\prime \in V$ ist $\varphi(av + v^\prime) = a \varphi(v) + \varphi(v^\prime)$.\\
+\skript{2.2} Ein Vektorraumhomomorphismus ist eine Funktion $\varphi : V \to W$ zwischen zwei Vektorräumen, welche die folgenden äquivalenten Bedingungen erfüllt:
+\begin{itemize}
+\item Für $a \in K, v, v^\prime \in V$:
+	\begin{enumerate}
+		\item Additivität: Für $v, v^\prime \in V$ ist $\varphi(v + v^\prime) = \varphi(v) + \varphi(v^\prime)$
+		\item Homogenität: Für $a \in K, v \in V$ ist $\varphi(av) = a \varphi(v)$
+	\end{enumerate}
+\item Für $a \in K, v, v^\prime \in V$ ist $\varphi(av + v^\prime) = a \varphi(v) + \varphi(v^\prime)$
+\end{itemize}
 
 \skript{2.5} Ein Vektorraum\underline{endo}morphismus ist ein Vektorraum\underline{homo}morphismus von $V$ nach $V$.
 
 \skript{2.9} Ein Vektorraum\underline{iso}morphismus ist ein bijektiver/invertierbarer Vektorraum\underline{homo}morphismus.
 
-\skript{2.10} Ein Vektorraum\underline{auto}morphismus ist ein Vektorraum\underline{iso}morphismus von $V$ nach $V$. Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
+\skript{2.10} Ein Vektorraum\underline{auto}morphismus ist ein Vektorraum\underline{iso}morphismus von $V$ nach $V$. \\Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
 
 \subsubsection{Bild und Kern, Rang und Defekt}
 
-Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$
+Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$.
 
-\skript{2.11 a)} $\Im \varphi$ ist ein $K$-Untervektorraum von $W$
+\skript{2.11a} $\Im \varphi$ ist ein $K$-Untervektorraum von $W$
 
-\skript{2.11 b)} $\Ker \varphi \coloneqq \{v \in V | \varphi(v)=0 \}$ ist ein $K$-Untervektorraum von $V$
+\skript{2.11b} $\Ker \varphi \coloneqq \{v \in V | \varphi(v)=0 \}$ ist ein $K$-Untervektorraum von $V$.
 
-\skript{2.21 a)} $\defekt_K(\varphi) \coloneqq \dim_K(\Ker\varphi)$
+\skript{2.21a} $\defekt_K(\varphi) \coloneqq \dim_K(\Ker\varphi)$
 
-\skript{2.21 b)} $\rk_K(\varphi) \coloneqq \dim_K(\Im\varphi)$
+\skript{2.21b} $\rk_K(\varphi) \coloneqq \dim_K(\Im\varphi)$
 
 \subsubsection{Rangsatz}
 
@@ -186,20 +180,11 @@ Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\var
 
 Es seien $K$-Vektorräume $V$ und $W$, ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$ und ein Tupel $s \in K^n$.
 
-\skript{2016 HA. 24 c)} $\varphi(\langle s_1,\ldots,s_n \rangle) = \langle \varphi(s_1), \ldots, \varphi(s_n) \rangle$
+\skript{2016 Aufg. 24c} $\varphi(\langle s_1,\ldots,s_n \rangle) = \langle \varphi(s_1), \ldots, \varphi(s_n) \rangle$
 
-\skript{2016 HA. 24 d),e)} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear Unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
+\skript{2016 Aufg. 24de} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear Unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
 
 \section{Matrixkalkül}
-
-\subsection{Wiederholung Diskrete Strukturen}
-
-\subsubsection{Zeilen-/Spaltenoperatoren}
-
-Eine Zeilenoperation ist eine Verkettung von Elementaren Zeilenoperatoren.
-Eine Zeilenoperation $z$ hat eine eindeutige Matrix $Z = z(\mathrm{E})$, sodass $z(A) = ZA$. (E ist die Einheitsmatrix).	\\
-Diese Matrix nennen wir Zeilenoperator. Der Zeilenoperator $Z$ einer Zeilenoperation $z = z_1 \circ \ldots \circ z_n$ mit Zeilenoperationen $z_1,\ldots,z_n$ ist das Produkt $Z_1 \cdot \ldots \cdot Z_n$ der Zeilenoperatoren zu $z_1,\ldots,z_n$.	\\
-Für Spaltenoperationen $z$ sind Spaltenoperatoren $Z = z(\mathrm{E})$ analog, nur dass $z(A) = AZ$ (das Z steht auf der rechten Seite) und dass der Zeilenoperator zu $z_1 \circ \ldots \circ z_n$ $Z_n \cdot \ldots \cdot Z_1$ ist.
 
 \subsection{Spalteninterpretation}
 
@@ -221,40 +206,42 @@ Für $m,n \in \mathbb{N}_0, A \in K^{m \times n}$:
 \skript{3.6}$\kappa_s : V \to K^{n \times 1}, v \mapsto \kappa_s(v)$ \\
 ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Iso.
 
-\textit{Beispiel.} Koordinatenspalte von $a \in K^2$ bzgl. $s = ((1,0), (1,1))$ ist $$\kappa_s(a) = \begin{pmatrix} a_1 - a_2 \\ a_2 \end{pmatrix}$$ denn $a = (a_1, a_2) = (a_1 - a_2) (1,0) + a_2 (1,1)$. Dazu einfach das LGS lösen mit $$\sum_{i \in [1,n]} (\kappa_s(v))_i s_i = v$$ d.h. die Basis spaltenweise in die LGS-Matrix eintragen und lösen.
+Für $\kappa_s(v)$ muss also das LGS $\sum_{i \in [1,n]} a_i s_i = v$ gelöst werden, dann sind $a_i = \kappa_s(v)_i$.
 
 \subsection{Darstellungsmatrix}
 
-\skript{3.8}$\mathrm{M}_{t,s}(\varphi) = (\kappa_t(\varphi(s_1)) \ldots \kappa_t(\varphi(s_n)))$ \\
-für $\varphi : V \to W \in \mathrm{Hom}(V, W)$, Basen $s = (s_1, \ldots, s_n)$ von $V$ und $t = (t_1, \ldots, t_m)$ von $W$.
+\skript{3.8}Für VR-Hom. $\varphi : V \to W$, Basis $s = (s_1, \ldots, s_n)$ von $V$ und Basis $t = (t_1, \ldots, t_m)$ von $W$ ist $M_{t,s}(\varphi)$ die Darstellungsmatrix zu $s$ und $t$:
+$$\mathrm{M}_{t,s}(\varphi) = (\kappa_t(\varphi(s_1)) \ldots \kappa_t(\varphi(s_n)))$$
 
-Es muss also für jede Spalte das $s_i$ in $\varphi$ eingesetzt werden und das Ergebnis wieder nach den Linearfaktoren von $t$ aufgelöst werden.
+Es muss also für jede Spalte $i$ das $s_i$ in $\varphi$ eingesetzt werden und das Ergebnis wieder nach den Linearfaktoren von $t$ aufgelöst werden.
 
 \skript{Tutoraufgabe 30.5.16 a}$\mathrm{M}_{e,e}(\varphi_A) = A$
 
 \subsection{Basiswechselmatrix, Basiswechselformeln}
 
-\skript{3.15}In einem Vektorraum $V$ mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ ist $\mathrm{M}_{s, s^\prime}(\id_V)$ die Basiswechselmatrix von $s$ nach $s^\prime$.
+\skript{3.15}Die Darstellungsmatrix $\mathrm{M}_{s, s^\prime}(\id_V)$ wird Basiswechselmatrix von $s$ nach $s^\prime$ genannt.
+
+Achtung: $\mathrm{M}_{s, s^\prime}(\id_V) \cdot v$ übersetzt ein $v$ von $s^\prime$ zu $s$! Die Bezeichnung ``von $s$ nach $s^\prime$'' ist also rückwärts. Dies wird mit praktischer Verwendung begründet.
 
 \skript{3.18a}Mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt für $v \in V$:\\ $\kappa_{s^\prime}(v) = (\mathrm{M}_{s,s^\prime}(\id_V))^{-1} \kappa_s(v)$.
 
-\skript{3.18b}Mit $\varphi : V \to W \in \mathrm{Hom}(V,W)$, Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ und Basen $t = (t_1,\ldots, t_n)$ und $t^\prime = (t^\prime_1, \ldots, t^\prime_n)$ von $W$ gilt: \\
+\skript{3.18b}Mit VR-Hom. $\varphi : V \to W$, Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ und Basen $t = (t_1,\ldots, t_n)$ und $t^\prime = (t^\prime_1, \ldots, t^\prime_n)$ von $W$ gilt: \\
 $\mathrm{M}_{t^\prime, s^\prime}(\varphi) = (\mathrm{M}_{t,t^\prime}(\id_W))^{-1} \mathrm{M}_{t,s}(\varphi) \mathrm{M}_{s,s^\prime}(\id_V)$
 
-\subsection{Kardinalitäten von versch. Mengen}
+\subsection{Kardinalitäten von verschiedenen Mengen}
 
-$$\abs{\Sol(A,0)} \text{ für ein } A \in \Field_q^{m \times n} \text{ mit } \rk_{\Field_q} A = r \text{ ist } q^{n-r}$$
+$$\abs{\Sol(A,0)} = q^{n-r} \text{ für } A \in \Field_q^{m \times n} \text{ mit } \rk_{\Field_q} A = r$$
 Da Elemente aus $\Sol(A,0)$ Vektoren aus $\Field_q^n$ sind, müssen wir $n$ Parameter aus $\Field_q$ wählen, von denen $r$ nicht frei sind.
 
 $$\abs{\{ U \leq \Field_q^n | \dim_{\Field_q} U = k \}} = \binom{n}{k}_q$$
-Der Gauß'sche Binomialkoeffizient (``QBinomial'' in Mathematica). Ja, die Ergebnisse werden schnell groß.
+$\binom{n}{k}_q$ ist der Gauß'sche Binomialkoeffizient.
 
 $$\abs{\mathrm{Hom}(\Field_q^n,\Field_q^m)} = \abs{\Field_q^{m \times n}} = q^{m \cdot n}$$
-Homomorphismen lassen sich als Matrizen darstellen und umgekehrt. Daher das ganze Matrixkalkül-Ding.
+Homomorphismen lassen sich als Matrizen darstellen und umgekehrt. Daher machen wir auch das ganze Matrixkalkül-Zeugs.
 
 $$\abs{\GL_n(\Field_q)} = \prod_{i=0}^{n-1} q^n-q^i$$
 $$\abs{\{A \in \Field_q^{m \times n} ~ | ~ \rk(A) = \min(m,n)\}} = \prod_{i=0}^{\min(m,n)-1} (q^{\max(m,n)}-q^i)$$
-Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ Stück mit Länge $\max(m,n)$. Die Erste ist dann bis auf die Null frei zu wählen, danach sollte jede folgende kein Vielfaches der Vorherigen sein.
+Wir müssen Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ Stück mit Länge $\max(m,n)$. Die erste Zeile/Spalte ist dann bis auf den Nullvektor frei zu wählen, danach sollte jede folgende kein Vielfaches der vorherigen sein.
 
 \subsection{Ähnlichkeit und Äquivalenz}
 
@@ -263,18 +250,17 @@ Oben müssen wir Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n
 	\item Für $A, B \in K^{m \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff A P = P B$$
 \end{itemize}
 
-\skript{3.50} Für $\varphi : V \to W$ sollen Basen $(s_1, \ldots, s_n)$ von $V$ und $(t_1, \ldots, t_m)$ von $W$ bestimmt werden, sodass $M_{t,s}(\varphi) = Q_r$ mit $r \leq \min(n, m)$. \begin{enumerate}
-    \item Basis $(t_1, \ldots, t_r)$ von $\Im \varphi$ berechnen
-    \item Zur Basis von $V$ erweitern: $(t_1, \ldots, t_n)$
-    \item Urbilder $s_j$ von Kernbasis berechnen: $t_j = \varphi(s_j)$ für $j \in [1, r]$
-    \item Basis $(s_{r+1}, \ldots, s_n)$ von $\Ker \varphi$ bestimmen
+\skript{3.50} Für $\varphi : V \to W$ sollen Basen $(s_1, \ldots, s_n)$ von $V$ und $(t_1, \ldots, t_m)$ von $W$ bestimmt werden, sodass $M_{t,s}(\varphi) = Q_r$ mit $r \leq \min(n, m)$. Dann rechnen wie folgt: \begin{enumerate}
+    \item Basis $(t_1, \ldots, t_r)$ von $\Im \varphi$ berechnen.
+    \item Zur Basis von $V$ erweitern: $(t_1, \ldots, t_n)$.
+    \item Urbilder $s_j$ von Kernbasis berechnen: $t_j = \varphi(s_j)$ für $j \in [1, r]$.
+    \item Basis $(s_{r+1}, \ldots, s_n)$ von $\Ker \varphi$ bestimmen.
 \end{enumerate}
 
 \skript{3.52} Für $A, B \in K^{m \times n}$ ist $A$ genau dann äquivalent zu $B$, wenn $$\rk(A) = \rk(B)$$
 
-Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Entscheidungsbaum prüfen. Der Baum sieht groß und kompliziert aus, ist aber eine schnelle Methode insbesondere um Ähnlichkeit zu widerlegen. Falls alle Bedingungen eines Knotens erfüllt sind, gehe weiter zum linken Kind, sonst zum rechten.
+Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Entscheidungsbaum prüfen. Der Baum sieht groß und kompliziert aus, ist aber eine schnelle Methode insbesondere um Ähnlichkeit zu widerlegen. Falls alle Bedingungen eines Knotens erfüllt sind, gehe weiter zum linken Kind, sonst zum rechten Kind.
 
-% TODO: Nachweise wären ganz schön hier
 \begin{tikzpicture}[
 		->, level distance=1.3cm, sibling distance=3.7cm, growth parent anchor=south
 	]
@@ -299,20 +285,20 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \subsection{Blockcode}
 
-\skript{4.1}Blockcode: Nicht-leere Teilmenge C von $K^{n \times 1}$ über $K$ mit Länge $n$. Elemente werden Codewörter genannt.
+\skript{4.1}Blockcode: Nicht-leere Teilmenge $C$ von $K^{n \times 1}$ über $K$ mit Länge $n$. Elemente von $C$ werden Codewörter genannt.
 
 \skript{4.3}Hamming-Gewicht: $\mathrm{wt}(a):=|\{i \in [1,n]|a_i \neq 0\}|$ mit $a \in K^{n \times 1}$
-\begin{itemize}
-	\item $\mathrm{wt}(a+b) \leq \mathrm{wt}(a)+ \mathrm{wt}(b)$
-\end{itemize}
+
+\skript{4.5c}$\mathrm{wt}(a+b) \leq \mathrm{wt}(a)+ \mathrm{wt}(b)$
 
 \skript{4.6}Hamming-Abstand: $d(a,b):=wt(b-a)$
-\begin{itemize}
+
+\skript{4.7}\begin{itemize}
 	\item $\mathrm{d}(a,b)=|\{i \in [1,n]|a_i \neq b_i\}|$
 	\item $\mathrm{d}(a,c) \leq \mathrm{d}(a,b)+\mathrm{d}(b,c)$
 \end{itemize}
 
-\skript{4.10}Offene Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) < r\}$ mit $r \in \mathbb{R}_{\geq 0}$. Abgeschlossene Kugel analog mit $\leq$.
+\skript{4.10}Offene Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) < r\}$ mit $r \in \mathbb{R}_{\geq 0}$.\\Abgeschlossene Kugel analog mit $\leq$.
 
 \subsection{Minimalabstand eines Blockcodes}
 
@@ -338,7 +324,7 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \skript{4.24}$\rk_k A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]$-Code $C$.
 
-\skript{4.25}Anwendung:
+\skript{4.25}Kodierung und Dekodierung:
 \begin{itemize}
 	\item Kodieren von $w \in K^{k \times 1}$ zu einem Codewort mit Erzeugermatrix $A$: \\
 	Berechne $Aw$.
@@ -391,7 +377,7 @@ Dekodierung von $x \in K^{n \times 1}$:
 
 \section{Determinante}
 
-Die Determinante gibt Auskunft über quadratische Matrizen. Wenn sie invertierbar ist, dann ist auch die Matrix invertierbar. In Körpern heißt das einfach ungleich Null, in Ringen muss Invertierbarkeit geprüft werden. Im Folgenden ist $R$ ein beliebiger kommutativer und unitärer Ring. \\
+Die Determinante gibt Auskunft über quadratische Matrizen. Wenn sie invertierbar ist, dann ist auch die Matrix invertierbar. In Körpern heißt das einfach ungleich Null, in Ringen muss Invertierbarkeit genauer geprüft werden. Im Folgenden ist $R$ ein beliebiger kommutativer und unitärer Ring.
 
 Die Leibniz-Formel für kleine Matrizen:
 
@@ -401,12 +387,10 @@ Die Leibniz-Formel für kleine Matrizen:
 
 \skript{5.3c} Für $A \in R^{2 \times 2}$: $\det A = A_{1,1} A_{2,2} - A_{1,2} A_{2,1}$ \\
 
-Die Leibniz-Formel für $R^{3 \times 3}$-Matrizen ist nicht schön und wird nicht schöner in höhreren Dimensionen. Dazu der Kästchensatz: \\
-
 \skript{5.15}\textit{Kästchensatz.} Für Matrizen $A \in R^{m \times m}$, $B \in R^{m \times n}$, $C \in R^{n \times n}$ gilt: \\
 $\det \begin{pmatrix} A & B \\ 0 & C \end{pmatrix} = (\det A) (\det C)$
 
-Dieser ist der beste Ansatz, um Determinanten per Hand auszurechen: Man vereinfacht die Matrix (siehe Abschnitt zur Veränderung der Matrix) und dann wendet man den Kästchensatz an.
+Der Kästchensatz ist der beste Ansatz, um Determinanten größerer Matrizen per Hand auszurechen: Man vereinfacht die Matrix (siehe Abschnitt zur Veränderung der Matrix) und dann wendet man den Kästchensatz an.
 
 \subsection{Produktsatz}
 
@@ -416,23 +400,22 @@ Dieser ist der beste Ansatz, um Determinanten per Hand auszurechen: Man vereinfa
 
 \skript{5.8c} $(\det A)^{-1} = \det (A^{-1})$
 
-\subsection{Veränderung der Matrix und ihrer Determinante}
+\subsection{Matrixoperationen und die Determinante}
 
-Nach diesem Satz gelten die folgenden Sätze für Zeilen analog wie für Spalten:
+\skript{5.4} $\det \transpose{A} = \det A$
 
-\skript{5.4} $\det \transpose{A} = \det A$ \\
+\skript{5.5/1}\textit{Multilinearität.} \begin{itemize}
+\item $\begin{aligned}
+	& \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y+z & x_{k+1} & \ldots  & x_n \end{pmatrix} = \\
+		& \hspace{2em} \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix} +
+		\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & z & x_{k+1} & \ldots  & x_n \end{pmatrix}
+ \end{aligned}$
+\item $\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & ay & x_{k+1} & \ldots  & x_n \end{pmatrix} = a \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix}$
+\end{itemize}
 
-\skript{5.5/1}\textit{Multilinearität.} \\
-$\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y+z & x_{k+1} & \ldots  & x_n \end{pmatrix} = \\
- \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix} +
- \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & z & x_{k+1} & \ldots  & x_n \end{pmatrix}$
-Außerdem: \\
-$\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & ay & x_{k+1} & \ldots  & x_n \end{pmatrix} =
-a \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix}$
+\skript{5.5/2} Wenn alle Spalten paarweise gleich sind, dann gilt $\det A = 0$.
 
-\skript{5.5/2} Wenn alle Spalten paarweise gleich sind, dann gilt $\det A = 0$\\
-
-Um die Determinante deutlich einfacher berechnen zu können, ist es möglich, die Matrix mit unseren elementaren Zeilen- und Spaltenoperationen zu vereinfachen. Dazu gibt es Sätze für jeden Operator, die im Skript etwas umständlicher formuliert sind (und auch für Spalten definiert), aber trotzdem hier genau so gelten:
+Um die Determinante deutlich einfacher berechnen zu können, ist es möglich, die Matrix mit unseren elementaren Zeilen- und Spaltenoperationen (via 5.4) zu vereinfachen.
 
 \skript{5.6a} Mit $k \neq l$: $\det \textrm{sw}_{k,l}(A) = - \det A$
 
@@ -442,43 +425,37 @@ Um die Determinante deutlich einfacher berechnen zu können, ist es möglich, di
 
 \subsection{Laplace-Entwicklung}
 
-Determinanten größerer Matrizen werden in der Praxis mit der Laplace-Entwicklung rekursiv berechnet. Diese sollte man per Hand aber wegen der Fehleranfälligkeit besser zu Gunsten der Vereinfachung und Verwendung obiger Sätze nicht verwenden.
-Zuerst braucht man für die Laplace-Entwicklung die Definition des Minor:
+Determinanten größerer Matrizen werden in der Praxis mit der Laplace-Entwicklung rekursiv berechnet. Bei Berechnung der Determinante per Hand sollte man wenn möglich aber die obigen Sätze benutzen, da die Laplace-Entwicklung fehleranfällig ist.
 
-\skript{5.11} Der Minor an der Stelle $(k,l)$ mit $k,l \in [1,n]$ von $A \in R^{n \times n}$ ist: \\
-$$\textrm{Minor}_{k,l}(A) := \det \begin{pmatrix}
-A_{1,1} & \ldots & A_{1,l-1} & A_{1,l+1} & \ldots & A_{1,n} \\
-\vdots & & \vdots & \vdots & & \vdots \\
-A_{k-1,1} & \ldots & A_{k-1,l-1} & A_{k-1,l+1} & \ldots & A_{k-1,n} \\
-A_{k+1,1} & \ldots & A_{k+1,l-1} & A_{k+1,l+1} & \ldots & A_{k+1,n} \\
-\vdots & & \vdots & \vdots & & \vdots \\
-A_{n,1} & \ldots & A_{n,l-1} & A_{n,l+1} & \ldots & A_{n,n} \\
-\end{pmatrix}$$
+Für die Laplace-Entwicklung brauchen wir die Definition des Minor:
 
-Es ist etwas schwer zu erkennen, aber der Minor an irgendeiner Stelle bedeutet ledglich: Berechne die Determinante der Matrix ohne Zeile $k$ und ohne Spalte $l$.
+\skript{5.11} Mit $(k,l)$ und $k,l \in [1,n]$ und $A \in R^{n \times n}$:\\ $\textrm{Minor}_{k,l}(A) = \det A^\prime$ wobei $A^\prime$ einfach $A$ ohne Zeile $k$ und Spalte $l$ ist.
 
-Die Laplace-Entwicklung ist dann möglich entweder nach Spalte $l$ oder nach Zeile $k$:
+Die Laplace-Entwicklung kann man dann entweder nach einer Spalte $l$ oder nach einer Zeile $k$ durchführen:
 
-\skript{5.13a} Für $l \in [1,n]$ gilt: \\
+\begin{minipage}{0.45\textwidth}
+\skript{5.13a} Für Spalte $l \in [1,n]$: \\
 $$\det A = \sum_{k=1}^n (-1)^{k+l} A_{k,l} \textrm{Minor}_{k,l}(A)$$
-
-\skript{5.13b} Für $k \in [1,n]$ gilt: \\
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}{0.45\textwidth}
+\skript{5.13b} Für Zeile $k \in [1,n]$: \\
 $$\det A = \sum_{l=1}^n (-1)^{k+l} A_{k,l} \textrm{Minor}_{k,l}(A)$$
+\end{minipage}
 
-Da gilt es besonders hart drauf zu starren, bis sich einem das System ergibt. Oder einach weiterlesen, denn es folgt eine kurze Erklärung:
+Die Laplace-Entwicklung in Worten:
 
 \begin{enumerate}
 \setcounter{enumi}{-1}
-\item \textit{(Pro-Tipp)} Vorher die Matrix mit elementaren Zeilenoperationen vereinfachen. Das verändert aber die Determinante etwas, siehe Korollar (5.6).
-\item Eine Zeile oder Spalte aussuchen, nach der man entwickeln möchte. Mit Vorraussicht auf die nächsten Rechnungen sollte die Zeile/Spalte mit den meisten Nullen gewählt werden, das spart gleich Arbeit.
-\item Jedes Element der gewählten Zeile/Spalte wird dann mit einem Minor multipliziert. Der Minor ist einfach die Determinante, wo die Entwicklungsspalte oder -zeile und die Zeile/Spalte des aktuellen Elementes weggestrichen wurden. Hier profitiert man von den Nullen.
-\item Wenn die Minoren mit großen Matrizen zu berechnen sind, einfach rekursiv weiter Laplace-Entwickeln!
-\item Die Ergebnisse der Minoren multipliziert mit dem Wert alternierend addieren. Ob man mit $(-1)$ oder $(+1)$ anfängt, hängt davon ab, welchen Index die Zeile/Spalte hat, nach der man entwickelt: Gerader Index $\implies (-1)$
+\item \textit{Pro-Tipp:} Vorher die Matrix mit elementaren Zeilenoperationen vereinfachen. Vergleiche Korollar (5.6).
+\item Zeile oder Spalte aussuchen, nach der man entwickeln möchte. Am Besten wählt man hier eine Zeile/Spalte mit vielen Nullen, das spart gleich Arbeit.
+\item Jedes Element der gewählten Zeile/Spalte wird dann mit einem Minor multipliziert. Der Minor ist einfach die Determinante, wo Zeile und Spalte des aktuellen Elementes weggestrichen wurden. Hier profitiert man von den Nullen.
+\item Gegebenenfalls für den Minor rekursiv weiter Laplace-Entwickeln.
+\item Für jedes Element der gewählten Zeile/Spalte nun Wert und Minor multiplizieren und alternierend addieren. Genau dann wenn die entwickelte Zeile/Spalte geraden Index hat, beginnt man mit $(-1)$.
 \end{enumerate}
 
 \subsection{Determinante eines Vektorraumendomorphismus}
 
-Man beachte: Vektorraum\textbf{\underline{endo}}morphismus. \\
+Man beachte: Vektorraum\textbf{\underline{endo}}morphismus.
 
 Die Determinante ist unabhängig von den Basen der Darstellungsmatrix:
 
@@ -489,8 +466,10 @@ Damit können wir auch problemlos $\det \textrm{M}_{s,s}(\varphi)$ mit $\det \va
 
 \section{Eigenwerte}
 
-\skript{6.1} Ein Eigenvektor $v$ eines Endomorphismus' $\varphi$ ist ein nicht-null Vektor, der von dem Endomorphismus bis auf einen skalaren Faktor, den Eigenwert, nicht verändert wird. Ein Eigenraum ist der Vektorraum, der alle Eigenvektoren zu einem Eigenwert (und den Nullvektor) enthält.
-$$\Eig_a(\varphi) = \{ v \in V \vert \varphi(v) = a v \}$$
+Ein Eigenvektor $v$ eines Endomorphismus $\varphi$ ist ein Vektor $\neq 0$, der von dem Endomorphismus bis auf einen skalaren Faktor, den Eigenwert $a$, nicht verändert wird: $\varphi(v) = a v$.
+
+\skript{6.1}Ein Eigenraum ist der Vektorraum, der alle Eigenvektoren zu einem Eigenwert (und den Nullvektor) enthält.
+$$\Eig_a(\varphi) = \{ v \in V \vert \varphi(v) = a v \} = \Ker(\varphi - a \cdot \id_V)$$
 
 Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/-räume von $\varphi_A$.
 
@@ -500,15 +479,14 @@ Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/
 
 \skript{6.8} Das charakteristische Polynom einer Matrix $A$ ist $\chi_A = \det(XE_n-A)$.
 
-\skript{6.12} Das charakteristische Polynom eines Vektorraumendomorphismus' $\varphi$ ist $\chi_\varphi = \chi_{M_{s,s}(\varphi)}$ für eine beliebige Basis $s$.
+\skript{6.12} Das charakteristische Polynom eines Vektorraumendomorphismus $\varphi$ ist $\chi_\varphi = \chi_{M_{s,s}(\varphi)}$ für eine beliebige Basis $s$.
 
-\skript{6.13} Es sind äquivalent:
-\begin{enumerate}
+\skript{6.13} Es sind äquivalent: \begin{itemize}
 	\item $a$ ist ein Eigenwert von $A$
 	\item $\rk(A-aE_n)<n$
 	\item $\det(A-aE_n)=0$
 	\item $a$ ist eine Nullstelle des charakteristischen Polynoms von $A$
-\end{enumerate}
+\end{itemize}
 
 \subsubsection{Begleitmatrix}
 
@@ -520,8 +498,7 @@ $$C(f) = \left(\begin{array}{cccc}
 		& & & -a_n
 \end{array}\right)$$
 
-\skript{6.22} Das charakteristische Polynom einer Begleitmatrix ist
-$$\chi_{C(f)} = f$$
+\skript{6.22} Das charakteristische Polynom einer Begleitmatrix ist $\chi_{C(f)} = f$.
 
 \subsection{Vielfachheiten}
 
@@ -531,42 +508,39 @@ $$\geo_a(\varphi) = \dim(\Eig_a(\varphi))$$
 $$\mul_a(\varphi) = \mul_a(\chi_\varphi)$$
 	Für eine Matrix $A$ sind Vielfachheiten analog über $\varphi_A$ gegeben.
 
-\skript{6.19} Es gilt stets $\geo_a(\varphi) \le \mul_a(\varphi)$
+\skript{6.19} Es gilt stets $\geo_a(\varphi) \le \mul_a(\varphi)$.
 
 \subsection{Diagonalisierbarkeit}
 
-\skript{6.41} Für einen Endomorphismus $\varphi: V \to V$ und eine Basis $s$ ist $s$ eine Eigenbasis von $V$ bezüglich $\varphi$ wenn alle Einträge von $s$ Eigenvektoren von $\varphi$ sind.	\\
-Für eine Matrix $A \in K^{n \times n}$ und eine Basis $s$ von $K^{n \times 1}$ heißt $s$ Eigenbasis von $K^{n \times 1}$ bezüglich $A$, wenn $s$ eine Eigenbasis bezüglich $\varphi_A$ ist.
+Die folgenden Definitionen gelten für Endomorphismen $\varphi$, sowie für Matrizen mithilfe der Spalteninterpretation $\varphi_A$.
 
-\skript{6.43} Für einen Endomorphismus $\varphi: V \to V$ ist eine Basis $s$ von $V$ genau dann eine Eigenbasis bezüglich $\varphi$ wenn $M_{s,s}(\varphi)$ eine Diagonalmatrix ist.
+\skript{6.41} Eine Basis $s$ von $V$ ist eine Eigenbasis bezüglich $\varphi$, wenn alle Einträge von $s$ Eigenvektoren von $\varphi$ sind.
 
-\skript{6.46} Ein Endomorphismus $\varphi$ heißt diagonalisierbar, falls es eine Eigenbasis bezüglich $\varphi$ gibt.	\\
-Eine Matrix $A$ heißt diagonalisierbar, wenn $\varphi_A$ diagonalisierbar ist.
+\skript{6.43} Für einen Endomorphismus $\varphi: V \to V$ ist eine Basis $s$ von $V$ genau dann eine Eigenbasis bezüglich $\varphi$, wenn $M_{s,s}(\varphi)$ eine Diagonalmatrix ist.
 
-\skript{6.50} Für eine Matrix $A \in K^{n \times n}$ sind äquivalent:
-\begin{enumerate}
+\skript{6.46} $\varphi$ ist diagonalisierbar, falls es eine Eigenbasis bezüglich $\varphi$ gibt.
+
+\skript{6.50} Für eine Matrix $A \in K^{n \times n}$ sind äquivalent: \begin{itemize}
 	\item $A$ ist diagonalisierbar.
 	\item Es gibt eine Eigenbasis bezüglich $A$.
 	\item $A$ ist ähnlich zu einer Diagonalmatrix.
-\end{enumerate}
+\end{itemize}
 
-\skript{6.52} Für einen Endomorphismus $\varphi: V \to V$ sind äquivalent:
-\begin{enumerate}
+\skript{6.52} Für einen Endomorphismus $\varphi: V \to V$ sind äquivalent: \begin{itemize}
 	\item $\varphi$ ist diagonalisierbar.
 	\item $V = \dot\sum_{a \in K\text{, a ist Eigenwert von $\varphi$}} \Eig_a(\varphi)$.
 	\item $\dim V = \sum_{a \in K} \geo_a(\varphi)$.
 	\item Das charakteristische Polynom $\chi_\varphi$ zerfällt in Linearfaktoren und für jeden Eigenwert $a$ von $\varphi$ gilt $\geo_a(\varphi) = \mul_a(\varphi)$.
-\end{enumerate}
+\end{itemize}
 
-\skript{6.53} Wenn ein Endomorphismus $\varphi: V \to V$ $\dim V$ verschiedene Eigenwerte hat, ist er diagonalisierbar.
+\skript{6.53} Wenn ein Endomorphismus $\varphi: V \to V$ genau $\dim V$ verschiedene Eigenwerte hat, ist er diagonalisierbar.
 
-\skript{6.56} Für $f \in K[X]$ und $A \in K^{n \times n}$ mit einem $P \in \GL_n(K)$ sodass
-$$P^{-1} A P = \left(\begin{array}{ccc}
+\skript{6.56} Für $f \in K[X]$ und $A \in K^{n \times n}$ mit einem $P \in \GL_n(K)$ und
+$P^{-1} A P = \left(\begin{array}{ccc}
 		a_0 & & 0	\\
 		& \ddots &	\\
 		0 & & a_n
-	\end{array}\right)$$
-gilt:
+	\end{array}\right)$:
 $$f(A) = P^{-1} \left(\begin{array}{ccc}
 		f(a_0) & & 0	\\
 		& \ddots &	\\
@@ -575,9 +549,8 @@ $$f(A) = P^{-1} \left(\begin{array}{ccc}
 
 \subsection{Invariante Untervektorräume}
 
-\skript{6.77} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ heißt ein Untervektorraum $U$ von $V$ invariant unter $\varphi$ wenn
-$$\varphi(U) \subseteq U$$
-gilt. Für eine Matrix $A \in K^{n \times n}$ heißt ein Untervektorraum $U$ von $K^{n \times 1}$ invariant unter $A$, wenn er invariant unter $\varphi_A$ ist.
+\skript{6.77} Für einen Vektorraumendomorphismus $\varphi: V \to V$ ist ein Untervektorraum $U$ von $V$ invariant unter $\varphi$, wenn
+$\varphi(U) \subseteq U$.
 
 \skript{6.78} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen Untervektorraum $U$ von $V$ mit einer Basis $s = (s_1,\ldots, s_n)$, sodass $s^\prime = (s_1,\ldots,s_m)$ ($m \leq n$) eine Basis von $U$ ist, ist $U$ invariant unter $\varphi$ genau dann, wenn die Darstellungsmatrix von $\varphi$ zu $s$ die Form
 $$M_{s,s}(\varphi) = \left(\begin{array}{cc}
@@ -586,15 +559,12 @@ $$M_{s,s}(\varphi) = \left(\begin{array}{cc}
 	\end{array}\right)$$
 mit $A \in K^{m \times m}$ hat. In diesem Fall ist $M_{s^\prime,s^\prime}(\varphi\vert_U^U) = A$.
 
-\skript{6.80} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen $\varphi$-invarianten Untervektorraum $U$ von $V$ gilt
-$$\chi_{\varphi\vert_U^U} \vert \chi_\varphi$$
+\skript{6.80} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen $\varphi$-invarianten Untervektorraum $U$ von $V$ gilt $\chi_{\varphi\vert_U^U} \vert \chi_\varphi$, d.h. das charakteristische Polynom von $\varphi$ eingeschränkt auf $U$ ist durch das charakteristische Polynom von $\varphi$ teilbar.
 
 \subsubsection{Satz von Cayley/Hamilton}
 \skript{6.81}\begin{enumerate}
-	\item Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ ist
-		$$\chi_\varphi(\varphi) = 0$$
-	\item Für eine Matrix $A \in K^{n \times n}$ ist
-		$$\chi_A(A) = 0$$
+	\item Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ gilt: $\chi_\varphi(\varphi) = 0$.
+	\item Für eine Matrix $A \in K^{n \times n}$ gilt: $\chi_A(A) = 0$.
 \end{enumerate}
 
 \section{Skalarprodukträume}
