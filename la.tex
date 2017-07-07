@@ -36,7 +36,7 @@
 
 % Definitions
 \newlength{\hangwidth}
-\newcommand{\skript}[1]{\settowidth{\hangwidth}{\textbf{(#1)} }\hangpara{\hangwidth}{1}\textbf{(#1)} }% Für Referenzen auf das Skript. Benutzung: \skript{Stelle}Inhalt
+\newcommand{\skript}[1]{\settowidth{\hangwidth}{\textbf{(#1)} }\hangpara{\hangwidth}{1}\textbf{(#1)}} % Für Referenzen auf das Skript. Benutzung: \skript{Stelle} Inhalt
 
 \newcommand{\id}{\mathrm{id}} % Die Identitätsfunktion
 \newcommand{\Sol}{\mathrm{Sol}} % Lösungsraum
@@ -116,7 +116,7 @@ Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endl
 
 \skript{1.48} (Basisergänzungssatz) Jede linear unabhängige Teilmenge eines endlich erzeugten Vektorraums kann zu einer Basis dieses Vektorraums ergänzt werden.
 
-\skript{1.53} (Steinitzscher Austauschsatz) In einem Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ darf man Einträge durch beliebige Einträge eines in $V$ linear unabhängigen Tupels $s = (s_1,\ldots,s_k)$ austauschen.
+\skript{1.53} (Steinitzscher Austauschsatz) In einem Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ darf man Einträge durch beliebige Einträge eines in $V$ linear unabhängigen Tupels $s = (s_1,\ldots,s_k)$ austauschen. % TODO
 
 \subsection{Unabhängigkeit von Untervektorräumen und innere direkte Summe}
 
@@ -130,14 +130,14 @@ $$ U_1 \dot+ \ldots \dot+ U_n = \dot\sum_{i=1}^n U_i := \sum_{i=1}^n U_i$$
 	\item $\langle s_1,\ldots,s_n\rangle = \sum_{i=1}{n} Ks_i$
 	\item $s$ ist Erzeugendensystem von V genau dann wenn $V = \sum_{i=1}^n Ks_i$ ist.
 	\item $s$ ist linear Unabhängig genau dann wenn alle $s_i \neq 0$ sind und $(Ks_1,\ldots,Ks_n)$ unabhängig ist.
-	\item $s$ ist eine Basis von V genau dann wenn $V = \dot\sum_{i=1}^n Ks_i$ ist.
+	\item $s$ ist eine Basis von V genau dann wenn alle $s_i \neq 0$ sind und $V = \dot\sum_{i=1}^n K s_i$  gilt.
 \end{enumerate}
 
 \skript{1.72} Ein Tupel $(U_1,\ldots,U_n)$ von Untervektorräumen von $V$ ist unabhängig genau dann wenn für alle $i \in \mathbb{N}, i \le n$ gilt: $U_i \cap \sum_{j \in \{1,\ldots,n\}\setminus\{i\}} U_j = \{0\}$
 
 Insbesondere sind zwei Untervektorräume $U_1$ und $U_2$ unabhängig genau dann wenn $U_1 \cap U_2 = \{0\}$ ist.
 
-\skript{1.76} Für einen $K$-Vektorraum $V$ und Untervektorräume $(U_1,\ldots,U_n)$ mit $V = \dot\sum_{i=1}^n U_i$ ist die Projektion von $V$ auf $U_i$ definiert als
+\skript{1.76} Für einen $K$-Vektorraum $V$ und Untervektorräume $(U_1,\ldots,U_n)$ mit $V = \dot\sum_{i=1}^n U_i$ bzgl. $(U_1,\ldots,U_n)$ ist die Projektion von $V$ auf $U_i$ definiert als
 $$ \pr_i: V \to U_i, \left(\sum_{i=1}^n u_i\right) \mapsto u_i \text{ für } u_i \in U_i$$
 
 \skript{1.78} Für einen Untervektorraum $U$ von $V$ heißt $U^\prime$ Komplement von $U$ wenn $V = U \dot+ U^\prime$ gilt.
@@ -154,17 +154,17 @@ $$ \pr_i: V \to U_i, \left(\sum_{i=1}^n u_i\right) \mapsto u_i \text{ für } u_i
 \item Für $a \in K, v, v^\prime \in V$ ist $\varphi(av + v^\prime) = a \varphi(v) + \varphi(v^\prime)$
 \end{itemize}
 
-\skript{2.5} Ein Vektorraum\underline{endo}morphismus ist ein Vektorraum\underline{homo}morphismus von $V$ nach $V$.
+\skript{2.5} Ein Vektorraum\textbf{\underline{endo}}morphismus von $V$ ist ein Vektorraum\textbf{\underline{homo}}morphismus von $V$ nach $V$.
 
-\skript{2.9} Ein Vektorraum\underline{iso}morphismus ist ein bijektiver/invertierbarer Vektorraum\underline{homo}morphismus.
+\skript{2.9} Ein Vektorraum\textbf{\underline{iso}}morphismus ist ein bijektiver/invertierbarer Vektorraum\textbf{\underline{homo}}morphismus.
 
-\skript{2.10} Ein Vektorraum\underline{auto}morphismus ist ein Vektorraum\underline{iso}morphismus von $V$ nach $V$. \\Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
+\skript{2.10} Ein Vektorraum\textbf{\underline{auto}}morphismus ist ein Vektorraum\textbf{\underline{iso}}morphismus von $V$ nach $V$. \\Andere Namen: $\textrm{GL}(V) = \textrm{Aut}(V) = \textrm{Aut}_K(V) := \textrm{End}_K(V)^\times$
 
 \subsubsection{Bild und Kern, Rang und Defekt}
 
 Es seien $K$-Vektorräume $V$ und $W$ und ein $K$-Vektorraumhomomorphismus $\varphi: V \to W$.
 
-\skript{2.11a} $\Im \varphi$ ist ein $K$-Untervektorraum von $W$
+\skript{2.11a} $\Im \varphi$ ist ein $K$-Untervektorraum von $W$.
 
 \skript{2.11b} $\Ker \varphi \coloneqq \{v \in V | \varphi(v)=0 \}$ ist ein $K$-Untervektorraum von $V$.
 
@@ -203,29 +203,28 @@ Für $m,n \in \mathbb{N}_0, A \in K^{m \times n}$:
 
 \subsection{Koordinatenspalte}
 
-\skript{3.6}$\kappa_s : V \to K^{n \times 1}, v \mapsto \kappa_s(v)$ \\
-ist der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Iso.
+\skript{3.6} Für eine Basis $s$ von $V$ ist $\kappa_s : V \to K^{n \times 1}$\\ der zu $K^{n \times 1} \to V, a \mapsto \sum_{i \in [1,n]} a_i s_i$ inverse VR.-Iso.
 
 Für $\kappa_s(v)$ muss also das LGS $\sum_{i \in [1,n]} a_i s_i = v$ gelöst werden, dann sind $a_i = \kappa_s(v)_i$.
 
 \subsection{Darstellungsmatrix}
 
-\skript{3.8}Für VR-Hom. $\varphi : V \to W$, Basis $s = (s_1, \ldots, s_n)$ von $V$ und Basis $t = (t_1, \ldots, t_m)$ von $W$ ist $M_{t,s}(\varphi)$ die Darstellungsmatrix zu $s$ und $t$:
+\skript{3.8} Für VR-Hom. $\varphi : V \to W$, Basis $s = (s_1, \ldots, s_n)$ von $V$ und Basis $t = (t_1, \ldots, t_m)$ von $W$ ist $M_{t,s}(\varphi)$ die Darstellungsmatrix zu $s$ und $t$:
 $$\mathrm{M}_{t,s}(\varphi) = (\kappa_t(\varphi(s_1)) \ldots \kappa_t(\varphi(s_n)))$$
 
 Es muss also für jede Spalte $i$ das $s_i$ in $\varphi$ eingesetzt werden und das Ergebnis wieder nach den Linearfaktoren von $t$ aufgelöst werden.
 
-\skript{Tutoraufgabe 30.5.16 a}$\mathrm{M}_{e,e}(\varphi_A) = A$
+\skript{Tutoraufgabe 30.5.16 a} $\mathrm{M}_{e,e}(\varphi_A) = A$
 
 \subsection{Basiswechselmatrix, Basiswechselformeln}
 
-\skript{3.15}Die Darstellungsmatrix $\mathrm{M}_{s, s^\prime}(\id_V)$ wird Basiswechselmatrix von $s$ nach $s^\prime$ genannt.
+\skript{3.15} Die Darstellungsmatrix $\mathrm{M}_{s, s^\prime}(\id_V)$ wird Basiswechselmatrix von $s$ nach $s^\prime$ genannt.
 
 Achtung: $\mathrm{M}_{s, s^\prime}(\id_V) \cdot v$ übersetzt ein $v$ von $s^\prime$ zu $s$! Die Bezeichnung ``von $s$ nach $s^\prime$'' ist also rückwärts. Dies wird mit praktischer Verwendung begründet.
 
-\skript{3.18a}Mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt für $v \in V$:\\ $\kappa_{s^\prime}(v) = (\mathrm{M}_{s,s^\prime}(\id_V))^{-1} \kappa_s(v)$.
+\skript{3.18a} Mit Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt für $v \in V$:\\ $\kappa_{s^\prime}(v) = (\mathrm{M}_{s,s^\prime}(\id_V))^{-1} \kappa_s(v)$.
 
-\skript{3.18b}Mit VR-Hom. $\varphi : V \to W$, Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ und Basen $t = (t_1,\ldots, t_n)$ und $t^\prime = (t^\prime_1, \ldots, t^\prime_n)$ von $W$ gilt: \\
+\skript{3.18b} Mit VR-Hom. $\varphi : V \to W$, Basen $s = (s_1,\ldots, s_n)$ und $s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ und Basen $t = (t_1,\ldots, t_n)$ und $t^\prime = (t^\prime_1, \ldots, t^\prime_n)$ von $W$ gilt: \\
 $\mathrm{M}_{t^\prime, s^\prime}(\varphi) = (\mathrm{M}_{t,t^\prime}(\id_W))^{-1} \mathrm{M}_{t,s}(\varphi) \mathrm{M}_{s,s^\prime}(\id_V)$
 
 \subsection{Kardinalitäten von verschiedenen Mengen}
@@ -250,10 +249,10 @@ Wir müssen Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ St
 	\item Für $A, B \in K^{m \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff A P = P B$$
 \end{itemize}
 
-\skript{3.50} Für $\varphi : V \to W$ sollen Basen $(s_1, \ldots, s_n)$ von $V$ und $(t_1, \ldots, t_m)$ von $W$ bestimmt werden, sodass $M_{t,s}(\varphi) = Q_r$ mit $r \leq \min(n, m)$. Dann rechnen wie folgt: \begin{enumerate}
+\skript{3.50} Für $\varphi : V \to W$ sollen Basen $(s_1, \ldots, s_n)$ von $V$ und $(t_1, \ldots, t_m)$ von $W$ bestimmt werden, sodass $M_{t,s}(\varphi) = Q_r$ eine Quasieinheitsmatrix ist mit $r \leq \min(n, m)$. Dann rechnen wie folgt: \begin{enumerate}
     \item Basis $(t_1, \ldots, t_r)$ von $\Im \varphi$ berechnen.
     \item Zur Basis von $V$ erweitern: $(t_1, \ldots, t_n)$.
-    \item Urbilder $s_j$ von Kernbasis berechnen: $t_j = \varphi(s_j)$ für $j \in [1, r]$.
+    \item Urbilder $s_j$ von Bildbasis berechnen: $t_j = \varphi(s_j)$ für $j \in [1, r]$.
     \item Basis $(s_{r+1}, \ldots, s_n)$ von $\Ker \varphi$ bestimmen.
 \end{enumerate}
 
@@ -285,46 +284,45 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \subsection{Blockcode}
 
-\skript{4.1}Blockcode: Nicht-leere Teilmenge $C$ von $K^{n \times 1}$ über $K$ mit Länge $n$. Elemente von $C$ werden Codewörter genannt.
+\skript{4.1} Blockcode: Nicht-leere Teilmenge $C$ von $K^{n \times 1}$ über $K$ mit Länge $n$. Elemente von $C$ werden Codewörter genannt.
 
-\skript{4.3}Hamming-Gewicht: $\mathrm{wt}(a):=|\{i \in [1,n]|a_i \neq 0\}|$ mit $a \in K^{n \times 1}$
+\skript{4.3} Hamming-Gewicht: $\mathrm{wt}(a):=|\{i \in [1,n]|a_i \neq 0\}|$ mit $a \in K^{n \times 1}$
 
-\skript{4.5c}$\mathrm{wt}(a+b) \leq \mathrm{wt}(a)+ \mathrm{wt}(b)$
+\skript{4.5c} $\mathrm{wt}(a+b) \leq \mathrm{wt}(a)+ \mathrm{wt}(b)$
 
-\skript{4.6}Hamming-Abstand: $d(a,b):=wt(b-a)$
+\skript{4.6} Hamming-Abstand: $d(a,b):=wt(b-a)$
 
-\skript{4.7}\begin{itemize}
-	\item $\mathrm{d}(a,b)=|\{i \in [1,n]|a_i \neq b_i\}|$
+\skript{4.7} \begin{itemize} \item $\mathrm{d}(a,b)=|\{i \in [1,n]|a_i \neq b_i\}|$
 	\item $\mathrm{d}(a,c) \leq \mathrm{d}(a,b)+\mathrm{d}(b,c)$
 \end{itemize}
 
-\skript{4.10}Offene Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) < r\}$ mit $r \in \mathbb{R}_{\geq 0}$.\\Abgeschlossene Kugel analog mit $\leq$.
+\skript{4.10} Offene Kugel: $\mathrm{B}_r(a):=\{x \in K^{n \times 1}|\mathrm{d}(a,x) < r\}$ mit $r \in \mathbb{R}_{\geq 0}$.\\Abgeschlossene Kugel analog mit $\leq$.
 
 \subsection{Minimalabstand eines Blockcodes}
 
-\skript{4.12}Minimalabstand: $\mathrm{d}(C):=\min\{\mathrm{d}(c,c^\prime)|c,c^\prime \in C$ mit $c \neq c^\prime \}$, falls $|C| \ge 1$
+\skript{4.12} Minimalabstand: $\mathrm{d}(C):=\min\{\mathrm{d}(c,c^\prime)|c,c^\prime \in C$ mit $c \neq c^\prime \}$, falls $|C| \ge 1$
 \begin{itemize}
 	\item $\mathrm{B}_{\mathrm{d}(C)}(c) \cap C = \{c\}$
 \end{itemize}
 
-\skript{4.15}Nächster Nachbar von $x$ ist $c$ mit $\mathrm{d}(c,x)=\min\{d(c^\prime,x|c^\prime \in C)\}$
+\skript{4.15} Nächster Nachbar von $x$ ist $c$ mit $\mathrm{d}(c,x)=\min\{d(c^\prime,x|c^\prime \in C)\}$
 \begin{itemize}
 	\item $\forall x \in \mathrm{B}_{\frac{\mathrm{d}(C)}{2}}(c)$ ist $c$ der eindeutige nächste Nachbar von $x \in C$
 \end{itemize}
 
 \subsection{Lineare Codes}
 
-\skript{4.19}$C$ ist ein linearer $[n,k,d]$-Code, wenn die Länge $n$, $\dim_K C=k$ und $\mathrm{d}(C)=d$ ist.
+\skript{4.19} $C \leq K^{n \times 1}$ ist ein linearer $[n,k,d]$-Code, wenn die Länge $n$, $\dim_K C=k$ und $\mathrm{d}(C)=d$ ist.
 
-\skript{4.21}$\mathrm{d}(C) = \min \{\mathrm{wt}(c)|c \in C\setminus\{0\}\}$, falls $C \neq \{0\}$ sonst $0$.
+\skript{4.21} $\mathrm{d}(C) = \min \{\mathrm{wt}(c)|c \in C\setminus\{0\}\}$, falls $C \neq \{0\}$ sonst $0$.
 
 \subsection{Erzeugermatrizen}
 
-\skript{4.22}Eine Erzeugermatrix ist $A \in K^{n \times k}$ mit $C=\Col(A)$, wenn C ein linearer $[n,k]$-Code über $K$ ist.
+\skript{4.22} Eine Erzeugermatrix ist $A \in K^{n \times k}$ mit $C=\Col(A)$, wenn C ein linearer $[n,k]$-Code über $K$ ist.
 
-\skript{4.24}$\rk_k A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]$-Code $C$.
+\skript{4.24} $\rk_k A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]$-Code $C$.
 
-\skript{4.25}Kodierung und Dekodierung:
+\skript{4.25} Kodierung und Dekodierung:
 \begin{itemize}
 	\item Kodieren von $w \in K^{k \times 1}$ zu einem Codewort mit Erzeugermatrix $A$: \\
 	Berechne $Aw$.
@@ -334,33 +332,33 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \subsection{Kontrollmatrizen}
 
-\skript{4.26}Kontrollmatrix ist $B \in K^{(n-k) \times n}$ mit $C=Sol(B,0)$, wenn $k \in [0,n], C$ ein linearer $[n,k]$-Code über $K$ ist.
+\skript{4.26} Kontrollmatrix ist $B \in K^{(n-k) \times n}$ mit $C=Sol(B,0)$, wenn $k \in [0,n], C$ ein linearer $[n,k]$-Code über $K$ ist.
 \begin{itemize}
 	\item Berechnung der Kontrollmatrix $C$ mit Erzeugermatrix $A: Sol(A^{tr},0)=\langle u,..,v\rangle=Col(B^{tr})$
 	\item $Sol(B,0)=Col(A)=C$
 \end{itemize}
 
-\skript{4.28}$rk_K B=n-k$
+\skript{4.28} $rk_K B=n-k$
 
-\skript{4.29}Codewort-Test: Berechne $Bx$ und falls $Bx=0$ ist, dann ist $x$ ein Codewort von $C$.
+\skript{4.29} Codewort-Test: Berechne $Bx$ und falls $Bx=0$ ist, dann ist $x$ ein Codewort von $C$.
 
-\skript{4.30}Seien $k \in [1,n],$ ein linearer $[n,k]$-Code $C$ über $K$ und die Kontrollmatrix $B$ gegeben. Dann ist \\
+\skript{4.30} Seien $k \in [1,n],$ ein linearer $[n,k]$-Code $C$ über $K$ und die Kontrollmatrix $B$ gegeben. Dann ist \\
 $\mathrm{d}(C) = \min \{r \in \mathbb{N}_0 \ |\ $ es gibt $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ so, dass $(B_{-,j_1},...,B_{-,j_r})$ linear abhängig ist. \\
 =$ \max \{r \in \mathbb{N}_0 \ |\ $ für alle $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ ist $(B_{-,j_1},...,B_{-,j_r})$ linear unabhängig.
 
 \subsection{Syndromdekodierung}
 
-\skript{4.31}Syndrom: Für $x \in K^{n \times 1}$ heißt $Bx \in K^{(n-k) \times 1}$ das Syndrom von $x$ bzgl. $B$, mit $k \in [1,n]$ und einem linearen $[n,k]$-Code $C$ über $K$.
+\skript{4.31} Syndrom: Für $x \in K^{n \times 1}$ heißt $Bx \in K^{(n-k) \times 1}$ das Syndrom von $x$ bzgl. $B$, mit $k \in [1,n]$ und einem linearen $[n,k]$-Code $C$ über $K$.
 
-\skript{4.33}Sei $y$ das Syndrom von $x$. Für $x` \in K^{n \times 1}$ gilt: $x`$ hat das Syndrom $y \Leftrightarrow x`-x$ ist ein Codewort von $C$.
+\skript{4.33} Sei $y$ das Syndrom von $x$. Für $x` \in K^{n \times 1}$ gilt: $x`$ hat das Syndrom $y \Leftrightarrow x`-x$ ist ein Codewort von $C$.
 
-\skript{4.34}Ein Anführer für $y$ bzgl. $B$ ist ein $e \in K^{n \times 1}$ mit Syndrom $y$ und $\mathrm{wt}(e)=\min\{\mathrm{wt}(x)\ |\ x \in K^{n \times 1}$ so, dass $x$ das Syndrom $y$ hat$\}$.
+\skript{4.34} Ein Anführer für $y$ bzgl. $B$ ist ein $e \in K^{n \times 1}$ mit Syndrom $y$ und $\mathrm{wt}(e)=\min\{\mathrm{wt}(x)\ |\ x \in K^{n \times 1}$ so, dass $x$ das Syndrom $y$ hat$\}$.
 
-\skript{4.36}Codewort $c$ ist ein nächster Nachbar von $x$ in $C \Leftrightarrow x-c$ ist Anführer für $y$.
+\skript{4.36} Codewort $c$ ist ein nächster Nachbar von $x$ in $C \Leftrightarrow x-c$ ist Anführer für $y$.
 
-\skript{4.37}$\forall x \in B_{\frac{d(C)}{2}}(c)$ ist $x-c$ der eindeutige Anführer für das Syndrom von $x$.
+\skript{4.37} $\forall x \in B_{\frac{d(C)}{2}}(c)$ ist $x-c$ der eindeutige Anführer für das Syndrom von $x$.
 
-\skript{4.38}Syndromdekodierung: \\
+\skript{4.38} Syndromdekodierung: \\
 
 Initialisierung:
 \begin{itemize}
@@ -377,7 +375,7 @@ Dekodierung von $x \in K^{n \times 1}$:
 
 \section{Determinante}
 
-Die Determinante gibt Auskunft über quadratische Matrizen. Wenn sie invertierbar ist, dann ist auch die Matrix invertierbar. In Körpern heißt das einfach ungleich Null, in Ringen muss Invertierbarkeit genauer geprüft werden. Im Folgenden ist $R$ ein beliebiger kommutativer und unitärer Ring.
+Die Determinante gibt Auskunft über quadratische Matrizen. Visuell entspricht die Determinante von $A$ der (gerichteten) Änderung von Volumen durch $\phi_A$. Wenn sie invertierbar ist, dann ist auch die Matrix invertierbar. In Körpern heißt das einfach ungleich Null, in Ringen muss Invertierbarkeit genauer geprüft werden. Im Folgenden ist $R$ ein beliebiger kommutativer und unitärer Ring.
 
 Die Leibniz-Formel für kleine Matrizen:
 
@@ -387,7 +385,7 @@ Die Leibniz-Formel für kleine Matrizen:
 
 \skript{5.3c} Für $A \in R^{2 \times 2}$: $\det A = A_{1,1} A_{2,2} - A_{1,2} A_{2,1}$ \\
 
-\skript{5.15}\textit{Kästchensatz.} Für Matrizen $A \in R^{m \times m}$, $B \in R^{m \times n}$, $C \in R^{n \times n}$ gilt: \\
+\skript{5.15} \textit{Kästchensatz.} Für Matrizen $A \in R^{m \times m}$, $B \in R^{m \times n}$, $C \in R^{n \times n}$ gilt: \\
 $\det \begin{pmatrix} A & B \\ 0 & C \end{pmatrix} = (\det A) (\det C)$
 
 Der Kästchensatz ist der beste Ansatz, um Determinanten größerer Matrizen per Hand auszurechen: Man vereinfacht die Matrix (siehe Abschnitt zur Veränderung der Matrix) und dann wendet man den Kästchensatz an.
@@ -404,7 +402,7 @@ Der Kästchensatz ist der beste Ansatz, um Determinanten größerer Matrizen per
 
 \skript{5.4} $\det \transpose{A} = \det A$
 
-\skript{5.5/1}\textit{Multilinearität.} \begin{itemize}
+\skript{5.5/1} \textit{Multilinearität.} \begin{itemize}
 \item $\begin{aligned}
 	& \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y+z & x_{k+1} & \ldots  & x_n \end{pmatrix} = \\
 		& \hspace{2em} \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix} +
@@ -413,7 +411,7 @@ Der Kästchensatz ist der beste Ansatz, um Determinanten größerer Matrizen per
 \item $\det \begin{pmatrix} x_1 & \ldots & x_{k-1} & ay & x_{k+1} & \ldots  & x_n \end{pmatrix} = a \det \begin{pmatrix} x_1 & \ldots & x_{k-1} & y & x_{k+1} & \ldots  & x_n \end{pmatrix}$
 \end{itemize}
 
-\skript{5.5/2} Wenn alle Spalten paarweise gleich sind, dann gilt $\det A = 0$.
+\skript{5.5/2} Wenn zwei Spalten gleich sind, dann gilt $\det A = 0$.
 
 Um die Determinante deutlich einfacher berechnen zu können, ist es möglich, die Matrix mit unseren elementaren Zeilen- und Spaltenoperationen (via 5.4) zu vereinfachen.
 
@@ -459,7 +457,7 @@ Man beachte: Vektorraum\textbf{\underline{endo}}morphismus.
 
 Die Determinante ist unabhängig von den Basen der Darstellungsmatrix:
 
-\skript{5.9}Für  $\varphi : V \to V$, Basen $s = (s_1, \ldots, s_n), s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt: \\
+\skript{5.9} Für  $\varphi : V \to V$, Basen $s = (s_1, \ldots, s_n), s^\prime = (s^\prime_1, \ldots, s^\prime_n)$ von $V$ gilt: \\
 $\det \textrm{M}_{s,s}(\varphi) = \det \textrm{M}_{s^\prime, s^\prime}(\varphi)$ \\
 
 Damit können wir auch problemlos $\det \textrm{M}_{s,s}(\varphi)$ mit $\det \varphi$ abkürzen.
@@ -468,7 +466,7 @@ Damit können wir auch problemlos $\det \textrm{M}_{s,s}(\varphi)$ mit $\det \va
 
 Ein Eigenvektor $v$ eines Endomorphismus $\varphi$ ist ein Vektor $\neq 0$, der von dem Endomorphismus bis auf einen skalaren Faktor, den Eigenwert $a$, nicht verändert wird: $\varphi(v) = a v$.
 
-\skript{6.1}Ein Eigenraum ist der Vektorraum, der alle Eigenvektoren zu einem Eigenwert (und den Nullvektor) enthält.
+\skript{6.1} Ein Eigenraum ist der Vektorraum, der alle Eigenvektoren zu einem Eigenwert (und den Nullvektor) enthält.
 $$\Eig_a(\varphi) = \{ v \in V \vert \varphi(v) = a v \} = \Ker(\varphi - a \cdot \id_V)$$
 
 Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/-räume von $\varphi_A$.
@@ -528,7 +526,7 @@ Die folgenden Definitionen gelten für Endomorphismen $\varphi$, sowie für Matr
 
 \skript{6.52} Für einen Endomorphismus $\varphi: V \to V$ sind äquivalent: \begin{itemize}
 	\item $\varphi$ ist diagonalisierbar.
-	\item $V = \dot\sum_{a \in K\text{, a ist Eigenwert von $\varphi$}} \Eig_a(\varphi)$.
+	\item $V = \dot\sum_{a \in K\text{, a ist Eigenwert von } \varphi}\ \Eig_a(\varphi)$.
 	\item $\dim V = \sum_{a \in K} \geo_a(\varphi)$.
 	\item Das charakteristische Polynom $\chi_\varphi$ zerfällt in Linearfaktoren und für jeden Eigenwert $a$ von $\varphi$ gilt $\geo_a(\varphi) = \mul_a(\varphi)$.
 \end{itemize}
@@ -559,11 +557,10 @@ $$M_{s,s}(\varphi) = \left(\begin{array}{cc}
 	\end{array}\right)$$
 mit $A \in K^{m \times m}$ hat. In diesem Fall ist $M_{s^\prime,s^\prime}(\varphi\vert_U^U) = A$.
 
-\skript{6.80} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen $\varphi$-invarianten Untervektorraum $U$ von $V$ gilt $\chi_{\varphi\vert_U^U} \vert \chi_\varphi$, d.h. das charakteristische Polynom von $\varphi$ eingeschränkt auf $U$ ist durch das charakteristische Polynom von $\varphi$ teilbar.
+\skript{6.80} Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ und einen $\varphi$-invarianten Untervektorraum $U$ von $V$ gilt $\chi_{\varphi\vert_U^U} \vert \chi_\varphi$, d.h. das charakteristische Polynom von $\varphi$ eingeschränkt auf $U$ teilt das charakteristische Polynom von $\varphi$.
 
 \subsubsection{Satz von Cayley/Hamilton}
-\skript{6.81}\begin{enumerate}
-	\item Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ gilt: $\chi_\varphi(\varphi) = 0$.
+\skript{6.81} \begin{enumerate} \item Für einen $K$-Vektorraumendomorphismus $\varphi: V \to V$ gilt: $\chi_\varphi(\varphi) = 0$.
 	\item Für eine Matrix $A \in K^{n \times n}$ gilt: $\chi_A(A) = 0$.
 \end{enumerate}
 
