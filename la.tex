@@ -116,8 +116,6 @@ Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endl
 
 \skript{1.48} (Basisergänzungssatz) Jede linear unabhängige Teilmenge eines endlich erzeugten Vektorraums kann zu einer Basis dieses Vektorraums ergänzt werden.
 
-\skript{1.53} (Steinitzscher Austauschsatz) In einem Erzeugendensystem $t=(t_1,\ldots,t_n)$ von $V$ darf man Einträge durch beliebige Einträge eines in $V$ linear unabhängigen Tupels $s = (s_1,\ldots,s_k)$ austauschen. % TODO
-
 \subsection{Unabhängigkeit von Untervektorräumen und innere direkte Summe}
 
 \skript{1.67} Für einen $K$-Vektorraum $V$ und Untervektorräume $U_1,\ldots,U_n$ von $V$ ist die innere Summe von $(U_1,\ldots,U_n)$:
@@ -515,6 +513,15 @@ Die folgenden Definitionen gelten für Endomorphismen $\varphi$, sowie für Matr
 \skript{6.41} Eine Basis $s$ von $V$ ist eine Eigenbasis bezüglich $\varphi$, wenn alle Einträge von $s$ Eigenvektoren von $\varphi$ sind.
 
 \skript{6.43} Für einen Endomorphismus $\varphi: V \to V$ ist eine Basis $s$ von $V$ genau dann eine Eigenbasis bezüglich $\varphi$, wenn $M_{s,s}(\varphi)$ eine Diagonalmatrix ist.
+
+\skript{6.45} Für eine Basis $s$ der Länge $n$ ist jedes $s_i$ genau dann ein Eigenvektor zum Eigenwert $a_i$ von Matrix $A \in K^{n \times n}$, wenn mit $P = ( s_1 \ldots s_n )$ gilt:
+\[
+	P^{-1} A P = \begin{pmatrix}
+	    a_{1} &        & 0    \\
+	          & \ddots &      \\
+	    0     &        & a_{n}
+	  \end{pmatrix}
+\]
 
 \skript{6.46} $\varphi$ ist diagonalisierbar, falls es eine Eigenbasis bezüglich $\varphi$ gibt.
 
