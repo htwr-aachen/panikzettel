@@ -1,7 +1,7 @@
-\documentclass[a4paper,parskip=half*,DIV=7,fontsize=11pt]{scrartcl}
-\usepackage[head=27.2pt]{geometry}
+\documentclass[a4paper,DIV=15,fontsize=11pt]{scrartcl}
 \usepackage[english,ngerman]{babel}
 \usepackage[utf8x]{inputenc}
+\usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{mathtools}
@@ -31,12 +31,16 @@
 	{~}{{\textasciitilde}}1
 }
 
+\setlist[itemize]{noitemsep, topsep=2pt}
+\setlist[enumerate]{noitemsep, topsep=2pt}
+
 \ihead{MG I Panikzettel}
 \title{MG I Panikzettel}
 \author{Caspar Zecha}
 \cfoot{\thepage\ / \pageref{LastPage}}
 
 \lstset{basicstyle=\ttfamily}
+
 
 \begin{document}
 	
@@ -49,8 +53,6 @@
 \end{abstract}
 	
 \tableofcontents
-	
-\pagebreak
 	
 \section{Zeichnungen und Ansichten}
 \begin{itemize}
@@ -548,7 +550,7 @@ Die beste Schweißnaht ist keine Schweißnaht, da Veränderung durch Wärme an S
 \subsection{Gestaltungsrichtlinien}
 Eckenabbrand und Nahtanhäufungen vermeiden.
 
-\pagebreak
+
 \section{Lösungswege für Aufgaben}
 Im folgenden werden Tipps und Vorgehensweisen für bestimmte Aufgabentypen gegeben:
 \subsection{Dreitafelprojektion}
