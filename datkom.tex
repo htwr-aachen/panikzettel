@@ -78,21 +78,26 @@ Die vertikale Kommunikation verläuft aus Sicht der N. Schicht dann wie folgt:
     \item Diese wird dann zusammen mit den Kontrollinformationen für die nächste Schicht, der (N-1)-ICI, wiederum zur (N-1)-IDU zusammengefasst. Somit gilt (N)-PDU = (N-1)-SDU.
 \end{enumerate}
 
-Die für die Vorlesung relevanten Schichten sind dann im OSI-Modell wie folgt angeordnet:
-
-\begin{tabular}{|l|l|l|l|}
-\hline
-\textbf{Nr} & \textbf{Schicht} & \textbf{Distanz} & \textbf{Protokollbeispiel} \\
-\hline
-4 & Transportschicht & Ende zu Ende & TCP, UDP \\
-\hline
-3 & Vermittlungsschicht & Ende zu Ende & IP, ICMP \\
-\hline
-2 & Sicherungsschicht & Punkt zu Punkt (Gerät zu Gerät) & MAC, ALOHA, Token Ring \\
-\hline
-1 & Bitübertragungsschicht & Punkt zu Punkt (Gerät zu Gerät) & Ethernet\\
-\hline
-\end{tabular}
+\subsection{OSI vs TCP/IP}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{enumerate}
+	\item Bitübertragungsschicht:\\ Digitale Datenübertragung, z.B.\ Ethernet.
+	\item Sicherungsschicht:\\ Gewährleisten von zuverlässiger uns fehlerfreier Übertragung, z.B.\ MAC, ALOHA, Token Ring.
+	\item Vermittlungsschicht:\\ Vermittlung von Paketen und Routing, z.B.\ IP, ICMP.
+	\item Transportschicht:\\ Ende-zu-Ende-Kommunikation, z.B.\ TCP, UDP.
+	\item Sitzungsschicht:\\ Synchronisierter Datenaustausch, z.B.\ HTTP.
+	\item Darstellungsschicht:\\ Übersetzer zwischen verschiedenen Datenformen, z.B.\ HTTP.
+	\item Anwendungsschicht:\\ Anwendungsspezifische Daten, z.B.\ HTTP.
+\end{enumerate}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{enumerate}
+	\item Host-to-Network Layer:\\ Datenübertragung von Punkt zu Punkt, z.B.\ WLAN, Token Ring, (R)ARP.
+	\item Internet-Layer:\\ Weitervermittlung von Paketen und Routing, z.B.\ IP, ICMP.
+	\item Transport-Layer:\\ Ermöglicht Ende-zu-Ende-Kommunikation, z.B.\ TCP, UDP.
+	\item Application Layer:\\ Austausch von anwendungsspezifischen Daten, z.B.\ HTTP, DNS.
+\end{enumerate}
+\end{minipage}
 
 \section{Bitübertragungsschicht}
 \subsection{Definitionen}
@@ -421,7 +426,7 @@ Verwendet NRZI-M, aber kodiert Daten vorher durch Tabelle. 4B/5B überträgt 4 B
 Beide Theoreme beschreiben die maximale Datenrate bei einem Kanal mit eingeschränkter Bandbreite. Für einen Kanal muss das Minimum der Ergebnisse beider Theoreme für die maximale Bandbreite verwendet werden.
 
 Nyquist sagt, für einen \emph{störungsfreien} Kanal ist die maximale Datenrate in Bit pro Sekunde:
-\[2 \cdot B \cdot \log_2(n),\] wobei $B$ die Bandbreite und $n$ die Anzahl diskreter Signalstufen ist.
+\[2 \cdot B \cdot \log_2(n),\] wobei $B$ die Bandbreite und $n$ die Anzahl diskreter Signalstufen ist. Falls \emph{QAM} angegeben, so ist $n$ die Anzahl der diskreten Signalwerte.
 
 Nach Shannon ist die maximale Datenrate bei einem Kanal mit \emph{zufälligem Rauschen}:
 \[B \cdot \log_2(1 + S/N)\]
