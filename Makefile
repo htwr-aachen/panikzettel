@@ -1,4 +1,4 @@
-all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf
+all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf datkom.pdf
 
 la.pdf: la.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
@@ -14,7 +14,7 @@ fosap.pdf: fosap.tex
 
 bus.pdf: bus.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make bus.tex
-	
+
 maschinengestaltung_i.pdf: maschinengestaltung_i.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make maschinengestaltung_i.tex
 
@@ -27,6 +27,9 @@ buk.pdf: buk.tex
 swt.pdf: swt.tex
 	cp deps/tikz-uml.sty tikz-uml.sty
 	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf swt.tex
+
+datkom.pdf: datkom.tex
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf datkom.tex
 
 clean:
 	latexmk -CA

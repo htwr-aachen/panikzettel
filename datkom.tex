@@ -1,0 +1,890 @@
+\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[pdftex]{hyperref}
+\usepackage{bookmark}
+\usepackage[ngerman]{babel}
+\usepackage{braket}
+\usepackage{courier}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,breaklines=true}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage{todonotes}
+\usepackage{textcomp}
+\usepackage[binary-units=true,retain-unity-mantissa=false]{siunitx}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9,tick label style={color=white}, every axis x label/.style={
+  at={(0.5,0)},
+  below,
+  yshift=-5pt}}
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+
+\makeatother
+
+\newcommand\pro{\item[$+$]}
+\newcommand\con{\item[$-$]}
+
+\title{Datenkommunikation und Sicherheit Panikzettel}
+\author{der Dude\footnote{Pseudonyme gehören anonymen Autoren, die anonym bleiben wollen.}, Luca Oeljeklaus, Philipp Schröer}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Grundlagen}
+\subsection{Definitionen}
+\begin{itemize}
+    \item \textbf{Dienst}: Dienste sind von Netzen oder Schichten (siehe OSI-Modell) bereitgestellte Kommunikationsfunktionen.
+    \item \textbf{Dienstprimitiv}: Dienstprimitive sind die einzelnen Funktionen, welche ein Dienst anbietet.
+    \item \textbf{Diensterbringer}: Bereitsteller des Dienstes.
+    \item \textbf{Instanz}: Eine Instanz ist eine an der Erbringung des Dienstes aktiv beteiligte Komponente.
+    \item \textbf{Protokoll}: Ein Protokoll beschreibt nach welchen Regeln Softwareinstanzen, welche an der Erbringung von Diensten beteiligt sind, miteinander interagieren.
+    \item \textbf{Schichten}: Funktionalität des Diensterbringers für Modularität in Schichten aufgeteilt. Dienste werden von einer Schicht in einer Schichtenstruktur an die nächst höhere (abstraktere) Schicht bereitgestellt. Andersrum greift eine Schicht auf die Dienste der unterliegenden Schicht zu.
+\end{itemize}
+
+Um die Abfolge von Dienstprimitiven bei Benutzung eines Dienstes zu spezifizieren, kann man Gebrauch von Zeitablaufsdiagrammen (Weg-Zeit-Diagrammen) und Zustandsübergangsdiagrammen (Automaten) machen.
+
+\subsection{OSI-Modell}
+\subsubsection{Vertikale Kommunikation}
+Wir unterscheiden folgende Begriffe:
+
+\begin{itemize}
+    \item Dienstdateneinheit \textbf{SDU} (Service Data Unit): Daten, welche von einer Schicht übertragen werden sollen.
+    \item Schnittstellenkontrollinformationen \textbf{ICI} (Interface Control Information): Enthält Informationen über den zu erbringenden Dienst, z.B. Länge der SDU, Parameter des Dienstes, \dots
+    \item Schnittstellendateneinheit \textbf{IDU} (Interface Data Unit): SDU + ICI
+    \item Protokollkontrollinformationen \textbf{PCI} (Protocol Control Information): Informationen, welche zwischen den einzelnen Instanzen dieser Schicht ausgetauscht werden sollen.
+    \item Protokolldateneinheit \textbf{PDU} (Protcol Data Unit) PCI + SDU
+\end{itemize}
+
+Die vertikale Kommunikation verläuft aus Sicht der N. Schicht dann wie folgt:
+
+\begin{enumerate}
+	\item Die N. Schicht erhält von der N+1 Schicht die (N+1)-IDU und splittet diese in die durch sie zu übertragenden Daten, der (N)-SDU, und die die Kontrollinformationen die (N)-ICI auf.
+    \item Die Protokollkontrollinformationen zur Kommunikation mit einer anderen Instanz der selben Schicht werden nun in Form der (N)-PCI mit den zu übertragenden Daten, der (N)-SDU, zur (N)-PDU zusammengefasst.
+    \item Diese wird dann zusammen mit den Kontrollinformationen für die nächste Schicht, der (N-1)-ICI, wiederum zur (N-1)-IDU zusammengefasst. Somit gilt (N)-PDU = (N-1)-SDU.
+\end{enumerate}
+
+Die für die Vorlesung relevanten Schichten sind dann im OSI-Modell wie folgt angeordnet:
+
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Nr} & \textbf{Schicht} & \textbf{Distanz} & \textbf{Protokollbeispiel} \\
+\hline
+4 & Transportschicht & Ende zu Ende & TCP, UDP \\
+\hline
+3 & Vermittlungsschicht & Ende zu Ende & IP, ICMP \\
+\hline
+2 & Sicherungsschicht & Punkt zu Punkt (Gerät zu Gerät) & MAC, ALOHA, Token Ring \\
+\hline
+1 & Bitübertragungsschicht & Punkt zu Punkt (Gerät zu Gerät) & Ethernet\\
+\hline
+\end{tabular}
+
+\section{Bitübertragungsschicht}
+\subsection{Definitionen}
+\begin{itemize}
+\item \textbf{Schritt}: Minimales Zeitintervall für die Änderung des Signals
+\item \textbf{Schrittgeschwindigkeit}: Schritte pro Zeiteinheit (1 baud = 1/s)
+\item \textbf{Zweiwertiges Signal}: Übertragung eines Bits pro Signal (Binär)
+\item \textbf{Mehrwertiges Signal}: Übertragung von mehreren Bits pro Signal (z. B. DIBIT, 2 Bit pro Signal, also quaternär, 4 Werte)
+\item \textbf{Übertragungsgeschwindigkeit}: $\textrm{Schrittgeschwindigkeit baud } \cdot \log_2($n$) Bit)$, mit $n$ der Anzahl der Bitz pro Signal
+\end{itemize}
+
+\subsection{Leitungscodes}
+\begin{minipage}[t]{0.5\textwidth}
+\subsubsection{Non-Return-to-Zero Codes}
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[\textbf{NRZ-L}]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(1,1)(1,-1)(2,-1)(2,1)(3,1)(4,1)(4,-1)(5,-1)(6,-1)(7,-1)(7,1)(8,1)(9,1)(9,-1)(10,-1)(10,1)(11,1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: hoher Pegel. \\
+Bei 0: niedriger Pegel.
+
+\bigskip
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[\textbf{NRZ(I)-M}]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(0,-1)(1,-1)(2,-1)(2,1)(3,1)(3,-1)(4,-1)(5,-1)(6,-1)(7,-1)(7,1)(8,1)(8,-1)(9,-1)(10,-1)(10,1)(11,1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Auch als \textbf{Diff. NRZ} bezeichnet. \\
+
+Bei 1: Pegel wechseln. \\
+Bei 0: Pegel halten.
+
+\medskip
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[NRZ(I)-S]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(1,1)(1,-1)(2,-1)(3,-1)(4,-1)(4,1)(5,1)(5,-1)(6,-1)(6,1)(7,1)(8,1)(9,1)(9,-1)(10,-1)(11,-1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: Pegel halten. \\
+Bei 0: Pegel wechseln.
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\subsubsection{Return-to-Zero Codes}
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[RZ]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(0.5,1)(0.5,0)(1,0)(1,-1)(1.5,-1)(1.5,0)(2,0)(2,1)(2.5,1)(2.5,0)(3,0)(3,1)(3.5,1)(3.5,0)(4,0)(4,-1)(4.5,-1)(4.5,0)(5,0)(5,-1)(5.5,-1)(5.5,0)(6,0)(6,-1)(6.5,-1)(6.5,0)(7,0)(7,1)(7.5,1)(7.5,0)(8,0)(8,1)(8.5,1)(8.5,0)(9,0)(9,-1)(9.5,-1)(9.5,0)(10,0)(10,1)(10.5,1)(10.5,0)(11,0)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: hoher Pegel, halten, dann wieder neutral, halten. \\
+Bei 0: niedriger Pegel, halten, dann wieder neutral, halten.
+
+\bigskip
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[Uni-RZ]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(0.5,1)(0.5,0)(1,0)(2,0)(2,1)(2.5,1)(2.5,0)(3,0)(3,1)(3.5,1)(3.5,0)(4,0)(7,0)(7,1)(7.5,1)(7.5,0)(8,0)(8,1)(8.5,1)(8.5,0)(9,0)(10,0)(10,1)(10.5,1)(10.5,0)(11,0)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: hoher Pegel, halten, dann wieder neutral, halten. \\
+Bei 0: neutral halten.
+
+\bigskip
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[Bi-RZ]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(0.5,1)(0.5,0)(1,0)(2,0)(2,-1)(2.5,-1)(2.5,0)(3,0)(3,1)(3.5,1)(3.5,0)(4,0)(7,0)(7,-1)(7.5,-1)(7.5,0)(8,0)(8,1)(8.5,1)(8.5,0)(9,0)(10,0)(10,-1)(10.5,-1)(10.5,0)(11,0)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: abwechselnd hohen bzw. niedrigen Pegel, halten, dann neutral, halten. \\
+Bei 0: neutral halten.
+\end{minipage}
+
+\subsubsection{Biphase Codes}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[\textbf{Manchester}]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(0.5,1)(0.5,-1)(1.5,-1)(1.5,1)(2.5,1)(2.5,-1)(3,-1)(3,1)(3.5,1)(3.5,-1)(4.5,-1)(4.5,1)(5,1)(5,-1)(5.5,-1)(5.5,1)(6,1)(6,-1)(6.5,-1)(6.5,1)(7.5,1)(7.5,-1)(8,-1)(8,1)(8.5,1)(8.5,-1)(9.5,-1)(9.5,1)(10.5,1)(10.5,-1)(11,-1)
+    };
+/\end{axis}
+\end{tikzpicture}
+
+Bei 1: hoher Pegel, halten, dann niedriger Pegel, halten. \\
+Bei 0: niedriger Pegel, halten, dann hoher Pegel, halten.
+
+\bigskip
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[Bi-M]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,-1)(0,1)(0.5,1)(0.5,-1)(1,-1)(1,1)(2,1)(2,-1)(2.5,-1)(2.5,1)(3,1)(3,-1)(3.5,-1)(3.5,1)(4,1)(4,-1)(5,-1)(5,1)(6,1)(6,-1)(7,-1)(7,1)(7.5,1)(7.5,-1)(8,-1)(8,1)(8.5,1)(8.5,-1)(9,-1)(9,1)(10,1)(10,-1)(10.5,-1)(10.5,1)(11,1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: Pegel halten, dann wechseln, halten. \\
+Bei 0: Pegel halten.
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[Bi-S]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,-1)(0,1)(1,1)(1,-1)(1.5,-1)(1.5,1)(2,1)(2,-1)(3,-1)(3,1)(4,1)(4,-1)(4.5,-1)(4.5,1)(5,1)(5,-1)(5.5,-1)(5.5,1)(6,1)(6,-1)(6.5,-1)(6.5,1)(7,1)(7,-1)(8,-1)(8,1)(9,1)(9,-1)(9.5,-1)(9.5,1)(10,1)(10,-1)(11,-1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: Pegel halten. \\
+Bei 0: Pegel halten, dann wechseln, halten.
+
+\bigskip
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=9cm,
+    height=3cm,
+    title={},
+    xlabel={1 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 0 \;\; 0 \;\; 1 \;\; 1 \;\; 0 \;\; 1},
+    ylabel={[\textbf{Diff-Man}]},
+    xmin=0, xmax=11,
+    ymin=-1.1, ymax=1.1,
+    xtick={1,2,3,4,5,6,7,8,9,10},
+    ytick=\empty,
+    legend pos=north west,
+    xmajorgrids=true,
+    grid style=dashed,
+]
+\addplot[
+    color=red,
+    very thick,
+    ]
+    coordinates {
+    (0,1)(0.5,1)(0.5,-1)(1,-1)(1,1)(1.5,1)(1.5,-1)(2.5,-1)(2.5,1)(3.5,1)(3.5,-1)(4,-1)(4,1)(4.5,1)(4.5,-1)(5,-1)(5,1)(5.5,1)(5.5,-1)(6,-1)(6,1)(6.5,1)(6.5,-1)(7.5,-1)(7.5,1)(8.5,1)(8.5,-1)(9,-1)(9,1)(9.5,1)(9.5,-1)(10.5,-1)(10.5,1)(11,1)
+    };
+\end{axis}
+\end{tikzpicture}
+
+Bei 1: Pegel halten, dann wechseln. \\
+Bei 0: Hoher Pegel, halten, dann niedriger Pegel, halten.
+\end{minipage}
+
+Die Bezeichnungen der laut den Folien wichtigen Codes wurden \textbf{fett} markiert.
+
+\subsection{4B/5B-Kodierung}
+
+Verwendet NRZI-M, aber kodiert Daten vorher durch Tabelle. 4B/5B überträgt 4 Bit in 5 Takten und erlaubt außerdem ``Steuerwörter'', wie \lstinline{End} oder \lstinline{Reset}.
+
+\subsection{Theoreme von Nyquist und Shannon}
+
+Beide Theoreme beschreiben die maximale Datenrate bei einem Kanal mit eingeschränkter Bandbreite. Für einen Kanal muss das Minimum der Ergebnisse beider Theoreme für die maximale Bandbreite verwendet werden.
+
+Nyquist sagt, für einen \emph{störungsfreien} Kanal ist die maximale Datenrate in Bit pro Sekunde:
+\[2 \cdot B \cdot \log_2(n),\] wobei $B$ die Bandbreite und $n$ die Anzahl diskreter Signalstufen ist.
+
+Nach Shannon ist die maximale Datenrate bei einem Kanal mit \emph{zufälligem Rauschen}:
+\[B \cdot \log_2(1 + S/N)\]
+$S/N$ ist der Signal-Rausch-Abstand. Dieser wird oft in Dezibel angegeben, dann ist $S/N = 10^{x/10}$.
+
+\subsection{Konvertierung zwischen analogen und digitalen Werten}
+
+\begin{itemize}
+\item \emph{Abtastung} des analogen Signals in regemäßigen Intervallen (Zeitdiskretisierung).
+\item \emph{Quantisierung} der abgetasteten Werte (Signalwertdiskretisierung).
+\item \emph{Kodierung} ist Zurdnung eines Codes zu einem diskreten Wert.
+\end{itemize}
+
+Nach dem \emph{Abtasttheorem} muss die Abtastrate mindestens doppelt so hoch sein wie die maximal relevante abzutastende Frequenz.
+
+\subsection{Betriebsarten eines Kanals}
+
+Bei Kanälen wird zwischen drei Betriebsarten unterschieden:
+
+\begin{itemize}
+\item \emph{simplex:} Senden nur in eine Richtung möglich.
+\item \emph{halbduplex:} Senden ist nur in eine Richtung erlaubt und Wechsel der Senderichtung ist möglich.
+\item \emph{duplex:} Senden in beide Richtungen gleichzeitig möglich.
+\end{itemize}
+
+\subsection{Multiplexing}
+Wenn das Problem auftritt, das mehrere Sender das selbe Medium zur gleichen Zeit benutzen wollen, so kann man dies mithilfe eines Multiplexverfahrens lösen. Man unterscheidet hierbei:
+
+\begin{itemize}
+	\item \textbf{Raum}multiplex: Zusammenfassung mehrerer physikalischer Leitungen. Z.B. Bündelung von Adernpaaren in Kupferkabeln.
+    \item \textbf{Zeit}multiplex: Der Zugriff auf das Medium erfolgt zeitlich versetzt, sodass zu jedem Zeitpunkt nur ein Sender über das Medium senden kann.
+    \item \textbf{Frequenz}multiplex und \textbf{Wellenlängen}multiplex: Man teilt die Bandbreite auf die Sender auf.
+    \item \textbf{Code}multiplex: Beim Codemultiplex können alle Sender gleichzeitig im gleichen Frequenzband senden. Die zu sendenden Nutzdaten werden mit einer für den Sender eindeutigen Pseudozufallszahl (der Chipping-Sequenz) XOR-verknüpft. So kann der Empfänger das Original rekonstruieren. Man beachte dass jedes Bit der Nutzdaten immer mit der kompletten Chipping-Sequenz verknüpft wird, und dass die Chipping-Sequenz auch bzgl. einer Invertierung eindeutig sein muss.
+\end{itemize}
+
+\section{Sicherungsschicht}
+
+Die Sicherungsschicht soll garantieren, dass Daten vollständig und fehlerfrei übertragen werden. Dies teilt sich in verschiedene Anforderungen auf: \emph{Synchronisation}, \emph{Codetransparenz}, \emph{Fehlererkennung- und Behandlung}, \emph{Flusskontrolle}, \emph{Koordinierter Medienzugriff} und \emph{Steuerung}.
+
+\subsection{Bit Stuffing}
+
+Wenn eine bestimmte Bitfolge etwa zur Rahmenbegrenzung verwendet wird, muss sie natürlich in den Nutzdaten, falls sie vorkommt, ersetzt werden.
+
+\subsection{Übertragungsfehler}
+
+Die \emph{Bitfehlerrate} ist: $\frac{\textrm{Summe gestörte Bits}}{\textrm{Summe übertragene Bits}}$.
+
+\subsubsection{Parität}
+
+Zur Fehlererkennung kann ein \emph{Paritätsbit} an Daten angehangen werden. Dabei ist das Paritätsbit gleich 1 genau dann, wenn die Anzahl der Einsen in den Daten gerade ist.
+
+Hat man mehrere Blöcke von Daten, kann zudem noch zwischen \emph{Blockparität/Längsparität} (Parität der Bits eines Blocks) und \emph{Zeichenparität/Querparität} (Parität von Bits gleicher Position in aufeinanderfolgenden Blöcken) unterschieden werden. Bei \emph{Kreuzsicherung} werden beide Verfahren verwendet.
+
+\subsubsection{Cyclic Redudancy Check (CRC)}
+
+Es wird ein \emph{Generatorpolynom} festgelegt. Die zu prüfende Bitfolge wird als Polynom aufgefasst (über $\mathbb{F}_2$). Dann ist die \emph{Frame Check Sequence}, die Prüfzahl, der Rest der Division des Datenpolynoms durch das Generatorpolynom. Die Prüfzahl wird wieder als Bitfolge an die Daten angehangen.
+
+Zur Validierung wird dann alles zusammen als Polynom interpretiert. Dieses Polynom muss nun ein Vielfaches des Generatorpolynoms sein; das heißt der Rest der Divison des Datenpolynoms durch das Generatorpolynoms muss 0 sein.
+
+Illustrativ dazu ein Beispiel. Wir wollen $110011$ senden und haben das Generatorpolynom als $11001$ festgelegt.
+
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{Senden}
+\begin{lstlisting}
+110011 0000 % 11001 = 100001
+11001
+000001 0000
+     1 1001
+     0 1001 = Rest
+\end{lstlisting}
+Also ist zu übertragen: $110011~\underbar{1001}$.
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{Empfangen}
+\begin{lstlisting}
+110011 1001 % 11001 = 100001
+11001
+000001 1001
+     1 1001
+     0 0000 = Rest
+\end{lstlisting}
+Also war die Übertragung wahrscheinlich fehlerfrei.
+\end{minipage}
+
+\subsubsection{Vorwärtsfehlerkorrektur}
+
+Wenn zu übertragene Daten in mit Prüfsumme versehene Blöcke eingeteilt werden, kann ein zusätzlicher Block als XOR der anderen Blöcke zur Redundanz genutzt werden. Wenn bei (maximal) einem Block ein Fehler erkannt wird, kann mithilfe des Redundanzblocks und der anderen Blöcke der fehlerhafte Block rekonstruiert werden.
+
+\subsubsection{Hamming-Code}
+
+Der Hamming-Code erlaubt Fehlerkorrektur von einem Bit mit (bewiesen) minimalem Overhead.
+
+Eine Bitfolge wird kodiert, indem an allen Positionen, die eine Zweierpotenz sind, ein Paritätsbit eingefügt wird. Ein Paritätsbit an der Position $2^n$ prüft dann alle Bits an Positionen mit Bit $n$ auf 1 (dies beinhaltet dann auch die Paritätsbits selber).
+
+Ein Empfänger prüft die Paritätsbits und kann durch Aufsummierung der falschen Paritätsbits die Position des falschen Datenbits errechnen.
+
+\subsection{Fehlerbehebung}
+
+\begin{itemize}
+\item \emph{Stop-and-Wait:} Sende einen Rahmen und warte auf eine Bestätigung (\lstinline{ACK} für ``Acknowledgement''), bevor den nächsten Rahmen gesendet werden darf. Ein Empfänger kann auch \lstinline{NAK}s (``No Acknowledgement'') senden, wenn er fehlerhafte Rahmen empfangen hat. Ebenfalls kann der Sender nach einem Timeout den Rahmen erneut senden.
+\item \emph{Go-Back-N:} Der Empfänger kann verlangen, ab Rahmen $n$ alle folgenden Rahmen neu senden zu lassen.
+\item \emph{Selective Repeat:} Der Sender wiederholt nur einzelne Rahmen.
+\end{itemize}
+
+Stop-and-Wait ist schlecht. Go-Back-N sollte nur bei Leitungen mit niedriger Latenz, niedriger Datenrate, oder keinem Empfangspuffer verwendet werden. Selective Repeat ist gut.
+
+\subsection{Flusskontrolle}
+
+Ein \emph{Sliding Window} begrenzt die Rahmen, die auf einmal ohne Bestätigung gesendet werden dürfen. Ist das Sendefenster voll, so muss auf eine Bestätigung gewartet werden, bevor ein Rahmen gesendet werden darf.
+
+\subsection{Medienzugriff}
+
+\begin{minipage}[t]{0.35\textwidth}
+\textbf{Verfahren:}
+\begin{itemize}
+\item Frequenzmultiplex
+\item Zeitmultiplex
+	\begin{itemize}
+	\item synchron
+    \item asynchron
+	\end{itemize}
+\item Codemultiplex
+\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.65\textwidth}
+\textbf{Asynchrone Synchronisierung:}
+\begin{itemize}
+\item Konkurrierender Zugriff: Eine Station prüft, ob sie senden kann, und sendet dann. Kollisionen sind dann möglich.
+\item Geregelter Zugriff: Sendeberechtigung wird vorher aufgeteilt.
+	\begin{itemize}
+    \item Zentrale Zuteilung (etwa HDLC)
+	\item Zyklische Zuteilung (etwa Token Bus, Token Ring, FDDI)
+    \item Resilient Packet Ring
+	\end{itemize}
+\end{itemize}
+\end{minipage}
+
+\subsubsection{Zentrale Protokolle}
+
+\begin{itemize}
+\item \emph{Polling:} Ein zentraler Rechner fragt alle angeschlossenen Stationen regelmäßig, ob sie senden wollen und entscheidet dann, wer senden darf.
+\item \emph{Abfragen mit gemeinsamer Busleitung:} Wenn ein gesonderter Kanal verfügbar ist, kann dieser genutzt werden, um einen Sendewunsch mitzuteilen.
+\end{itemize}
+
+\subsubsection{Dezentrale Protokolle}
+
+\begin{itemize}
+\item \emph{Konkurrierender Zugriff:} Jeder sendet, wann er will (siehe ALOHA, CSMA/CD).
+\item \emph{Token Passing:} Das Senderecht wird zyklisch unter den Stationen durchgereicht (siehe Token Bus, Token Ring, FDDI)
+\item \emph{Daisy-Chaining:} Gesonderter Kanal, der einen zukünftigen Zeitslot reserviert.
+\end{itemize}
+
+\subsubsection{HDLC}
+
+Das \emph{High-Level Data Link Control} Protokoll würde für den Anschluss von Datennetzen über Telefonnetze entworfen. Es unterstüzt Framing, Fehlerkorrektur (mit CRC), Flusskontrolle (mit Sliding Window) und Zeitmultiplexing.
+
+Der Medienzugriff hat mehrere Betriebsarten:
+\begin{itemize}
+\item \emph{Aufforderungsbetrieb} (``NRM''), d.h. Polling.
+\item \emph{Spontanbetrieb} (``ARM''): Eine Folgestation darf jederzeit an die Leitstation senden.
+\item \emph{Gleichberechtigter Spontanbetrieb} (``ABM''): Stationen sind gleichberechtigt (``Hybridstationen'') und dürfen jederzeit senden.
+\end{itemize}
+
+\subsubsection{LLC}
+
+Das \emph{Logical Link Control} Protokoll liegt auf IEEE-Schicht 2b und ergänzt damit die 2a-Schicht um Flusskontrolle, zuverlässige Übertragungen durch Bestätigungen und ein einheitliches Interface auf die Netzwerkschicht.
+
+\subsubsection{MAC-Protokolle}
+
+Die MAC-Protokolle sind hardware-abhängig und stellen Medienzugriff und Fehlererkennung sowie Fehlerkorrektur bereit.
+
+\begin{minipage}[t]{0.45\textwidth}
+\textbf{Token Ring} (IEEE 802.5):
+
+Physikalisch durch einen Ring verbundene Stationen reichen zyklisch einen Token herum, der dem aktuellen Inhaber das Senden erlaubt. Daten werden durch den Ring weitergeleitet, bis sie wieder beim Sender (der Empfänger leitet auch weiter!) ankommen. Danach gibt der Sender das Senderecht weiter.
+
+Es gibt einen sogenannten \emph{Monitor}, der Fehler wie Tokenverlust oder doppelte Token erkennt und korrigiert. Es gibt eine maximale Sendedauer (``Token Holding Time''), standardmäßig \SI{10}{\ms}.
+
+\begin{itemize}
+    \itemsep0em
+    \pro Hohe Effizienz unter hoher Last
+    \pro Erkennung von Kabelbruch
+    \pro Echtzeitbetrieb möglich
+    \con Komplexe Fehlerfälle
+    \con Unnötige Verzögerungen bei niedriger Last
+\end{itemize}
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}[t]{0.45\textwidth}
+\textbf{CSMA/CD} (IEEE 802.3):
+
+Wer senden will, hört vorher das Medium ab und prüft, ob es frei ist (``Listen before Talk''). Kollisionen sind so insbesondere auf (räumlich) kleinen Netzen unwahrscheinlich.
+
+Außerdem wird während des Sendens geprüft, ob jemand anderes sendet. Wenn ja, dann wird die Leitung durch ein Jamming-Signal kurz blockiert und alle Sender müssen aufhören, zu senden (``Listen while Talk'').
+
+\begin{itemize}
+    \itemsep0em
+    \pro Einfaches Protokoll
+    \pro Geringe Verzögerung bei geringer Last
+    \con Kein Echtzeitbetrieb möglich
+    \con Viele Kollisionen bei höherer Last
+\end{itemize}
+
+Ethernet ist eine Implementierung von CSMA/CD.
+\end{minipage}
+
+\medskip
+
+CSMA/CD ist aus (Slotted) ALOHA hervorgegangen:
+\begin{itemize}
+\item \emph{ALOHA:} Wer senden möchte, sendet. Kollisionen können da mal schnell passieren. Angeblich ist der maximale Datendurchsatz bei 18\%.
+\item \emph{Slotted ALOHA:} Das Senden wird nur in bestimmten Zeitslots erlaubt. Durchsatz: 36\%.
+\end{itemize}
+
+\subsection{Ethernet}
+
+\emph{Ethernet} ist eine Protokollfamilie, die den Physical-Layer und den MAC-Layer umfasst.
+
+Interessant sind für uns in diesem Kontext \emph{Bridges:} Diese trennen Kollisiondomänen auf unterschiedlichen Segmenten. Solche Bridges sind \emph{Repeater}, die nur das Signal wiederauffrischen. \emph{Hubs} haben mehrere Ports und leiten Daten von einem Port auf alle anderen weiter.
+
+Die spannendsten Bridges sind aber \emph{Switches:} Diese lernen MAC-Adressen von angeschlossenen Stationen und stellen Punkt-zu-Punkt-Verbindungen bereit. Wenn ein Rahmen auf Port $p$ ankommt, macht der Switch folgendes:
+
+\begin{enumerate}
+\item Empfangen: Speichere (und überschreibe ggf.) für die Absenderadresse den Port $p$ in der Weiterleitungstabelle.
+\item Senden: Es wird geprüft, ob schon ein Eintrag für die Empfängeradresse in der Weiterleitungstabelle existiert. Gibt es diesen und ist dieser nicht Port $p$, so wird der Rahmen dorthin weitergeleitet. Ist der Eintrag Port $p$, wird der Rahmen verworfen. Gibt es keinen Eintrag, so wird der Rahmen an alle Ports außer $p$ gebroadcastet.
+\end{enumerate}
+
+\section{Vermittlungsschicht}
+
+Die Vermittlungsschicht ist dafür zuständig, Daten zwischen zwei Kommunikationspartnern über Netzgrenzen zu vermitteln.
+
+\begin{itemize}
+\item \emph{Circuit Switching:} Eine Leitung wird zwischen zwei Stationen geschaltet.
+\item \emph{Store \& Forward:} Vermittlungsstellen puffern und leiten weiter, wenn die Leitung frei ist. Datenverlust und falsche Zustellungsreihenfolge sind so möglich.
+\item \emph{Virtuelle Verbindung:} Eine Verbindung wird aufgebaut, sodass den beiden Kommunikationspartnern es so vorkommt, als würde eine feste Verbindung existieren.
+\end{itemize}
+
+Das \emph{ATM}-Protokoll kombiniert Leitungs- und Paketvermittlung durch Verbindungs-IDs, die in Weiterleitungstabellen auf Routern (für eine Verbindung) immer die gleiche Route festlegen.
+
+\subsection{IP}
+
+Das \emph{Internet Protocol} ist unzuverlässig und verbindungslos. Pakete (Datagramme) können verloren, dupliziert, in falscher Reihenfolge oder endlos wiederholt werden. Außerdem existiert keine Fluss- oder Staukontrolle. Dies wird darüber liegenden Protokollen überlassen.
+
+\emph{IP-Adressen} sind eindeutig und bei IPv4 \SI{32}{\bit} lang, bei IPv6 \SI{128}{\bit}. Ein Rechner besitzt eine IP-Adresse für jedes Interface.
+
+Adressen werden hierarchisch in \emph{Subnetze} aufgeteilt. Dazu verendet man ``Netzwerk-IDs'', gefolgt von der Länge der Einsen in der Subnetzmaske, die angeben, welcher Teil der Adresse Netzwerk-ID ist.
+
+\subsubsection{Weiterleitungstabelle}
+
+Für die Übertragung eines Paketes wird eine Weiterleitungstabelle verwendet, die angibt, ``in welche Richtung'' ein Paket gesendet werden muss, um beim Empfänger anzukommen. Diese speichert die folgenden Daten für jeden Eintrag:
+
+\begin{itemize}
+\item Die Zieladresse.
+\item Einen \emph{Gateway}, die Adresse des nächsten Routers, wenn das \lstinline{G}-Flag gesetzt ist. Sonst ist dieser Eintrag die Adresse des lokalen Netzadapters.
+\item Eine \emph{Netmask}, die Subnetzmaske für die Zieladresse.
+\item \emph{Flags:} \lstinline{G} wenn der Knoten ein Router (Gateway) ist, sonst \lstinline{H} (Host). \lstinline{U} (UP) für Verfügbarkeit. \lstinline{S} für statische Route.
+\item Das Interface, auf dem abgesendet wird.
+\end{itemize}
+
+Wenn mehere Einträge der Weiterleitungstabelle zu einer Adresse passen, wird der \emph{Longest Prefix Match} durchgeführt, d.h.\ es wird der Eintrag mit der längsten passenden Subnetzadresse verwendet. Wird keiner gefunden, wird $0.0.0.0/0$ (``default'') verwendet.
+
+\subsubsection{NAT}
+
+Rechner in privaten Netzen wollen mit dem Internet kommunizieren, aber haben nur private Adressen. Also muss ein Router eine lokale Adresse einer globalen (äußeren) Adresse zuordnen, mit der der Rechner nach außen kommunizieren kann.
+
+Router mit \emph{NAT-Overloading} speichern Tupel (Protokoll\footnote{TCP oder UDP}, lokale IP, lokaler Port, globale IP, globaler Port) und können so auch wieder ankommende Pakete an den lokalen Rechner weiterleiten.
+
+\subsubsection{IP-Header (IPv4)}
+
+Ein IPv4-Paket kann in mehrere Datagramme (``Fragmente'') aufgeteilt werden.
+Ein IPv4-Datagramm beginnt immer mit einem Header. Dieser enthält unter anderem die folgenden Felder:
+
+\begin{itemize}
+\item \emph{IHL:} Die Länge des Headers als Vielfaches von 4 Byte.
+\item \emph{Total Length:} Die Gesamtlänge des Datagramms.
+\item Quell- und Zieladressen. (Nicht aber etwa Ports, die sind Aufgabe von TCP/UDP).
+\item \emph{Time-to-Live:} Lebenszeit des Datagramms, die (in der Praxis) von jedem Router um 1 reduziert wird. Erreicht sie 0, wird das Paket verworfen.
+\item Eine Prüfsumme des Headers.
+\item \emph{Identification:} Eine eindeutige Kennzeichnung des Pakets.
+\item \emph{Don't Fragment (DF):} Ob das Paket nicht fragmentiert werden darf.
+\item \emph{More Fragments (MF):} Ob noch weitere Fragmente eines Pakets folgen oder ob dieses das letzte ist.
+\item \emph{Fragment Offset:} Vielfaches von 8 Byte, das angibt, zu welcher Stelle im Datenteil des Pakets dieses Fragment gehört.
+\end{itemize}
+
+Die Fragmentierung gibt es, weil für Netze eine Maximallänge von Datagrammen existieren kann, die \emph{MTU} (Maximum Transfer Unit), etwa \SI{1500}{\byte} bei Ethernet. Ein fragmentiertes Paket kann so vom Empfänger anhand der Identification und der Offsets wieder zusammengesetzt werden.
+
+\subsection{ARP}
+
+Das \emph{Address Resolution Protocol} kümmert sich darum, IP-Adressen zu Schicht-2-Adressen (MAC-Adressen) zu übersetzen. Wenn eine IP-Adresse $a$ übersetzt werden soll, findet bei ARP eine Auflösung wie folgt statt:
+
+\begin{enumerate}
+\item Broadcast im LAN, das nach $a$ fragt.
+\item Alle Empfänger des Broadcasts speichern sich MAC- und IP-Adressen des Senders. Nur der Besitzer von $a$ antwortet mit seiner MAC-Adresse.
+\item Der Anfragende speichert $a$ in seinem Cache. Der Cache muss irgendwann gereinigt werden.
+\end{enumerate}
+
+\subsection{Routing}
+
+Beim Routing geht es darum zu entscheiden, an wen Pakete gesendet werden müssen, damit sie am Ziel ankommen. Eine Routingtabelle hält Zuordnungen von Zielen und zugehörigen Links ``in der Richtung'' des Ziels vor.
+
+Routing-Verfahren kann man in zwei Dimensionen einteilen: Zentralisation und Dynamik. Weniger \emph{Zentralität} bürgt den einzelnen Knoten mehr Aufgaben beim Routing auf. Mehr \emph{Dynamik} macht öftere Anpassungen an sich ändernde Netzzustände wie Auslastung möglich.
+
+\begin{itemize}
+\item \emph{Statisches Routing:} Routing-Tabellen haben einen Eintrag für jeden möglichen Zielknoten. Es gibt mehrere Routingmöglichkeiten, die gewichtet sind. Eine Möglichkeit wird durch das Ziehen einer Zufallszahl mithilfe der Gewichtungen gewählt.
+\item \emph{Zentralisiertes Routing:} Ein ``Routing Control Center'' gibt den anderen Knoten Tabellen vor.
+\item \emph{Isoliertes Routing:} Routing ausschließlich anhand eigener Informationen.
+    \begin{itemize}
+    \item \emph{Flooding:} Jedes Paket wird auf jeder Leitung (außer der Herkunftsleitung) weitergeleitet.
+    \item \emph{Backward Learning:} Pakete müssen einen Hop-Count enthalten (etwa TTL bei IP). Bei Empfang eines Paketes weiß dann der Empfänger, wie viele Hops die Route zum Sender brauchte.
+    \end{itemize}
+\item \emph{Dynamisches Routing:} Entscheidungen mithilfe von Informationsaustausch zwischen Routern.
+    \begin{itemize}
+    \item \emph{Distance Vector Routing:} Router tauschen Kosten einer Übertragung von sich zu einem Ziel untereinander aus. Dann versucht jeder Router, die selbst eingetragenen Kosten zu verringern, indem über einen (anderen) Hop gesendet wird. Probleme hier sind langsame Konvergenz sowie Count-to-Infinity.
+    \item \emph{Link State Routing:} Nachbarn messen Kosten einer Übertragung untereinander und senden diese Informationen dann an alle anderen Router. Dann kann jeder Router etwa mit dem Dijkstra-Algorithmus die beste Route im so entstandenen gewichteten Graph aller Verbindungen berechnen.
+    \end{itemize}
+\end{itemize}
+
+\section{Transportschicht}
+
+Das \emph{Transport Control Protocol} (TCP) ist ein verbindungsorientiertes Protokoll, welches zuverlässige Übertragung garantiert. Das \emph{User Datagram Protocol} (UDP) ist einfach nur eine Anwendungsschnittstelle über IP, garantiert also weder korrekte Reihenfolge, noch Zuverlässigkeit, noch dass keine Duplikate auftreten - genau wie IP. TCP und UDP erlauben aber beide Multiplexing durch Ports.
+
+\emph{Ports} sind 16-Bit Zahlen, wobei die ersten 1023 für Standarddienste reserviert sind. \emph{Sockets} sind dann eine IP-Adresse und ein Port.
+
+\subsection{TCP}
+
+\begin{itemize}
+\item Passt sich an das unterliegende Netz dynamisch an (etwa schwankende Bandbreiten).
+\item Fehlerkontrolle: Sequenznummern zum sortieren beim Empfänger, Timeouts bei ausbleibender Quittung beim Sender.
+\item Flusskontrolle verhindert Überlastung des Empfängers.
+\item Staukontrolle verhindert Überlastung des Netzes.
+\end{itemize}
+
+Verbindungen können bei TCP entweder aktiv oder passiv aufgebaut werden. \emph{Clients} bauen ihre Seite der Verbindung \emph{aktiv} auf, während der \emph{Server} \emph{passiv} auf eine eingehende Verbindung wartet.
+
+TCP zerlegt einen Bytestrom in \emph{Segmente}, die über IP übertragen werden. Mithilfe von Sequenznummern wird ein Segment vom Empfänger durch Quittungen bestätigt und einsortiert. Empfängt der Sender nach einer bestimmten Zeit keine Quittung, wird das Segment neu versendet (oder die Verbindung wird als abgebrochen betrachtet).
+
+\subsubsection{Verbindungsmanagement}
+
+Die meisten übertragenen Segmente enthalten eine Sequenznummer (\lstinline{SEQ}) für die eigenen gesendeten Segmente und eine Bestätigungsnummer (\lstinline{ACK}), die dem Empfänger den Empfang eines seiner Segmente mit der angebenen Sequenznummer signalisiert.
+
+Ein normaler Verbindungsaufbau funktioniert wie folgt, hier sind die Segmenttypen \lstinline{SYN} und \lstinline{ACK} relevant.
+
+\begin{enumerate}
+\item Client $\stackrel{\texttt{SYN}}{\to}$ Server. $\texttt{SEQ} = x$.
+\item Client $\stackrel{\texttt{SYN}}{\leftarrow}$ Server. $\texttt{SEQ} = y$, $\texttt{ACK} = x + 1$.
+\item Client $\stackrel{\texttt{ACK}}{\to}$ Server. $\texttt{ACK} = y + 1$, $\texttt{SEQ} = x + 1$.
+\end{enumerate}
+
+Es ist auch ein ``ungeregelter'' Verbindungsaufbau möglich, wobei die ersten zwei Schritte von beiden Endpunkten initiiert werden. Nach dem \lstinline{ACK} ist dann die TCP-Verbindung aufgebaut.
+
+Datenaustausch passiert dann ähnlich; es werden \lstinline{Data} Segmente ausgetauscht, die dann \lstinline{SEQ} und \lstinline{ACK} enthalten. Es ist zu bemerken, dass in Serverrichtung das \lstinline{ACK}-Feld nicht streng nötig ist, aber in der Praxis immer gesendet wird.
+
+Ein Verbindungsende wird durch das Senden von \lstinline{FIN}-Segmenten signalisiert. Daraufhin antwortet der Empfänger ebenfalls mit einem \lstinline{FIN}, bestätigt aber auch das empfangene \lstinline{FIN} durch ein \lstinline{ACK}-Segment, welches dann noch einmal bestätigt wird. Dann ist die Verbindung geschlossen.
+
+Für das Senden und Empfangen wird das bekannte Sliding-Window-Verfahren benutzt. Dabei kann bei einfacher Implementation das \emph{Silly-Window-Syndrom} auftreten, wobei wegen eines fast vollen Empfängerbuffers nur wenig Daten gesendet werden, sodass der TCP-Overhead die eigentlichen Daten überwiegt.
+
+\subsubsection{Fluss- und Staukontrolle}
+
+Die \emph{Flusskontrolle} bei TCP regelt den Datenfluss zwischen Instanzen, d.h.\ limitiert die gesendeten Daten, wenn der Empfänger nicht mehr empfangen kann. Dies kann der Sender anhand der vereinbarten Fenstergröße und der bestätigten Pakete schätzen. Diese Begrenzung heißt \emph{Receiver Window} (\lstinline{rwnd}).
+
+Wenn Daten verloren gehen, nimmt die \emph{Staukontrolle} eine Überlastung des Netzes an. Die geschätzte Datenrate gibt das \emph{Überlastfenster} vor, \emph{Congestion Window} (\lstinline{cwnd}) im TCP-Lingo.
+
+Die Datenrate der gesendeten Pakete wird dann durch das \emph{Sendefenster} (\lstinline{swnd}) limitiert. $\texttt{swnd} = \min(\texttt{rwnd}, \texttt{cwnd})$.
+
+\paragraph{Slow-Start-Algorithmus}
+
+\lstinline{cwnd} wird auf 1 initialisiert. Nach jeder Bestätigung wird \lstinline{cwnd} um die Größe eines Segments erhöht. Damit wächst \lstinline{cwnd} bei einer erfolgreichen Übertragung eines vollen Fensters exponentiell. Wird ein Schwellwert \lstinline{ssthresh} erreicht, wird \lstinline{cwnd} nur noch inkrementiert (lineares Wachstum). Bei Paketverlust wird \lstinline{ssthresh} auf $1/2 \cdot \texttt{swnd}$ gesetzt und $\texttt{cwnd} = 1 \mathrm{ MSS}$.
+
+\paragraph{Fast Retransmit}
+
+Der Slow-Start-Algorithmus reagiert bei einzelnen Paketverlusten über und reduziert die Datenrate zu stark. Bei Fast Retransmit wird jedes erhaltene Segment sofort quittiert; ein Segment mit falscher Sequenznummer löst das wiederholte Senden eines \lstinline{ACK}s aus (\lstinline{DUP-ACK}). Wenn drei \lstinline{DUP-ACK}s empfangen werden, wird das Segment neu gesendet.
+
+Wenn das wiederholte Segment erfolgreich empfangen wurde, werden wieder reguläre Quittungen gesendet. Tritt aber ein Timeout ein, so wird auf Slow Start zurückgefallen.
+
+\paragraph{Fast Recovery}
+
+Verbesserung von Fast Retransmit. Wenn das dritte \lstinline{DUP-ACK} empfangen wird:
+
+\begin{itemize}
+\item $\texttt{ssthresh} = \max(\texttt{swnd}/2, 2 \cdot \mathrm{MSS})$.
+\item Das fehlende Segment wird wieder gesendet.
+\item $\texttt{cwnd} = \texttt{sstresh} + 3 \cdot \mathrm{MSS}$.
+\item Für jedes weitere \lstinline{DUP-ACK}: $\texttt{cwnd} \mathrel{+}= \mathrm{MSS}$.
+\item Wird ein normales \lstinline{ACK} empfangen: $\texttt{cwnd} = \texttt{sstresh}$ und mache normal weiter.
+\end{itemize}
+
+\subsection{UDP}
+
+UDP-Pakete haben nur einen \SI{8}{\byte} großen Header: Sie enthalten Quell- und Zielports, die Nachrichtenlänge und eine (optionale) Checksumme. Mehr gibt es zu UDP eigentlich nicht zu sagen.
+
+\section{Sicherheit}
+
+Um Sicherheit von Daten und Infrastruktur zu gewährleisten, bedient man sich einer Menge an Werkzeugen: \emph{Firewalls}, \emph{Intrusion Detection}, \emph{Authentifizierung}, \emph{Verschlüsselung} und \emph{Integritätsprüfung},
+
+\subsection{Verschlüsselung}
+
+\begin{itemize}
+\item \emph{Symmetrische Verschlüsselung:} Gleicher Schlüssel zum Ver- und Entschlüsseln.
+\item \emph{Asymmetrische Verschlüsselung:} Zwei verschiedene Schlüssel.
+\end{itemize}
+
+Wir werden in diesem Kapitel die meisten wirklichen Algorithmen auslassen und uns auf wichtige Konzepte konzentrieren.
+
+\subsubsection{Symmetrische Verschlüsselung}
+
+Eine \emph{Blockchiffre} verschlüsselt Blöcke einer festen Länge gleichzeitig. Jeder der Blöcke wird mit dem gleichen Algorithmus verschlüsselt.
+
+Mit \emph{Cipher Block Chaining} wird jeder Block mit dem Ciphertext des vorherigen Blocks XOR-verknüpft. Für den ersten Vektor muss dann ein Zufallswert, ein sogenannter \emph{Initialization Vector} (IV) gewählt werden. Für jede neue Nachricht sollte ein neuer IV gewählt werden.
+
+Ein \emph{Message Authentication Code} (MAC) ist eine digitale Signatur, die garantiert, dass bei verifizierter MAC der Ciphertext nicht verändert wurde.
+
+\subsubsection{Schlüsselaustausch}
+
+Schlüssel auszutauschen ist natürlich unsicher, weil man bei dem Schlüsselaustausch keine gesicherte Verbindung hat.
+
+\paragraph{Diffie-Hellman}
+
+\begin{enumerate}
+\item Wähle Primzahl $p$ und Generator $g < p$. Diese sind öffentlich.
+\item A wählt zufällig $S_a$ und berechnet $T_a = g^{S_a} \mod p$.\\
+      B wählt zufällig $S_b$ und berechnet $T_b = g^{S_b} \mod p$.
+\item A und B tauschen $T_a$ und $T_b$ aus.
+\item A berechnet $k = T_b^{S_a} \mod p$. Analog für B.
+\end{enumerate}
+
+Dann ist $k$ ein geheimer Schlüssel, den man praktisch nicht aus den öffentlichen Werten $p$, $g$, $T_a$ und $T_b$ berechnen kann.
+
+Natürlich kann man aber Diffie-Hellman durch einen Man-in-the-Middle-Angriff kompromittieren, wenn A und B nicht authentifiziert sind.
+
+\subsubsection{Asymmetrische Verschlüsselung}
+
+\paragraph{RSA}
+
+\begin{enumerate}
+\item Wähle zwei große Primzahlen $p$ und $q$.
+\item Berechne $n = p \cdot q$.
+\item Berechne $\phi(n) = (p - 1) \cdot (q - 1)$.
+\item Wähle eine Zahl $e$ teilerfremd zu $\phi(n)$.
+\item Finde ein $d$ mit $d \cdot e = 1 \mod \phi(n)$.
+\end{enumerate}
+
+Dann ist $(e, n)$ der öffentliche Schlüssel und $(d, n)$ der private Schlüssel.
+
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{Ver- und Entschlüsselung}
+
+Nachricht $m$ verschlüsseln: $c = m^e \mod n$
+
+Nachricht $c$ entschlüsseln: $m = c^d \mod n$
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{Digitale Signatur}
+
+Signieren: $s = m^d \mod n$
+
+Verifikation: $m = s^e \mod n$
+\end{minipage}
+
+\subsection{Authentifizerung}
+
+Das \emph{Challenge/Response}-Verfahren authentifiziert etwa mit RSA, indem die sich zu authentifizierende Person zufällig vom Partner gewählte Daten signiert. Die Daten müssen also noch nie verwendet sein, deshalb nennt man sie auch \emph{Nonce} (Number used once).
+
+Ein \emph{Key Distribution Center} (KDC) verteilt auf Anfrage für eine Sitzung zwei Schlüssel an die Partner. Dieses KDC ist dann ein Single-Point-of-Failure.
+
+\emph{Certificate Authorities} sind vertrauenswürdige Stellen, die \emph{Zertifikate} signieren, sodass zu einem Zertifikat ein Inhaber sicher zugeordnet werden kann.
+
+\end{document}
