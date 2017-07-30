@@ -567,7 +567,7 @@ Die \emph{Bitfehlerrate} ist: $\frac{\textrm{Summe gestörte Bits}}{\textrm{Summ
 
 \subsubsection{Parität}
 
-Zur Fehlererkennung kann ein \emph{Paritätsbit} an Daten angehangen werden. Dabei ist das Paritätsbit gleich 1 genau dann, wenn die Anzahl der Einsen in den Daten gerade ist.
+Zur Fehlererkennung kann ein \emph{Paritätsbit} an Daten angehangen werden. Bei \emph{gerader Parität} ist die Anzahl der Einsen (einschließlich Parity-Bit) gerade. Äquivalent: Das Paritätsbit ist die verXORung der geprüften Bits\footnote{$p \oplus d_1 \oplus \ldots \oplus d_n = 0 \iff p = d_1 \oplus \ldots \oplus d_n$}. \emph{Ungerade Parität} analog.
 
 Hat man mehrere Blöcke von Daten, kann zudem noch zwischen \emph{Blockparität/Längsparität} (Parität der Bits eines Blocks) und \emph{Zeichenparität/Querparität} (Parität von Bits gleicher Position in aufeinanderfolgenden Blöcken) unterschieden werden. Bei \emph{Kreuzsicherung} werden beide Verfahren verwendet.
 
@@ -610,7 +610,7 @@ Wenn zu übertragene Daten in mit Prüfsumme versehene Blöcke eingeteilt werden
 
 Der Hamming-Code erlaubt Fehlerkorrektur von einem Bit mit (bewiesen) minimalem Overhead.
 
-Eine Bitfolge wird kodiert, indem an allen Positionen, die eine Zweierpotenz sind, ein Paritätsbit eingefügt wird. Ein Paritätsbit an der Position $2^n$ prüft dann alle Bits an Positionen mit Bit $n$ auf 1 (dies beinhaltet dann auch die Paritätsbits selber).
+Eine Bitfolge wird kodiert, indem an allen Positionen, die eine Zweierpotenz sind, ein Paritätsbit eingefügt wird. Ein Paritätsbit an der Position $2^{n-1}$ prüft dann alle Bits an Positionen mit Bit $n$ auf 1 (dies beinhaltet dann auch die Paritätsbits selber).
 
 Ein Empfänger prüft die Paritätsbits und kann durch Aufsummierung der falschen Paritätsbits die Position des falschen Datenbits errechnen.
 
