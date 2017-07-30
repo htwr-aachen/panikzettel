@@ -8,6 +8,7 @@
 \usepackage[ngerman]{babel}
 \usepackage{braket}
 \usepackage{courier}
+\usepackage{enumitem}
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily,breaklines=true}
 \usepackage{microtype}
@@ -29,8 +30,26 @@
     pdfauthor = {\@author}
   }
 }
-
 \makeatother
+
+\lstset{literate=%
+    {Ö}{{\"O}}1
+    {Ä}{{\"A}}1
+    {Ü}{{\"U}}1
+    {ß}{{\ss}}1
+    {ü}{{\"u}}1
+    {ä}{{\"a}}1
+    {ö}{{\"o}}1
+    {~}{{\textasciitilde}}1
+}
+
+\newlength{\currentparskip}
+\newenvironment{minipageparskip}
+  {\setlength{\currentparskip}{\parskip} % save the value
+   \begin{minipage}{\textwidth} % open the minipage
+   \setlength{\parskip}{\currentparskip} % restore the value
+  }
+  {\end{minipage}}
 
 \newcommand\pro{\item[$+$]}
 \newcommand\con{\item[$-$]}
@@ -46,70 +65,131 @@
 \tableofcontents
 
 \section{Grundlagen}
-\subsection{Definitionen}
+\subsection{Dienste}
 \begin{itemize}
-    \item \textbf{Dienst}: Dienste sind von Netzen oder Schichten (siehe OSI-Modell) bereitgestellte Kommunikationsfunktionen.
-    \item \textbf{Dienstprimitiv}: Dienstprimitive sind die einzelnen Funktionen, welche ein Dienst anbietet.
-    \item \textbf{Diensterbringer}: Bereitsteller des Dienstes.
-    \item \textbf{Instanz}: Eine Instanz ist eine an der Erbringung des Dienstes aktiv beteiligte Komponente.
-    \item \textbf{Protokoll}: Ein Protokoll beschreibt nach welchen Regeln Softwareinstanzen, welche an der Erbringung von Diensten beteiligt sind, miteinander interagieren.
-    \item \textbf{Schichten}: Funktionalität des Diensterbringers für Modularität in Schichten aufgeteilt. Dienste werden von einer Schicht in einer Schichtenstruktur an die nächst höhere (abstraktere) Schicht bereitgestellt. Andersrum greift eine Schicht auf die Dienste der unterliegenden Schicht zu.
+    \item \emph{Dienst}: Dienste sind von Netzen oder Schichten (siehe OSI-Modell) bereitgestellte Kommunikationsfunktionen.
+    \item \emph{Dienstprimitiv}: Dienstprimitive sind die einzelnen Funktionen, welche ein Dienst anbietet.
+    \item \emph{Diensterbringer}: Bereitsteller des Dienstes.
+    \item \emph{Instanz}: Eine Instanz ist eine an der Erbringung des Dienstes aktiv beteiligte Komponente.
+    \item \emph{Protokoll}: Ein Protokoll beschreibt nach welchen Regeln Softwareinstanzen, welche an der Erbringung von Diensten beteiligt sind, miteinander interagieren.
+    \item \emph{Schichten}: Funktionalität des Diensterbringers für Modularität in Schichten aufgeteilt. Dienste werden von einer Schicht in einer Schichtenstruktur an die nächsthöhere (abstraktere) Schicht bereitgestellt. Andersrum greift eine Schicht auf die Dienste der unterliegenden Schicht zu.
 \end{itemize}
 
-Um die Abfolge von Dienstprimitiven bei Benutzung eines Dienstes zu spezifizieren, kann man Gebrauch von Zeitablaufsdiagrammen (Weg-Zeit-Diagrammen) und Zustandsübergangsdiagrammen (Automaten) machen.
+Dienstprimitive werden nach folgendem Schema benannt:\\
+\centerline{\lstinline{Schichtabkürzung-Dienstleistung.Diensttyp}} \\
+Die \emph{Dienstleistung} kann etwa Connect (\lstinline{Con}), Data (\lstinline{Dat}), Abort (\lstinline{Abo}) oder Disconnect (\lstinline{Dis}) sein. Es gibt vier \emph{Diensttypen:} Request (\lstinline{Req}), Indication (\lstinline{Ind}), Response (\lstinline{Rsp}) und Confirmation (\lstinline{Cnf}).
 
-\subsection{OSI-Modell}
-\subsubsection{Vertikale Kommunikation}
-Wir unterscheiden folgende Begriffe:
+Um die Abfolge von Dienstprimitiven bei Benutzung eines Dienstes zu spezifizieren, kann man Zeitablaufsdiagramme (Weg-Zeit-Diagramme) und Zustandsübergangsdiagramme (Automaten) verwenden.
+
+\subsection{Vertikale Kommunikation}
+
+Nach dem OSI-Modell wird Kommunikation zwischen Schichten so definiert:
 
 \begin{itemize}
-    \item Dienstdateneinheit \textbf{SDU} (Service Data Unit): Daten, welche von einer Schicht übertragen werden sollen.
-    \item Schnittstellenkontrollinformationen \textbf{ICI} (Interface Control Information): Enthält Informationen über den zu erbringenden Dienst, z.B. Länge der SDU, Parameter des Dienstes, \dots
-    \item Schnittstellendateneinheit \textbf{IDU} (Interface Data Unit): SDU + ICI
-    \item Protokollkontrollinformationen \textbf{PCI} (Protocol Control Information): Informationen, welche zwischen den einzelnen Instanzen dieser Schicht ausgetauscht werden sollen.
-    \item Protokolldateneinheit \textbf{PDU} (Protcol Data Unit) PCI + SDU
+    \item Dienstdateneinheit \emph{SDU} (Service Data Unit): Daten, welche von einer Schicht übertragen werden sollen.
+    \item Schnittstellenkontrollinformationen \emph{ICI} (Interface Control Information): Enthält Informationen über den zu erbringenden Dienst, z.B.\ Länge der SDU.
+    \item Schnittstellendateneinheit \emph{IDU} (Interface Data Unit): SDU und ICI.
+    \item Protokollkontrollinformationen \emph{PCI} (Protocol Control Information): Kontrollinformationen, welche zwischen den einzelnen Instanzen dieser Schicht ausgetauscht werden sollen.
+    \item Protokolldateneinheit \emph{PDU} (Protcol Data Unit) PCI und SDU.
 \end{itemize}
 
-Die vertikale Kommunikation verläuft aus Sicht der N. Schicht dann wie folgt:
+Die Kommunikation der $(N)$-Schicht sieht dann wie folgt aus:
 
 \begin{enumerate}
-	\item Die N. Schicht erhält von der N+1 Schicht die (N+1)-IDU und splittet diese in die durch sie zu übertragenden Daten, der (N)-SDU, und die die Kontrollinformationen die (N)-ICI auf.
-    \item Die Protokollkontrollinformationen zur Kommunikation mit einer anderen Instanz der selben Schicht werden nun in Form der (N)-PCI mit den zu übertragenden Daten, der (N)-SDU, zur (N)-PDU zusammengefasst.
-    \item Diese wird dann zusammen mit den Kontrollinformationen für die nächste Schicht, der (N-1)-ICI, wiederum zur (N-1)-IDU zusammengefasst. Somit gilt (N)-PDU = (N-1)-SDU.
+    \item Die $(N)$-Instanz erhält von der $(N{+}1)$-Instanz die $(N{+}1)$-IDU und teilt diese in $(N)$-SDU (Daten) und $(N)$-ICI (Schnittstelleninfos) auf.
+    \item Zur Kommunikation mit einer anderen $(N)$-Instanz wird die $(N)$-PDU erstellt, die aus $(N)$-PCI (Protokollinfos) und $(N)$-SDU (Daten) besteht.
+    \item Die $(N)$-PDU wird dann zusammen mit der $(N{-}1)$-ICI (Kontrollinfos für die nächste Schicht) zur $(N{-}1)$-IDU zusammengefasst.
 \end{enumerate}
 
-\subsection{OSI vs TCP/IP}
-\begin{minipage}[t]{0.5\textwidth}
+Für jede Schicht gilt also: $(N)$-PDU $=$ $(N{-}1)$-SDU.
+
+\subsection{OSI und TCP/IP}
+
+\begin{minipageparskip}
+\begin{minipage}{0.45\textwidth}
+\centering
+\textbf{OSI}
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}{0.45\textwidth}
+\centering
+\textbf{TCP/IP}
+\end{minipage}
+
+\begin{minipage}{0.45\textwidth}
+\begin{enumerate}[nolistsep]
+	\item \emph{Bitübertragungsschicht:}\\ Digitale Datenübertragung,\\ z.B.\ Ethernet.
+	\item \emph{Sicherungsschicht:}\\ Gewährleisten von zuverlässiger uns fehlerfreier Übertragung,\\ z.B.\ MAC, ALOHA, Token Ring.
+\end{enumerate}
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}{0.45\textwidth}
+\centering
 \begin{enumerate}
-	\item Bitübertragungsschicht:\\ Digitale Datenübertragung, z.B.\ Ethernet.
-	\item Sicherungsschicht:\\ Gewährleisten von zuverlässiger uns fehlerfreier Übertragung, z.B.\ MAC, ALOHA, Token Ring.
-	\item Vermittlungsschicht:\\ Vermittlung von Paketen und Routing, z.B.\ IP, ICMP.
-	\item Transportschicht:\\ Ende-zu-Ende-Kommunikation, z.B.\ TCP, UDP.
-	\item Sitzungsschicht:\\ Synchronisierter Datenaustausch, z.B.\ HTTP.
-	\item Darstellungsschicht:\\ Übersetzer zwischen verschiedenen Datenformen, z.B.\ HTTP.
-	\item Anwendungsschicht:\\ Anwendungsspezifische Daten, z.B.\ HTTP.
+	\item \emph{Host-to-Network Layer:}\\ Datenübertragung von Punkt zu Punkt,\\ z.B.\ WLAN, Token Ring, (R)ARP.
 \end{enumerate}
 \end{minipage}
-\begin{minipage}[t]{0.5\textwidth}
+
+\begin{minipage}{0.45\textwidth}
 \begin{enumerate}
-	\item Host-to-Network Layer:\\ Datenübertragung von Punkt zu Punkt, z.B.\ WLAN, Token Ring, (R)ARP.
-	\item Internet-Layer:\\ Weitervermittlung von Paketen und Routing, z.B.\ IP, ICMP.
-	\item Transport-Layer:\\ Ermöglicht Ende-zu-Ende-Kommunikation, z.B.\ TCP, UDP.
-	\item Application Layer:\\ Austausch von anwendungsspezifischen Daten, z.B.\ HTTP, DNS.
+    \setcounter{enumi}{3}
+    \item \emph{Vermittlungsschicht:}\\ Vermittlung von Paketen und Routing,\\ z.B.\ IP, ICMP.
+\end{enumerate}
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}{0.45\textwidth}
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item \emph{Internet Layer:}\\ Weitervermittlung von Paketen und Routing, z.B.\ IP, ICMP.
 \end{enumerate}
 \end{minipage}
+
+\begin{minipage}{0.45\textwidth}
+\begin{enumerate}
+    \setcounter{enumi}{3}
+    \item \emph{Transportschicht:}\\ Ende-zu-Ende-Kommunikation,\\ z.B.\ TCP, UDP.
+\end{enumerate}
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}{0.45\textwidth}
+\begin{enumerate}
+    \setcounter{enumi}{3}
+    \item \emph{Transport Layer:}\\ Ende-zu-Ende-Kommunikation,\\ z.B.\ TCP, UDP.
+\end{enumerate}
+\end{minipage}
+
+\begin{minipage}{0.45\textwidth}
+\begin{enumerate}[nolistsep]
+    \setcounter{enumi}{4}
+    \item \emph{Sitzungsschicht:}\\ Synchronisierter Datenaustausch,\\ z.B.\ HTTP.
+    \item \emph{Darstellungsschicht:}\\ Übersetzer zwischen Datenformen,\\ z.B.\ HTTP.
+    \item \emph{Anwendungsschicht:}\\ Anwendungsspezifische Daten,\\ z.B.\ HTTP.
+\end{enumerate}
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}{0.45\textwidth}
+\centering
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item \emph{Application Layer:}\\ Austausch von anwendungsspezifischen Daten,\\ z.B.\ HTTP, DNS.
+\end{enumerate}
+\end{minipage}
+\end{minipageparskip}
 
 \section{Bitübertragungsschicht}
 \subsection{Definitionen}
 \begin{itemize}
-\item \textbf{Schritt}: Minimales Zeitintervall für die Änderung des Signals
-\item \textbf{Schrittgeschwindigkeit}: Schritte pro Zeiteinheit (1 baud = 1/s)
-\item \textbf{Zweiwertiges Signal}: Übertragung eines Bits pro Signal (Binär)
-\item \textbf{Mehrwertiges Signal}: Übertragung von mehreren Bits pro Signal (z. B. DIBIT, 2 Bit pro Signal, also quaternär, 4 Werte)
-\item \textbf{Übertragungsgeschwindigkeit}: $\textrm{Schrittgeschwindigkeit baud } \cdot \log_2($n$) Bit)$, mit $n$ der Anzahl der Bitz pro Signal
+\item \emph{Schritt}: Minimales Zeitintervall für die Änderung des Signals
+\item \emph{Schrittgeschwindigkeit}: Schritte pro Zeiteinheit (1 baud = 1/s)
+\item \emph{Zweiwertiges Signal}: Übertragung eines Bits pro Signal (Binär)
+\item \emph{Mehrwertiges Signal}: Übertragung von mehreren Bits pro Signal (z. B. DIBIT, 2 Bit pro Signal, also quaternär, 4 Werte)
+\item \emph{Übertragungsgeschwindigkeit}: $\textrm{Schrittgeschwindigkeit baud } \cdot \log_2($n$) Bit)$, mit $n$ der Anzahl der Bitz pro Signal
 \end{itemize}
 
+\begin{minipage}{\textwidth}
+\begin{minipage}{0.5\textwidth}
 \subsection{Leitungscodes}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\raggedleft
+{\small Laut Vorlesung wichtige Codes sind \textbf{fett} markiert.}
+\end{minipage}
+\nopagebreak
 \begin{minipage}[t]{0.5\textwidth}
 \subsubsection{Non-Return-to-Zero Codes}
 
@@ -294,6 +374,7 @@ Bei 0: neutral halten.
 Bei 1: abwechselnd hohen bzw. niedrigen Pegel, halten, dann neutral, halten. \\
 Bei 0: neutral halten.
 \end{minipage}
+\end{minipage}
 
 \subsubsection{Biphase Codes}
 \begin{minipage}[t]{0.5\textwidth}
@@ -415,18 +496,28 @@ Bei 1: Pegel halten, dann wechseln. \\
 Bei 0: Hoher Pegel, halten, dann niedriger Pegel, halten.
 \end{minipage}
 
-Die Bezeichnungen der laut den Folien wichtigen Codes wurden \textbf{fett} markiert.
-
-\subsection{4B/5B-Kodierung}
+\subsubsection{4B/5B-Kodierung}
 
 Verwendet NRZI-M, aber kodiert Daten vorher durch Tabelle. 4B/5B überträgt 4 Bit in 5 Takten und erlaubt außerdem ``Steuerwörter'', wie \lstinline{End} oder \lstinline{Reset}.
+
+\subsubsection{Modulationsverfahren}
+
+Die obigen Codes waren Basisbandübertragungsverfahren, d.h.\ sie verwenden das gesamte Frequenzspektrum des Mediums. Für etwa Funkübertragung kann nur ein bestimmtes Frequenzspektrum verwendet werden. Im Allgemeinen nennt man die Beinflussung der Parameter des Trägersignals \emph{Modulation}. Dabei gibt es drei Arten:
+
+\begin{itemize}
+    \item \emph{Amplitudenmodulation:} Übertragung durch Veränderung der Amplitude. Störanfällig.
+    \item \emph{Frequenzmodulation:} Veränderung der Übertragungsfrequenz.
+    \item \emph{Phasenmodulation:} Übertragung durch Phasensprünge. Bestes Verfahren.
+\end{itemize}
+
+Eine Kombination der Verfahren ermöglicht etwa die \emph{Quadraturamplitudenmodulation} (QAM). $2^n$-QAM kodiert $n$ Symbole in einem Taktschritt und hat dann $2^n$ Zustände.
 
 \subsection{Theoreme von Nyquist und Shannon}
 
 Beide Theoreme beschreiben die maximale Datenrate bei einem Kanal mit eingeschränkter Bandbreite. Für einen Kanal muss das Minimum der Ergebnisse beider Theoreme für die maximale Bandbreite verwendet werden.
 
 Nyquist sagt, für einen \emph{störungsfreien} Kanal ist die maximale Datenrate in Bit pro Sekunde:
-\[2 \cdot B \cdot \log_2(n),\] wobei $B$ die Bandbreite und $n$ die Anzahl diskreter Signalstufen ist. Falls \emph{QAM} angegeben, so ist $n$ die Anzahl der diskreten Signalwerte.
+\[2 \cdot B \cdot \log_2(n),\] wobei $B$ die Bandbreite und $n$ die Anzahl diskreter Signalstufen ist. Falls $n$-QAM verwendet wird, so ist $n$ die Anzahl der diskreten Signalwerte.
 
 Nach Shannon ist die maximale Datenrate bei einem Kanal mit \emph{zufälligem Rauschen}:
 \[B \cdot \log_2(1 + S/N)\]
