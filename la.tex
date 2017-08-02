@@ -76,7 +76,7 @@
 
 \section{Einleitung}
 
-Dieser ``Panikzettel'' für Lineare Algebra ist eine mehr oder weniger informelle Zusammenfassung des Skriptes der Vorlesung Lineare Algebra im SS 2017 bei von \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/photo.jpg}{Dr. Sebastian Thomas}. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen, wie etwa offensichtliche $n \in \mathbb{N}$.
+Dieser ``Panikzettel'' für Lineare Algebra ist eine mehr oder weniger informelle Zusammenfassung des Skriptes der Vorlesung Lineare Algebra im SS 2017 von \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/photo.jpg}{Dr. Sebastian Thomas}. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen, wie etwa offensichtliche $n \in \mathbb{N}$.
 
 Dieser Panikzettel kommt ursprünglich aus dem SS 2016 und wird im Laufe der Vorlesung aktualisiert. Referenzen beziehen sich auf das neue Skript vom 23. April 2017.
 
@@ -101,7 +101,7 @@ $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapst
 \skript{1.10} Für $K$-Vektorräume $U$ und $V$ heißt $U$ Untervektorraum von $V$, wenn die Menge der Vektoren von $U$ Teilmenge der Menge der Vektoren von $V$ ist und für $k \in K, u,u^\prime \in U$ gilt:
 \begin{align*}
 	u {+}^{U} u^\prime &= u {+}^{V} u^\prime	\\
-	k \cdot u^\prime &= k \cdot u^\prime
+	k \cdot^{U} u^\prime &= k \cdot^{V} u^\prime
 \end{align*}
 
 Wir schreiben $U \leq V$ für ``$U$ ist ein Untervektorraum von $V$'' und $U \nleq V$ für ``$U$ ist kein Untervektorraum von $V$''.
@@ -116,11 +116,11 @@ Ein Tupel heißt linear unabhängig, wenn kein Eintrag eine Linearkombination de
 
 Ein Tupel $s$ in Vektorraum $V$ ist Erzeugendensystem von $V$, wenn jedes Element von $V$ eine Linearkombination von $s$ ist.
 
-Das Erzeugnis von $s$, $\langle s \rangle$, ist für ein Tupel $s$ in $V$ die Menge aller Linearkombinationen von $s$. Das Erzeugnis eines beliebigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.
+Für ein Tupel $s$ in $V$ ist das Erzeugnis $\langle s \rangle$ die Menge aller Linearkombinationen von $s$. Das Erzeugnis eines beliebigen Tupels in einem $K$-Vektorraum $V$ ist ein Untervektorraum von $V$.
 
 Ein linear unabhängiges Erzeugendensystem wird Basis genannt. Gibt es eine endliche Basis von $V$ der Länge $n$, dann nennen wir $V$ endlich erzeugt und sagen, dass $V$ Dimension $n$ hat.
 
-\skript{1.48} (Basisergänzungssatz) Jede linear unabhängige Teilmenge eines endlich erzeugten Vektorraums kann zu einer Basis dieses Vektorraums ergänzt werden.
+\skript{1.48} (Basisergänzungssatz) Jedes linear unabhängige Tupel in einem endlich erzeugten Vektorraum kann zu einer Basis dieses Vektorraums ergänzt werden.
 
 \subsection{Unabhängigkeit von Untervektorräumen und innere direkte Summe}
 
@@ -131,9 +131,9 @@ $$ U_1 \dot+ \ldots \dot+ U_n = \dot\sum_{i=1}^n U_i := \sum_{i=1}^n U_i$$
 
 \skript{1.70} Für $n$-Tupel $s = (s_1,\ldots,s_n)$ in $V$ gilt:
 \begin{enumerate}
-	\item $\langle s_1,\ldots,s_n\rangle = \sum_{i=1}{n} Ks_i$
+	\item $\langle s_1,\ldots,s_n\rangle = \sum_{i=1}^{n} Ks_i$
 	\item $s$ ist Erzeugendensystem von V genau dann wenn $V = \sum_{i=1}^n Ks_i$ ist.
-	\item $s$ ist linear Unabhängig genau dann wenn alle $s_i \neq 0$ sind und $(Ks_1,\ldots,Ks_n)$ unabhängig ist.
+	\item $s$ ist linear unabhängig genau dann wenn alle $s_i \neq 0$ sind und $(Ks_1,\ldots,Ks_n)$ unabhängig ist.
 	\item $s$ ist eine Basis von V genau dann wenn alle $s_i \neq 0$ sind und $V = \dot\sum_{i=1}^n K s_i$  gilt.
 \end{enumerate}
 
@@ -186,7 +186,7 @@ Es seien $K$-Vektorräume $V$ und $W$, ein $K$-Vektorraumhomomorphismus $\varphi
 
 \skript{2016 Aufg. 24c} $\varphi(\langle s_1,\ldots,s_n \rangle) = \langle \varphi(s_1), \ldots, \varphi(s_n) \rangle$
 
-\skript{2016 Aufg. 24de} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear Unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
+\skript{2016 Aufg. 24de} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
 
 \section{Matrixkalkül}
 
@@ -249,8 +249,8 @@ Wir müssen Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ St
 \subsection{Ähnlichkeit und Äquivalenz}
 
 \skript{3.43} \begin{itemize}
-	\item Für $A, B \in K^{m \times n}$ ist $A$ äquivalent zu $B$, wenn es $P \in \GL_n(K)$, $Q \in GL_m(K)$ gibt mit: $$Q^{-1} A P = B$$
-	\item Für $A, B \in K^{m \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff A P = P B$$
+	\item Für $A, B \in K^{m \times n}$ ist $A$ äquivalent zu $B$, wenn es $P \in \GL_n(K)$, $Q \in \GL_m(K)$ gibt mit: $$Q^{-1} A P = B$$
+	\item Für $A, B \in K^{n \times n}$ ist $A$ ähnlich zu $B$, wenn es $P \in \GL_n(K)$ gibt mit: $$P^{-1} A P = B \iff A P = P B$$
 \end{itemize}
 
 \skript{3.50} Für $\varphi : V \to W$ sollen Basen $(s_1, \ldots, s_n)$ von $V$ und $(t_1, \ldots, t_m)$ von $W$ bestimmt werden, sodass $M_{t,s}(\varphi) = Q_r$ eine Quasieinheitsmatrix ist mit $r \leq \min(n, m)$. Dann rechnen wie folgt: \begin{enumerate}
@@ -324,7 +324,7 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \skript{4.22} Eine Erzeugermatrix ist $A \in K^{n \times k}$ mit $C=\Col(A)$, wenn C ein linearer $[n,k]$-Code über $K$ ist.
 
-\skript{4.24} $\rk_k A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]$-Code $C$.
+\skript{4.24} $\rk_K A=k$, falls $A$ Erzeugermatrix für linearen  $[n,k]$-Code $C$.
 
 \skript{4.25} Kodierung und Dekodierung:
 \begin{itemize}
@@ -336,10 +336,10 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 
 \subsection{Kontrollmatrizen}
 
-\skript{4.26} Kontrollmatrix ist $B \in K^{(n-k) \times n}$ mit $C=Sol(B,0)$, wenn $k \in [0,n], C$ ein linearer $[n,k]$-Code über $K$ ist.
+\skript{4.26} Kontrollmatrix ist $B \in K^{(n-k) \times n}$ mit $C=\Sol(B,0)$, wenn $k \in [0,n], C$ ein linearer $[n,k]$-Code über $K$ ist.
 \begin{itemize}
-	\item Berechnung der Kontrollmatrix $C$ mit Erzeugermatrix $A: Sol(A^{tr},0)=\langle u,..,v\rangle=Col(B^{tr})$
-	\item $Sol(B,0)=Col(A)=C$
+	\item Berechnung der Kontrollmatrix $C$ mit Erzeugermatrix $A: \Sol(A^{tr},0)=\langle u,..,v\rangle=\Col(B^{tr})$
+	\item $\Sol(B,0)=\Col(A)=C$
 \end{itemize}
 
 \skript{4.28} $rk_K B=n-k$
@@ -347,18 +347,18 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 \skript{4.29} Codewort-Test: Berechne $Bx$ und falls $Bx=0$ ist, dann ist $x$ ein Codewort von $C$.
 
 \skript{4.30} Seien $k \in [1,n],$ ein linearer $[n,k]$-Code $C$ über $K$ und die Kontrollmatrix $B$ gegeben. Dann ist \\
-$\mathrm{d}(C) = \min \{r \in \mathbb{N}_0 \ |\ $ es gibt $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ so, dass $(B_{-,j_1},...,B_{-,j_r})$ linear abhängig ist. \\
-=$ \max \{r \in \mathbb{N}_0 \ |\ $ für alle $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ ist $(B_{-,j_1},...,B_{-,j_r})$ linear unabhängig.
+$\mathrm{d}(C) = \min \{r \in \mathbb{N}_0 \ |\ $ es gibt $j_1,...,j_r \in [1,n]$ mit $j_1 <...<j_r$ so, dass $(B_{-,j_1},...,B_{-,j_r})$ linear abhängig ist\}\\
+=$ \max \{r \in \mathbb{N}_0 \ |\ $ für alle $j_1,...,j_{r-1} \in [1,n]$ mit $j_1 <...<j_{r-1}$ ist $(B_{-,j_1},...,B_{-,j_{r-1}})$ linear unabhängig\}.
 
 \subsection{Syndromdekodierung}
 
 \skript{4.31} Syndrom: Für $x \in K^{n \times 1}$ heißt $Bx \in K^{(n-k) \times 1}$ das Syndrom von $x$ bzgl. $B$, mit $k \in [1,n]$ und einem linearen $[n,k]$-Code $C$ über $K$.
 
-\skript{4.33} Sei $y$ das Syndrom von $x$. Für $x` \in K^{n \times 1}$ gilt: $x`$ hat das Syndrom $y \Leftrightarrow x`-x$ ist ein Codewort von $C$.
+\skript{4.33} Sei $y$ das Syndrom von $x$. Für $x^\prime \in K^{n \times 1}$ gilt: $x^\prime$ hat das Syndrom $y \Leftrightarrow x^\prime-x$ ist ein Codewort von $C$.
 
 \skript{4.34} Ein Anführer für $y$ bzgl. $B$ ist ein $e \in K^{n \times 1}$ mit Syndrom $y$ und $\mathrm{wt}(e)=\min\{\mathrm{wt}(x)\ |\ x \in K^{n \times 1}$ so, dass $x$ das Syndrom $y$ hat$\}$.
 
-\skript{4.36} Codewort $c$ ist ein nächster Nachbar von $x$ in $C \Leftrightarrow x-c$ ist Anführer für $y$.
+\skript{4.36} Codewort $c$ ist ein nächster Nachbar von $x$ mit Syndrom $y$ in $C \Leftrightarrow x-c$ ist Anführer für $y$.
 
 \skript{4.37} $\forall x \in B_{\frac{d(C)}{2}}(c)$ ist $x-c$ der eindeutige Anführer für das Syndrom von $x$.
 
@@ -366,14 +366,14 @@ $\mathrm{d}(C) = \min \{r \in \mathbb{N}_0 \ |\ $ es gibt $j_1,...,j_r \in [1,n]
 
 Initialisierung:
 \begin{itemize}
-	\item Wähle $k \in [0,n]$ und einen libnearen $[n,k]$-Code $C$ über $K$, mit weniger als $\frac{d(C)}{2}$ Fehlern.
+	\item Wähle $k \in [0,n]$ und einen linearen $[n,k]$-Code $C$ über $K$, mit weniger als $\frac{d(C)}{2}$ Fehlern.
 	\item Bestimme die Kontrollmatrix $B$ für $C$
 	\item Bestimme $\forall y \in K^{(n-k) \times 1}$ einen Anführer $e_y$ und lege ein Wörterbuch an
 \end{itemize}
 Dekodierung von $x \in K^{n \times 1}$:
 \begin{itemize}
 	\item Berechne das Syndrom $Bx$ von $x$ bzgl. $B$
-	\item Suche Fehlwort $e_{Bx}$ aus Wörterbuch
+	\item Suche Fehlerwort $e_{Bx}$ aus Wörterbuch
 	\item Dekodiere $x$ zu $x-e_{Bx}$
 \end{itemize}
 
@@ -472,12 +472,12 @@ Ein Eigenvektor $v$ eines Endomorphismus $\varphi$ ist ein Vektor $\neq 0$, der 
 
 \skript{6.1} Ein Eigenraum ist der Vektorraum, der alle Eigenvektoren zu einem Eigenwert (und den Nullvektor) enthält.
 $$\Eig_a(\varphi) = \{ v \in V \vert \varphi(v) = a v \} = \Ker(\varphi - a \cdot \id_V)$$
-
+Beachte: Wir nennen $\Eig_a(\varphi)$ genau dann einen Eigenraum, wenn $\Eig_a(\varphi)\neq \{0\}$ ist.\\
 Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/-räume von $\varphi_A$.
 
 \skript{6.6} Für verschiedene Eigenwerte sind die zugehörigen Eigenräume unabhängig.
 
-\subsection{Characteristische Polynome}
+\subsection{Charakteristische Polynome}
 
 \skript{6.8} Das charakteristische Polynom einer Matrix $A$ ist $\chi_A = \det(XE_n-A)$.
 
@@ -487,7 +487,7 @@ Die Eigenwerte/-vektoren/-räume einer Matrix $A$ sind die Eigenwerte/-vektoren/
 	\item $a$ ist ein Eigenwert von $A$
 	\item $\rk(A-aE_n)<n$
 	\item $\det(A-aE_n)=0$
-	\item $a$ ist eine Nullstelle des charakteristischen Polynoms von $A$
+	\item $a$ ist eine Nullstelle des charakteristischen Polynoms von $A$.
 \end{itemize}
 
 \subsubsection{Begleitmatrix}
@@ -497,7 +497,7 @@ $$C(f) = \left(\begin{array}{cccc}
 		& 0 & & -a_0	\\
 		& & & -a_1	\\
 		& E_{n-1} & & \vdots	\\
-		& & & -a_n
+		& & & -a_{n-1}
 \end{array}\right)$$
 
 \skript{6.22} Das charakteristische Polynom einer Begleitmatrix ist $\chi_{C(f)} = f$.
@@ -512,9 +512,48 @@ $$\mul_a(\varphi) = \mul_a(\chi_\varphi)$$
 
 \skript{6.19} Es gilt stets $\geo_a(\varphi) \le \mul_a(\varphi)$.
 
+
+\subsection{Anwendung: PageRank}
+
+\subsubsection{Stochastische Matrizen}
+
+\skript{6.27} Es ist $A \in \mathbb{R}^{m \times n}$ stochastisch, wenn alle Einträge in $A$ nicht-negativ sind und für $j \in [1,n]$ stets $\sum_{i\in [1,m]} A_{i,j}=1 $ gilt.
+
+\skript{6.29} Für stochastische $A,B \in \mathbb{R}^{m \times n}$ und $c \in [0,1]_\mathbb{R}$ ist auch $$cA+(1-c)B$$ stochastisch.
+
+\skript{6.30} Quadratische stochastische Matrizen besitzen stets den Eigenwert 1.
+
+\skript{6.31} Quadratische stochastische Matrizen mit positiven Einträgen besitzen genau einen stochastischen Eigenvektor zum Eigenwert 1, dieser hat nur positive Einträge.
+
+\subsubsection{PageRank}
+
+Für eine Ecke $j$ in einem schlichten gerichteten Graphen $G$ ist $$\Gamma_+(j) = \{i \in \text{V}(G)\ |\ \text{es gibt eine Kante von } i \text{ nach } j\}$$ und $\deg_+(j)=|\Gamma_+(j)|$.
+
+\skript{6.32} Für einen schlichten gerichteten Graphen $G$ mit $\text{V}(G)=[1,n]$ heißt $L \in \mathbb{R}^{n \times n}$ die Linkmatrix gegeben durch
+$$L_{i,j}=\begin{cases}
+\frac{1}{\deg_+(j)}, & \text{falls } i \in \Gamma_+(j) \\
+0, & \text{sonst}
+\end{cases}$$
+
+\skript{6.36} Für einen schlichten gerichteten Graphen $G$ mit $\text{V}(G)=[1,n]$ mit Linkmatrix $L$, $S \in \mathbb{R}^{n \times n}$ gegeben durch
+$$S=\left(\begin{array}{ccc}
+1& \dots & 1	\\
+\vdots & &  \vdots	\\
+1 & \dots & 1
+\end{array}\right)$$
+und $D \in \mathbb{R}^{n \times n}$ gegeben durch
+$$D_{i,j}=\begin{cases}
+0, & \text{falls } \deg_+(j) > 0 \\
+1, & \text{sonst}
+\end{cases}$$
+und $d \in [0,1]_\mathbb{R}$ ist $P_d$ die Googlematrix von G zum Dämpfungsfaktor $d$ gegeben durch
+$$P_d = d (L + \frac{1}{n} D) + (1-d) \frac{1}{n} S.$$
+
+\skript{6.39} Für einen schlichten gerichteten Graphen $G$ mit $\text{V}(G)=[1,n]$ und $d \in [0,1)_\mathbb{R}$ und der zugehörigen Googlematrix $P_d$ ist der PageRank der eindeutige stochastische Eigenvektor von $P_d$ zum Eigenwert 1.
+
 \subsection{Diagonalisierbarkeit}
 
-Die folgenden Definitionen gelten für Endomorphismen $\varphi$, sowie für Matrizen mithilfe der Spalteninterpretation $\varphi_A$.
+Die folgenden Definitionen gelten für Endomorphismen $\varphi$, sowie für quadratische Matrizen mithilfe der Spalteninterpretation $\varphi_A$.
 
 \skript{6.41} Eine Basis $s$ von $V$ ist eine Eigenbasis bezüglich $\varphi$, wenn alle Einträge von $s$ Eigenvektoren von $\varphi$ sind.
 
@@ -606,7 +645,7 @@ Falls $K = \R$, so entspricht diese Operation dem Transponieren. Es gelten die g
 	\item Positive Definitheit: Für $v \in V$ gilt $\scp{v}{v} \geq 0$ und genau dann $\scp{v}{v} = 0$ wenn $v = 0$ ist.
 \end{itemize}
 
-\skript{7.4} Solange nichts anderes erwähnt ist, betrachten wir $K^n$ mit dem Standartskalarprodukt gegeben durch
+\skript{7.4} Solange nichts anderes erwähnt ist, betrachten wir $K^n$ mit dem Standardskalarprodukt gegeben durch
 $$ \scp{v}{w} = \transpose{\conj{v}} w = \sum_{i=1}^n \conj{v_i} w_i$$
 
 \subsubsection{Cauchy-Schwarz-Ungleichung}
@@ -654,7 +693,7 @@ $$\langle s_1,\ldots,s_n\rangle^\ortho = \{s_1,\ldots,s_n\}^\ortho.$$
 
 \skript{7.27} In einem  $K$-Skalarproduktraum $V$ sind für jeden Untervektorraum $U$ von $V$ die beiden Vektorräume $(U,U^\ortho)$ unabhängig.
 
-\skript{7.28} Für einen $K$-Untervektorraum $U$ von $V$ mit $V = U + U^\ortho$ (für endlichdimensionale $V$ ist dies stets der Fall) bezeichnet $\pr_U: V \to U$ die Projektion auf $U$ bezüglich $(U,U^\ortho)$.
+\skript{7.28} Für einen $K$-Untervektorraum $U$ von $V$ mit $V = U \dotplus U^\ortho$ (für endlichdimensionale $V$ ist dies stets der Fall) bezeichnet $\pr_U: V \to U$ die Projektion auf $U$ bezüglich $(U,U^\ortho)$.
 
 \subsubsection{Orthogonalbasen}
 
