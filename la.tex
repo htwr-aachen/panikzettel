@@ -27,7 +27,7 @@
 \makeatother
 
 \title{Lineare Algebra Panikzettel}
-\author{Philipp Schröer, Tobias Polock, Caspar Zecha}
+\author{Mathis Müller, Philipp Schröer, Tobias Polock,\\ Jonathan du Mesnil de Rochemont, Caspar Zecha}
 \date{\today}
 
 % Formatting
@@ -631,7 +631,7 @@ mit $A \in K^{m \times m}$ hat. In diesem Fall ist $M_{s^\prime,s^\prime}(\varph
 Skalarprodukträume betrachten wir nur über den Körpern $\C$ und $\R$. Daher ist im folgenden stets $K \in \{\C,\R\}$.
 
 \subsubsection{Adjungierte}
-\skript{7.A} Für eine Matrix $A \in K^{m \times n}$ ist die dazugehörige \textit{adjungierte Matrix} $\adjoint{A} \in K^{m \times n}$ definiert als: 
+\skript{7.A} Für eine Matrix $A \in K^{m \times n}$ ist die dazugehörige \textit{adjungierte Matrix} $\adjoint{A} \in K^{m \times n}$ definiert als:
 $$ \adjoint{A} = \transpose{\conj{A}} = \conj{\transpose{A}} = (\conj{A_{i,j}})_{j \in \left[ 1,n \right], i \in \left[ 1,m \right]} $$
 Falls $K = \R$, so entspricht diese Operation dem Transponieren. Es gelten die gleichen Regeln wie für das Transponieren bis auf die Skalarmultiplikation. Für diese gilt: $\adjoint{cA} = \conj{c}\adjoint{A}$.
 
@@ -688,7 +688,7 @@ Wenn keine andere Norm angegeben ist, wird diese Norm angenommen.
 
 \skript{7.24} Für eine Teilmenge $S$ von $V$ ist $$S^\ortho := \{v \in V \vert \forall s \in S: s \ortho v\}$$ ein $K$-Untervektorraum von $V$. Dieser Vektorraum heißt Orthogonalraum zu $S$ in $V$.
 
-\skript{7.26} In einem $K$-Skalalarproduktraum $V$ gilt für jedes $n$-Tupel $(s_1,\ldots,s_n)$ in $V$ 
+\skript{7.26} In einem $K$-Skalalarproduktraum $V$ gilt für jedes $n$-Tupel $(s_1,\ldots,s_n)$ in $V$
 $$\langle s_1,\ldots,s_n\rangle^\ortho = \{s_1,\ldots,s_n\}^\ortho.$$
 
 \skript{7.27} In einem  $K$-Skalarproduktraum $V$ sind für jeden Untervektorraum $U$ von $V$ die beiden Vektorräume $(U,U^\ortho)$ unabhängig.
@@ -739,16 +739,16 @@ Dann heißt das Paar $(Q,R)$ die QR-Zerlegung von $A$ und es gilt $R \in \GL_n(K
 
 \subsection{Nichtausartung von Skalarprodukten}
 
-\skript{7.J (a)} Für $v, v^\prime \in V$ gilt: Wenn für $w \in V$ stets $\langle v, w\rangle = \langle v^\prime, w \rangle$ gilt, dann ist $v = v^\prime.$ 
+\skript{7.J (a)} Für $v, v^\prime \in V$ gilt: Wenn für $w \in V$ stets $\langle v, w\rangle = \langle v^\prime, w \rangle$ gilt, dann ist $v = v^\prime.$
 
-\skript{7.J (b)} Für $w, w^\prime \in V$ gilt: Wenn für $v \in V$ stets $\langle v, w\rangle = \langle v, w^\prime \rangle$ gilt, dann ist $w = w^\prime.$ 
+\skript{7.J (b)} Für $w, w^\prime \in V$ gilt: Wenn für $v \in V$ stets $\langle v, w\rangle = \langle v, w^\prime \rangle$ gilt, dann ist $w = w^\prime.$
 
 \subsection{Adjunktion von Vektorraumhomomorphismen}
 
 \skript{7.K} Eine \textit{Adjungierte} zu einem $K$-Vektorraumhomomorphismus $\varphi: V \rightarrow W$, ist ein \\ $K$-Vektorraumhomomorphismus $\psi: W \rightarrow V$ sodass  für $v \in V, w \in W$ stets
 	$$\langle \varphi(v), w\rangle = \langle v, \psi(w)\rangle$$ gilt.
 
-\skript{7.M} Zu jedem Vektorraumhomomorphismus gibt es höchstens eine Adjungierte. (Analog zur Inversen.) 
+\skript{7.M} Zu jedem Vektorraumhomomorphismus gibt es höchstens eine Adjungierte. (Analog zur Inversen.)
 
 \skript{7.N} Für einen adjungierbaren $K$-Vektorraumhomomorphismus von $V$ nach $W$ notieren wir die Adjungierte zu $\varphi$ als $\adjoint{\varphi}: W \rightarrow V$.
 
@@ -762,7 +762,7 @@ Dann heißt das Paar $(Q,R)$ die QR-Zerlegung von $A$ und es gilt $R \in \GL_n(K
 
 \skript{7.50} Es seien eine Teilmenge $S$ von $V$ und ein Vektor $v \in V$ gegeben. Ein $s \in S$ heißt \textit{beste Approximation} von $v$ in $S$ wenn $$\norm{v - s} = \min\{\norm{v - s^\prime} \vert s^\prime \in S\}$$ gilt.
 
-\skript{7.AA} Sei ein normierter $K$-Vektorraum $V$, $S \subseteq V$ und $v\in V$ gegeben.  $$\text{Prox}_S(v) = \{ s \in S\;|\;\norm{v - s} = \min\{ \norm{v - s^\prime}\;|\;s^\prime \in S\}\}$$ wird \textit{Menge der besten Approximationen} von $v$ in $S$ genannt. 
+\skript{7.AA} Sei ein normierter $K$-Vektorraum $V$, $S \subseteq V$ und $v\in V$ gegeben.  $$\text{Prox}_S(v) = \{ s \in S\;|\;\norm{v - s} = \min\{ \norm{v - s^\prime}\;|\;s^\prime \in S\}\}$$ wird \textit{Menge der besten Approximationen} von $v$ in $S$ genannt.
 
 \skript{7.54} Für einen Untervektorraum $U$ von $V$ mit $V = U \dot{+} U^\ortho$ ist $\pr_U(v)$ die eindeutige beste Approximation von $v$ in $U$.
 
@@ -773,18 +773,18 @@ Seien im Folgenden $(D_1,...,D_n)$ ein $n$-Tupel von Strings in $\left[ 1,m \rig
 \skript{7.55} Sei $A^\prime \in \R^{m \times n}$ gegeben durch
 $$A^\prime_{i,j} = |\{k \in \left[1,l_j\right]\;|\;(D_j)_k = i\}|$$ für $i\in \left[1,m\right], j \in \left[1,m\right]$. Dann wird $A^\prime$ \textit{Term-Dokument-Matrix} von $(D_1,\ldots,D_n)$ genannt. Normiert man diese Spaltenweise, so entsteht die \textit{normierte Term-Dokument-Matrix} $A \in \R^{m \times n}$. \\
 \\
-$A^\prime$ stellt also eine Art Häufigkeitsmatrix dar, in der die Häufigkeiten der in den Dokumenten vorkommenden Terme spaltenweise für alle Dokumente aufgeführt wird. 
+$A^\prime$ stellt also eine Art Häufigkeitsmatrix dar, in der die Häufigkeiten der in den Dokumenten vorkommenden Terme spaltenweise für alle Dokumente aufgeführt wird.
 
-\skript{DS Def. (3.34)} Sei $I \subseteq [1,m]$. Dann ist $\chi_I \in \R^{m \times 1}$ der \textit{Indikatorvektor} von $I$ mit 
-$$\chi_{I,i} = (\chi_I)_i = 
-  \begin{cases} 
+\skript{DS Def. (3.34)} Sei $I \subseteq [1,m]$. Dann ist $\chi_I \in \R^{m \times 1}$ der \textit{Indikatorvektor} von $I$ mit
+$$\chi_{I,i} = (\chi_I)_i =
+  \begin{cases}
     1, & \text{für } i \in I,\\
     0, & \text{falls } i \in [1,m]\backslash I.
   \end{cases}$$
 
 \skript{7.57} Eine \textit{Suchanfrage} $I$ ist eine Teilmenge von $\left[ 1,m\right]$. Für $j \in \left[ 1,n\right]$ passt das Dokument $D_j$ am Besten zur Suchanfrage $I$, wenn $A_{-,j}$ eine beste Approximation von $\chi_I$ in $\{A_{-,1},...,A_{-,n}\}$ ist.
 
-\skript{7.58} Für $j \in \left[ 1,n\right]$ passt das Dokument $D_j$ am Besten zur Suchanfrage $I$ gdw. 
+\skript{7.58} Für $j \in \left[ 1,n\right]$ passt das Dokument $D_j$ am Besten zur Suchanfrage $I$ gdw.
 	$$\sum_{i \in I} A_{i,j} = \max\{\sum_{i \in I} A_{i,j^\prime} \;|\; j^\prime \in [1,n]\}.$$
 
 \subsection{Anwendung: Beste Näherungslösungen für lineare Gleichungssysteme}
@@ -796,11 +796,11 @@ Sei $A \in K^{m \times n}$, $b \in K^{m \times 1}$ gegeben.
 \skript{7.AD} $$\ApprSol(A, b) = \varphi_A^{-1}(\Prox_{\Col(A)}(b)) $$ wird \textit{Menge der besten Näherungslösungen} zur erweiterten Koeffizientenmatrix $(A\;|\;b)$ genannt.
 
 \skript{7.AE} Diese Methode zur Bestimmung einer Näherungslösung auch \textit{Methode der kleinsten Fehlerquadrate} genannt. Und zwar aus folgendem Grund:
-\begin{align*} 
-	\ApprSol(A, b) 
+\begin{align*}
+	\ApprSol(A, b)
 	& = \{x \in K^{n \times 1}\;|\;Ax \text{ ist eine beste Approximation von } b \text{ in } \Col(A)\} \\
 	& = \{x \in K^{n \times 1}\;|\; \sum_{I \in [1,m]} |b_i - Ax_1|^2 = \min\{\sum_{i \in [1,m]} |b_i - Ax_i^\prime|^2 \;|\; x^\prime \in K^{n \times 1}\}\}.
-\end{align*} 
+\end{align*}
 
 \skript{7.AF} $\ApprSol(A, b) = \Sol(A, \pr_{\Col(A)}(b)) = \Sol(\adjoint{A}A, \adjoint{A}b).$
 
@@ -830,7 +830,7 @@ b_m
 a_1^0	&	\cdots	&	a_1^{n-1}	\\
 \vdots	&		&	\vdots	\\
 a_m^0	&	\cdots &	a_m^{n-1}
-\end{array}\right), 
+\end{array}\right),
 \left(\begin{array}{c}
 b_1	\\
 \vdots	\\
