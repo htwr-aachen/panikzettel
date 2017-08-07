@@ -63,6 +63,7 @@
 \newcommand{\transpose}[1]{#1^{\mathrm{tr}}}
 \newcommand{\adjoint}[1]{#1^{\mathrm{ad}}}
 \newcommand{\ortho}{\bot}
+\newcommand{\Intpol}{\mathrm{Intpol}}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert} % Betrag
 \DeclarePairedDelimiter\norm{\lVert}{\rVert} % Norm
@@ -105,6 +106,18 @@ $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapst
 \end{align*}
 
 Wir schreiben $U \leq V$ für ``$U$ ist ein Untervektorraum von $V$'' und $U \nleq V$ für ``$U$ ist kein Untervektorraum von $V$''.
+
+\skript{1.13} Man kann zeigen, dass eine Teilmenge $U$ eines $K$-Vektorraums $V$ ein Untervektorraum von $V$ ist, indem man für alle $a \in K,\ u,u^\prime \in U$ zeigt:
+\begin{enumerate}
+	\item $u+u^\prime \in U$
+	\item $0 \in U$
+	\item $au \in U$
+\end{enumerate}
+oder
+\begin{enumerate}
+	\item $U \neq \emptyset$
+	\item $au+u^\prime \in U$.
+\end{enumerate}
 
 \subsection{Linearkombinationen und Lineare Unabhängigkeit}
 
@@ -246,6 +259,29 @@ $$\abs{\GL_n(\Field_q)} = \prod_{i=0}^{n-1} q^n-q^i$$
 $$\abs{\{A \in \Field_q^{m \times n} ~ | ~ \rk(A) = \min(m,n)\}} = \prod_{i=0}^{\min(m,n)-1} (q^{\max(m,n)}-q^i)$$
 Wir müssen Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ Stück mit Länge $\max(m,n)$. Die erste Zeile/Spalte ist dann bis auf den Nullvektor frei zu wählen, danach sollte jede folgende kein Vielfaches der vorherigen sein.
 
+\subsection{Anwendung: Interpolation}
+\skript{3.A} Für eine Menge $X$, einen Körper $K$ und ein $a \in X^m$ schreiben wir
+$$\varepsilon_a:\Map(X,K) \to K^m, f \mapsto (f(a_1),\dots,f(a_m))$$
+
+\skript{3.C} Für eine Menge $X$, einen Körper $K$, eine Teilmenge $S$ von $\Map(X,K)$ und zwei Tupel $a \in X^m$, $b\in K^m$ ist die Menge der Interpolationen zu $(a,b)$ in $S$ gegeben durch
+$$\Intpol_S(a,b)=(\varepsilon_a|_S)^{-1}(\{b\}).$$
+Informell: Interpolationen sind die Abbildungen $f$ aus $S$, für die stets $f(a_1)=b_i$ gilt.
+
+\skript{3.K} Für eine Menge $X$, einen $K$-Untervektorraum $U$ von $\Map(X,K)$, eine Basis $s$ von $U$ und zwei Tupel $a \in X^m,\ b \in K^m$ ist
+$$\Intpol_U(a,b)=\{\sum_{j=1}^{n}c_j s_j | c \in \Sol(
+	\left(\begin{array}{ccc}
+	s_1(a_1)& \dots & s_n(a_1)	\\
+	\vdots & &  \vdots	\\
+	s_1(a_n) & \dots & s_n(a_n)
+	\end{array}\right),
+	\left(\begin{array}{cc}
+	b_1 &\\
+	\vdots &\\
+	b_n &\\
+	\end{array}\right)
+	)\}$$
+Damit lässt sich die Menge der Interpolationen durch das Lösen eines LGS bestimmen. Ist\\ $U = \Pol_{<n}(K,K)$, bietet sich die Basis $s=(s_1,\dots,s_n)$ mit $s_j= x \mapsto x^{j-1}$ an.
+
 \subsection{Ähnlichkeit und Äquivalenz}
 
 \skript{3.43} \begin{itemize}
@@ -376,6 +412,8 @@ Dekodierung von $x \in K^{n \times 1}$:
 	\item Suche Fehlerwort $e_{Bx}$ aus Wörterbuch
 	\item Dekodiere $x$ zu $x-e_{Bx}$
 \end{itemize}
+
+Beachte: Gibt es für ein Syndrom $y$ mehrere Anführer, so lassen sich $x \in K^{n \times 1}$ mit Syndrom $y$ nicht eindeutig dekodieren.
 
 \section{Determinante}
 
@@ -588,13 +626,13 @@ Die folgenden Definitionen gelten für Endomorphismen $\varphi$, sowie für quad
 \skript{6.56} Für $f \in K[X]$, $A \in K^{n \times n}$ und $P \in \GL_n(K)$ gilt:	\\
 Wenn
 \[A = P \left(\begin{array}{ccc}
-		a_0 & & 0	\\
+		a_1 & & 0	\\
 		& \ddots &	\\
 		0 & & a_n
 	\end{array}\right) P^{-1}\]
 ist, dann ist
 $$f(A) = P \left(\begin{array}{ccc}
-		f(a_0) & & 0	\\
+		f(a_1) & & 0	\\
 		& \ddots &	\\
 		0 & & f(a_n)
 	\end{array}\right) P^{-1}$$
