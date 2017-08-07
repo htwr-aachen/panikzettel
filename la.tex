@@ -38,6 +38,7 @@
 \newlength{\hangwidth}
 \newcommand{\skript}[1]{\settowidth{\hangwidth}{\textbf{(#1)} }\hangpara{\hangwidth}{1}\textbf{(#1)} \ignorespaces} % Für Referenzen auf das Skript. Benutzung: \skript{Stelle} Inhalt
 
+\newcommand{\End}{\mathrm{End}} % Menge der Endomorphismen
 \newcommand{\id}{\mathrm{id}} % Die Identitätsfunktion
 \newcommand{\Sol}{\mathrm{Sol}} % Lösungsraum
 \newcommand{\Col}{\mathrm{Col}} % Spaltenraum
@@ -55,18 +56,25 @@
 \newcommand{\pr}{\mathrm{pr}} % Projektion
 \newcommand{\scp}[2]{\langle\ifthenelse{\isempty{#1}}{-}{#1},\ifthenelse{\isempty{#2}}{\ifthenelse{\isempty{#1}}{=}{-}}{#2}\rangle} %  Skalarprodukt. Beide Argumente können leer gelassen werden, um partielle Anwendung (wie im Skript) auszudrücken.
 \newcommand{\conj}[1]{\overline{#1}} % Complexe Konjugation
+\newcommand{\Interpol}{\mathrm{Interpol}} % Menge der Interpolationen
 \newcommand{\Prox}{\mathrm{Prox}} % Menge der besten Approximationen
 \newcommand{\ApprSol}{\mathrm{ApprSol}} % Menge der besten Näherungslösungen
 \newcommand{\Fit}{\mathrm{Fit}} % Menge der Ausgleichsfunktionen
+\newcommand{\SolRec}{\mathrm{SolRec}} % Menge der Lösungen zu einer HALRG oder einem HALRGsystem.
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\inv}[1]{#1^{-1}}
 \newcommand{\transpose}[1]{#1^{\mathrm{tr}}}
 \newcommand{\adjoint}[1]{#1^{\mathrm{ad}}}
 \newcommand{\ortho}{\bot}
 \newcommand{\Intpol}{\mathrm{Intpol}}
 
+
+
 \DeclarePairedDelimiter\abs{\lvert}{\rvert} % Betrag
 \DeclarePairedDelimiter\norm{\lVert}{\rVert} % Norm
+\DeclarePairedDelimiter\set{\{}{\}} % Set
 
 \begin{document}
 
@@ -201,6 +209,8 @@ Es seien $K$-Vektorräume $V$ und $W$, ein $K$-Vektorraumhomomorphismus $\varphi
 
 \skript{2016 Aufg. 24de} Wenn $(\varphi(s_1),\ldots,\varphi(s_n))$ linear unabhängig ist, dann ist auch $(s_1,\ldots,s_n)$ linear unabhängig. Ist $\varphi$ injektiv, so gilt auch die Umkehrung.
 
+% Anwendung: Interpolation
+
 \section{Matrixkalkül}
 
 \subsection{Spalteninterpretation}
@@ -319,6 +329,8 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 		}
 		child { node {nicht ähnlich} };
 \end{tikzpicture}
+
+Für Bonusaufgaben, ist es teilweise notwendig die Ähnlichkeit nicht diagonalisierbarer Matrizen zu zeigen. Wahrscheinlich sind die angegebenen Matrizen dann trigonalisierbar und insb. ähnlich zu ihrer Jordan-Normalform. Die \href{https://de.wikipedia.org/wiki/Jordansche_Normalform}{\textbf{Wikipedia-Seite zur Jordan-Normalform}} ist hier sehr hilfreich. Zuletzt noch ein \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/teaching/lineare_algebra_ii_09/Beispiel_Jordan-Normalform.pdf}{\textbf{Beispiel von Sebastian Thomas aus LA2 zur Jordan-Normalform}}.
 
 \section{Lineare Kodierungstheorie}
 
@@ -636,17 +648,27 @@ $$f(A) = P \left(\begin{array}{ccc}
 		& \ddots &	\\
 		0 & & f(a_n)
 	\end{array}\right) P^{-1}$$
-%\subsection{Anwendung: Homogene autonome lineare Rekursionsgleichungen}
+	
+\subsection{Anwendung: Homogene autonome lineare Rekursionsgleichungen}
 %TODO Charakteristisches Polynom einer HALRG
+Eine \textit{homogene autonome lineare Rekursionsgleichung} (HALRG) von Grad $n$ über $K$ in den Unbekannten $x_k$ mit $i \in [0, n-1]$, ist durch $$x_{k+n} = \sum_{i \in [0,n-1]} a_ix_{k+1}$$ für $k \in \N_0$ gegeben.
+
+Das charakteristische Polynom einer HALRG von Grad $n$ über $K$ ist $$X^n - \sum_{i \in [0, n-1]}a_i X^i$$.
+
+\skript{6.70} Sei ein normiertes $f \in K[X]\backslash\{0\}$ mit $\deg{f} = n$ gegeben. Dann ist der Lösungsraum zur HALRG mit charakteristischem Polynom $f$ gegeben durch $$\SolRec(f) = \set{ (((\transpose{C(f)})^k c)_1)_{k\in\N_0} \;|\; c \in K^{n \times 1} }.$$
+
+\skript{6.71} Sei $f \in K[X], a_0, a_1 \in K$ mit $f = X^2 - a_1X - a_0 = (X - b_1)(X - b_2)$ und $b_1 \neq b_2$ gegeben.  Für $x \in K^{\N_0}$ gilt dann $$x_{k+2} = a_0x_k + a_1x_{k+1} \iff x_k = \frac{b_1^kb_2 - b_2^kb_1}{b_2 - b_1}x_0 + \frac{b_2^k - b_1^k}{b_2 - b_1}x_1$$ für $k \in \N_0$.
+
+Offenbar ist 6.71 nur für HALRGen mit charakteristischem Polynom $f$ von Grad 2 anwendbar, für die $f$ in Linearfaktoren zerfällt.
 %TODO Shiftendomorphismus
 %TODO SolRec(f)
 %TODO SolRec(A)
 %\skript{6.63} Lösungsraum
 %\skript{6.67} Eigenwertlösung
 %\skript{6.70} Lösung mit transponierter Begleitmatrix zu f
-%\skript{6.71} Lösung für HALRG von Grad 2, wenn f diag.bar.
 %\skript{6.I} Vandermondematrix
 %\skript{6.} Interpolation durch Polynomfunktionen mittels Vandermondematrix
+
 \subsection{Invariante Untervektorräume}
 
 \skript{6.77} Für einen Vektorraumendomorphismus $\varphi: V \to V$ ist ein Untervektorraum $U$ von $V$ invariant unter $\varphi$, wenn
@@ -875,6 +897,61 @@ a_m^0	&	\cdots &	a_m^{n-1}
 b_1	\\
 \vdots	\\
 b_m
-\end{array}\right))\}.$$
+\end{array}\right))\}.$$ 
+
+Wobei die Matrix der potenzierten Stützstellen $a_1,...,a_m$ auch Vandermonde-Matrix genannt wird. Falls $\ApprSol(V,\kappa_e(b))=\Sol(V,\kappa_e(b))$, so sind die gefundenen Ausgleichsfunktionen zugleich Interpolationen. D.h. $\Fit_U(a,b) = \Interpol_U(a,b)$.
+
+\subsection{Unitäre Matrizen}
+Sei im Folgenden $V$ stets ein $K$-Skalarproduktraum.
+
+\skript{7.AP} Die \textit{Unitäre Gruppe} von Grad $n$ über $K$ ist definiert als $$U_n(K) := \{A \in \GL_n(K) \;|\; \inv{A} = \adjoint{A}\}.$$
+
+\skript{AR} $U_n(K) = \set{ A \in K^{n \times n} \;|\; (A_{-,1}, \ldots, A_{-,n}) \text{ ist eine Orthonormalbasis von } K^{n \times 1} }.$ 
+
+\skript{7.AX (a)} Ein $K$-Vektorraumendomorphismus $\varphi$ heißt \textit{unitär diagonalisierbar}, falls es eine orthonormale Eigenbasis von V bezüglich $\varphi$ gibt.
+
+\skript{7.AX (b)} Eine $(n \times n)$-Matrix Über $K$ heißt \textit{unitär diagonalisierbar}, falls es eine orthonormale Eigenbasis von $K^{n \times 1}$ bzgl. $\varphi_A$ gibt.
+
+\subsection{Normale Endomorphismen}
+Sei in diesem Abschnitt $V$ stetes ein $K$-Skalarproduktraum.
+
+\skript{7.BC (a)} Die Menge der \textit{normalen} $K$-\textit{Vektorraumendomorphismen} ist definiert als $$\End_{\text{norm}}(V) = \End_{K,\text{norm}}(V) := \{ \varphi \in \End_K(V) \;|\; \adjoint{\varphi} \circ \varphi = \varphi \circ \adjoint{\varphi} \}.$$
+
+\skript{7.BC (b) + 7.BD} Die Menge der \textit{normalen} $(n \times n)$-\textit{Matrizen} ist $$K_{\text{norm}}^{n \times n} = \{A \in K^{n \times n} \;|\; \varphi_A \in End_{k,\textit{norm}}(K^{n \times 1}) \} = \{ A \in K^{n \times n} \;|\; \adjoint{A}A = A\adjoint{A}\}.$$
+
+\skript{7.BF} $U_n(K) \subset K_\text{norm}^{n \times n}$.
+
+\skript{7.BG} Sei $\varphi: V \rightarrow V$ ein $K$-Vektorraumendomophismus.
+\begin{enumerate}
+	\item $\varphi$ ist normal.
+	\item Für $v,w \in V$ gilt: $\scp{\adjoint{\varphi(v)}}{\adjoint{\varphi(w)}} = \scp{\varphi(v)}{\varphi(w)} $.
+	\item Für $v \in V$ gilt: $\norm{\adjoint{\varphi}(v)} = \norm{\varphi(v)}$.
+\end{enumerate}
+
+\skript{7.BM} (Spektralsatz). Es sei $V$ endlichdimensional und ein $K$-Vektorraumendomorphismus $\varphi:V \rightarrow V$ gegeben. $$\varphi \text{ ist unitär diagonalisierbar } \iff \chi_\varphi \text{ zerfällt in Linearfaktoren und } \varphi \text{ ist normal}.$$
+
+\subsection{Hermitesche Endomorphismen}
+Sei im Folgenden $V$ stets ein $K$-Skalarproduktraum.
+
+\skript{7.BN (a)} Die Menge der \textit{hermitschen} $K$-\textit{Vektorraumendomorphismen} ist definiert als
+ $$\End_{\text{herm}}(V) = \End_{K,\text{herm}}(V) := \{\varphi \in \End_K(V) \;|\; \varphi \text{ ist adjungierbar und } \adjoint{\varphi} = \varphi\}.$$
+ 
+\skript{7.BN (b) + 7.BO} Die Menge der \textit{hermitschen} $(n \times n)$-\textit{Matrizen} über $K$ ist $$K_\text{herm}^{n \times n} = \{A \in K^{n \times n} \;|\; \varphi_A \in \End_{K,\text{herm}}(K^{n \times 1})\} = \{A \in K^{n \times n} \;|\; \adjoint{A} = A\}.$$
+
+\skript{7.BQ} $\End_{\text{herm}}(V) \subset \End_{\text{norm}}(V).$
+
+\skript{7.BR} Sei ein hermitescher $K$-Vektorraumendomorphismus $\varphi: V \rightarrow V$ gegeben. Dann ist jeder Eigenwert von $\varphi$ reell.
+
+\skript{7.BT} (Spektralsatz für hermitesche Endomorphismen). Jeder hermitesche Vektorraumendomorphismus ist unitär diagonalisierbar.
+
+\subsection{Singulärwertzerlegung}
+%TODO Definition Singulärwerttupel  und Singulärwertmatrix 
+\skript{7.BU} Sei ein adjungierbarer $K$-Vektorraumhomomorphismus $\varphi$ gegeben. Dann ist $\adjoint{\varphi} \circ  \varphi$ hermitesch.
+
+\skript{7.CE} Sei $A \in K^{m \times n}$ gegeben. Dann ist $A$ unitär äquivalent zu $\Sigma_{\sigma(A)}$.
+
+\skript{7.CF} Seien $A, B \in K^{m \times n}$ gegeben. $$A \text{ ist unitär äquivalent zu } B \iff \sigma(A) = \sigma(B).$$  
 
 \end{document}
+
+
