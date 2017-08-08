@@ -271,26 +271,26 @@ Wir müssen Zeilen oder Spalten linear unabhängig wählen, genau $\min(m,n)$ St
 
 \subsection{Anwendung: Interpolation}
 \skript{3.A} Für eine Menge $X$, einen Körper $K$ und ein $a \in X^m$ schreiben wir
-$$\varepsilon_a:\Map(X,K) \to K^m, f \mapsto (f(a_1),\dots,f(a_m))$$
+$$\varepsilon_a:\Map(X,K) \to K^m, f \mapsto (f(a_1),\dots,f(a_m)).$$
 
-\skript{3.C} Für eine Menge $X$, einen Körper $K$, eine Teilmenge $S$ von $\Map(X,K)$ und zwei Tupel $a \in X^m$, $b\in K^m$ ist die Menge der Interpolationen zu $(a,b)$ in $S$ gegeben durch
-$$\Intpol_S(a,b)=(\varepsilon_a|_S)^{-1}(\{b\}).$$
-Informell: Interpolationen sind die Abbildungen $f$ aus $S$, für die stets $f(a_1)=b_i$ gilt.
+\skript{3.C + 3.D} Für eine Menge $X$, einen Körper $K$, eine Teilmenge $S$ von $\Map(X,K)$ und zwei Tupel $a \in X^m$, $b\in K^m$ ist die \textit{Menge der Interpolationen} zu $(a,b)$ in $S$ gegeben durch
+$$\Intpol_S(a,b):=(\varepsilon_a|_S)^{-1}(\{b\}) = \set{f \in S \;|\; f(a_i) = b_i \text{ für } i \in [1,m]}.$$
+Informell: Interpolationen sind die Abbildungen $f$ aus $S$, für die stets $f(a_i)=b_i$ für $i \in [1,m]$ gilt.
 
 \skript{3.K} Für eine Menge $X$, einen $K$-Untervektorraum $U$ von $\Map(X,K)$, eine Basis $s$ von $U$ und zwei Tupel $a \in X^m,\ b \in K^m$ ist
-$$\Intpol_U(a,b)=\{\sum_{j=1}^{n}c_j s_j | c \in \Sol(
+$$\Intpol_U(a,b)=\{\sum_{j=1}^{n}c_j s_j \;|\; c \in \Sol(
 	\left(\begin{array}{ccc}
 	s_1(a_1)& \dots & s_n(a_1)	\\
 	\vdots & &  \vdots	\\
-	s_1(a_n) & \dots & s_n(a_n)
+	s_1(a_m) & \dots & s_n(a_m)
 	\end{array}\right),
 	\left(\begin{array}{cc}
 	b_1 &\\
 	\vdots &\\
-	b_n &\\
+	b_m &\\
 	\end{array}\right)
-	)\}$$
-Damit lässt sich die Menge der Interpolationen durch das Lösen eines LGS bestimmen. Ist\\ $U = \Pol_{<n}(K,K)$, bietet sich die Basis $s=(s_1,\dots,s_n)$ mit $s_j= x \mapsto x^{j-1}$ an.
+	)\}.$$
+Damit lässt sich die Menge der Interpolationen durch das Lösen eines LGS bestimmen. Ist\\ $U = \Pol_{<n}(K,K)$, bietet sich die Basis $s=(s_1,\dots,s_n)$ mit $s_j : K \rightarrow K, x \mapsto x^{j-1}$ an. Links im LGS steht dann die Vandermonde-Matrix $V(a)$.
 
 \subsection{Ähnlichkeit und Äquivalenz}
 
@@ -330,7 +330,7 @@ Mit unserem Wissen von Eigenwerten können wir Ähnlichkeit durch folgenden Ents
 		child { node {nicht ähnlich} };
 \end{tikzpicture}
 
-Für Bonusaufgaben, ist es teilweise notwendig die Ähnlichkeit nicht diagonalisierbarer Matrizen zu zeigen. Wahrscheinlich sind die angegebenen Matrizen dann trigonalisierbar und insb. ähnlich zu ihrer Jordan-Normalform. Die \href{https://de.wikipedia.org/wiki/Jordansche_Normalform}{\textbf{Wikipedia-Seite zur Jordan-Normalform}} ist hier sehr hilfreich. Zuletzt noch ein \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/teaching/lineare_algebra_ii_09/Beispiel_Jordan-Normalform.pdf}{\textbf{Beispiel von Sebastian Thomas aus LA2 zur Jordan-Normalform}}.
+Für Bonusaufgaben, ist es teilweise notwendig die Ähnlichkeit nicht diagonalisierbarer Matrizen zu zeigen. Wahrscheinlich sind die angegebenen Matrizen dann trigonalisierbar und insb. ähnlich zu ihrer Jordan-Normalform. Die \href{https://de.wikipedia.org/wiki/Jordansche_Normalform}{\textbf{Wikipedia-Seite zur Jordan-Normalform}} ist hier sehr hilfreich. Zuletzt sei noch auf ein \href{http://www.math.rwth-aachen.de/~Sebastian.Thomas/teaching/lineare_algebra_ii_09/Beispiel_Jordan-Normalform.pdf}{\textbf{Beispiel von Sebastian Thomas aus LA2 zur Jordan-Normalform}} hingewiesen.
 
 \section{Lineare Kodierungstheorie}
 
@@ -386,11 +386,11 @@ Für Bonusaufgaben, ist es teilweise notwendig die Ähnlichkeit nicht diagonalis
 
 \skript{4.26} Kontrollmatrix ist $B \in K^{(n-k) \times n}$ mit $C=\Sol(B,0)$, wenn $k \in [0,n], C$ ein linearer $[n,k]$-Code über $K$ ist.
 \begin{itemize}
-	\item Berechnung der Kontrollmatrix $C$ mit Erzeugermatrix $A: \Sol(A^{tr},0)=\langle u,..,v\rangle=\Col(B^{tr})$
-	\item $\Sol(B,0)=\Col(A)=C$
+	\item Berechnung der Kontrollmatrix $C$ mit Erzeugermatrix $A: \Sol(A^{tr},0)=\langle u,..,v\rangle=\Col(B^{tr})$.
+	\item $\Sol(B,0)=\Col(A)=C$.
 \end{itemize}
 
-\skript{4.28} $rk_K B=n-k$
+\skript{4.28} $rk_K B=n-k$.
 
 \skript{4.29} Codewort-Test: Berechne $Bx$ und falls $Bx=0$ ist, dann ist $x$ ein Codewort von $C$.
 
@@ -650,7 +650,7 @@ $$f(A) = P \left(\begin{array}{ccc}
 	\end{array}\right) P^{-1}$$
 	
 \subsection{Anwendung: Homogene autonome lineare Rekursionsgleichungen}
-%TODO Charakteristisches Polynom einer HALRG
+
 Eine \textit{homogene autonome lineare Rekursionsgleichung} (HALRG) von Grad $n$ über $K$ in den Unbekannten $x_k$ mit $i \in [0, n-1]$, ist durch $$x_{k+n} = \sum_{i \in [0,n-1]} a_ix_{k+1}$$ für $k \in \N_0$ gegeben.
 
 Das charakteristische Polynom einer HALRG von Grad $n$ über $K$ ist $$X^n - \sum_{i \in [0, n-1]}a_i X^i$$.
@@ -660,14 +660,6 @@ Das charakteristische Polynom einer HALRG von Grad $n$ über $K$ ist $$X^n - \su
 \skript{6.71} Sei $f \in K[X], a_0, a_1 \in K$ mit $f = X^2 - a_1X - a_0 = (X - b_1)(X - b_2)$ und $b_1 \neq b_2$ gegeben.  Für $x \in K^{\N_0}$ gilt dann $$x_{k+2} = a_0x_k + a_1x_{k+1} \iff x_k = \frac{b_1^kb_2 - b_2^kb_1}{b_2 - b_1}x_0 + \frac{b_2^k - b_1^k}{b_2 - b_1}x_1$$ für $k \in \N_0$.
 
 Offenbar ist 6.71 nur für HALRGen mit charakteristischem Polynom $f$ von Grad 2 anwendbar, für die $f$ in Linearfaktoren zerfällt.
-%TODO Shiftendomorphismus
-%TODO SolRec(f)
-%TODO SolRec(A)
-%\skript{6.63} Lösungsraum
-%\skript{6.67} Eigenwertlösung
-%\skript{6.70} Lösung mit transponierter Begleitmatrix zu f
-%\skript{6.I} Vandermondematrix
-%\skript{6.} Interpolation durch Polynomfunktionen mittels Vandermondematrix
 
 \subsection{Invariante Untervektorräume}
 
@@ -831,7 +823,6 @@ Dann heißt das Paar $(Q,R)$ die QR-Zerlegung von $A$ und es gilt $R \in \GL_n(K
 \subsection{Anwendung: Term-Dokument-Matrizen}
 Seien im Folgenden $(D_1,...,D_n)$ ein $n$-Tupel von Strings in $\left[ 1,m \right]$ und für $j \in [1,n]$ sei $l_j$ die Länge von $D_j$.
 
-% TODO Voraussetzungen
 \skript{7.55} Sei $A^\prime \in \R^{m \times n}$ gegeben durch
 $$A^\prime_{i,j} = |\{k \in \left[1,l_j\right]\;|\;(D_j)_k = i\}|$$ für $i\in \left[1,m\right], j \in \left[1,m\right]$. Dann wird $A^\prime$ \textit{Term-Dokument-Matrix} von $(D_1,\ldots,D_n)$ genannt. Normiert man diese Spaltenweise, so entsteht die \textit{normierte Term-Dokument-Matrix} $A \in \R^{m \times n}$. \\
 \\
@@ -948,7 +939,7 @@ Sei im Folgenden $V$ stets ein $K$-Skalarproduktraum.
 %TODO Definition Singulärwerttupel  und Singulärwertmatrix 
 \skript{7.BU} Sei ein adjungierbarer $K$-Vektorraumhomomorphismus $\varphi$ gegeben. Dann ist $\adjoint{\varphi} \circ  \varphi$ hermitesch.
 
-\skript{7.CE} Sei $A \in K^{m \times n}$ gegeben. Dann ist $A$ unitär äquivalent zu $\Sigma_{\sigma(A)}$.
+\skript{7.CE} Sei $A \in K^{m \times n}$ gegeben. Dann ist $A$ unitär äquivalent zu $\Sigma_{\sigma(A)} \in K^{m \times n}$. 
 
 \skript{7.CF} Seien $A, B \in K^{m \times n}$ gegeben. $$A \text{ ist unitär äquivalent zu } B \iff \sigma(A) = \sigma(B).$$  
 
