@@ -1,0 +1,945 @@
+\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage[pdftex]{hyperref}
+\usepackage{bookmark}
+\usepackage[ngerman]{babel}
+\usepackage{braket}
+\usepackage{stmaryrd}
+\usepackage{bussproofs}
+\usepackage{microtype}
+\usepackage{lmodern}
+
+\usepackage{todonotes}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+\makeatother
+
+\title{Mathematische Logik Panikzettel}
+\author{Philipp Schröer, Tobias Polock, Luca Oeljeklaus, Caspar Zecha}
+\date{\today}
+
+\newcommand{\AL}{\mathrm{AL}}
+\newcommand{\Kl}{\mathrm{K}}
+\newcommand{\Res}{\mathrm{Res}}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\interpret{\llbracket}{\rrbracket}
+\newcommand{\J}{\mathfrak{I}}
+\newcommand{\A}{\mathfrak{A}}
+\newcommand{\B}{\mathfrak{B}}
+\newcommand{\FO}{\mathrm{FO}}
+\newcommand{\VAR}{\mathrm{VAR}}
+\newcommand{\T}{\mathrm{T}}
+\newcommand{\dom}{\mathrm{dom}}
+\newcommand{\frei}{\mathrm{frei}}
+\newcommand{\Mod}{\mathrm{Mod}}
+\newcommand{\isoTo}{\overset{\sim}{\to}}
+\newcommand{\Th}{\mathrm{Th}}
+\newcommand{\proves}{\vdash}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\ML}{\mathrm{ML}}
+\newcommand{\He}{\mathfrak{H}}
+\newcommand{\MSO}{\mathrm{MSO}}
+\newcommand{\LTL}{\mathrm{LTL}}
+\newcommand{\CTL}{\mathrm{CTL}}
+\newcommand{\X}{\mathrm{X}}
+\newcommand{\until}{\mathrm{U}}
+\newcommand{\qr}{\mathrm{qr}}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section{Einleitung}
+
+Dieser Panikzettel ist eine mehr oder weniger informelle Zusammenfassung der Vorlesung Mathematische Logik bei Prof. Erich Grädel im Sommersemester 2017. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen.
+
+Dieses Projekt ist lizenziert unter CC-BY-SA-4.0 und wird auf dem Git-Server der RWTH verwaltet:
+\url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}
+
+\subsection{Logik}
+Eine Logik ist eine (typischerweise induktiv definierte) Menge von Formeln (Syntax) zusammen mit einem Typ von Interpretationen, mithilfe derer man einer Formel einen Wahrheitswert zuordnen kann (Semantik).
+
+Für eine Interpretation $\J$ ist $\interpret{\varphi}^\J$ der Wahrheitswert von $\varphi$ unter $\J$. Wenn $\interpret{\varphi}^\J = 1$ ist, sagen wir dass $\J$ ein Modell von $\varphi$ ist ($\J \models \varphi$). Als Modell einer Formelmenge ($\J \models \Phi$) bezeichnen wir eine Interpretation, die ein Modell aller Formeln aus $\Phi$ ist. Das Symbol $\models$ verwenden wir auch für die semantische Folgerungsbeziehung: Für eine Menge $\Phi$ von Formeln bedeutet $\Phi \models \psi$, dass für jedes Modell, das Modell aller Formeln aus $\Phi$ ist auch Modell von $\psi$ ist.
+
+Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat. Eine Formel ist \emph{gültig} oder \emph{allgemeingültig} wenn jede passende Interpretation ein Modell ist. Zwei Formeln $\varphi$ und $\psi$ sind äquivalent wenn für Interpretationen $\J$ die auf beide passen $\interpret{\varphi}^\J = \interpret{\psi}^\J$ ist.
+
+\subsection{Kalküle}
+
+Ein Kalkül ist eine syntaktische Methode, Aussagen über Formeln zu beweisen. Ein Kalkül hat dazu eine Menge von Axiomen, die sofort ableitbar sind, und Schlussregeln. Schlussregeln schreibt man üblicherweise in der Form
+\begin{prooftree}
+\AxiomC{$A$}
+\AxiomC{$\ldots$}
+\AxiomC{$B$}
+\TrinaryInfC{$C$}
+\end{prooftree}
+Was bedeutet, dass wenn $A \ldots B$ ableitbar sind, auch $C$ ableitbar ist.
+
+\section{Aussagenlogik}
+
+\subsection{Definition}
+
+Die Menge $\AL$ der \emph{aussagenlogischen Formeln} ist wie folgt induktiv definiert:
+
+\begin{minipage}[t]{0.3\textwidth}
+\begin{center}
+\emph{Boolesche Konstanten}: \\
+$0, 1 \in \AL$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.28\textwidth}
+\begin{center}
+\emph{Aussagenvariablen}: \\
+$\tau \in \AL$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.42\textwidth}
+\begin{center}
+\emph{Junktoren}: \\
+$\neg \psi,\ (\psi \land \phi),\ (\psi \lor \phi),\ (\psi \to \phi) \in \AL$ \\
+mit $\psi,\ \phi \in \AL$
+\end{center}
+\end{minipage}
+\ \\
+
+\emph{Atomare Formeln} enthalten nur Boolesche Konstanten und Aussagenvariablen.
+
+$\tau(\phi)$ bezeichnet die Menge der in $\phi$ vorkommenden Aussagenvariablen.
+
+Eine \emph{aussagenlogische Interpretation} ist eine Abbildung für Variablen $\sigma \subseteq \tau$ auf einen Wahrheitswert: $\J : \sigma \to \Set{0,\ 1}$. Sie \emph{passt} zu einer Formel $\psi \in \AL$, wenn sie jede vorkommende Variable belegt ($\tau(\psi) \subseteq \sigma$).
+Der Wahrheitswert einer Interpretation ist durch die logische Auswertung der Formel gegeben.
+
+Ein \emph{Modell einer Formel} $\psi \in \AL$ ist eine Interpretation $\J$ mit $\interpret{\psi}^\J = 1$.
+
+Ein \emph{Modell einer Formelmenge} $\Phi \subseteq \AL$ ist eine Interpretation $\J$ mit $\J \models \psi$ für alle $\psi \in \Phi$.
+
+Koinzidenzlemma: Für eine Formel $\psi \in \AL$ und zwei zu $\psi$ passende Interpretationen $\J$ und $\J'$ mit $\J(X) = \J'(X)$ für alle Variablen $X \in \tau(\psi)$ ist $\interpret{\psi}^\J = \interpret{\psi}^{\J'}$.
+
+\subsection{Normalformen}
+
+Ein \emph{Literal} ist eine Aussagenvariable $X$ oder die Negation $\neg X$. Das \emph{Komplement} $\overline{X}$ ist $\neg X$ bzw. $X$ für $\overline{\neg X}$.
+
+Alle aussagenlogischen Formeln lassen sich in DNF und KNF äquivalent darstellen. Die $Y_{ij}$ sind Literale.
+
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+\emph{Disjunktive Normalform (DNF)}: \\
+$\bigvee_{i=1}^n \bigwedge_{j=1}^{m_i} Y_{ij}$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+\emph{Konjunktive Normalform (KNF)}: \\
+$\bigwedge_{i=1}^n \bigvee_{j=1}^{m_i} Y_{ij}$
+\end{center}
+\end{minipage}
+
+\subsection{Horn-Formeln}
+
+Eine \emph{aussagenlogische Horn-Formel} ist eine KNF-Formel $\bigwedge_{i=1}^n \bigvee_{j=1}^{m_i} Y_{ij}$, wobei jede Disjunktion höchstens ein positives Literal enthält. Horn-Formeln können also als Konjunktionen von Implikationen geschrieben werden.
+
+Erfüllbarkeit von Horn-Formeln kann in Polynomialzeit getestet werden. Dazu der \emph{Markierungsalgorithmus} für eine Formel $\psi = \bigwedge_i C_i$:
+\begin{enumerate}
+\item Markiere alle $C_i$ der Form $(1 \to X)$.
+\item Wiederhole diesen Schritt, bis keine der Regeln mehr zutrifft. Seien $X_1, \ldots, X_n$ markiert.
+    \begin{itemize}
+        \item Wenn $X_1 \land \ldots \land X_n \to X$ in $\psi$ vorkommt, markiere $X$.
+        \item Wenn $X_1 \land \ldots \land X_n \to 0$ in $\psi$ vorkommt, abbrechen, denn $\psi$ ist unerfüllbar.
+    \end{itemize}
+\item Dann ist $\psi$ ist erfüllbar mit den markierten Literalen.
+\end{enumerate}
+
+Nicht alle aussagenlogischen Formeln lassen sich als Horn-Formel schreiben. Man betrachte etwa $X \lor Y$.
+
+\subsection{Kompaktheitssatz der Aussagenlogik}
+
+Für den Kompaktheitssatz haben wir das \emph{Lemma von Zorn} benutzt: Sei $(A, <)$ eine nicht-leere partielle Ordnung, in der jede Kette nach oben beschränkt ist. Dann besitzt $(A, <)$ ein maximales Element in $A$.
+
+Der \emph{Kompaktheitssatz}:
+\begin{itemize}
+\item Für $\Phi \subseteq \AL$:\\
+$\Phi$ ist erfüllbar genau dann, wenn jede endliche Teilmenge von $\Phi$ erfüllbar ist.
+\item
+Für $\Phi \subseteq \AL, \psi \in \AL$:\\
+$\Phi \models \psi$ genau dann, wenn eine endliche Teilmenge $\Psi_0 \subseteq \Psi$ existiert, so dass $\Psi_0 \models \psi$.
+\end{itemize}
+
+\subsection{Resolution}
+
+Die Resolution ist ein syntaktisches Verfahren, um Unerfüllbarkeit von Formeln in KNF nachzuweisen.
+
+Dazu ist eine \emph{Klausel} eine endliche Menge von Literalen. $\square$ ist die leere Klausel. $\Kl(\psi)$ ist die \emph{Klauselmenge} einer Formel $\psi$. $\Kl(\psi)$ enthält für jede Disjunktion in $\psi$ eine Menge mit den darin vorkommenden Literalen.
+
+Die leere Klauselmenge $\square$ ist erfüllbar. Wenn $\square \in \Kl$, dann ist $\Kl$ unerfüllbar.
+
+Eine \emph{Resolvente} von zwei Klauseln $C_1$ und $C_2$ ist eine Klausel $C$, genau wenn es ein Literal $Y$ gibt mit $Y \in C_1, \overline{Y} \in C_2$, sodass $C = (C_1 \setminus \{Y\}) \cup (C_2 \setminus \{\overline{Y}\})$ Dafür gibt es eine graphische Notation:\\
+\begin{center}
+\begin{tikzpicture}[scale=0.6]
+\node (C) {$C$};
+\node [above left = of C] {$C_1$} edge (C);
+\node [above right = of C] {$C_2$} edge (C);
+\end{tikzpicture}
+\end{center}
+
+Das \emph{Resolutionslemma} sagt uns, dass für eine Klauselmenge $\Kl$ und $C_1, C_2 \in \Kl$ und $C$ Resolvente von $C_1$ und $C_2$ folgt, dass $\Kl$ und $K \cup \Set{C}$ äquivalent sind.
+
+Nun definieren wir \emph{Resolution} für jede Klauselmenge $\Kl$:
+\begin{itemize}
+\item $\Res(K) := \Kl \cup \Set{C : C \textrm{ ist Resolvente zweier Klauseln aus } \Kl}$.
+\item $\Res^0(K) := \Kl$ und $\Res^{n+1}(K) := \Res(\Res^n(K))$.
+\item $\Res^\ast(K) := \bigcup_{n \in \mathbb{N}} \Res^n(\Kl)$.
+\end{itemize}
+
+Die Klauselmenge $\Kl$ ist genau dann unerfüllbar, wenn $\square \in \Res^\ast(\Kl)$.
+
+Einheitsresolution ist eine Variante von Resolution, bei der man eine Resolvente $C$ von $C_1$ und $C_2$ nur bilden darf, wenn $C_1$ oder $C_2$ nur ein Element entält. Diese ist auf Horn-Klauseln vollständig.
+
+\subsection{Der aussagenlogische Sequenzenkalkül}
+
+Eine \emph{Sequenz} ist ein Ausdruck der Form $\Gamma \Rightarrow \Delta$ für endliche Formelmengen $\Gamma, \Delta \subseteq \AL$.
+
+Eine Sequenz ist \emph{gültig}, wenn jedes Modell von $\Gamma$ auch ein Modell von mindestens einer Formel aus $\Delta$ ist, also wenn $\bigwedge \Gamma \Rightarrow \bigvee \Delta$.
+
+\emph{Axiome} vom Sequenzenkalkül sind alle Sequenzen der Form $\Gamma,\ \psi \Rightarrow \Delta,\ \psi$.
+
+%TODO Sequenz von/auf leere Menge+ableitbar Symbol |-
+
+Die \emph{Schlussregeln} sind, für $\Delta, \Gamma$ beliebige endliche Formelmengen und $\psi, \theta$ beliebige Formeln:
+
+\begin{minipage}{0.15\textwidth}~\\
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+  \LeftLabel{$(\neg \Rightarrow)$}
+  \UnaryInfC{$\Gamma, \neg \psi \Rightarrow \Delta$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
+  \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
+  \LeftLabel{$(\lor \Rightarrow)$}
+  \BinaryInfC{$\Gamma, \psi \lor \theta \Rightarrow \Delta$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi, \theta \Rightarrow \Delta$}
+  \LeftLabel{$(\land \Rightarrow)$}
+  \UnaryInfC{$\Gamma, \psi \land \theta \Rightarrow \Delta$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \theta$}
+  \LeftLabel{$(\Rightarrow \to)$}
+  \BinaryInfC{$\Gamma, \psi \to \theta \Rightarrow \Delta$}
+\end{prooftree}
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
+  \LeftLabel{$(\Rightarrow \neg)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \neg \psi$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi, \theta$}
+  \LeftLabel{$(\Rightarrow \lor)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \lor \theta$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \theta$}
+  \LeftLabel{$(\Rightarrow \land)$}
+  \BinaryInfC{$\Gamma \Rightarrow \Delta, \psi \land \theta$}
+\end{prooftree}
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi \Rightarrow \Delta, \theta$}
+  \LeftLabel{$(\to \Rightarrow)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \to \theta$}
+\end{prooftree}
+\end{minipage}
+\ \\
+
+Der Sequenzenkalkül ist korrekt und vollständig.
+
+\section{Prädikatenlogik}
+\subsection{Strukturen}
+Eine \emph{Signatur} $\tau$, z.B. $\tau=\{+,\cdot,0,1\}$, ist eine Menge von Funktions- und Relationssymbolen. Jedes Symbol hat eine feste, endliche Stelligkeit.
+
+Eine Signatur heißt $\emph{relaional}$, wenn sie nur Relationssymbole, bzw. $\emph{funktional}$ oder auch $\tau$-Algebra, wenn sie nur Funksionssymbole enthält. Nullstellige Funktionssymbole heißen auch $\emph{Konstantensymbole}$.
+
+Eine $\tau\emph{-Struktur}$ $\A=(A,P_1,P_2,\ldots,f_1,f_2,\ldots)$ besteht aus einem nichtleeren $\emph{Universum}$ $A$, sowie einer Signatur $\tau=\{P_1,P_2,\ldots,f_1,f_2,\ldots\}$.
+
+$\A$ ist $\emph{Substruktur}$ von $\B$, kurz $\A \subseteq \B$, bzw. $\B$ ist $\emph{Erweiterung}$ von $\A$ wenn:
+\begin{itemize}
+    \item $A \subseteq B$
+    \item Für alle Relationssymbole $R \in \tau$ gilt: $R^{\A}=R^{\B} \cap A^n$
+    \item Für alle Funksionssymbole $f \in \tau$ gilt: $f^{\A}=f^{\B}|_A$
+\end{itemize}
+
+Ein $\emph{Redukt}$ ist eine Struktur, die durch Weglassen von Relationen und Funktionen in der Signatur entsteht.
+
+\subsection{Ein Zoo von Strukturen}
+
+Als Beispiele haben wir verschiedene Strukturen mit der Prädikatenlogik definiert.
+
+\emph{Graphen} haben die Signatur $\tau_G = \Set{E}$, wobei $E$ die (binäre) Kantenrelation ist. Wir haben \emph{gerichtete} und \emph{ungerichtete} Graphen. Letztere dürfen keine Schlingen haben und $E$ muss symmetrisch sein.
+
+\emph{Partielle Ordnungen} sind Strukturen der Form $(A,<)$, die folgende Bedingungen erfüllen:
+\begin{itemize}
+  \item \emph{Irreflexivität:} Für kein $a \in A$ gilt $a < a$.
+  \item \emph{Transitivität:} $a < b \land b < c \Rightarrow a < c$.
+\end{itemize}
+
+\emph{Lineare/totale Ordnungen} erfüllen zusätzlich:
+\begin{itemize}
+  \item \emph{Vergleichbarkeit:} Für alle $a,b$ gilt $a < b, a = b$ oder $b < a$.
+\end{itemize}
+
+\emph{Dichte Ordnungen} sind lineare Ordnungen, wo für zwei beliebige Elemente $a < b$ immer ein $c$ existiert mit $a < c < b$.
+
+\emph{Wohlordnungen} sind lineare Ordnungen ohne unendliche absteigende Ketten, d.h.\ es gibt keine unendliche Folge $a_0, a_1, \ldots$ in $A$, so dass $a_{i+1} < a_i$ für alle $i \in \mathbb{N}$.
+
+\emph{Wortstrukturen} sind Strukturen für ein Wort über einem Alphabet. Für jedes Wort $w$ heißt die Wortstruktur $\mathfrak{B}(w)$ mit der Signatur $\Set{<} \cup \Set{P_a : a \in \mathrm{Alphabet}(w)}$. Das Universum von $\mathfrak{B}(w)$ ist die Menge $\Set{0,\, \ldots,\, n-1}$. $<$ ist die übliche Ordnung und $P_a := \Set{i < n : w_i = a}$.
+
+\emph{Transitionssysteme} bestehen aus Zustandsmenge $S$ und Aktionsmenge $A$. Dazu gibt es meist Eigenschaftsmenge $B$. Das Universum der Struktur ist dann $S$ und zwei Relationsmengen: Für jedes $b \in B$ ein $P_b$ die einstellige Relation der Zustände mit Eigenschaft $b$. Die zweistellige Relationen $E_a$ treffen auf $(s,t)$ zu, wenn es von Zustand $s$ einen Übergang $a$ zu $t$ gibt.
+
+\subsection{Syntax der Prädikatenlogik}
+
+Wir haben eine feste, abzählbar unendliche Variablenmenge $\VAR := \Set{v_0, v_1, v_2, \ldots}$.
+
+Zunächst definieren wir die Menge $\T(\tau)$ der \emph{$\tau$-Terme}:
+\begin{itemize}
+    \item $\VAR \subseteq \T(\tau)$.
+    \item $f t_1 \ldots t_n \in \T(\tau)$ mit $t_1, \ldots, t_n \in \T(\tau)$ und $f$ ein $n$-stelliges Funktionssymbol aus $\tau$.
+\end{itemize}
+
+Dann ist die Menge $\FO(\tau)$ der \emph{$\tau$-Formeln} der Prädikatenlogik induktiv definiert durch:
+
+\begin{minipage}[t]{0.2\textwidth}
+\begin{center}
+\emph{Gleich-Operator}: \\
+$t_1 = t_2 \in \FO(\tau)$ \\ \footnotesize
+mit $t_1, t_2 \in \T(\tau)$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.25\textwidth}
+\begin{center}
+\emph{Relationen}: \\
+$P t_1 \ldots t_n \in \FO(\tau)$ \\ \footnotesize
+mit $t_1, \ldots, t_n \in \T(\tau)$ \\
+und $P \in \tau$ ein $n$-stelliges Relationssymbol
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.3\textwidth}
+\begin{center}
+\emph{Junktoren der AL}: \\
+$\neg \psi,\ (\psi \land \phi),\ (\psi \lor \phi) \in \FO(\tau)$ \\ \footnotesize
+mit $\psi,\ \phi \in \FO(\tau)$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.25\textwidth}
+\begin{center}
+\emph{Quantoren}: \\
+$\exists x \psi,\ \forall x \psi \in \FO(\tau)$ \\ \footnotesize
+mit $x \in \VAR$ und $\psi \in \FO(\tau)$
+\end{center}
+\end{minipage}
+\ \\
+
+Formeln, die nur den Relationsausdrücke und solche mit dem Gleich enthalten, heißen \emph{atomar} oder \emph{Atom}. \emph{Literale} sind Atome und deren Negationen. Formeln ohne Quantoren heißen \emph{quantorenfrei}.
+
+Eine Variable $x$ kommt \emph{gebunden} in einer Formel $\psi$ vor, $\psi$ eine Unterformel $\exists x \psi'$ oder $\forall x \psi'$ enthält. Eine Variable, die nicht durch einen Quantor gebunden ist kommt \emph{frei} vor. In einer Formel kann eine Variable gleichzeitig gebunden und frei vorkommen.
+
+Der \emph{Quantorrenrang} einer Formel ist wie folgt definiert:
+\[\begin{array}{cc}
+\qr(\varphi) = 0 & \text{für $\varphi$ atomar}  \\
+\qr(\neg \varphi) = \qr(\varphi)    \\
+\qr(\varphi \circ \psi) = \max(\qr(\varphi), \qr(\psi)) &   \circ \in \{\land, \lor, \to\}  \\
+\qr(\mathrm{Q}x\,\psi) = 1 + \qr(\psi) & \mathrm{Q} \in \{\forall, \exists\}
+\end{array}\]
+
+\subsection{Semantik der Prädikatenlogik}
+
+Eine \emph{$\tau$-Interpretation} ist ein Paar $\J = (\A, \beta)$, wobei $\A$ eine $\tau$-Struktur und $\beta : X \to A$ eine Variablenbelegung mit $X \subseteq \VAR$ ist.
+
+$\J$ ordnet jedem Term einen Wert aus $A$ und jeder Formel einen Wahrheitswert zu. Dabei wird die Bedeutung für die aussagenlogischen Junktoren übernommen. Weiterhin:
+
+\begin{minipage}[t]{0.45\textwidth}
+\emph{Für Terme:}
+\begin{itemize}
+    \itemsep0em
+    \item Für $x \in X$: $\interpret{x}^\J := \beta(x)$.
+    \item $\interpret{f t_1 \ldots t_n}^\J := f^\A(\interpret{t_1}^\J, \ldots, \interpret{t_n}^\J)$.
+\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.55\textwidth}
+\emph{Für atomare Formeln:}
+\begin{itemize}
+    \itemsep0em
+    \item $\interpret{t_1 = t_2}^\J := 1 $ gdw.\ $(\interpret{t_1}^\J = \interpret{t_2}^\J)$.
+    \item $\interpret{P t_1 \ldots t_n}^\J := 1$ gdw.\ $(\interpret{t_1}^\J, \ldots, \interpret{t_n}^\J) \in P^\A$.
+\end{itemize}
+\end{minipage}
+\bigskip \\
+\begin{minipage}[t]{0.45\textwidth}
+\emph{Für Quantoren:}
+\begin{itemize}
+    \itemsep0em
+    \item $\interpret{\exists x \psi}^\J := \max_{x \in A} \interpret{\psi}^{\J [x/a]}$.
+    \item $\interpret{\forall x \psi}^\J := \min_{x \in A} \interpret{\psi}^{\J [x/a]}$.
+\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.55\textwidth}
+\emph{Variablen ersetzen:}
+\vspace{2ex} \\
+$\beta[x/a](y) :=  \begin{cases}
+       \beta(y) &\quad\text{wenn } y \neq x, \\
+       a &\quad\text{wenn } y = x \\
+     \end{cases}$
+\end{minipage}
+\medskip
+
+Ein \emph{Modell} einer Formel $\psi$ ist eine Interpretation $\J$, so dass $\frei(\psi) \subseteq \dom(\beta)$ und $\interpret{\psi}^\J = 1$. Wir schreiben: $(\A, \beta) \models \psi$ oder auch $\A \models \psi$. Ein \emph{Modell einer Formelmenge} $\Phi$ ist ein $\J$ so, dass $\A \models \varphi$ für alle $\varphi \in \Phi$.
+
+Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $\psi$ vorkommende Funktions- oder Relationssymbole das ``Ergebnis'' nicht ändern. Sei $\psi \in \FO(\sigma \cap \tau)$ und $(\A, \beta)$ eine $\sigma$-Interpretation und $(\A', \beta')$ eine $\tau$-Interpratation und es gelte zusätzlich:
+\begin{itemize}
+    \item $\A \upharpoonright (\sigma \cap \tau) = \A' \upharpoonright (\sigma \cap \tau)$.
+    \item $\frei(\psi) \subseteq \dom(\beta) \cap \dom(\beta')$ und $\beta(x) = \beta'(x)$ für alle $x \in \frei(\psi)$.
+\end{itemize}
+
+Dann gilt $\A \models \psi[\beta]$ genau dann, wenn $\A' \models \psi[\beta']$.
+
+Die \emph{Modellklasse von $\Phi$}, kurz $\Mod(\Phi)$ besteht aus allen $\tau$-Strukturen $\A$ mit $\A \models \Phi$.
+
+Eine Klasse $K$ von $\tau$-Strukturen ist \emph{axiomatisiert durch $\Phi$}, wenn $K = \Mod(\Phi)$. Dann ist $\Phi$ ein \emph{Axiomensystem} für $K$.
+
+Die \emph{Semantische Folgerungsbeziehung:} Sei $\Phi \subseteq \FO(\tau), \psi \in \FO(\tau)$. \emph{$\psi$ folgt aus $\Phi$}, wenn jede zu $\Phi \cup \Set{\psi}$ passende Interpretation, die Modell von $\Phi$ ist, auch Modell von $\psi$ ist. Wir schreiben auch $\Phi \models \psi$ und $\phi \models \psi$ wenn $\Phi = \Set{\phi}$.
+
+Eine Formel ist \emph{erfüllbar}, wenn sei ein Modell hat, sonst \emph{unerfüllbar}. Eine Formel ist \emph{allgemeingültig} (kurz $\models \psi$) gdw.\ $\emptyset \models \psi$. Zwei Formeln sind \emph{logisch äquivalent} (kurz $\psi \equiv \varphi$), wenn $\psi \models \varphi$ und $\varphi \models \psi$.
+
+% TODO: Existenzieller/Universeller Abschluss?
+
+\subsection{Normalformen}
+
+% TODO: Ersetzungslemma?
+
+\begin{minipage}{0.55\textwidth}
+Wir definieren \emph{reduzierte Formeln} als solche, in denen weder $\land,\ \rightarrow$ noch $\forall$ vorkommen. Die Reduzierung ist mit den drei Regeln rechts für alle FO-Formeln möglich.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\centering
+$\psi \land \varphi \equiv \neg (\neg \psi \lor \neg \varphi)$ \\
+$\psi \rightarrow \varphi \equiv \neg \psi \lor \varphi$ \\
+$\forall x \psi \equiv \neg \exists x \neg \psi$
+\end{minipage}
+\ \\
+
+Eine Formel ist in \emph{Negationsnormalform} (NNF), wenn sie nur aus Literalen, den Junktoren $\lor$, $\land$ und Quantoren $\exists$ und $\forall$ aufgebaut ist. Jede Formel kann in NNF gebracht werden. Dazu reichen die folgenden Regeln aus:
+
+\begin{minipage}[t]{0.33\textwidth}
+\centering
+\emph{De Morgan:}   \\
+$\neg (\psi \land \varphi) \equiv (\neg \psi \lor \neg \varphi)$    \\
+$\neg (\psi \lor \varphi) \equiv (\neg \psi \land \neg \varphi)$
+\end{minipage}
+\begin{minipage}[t]{0.33\textwidth}
+\centering
+\emph{Quantorenregeln:} \\
+$\neg \exists x \psi \equiv \forall x \neg \psi$    \\
+$\neg \forall x \psi \equiv \exists x \neg \psi$
+\end{minipage}
+\begin{minipage}[t]{0.33\textwidth}
+\centering
+\emph{Doppelte Negation:}   \\
+$\neg \neg \psi \equiv \psi$
+\end{minipage}
+\medskip
+
+Eine Formel ist \emph{termreduziert}, wenn alle Atome darin der Form $R \overline{x},\ f \overline{x} = y$ und $x = y$ sind. Jede FO-Formel lässt sich in diese Form bringen, indem man für verschachtelte Terme neue Variablen hinzufügt.
+
+Eine Formel ist \emph{bereinigt}, wenn keine Variable sowohl frei als auch gebunden vorkommt und keine Variable mehr als einmal gebunden wird. Jede FO-Formel lässt sich bereinigen.
+
+Eine Formel ist in \emph{Pränex-Normalform} (PNF), wenn sie bereinigt ist und alle Quantoren nur zusammen am Anfang der Formel auftauchen. Jede FO-Formel lässt sich in PNF bringen.
+
+Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und ersetzen dann jede existenziell quantifizierte Variable durch ein neues Funktionssymbol (und entfernen jeden Existenzquantor).
+
+% TODO: relationale Skolem-Normalform?
+
+\subsection{Spieltheoretische Semantik}
+Ein \emph{Auswertungsspiel} (Model-Checking-Spiel) MC($\A$,$\psi$), mit FO-Satz $\psi$, bestenfalls in Negationsnormalform, und passender Struktur $\A$, ist ein Spiel zwischen der \emph{Verifiziererin} $V$ und dem \emph{Falsifizierer} $F$. Dieser Algorithmus ist zur Auswertung von prädikatenlogischen Formeln.
+
+Die Positionen des Spiels sind Paare $(\varphi,\beta)$, mit $\varphi$ als Unterformel von $\psi$ und einer Belegung $\beta:\mathrm{frei}(\varphi)\to A$. Für $\varphi=\varphi(\overline{x})$ und $\beta:\overline{x}\mapsto\overline{a}$ bezeichnen wir die Position $(\varphi,\beta)$ durch $\varphi(\overline{a})$.
+
+Ein Spiel beginnt bei der Position $\phi$. Sei $\varphi(\overline{a})$ die aktuelle Position. Dann hängt der nächste Schritt von $\phi$ ab:
+\begin{itemize}
+    \item $\varphi$ ist ein Literal: Das Spiel ist beendet. Die Verifiziererin hat gewonnen, falls $\A \models \varphi(\overline{a})$, sonst hat der Falsifizierer gewonnen.
+    \item An einer Position $(\vartheta \lor \eta)$ ist die Verifiziererin am Zug und kann zu $\vartheta$ oder zu $\eta$ ziehen.
+    \item Analog zieht der Falsifizierer bei Position $(\vartheta \land \eta)$ entweder zu $\vartheta$ oder $\eta$.
+    \item An einer Position der Form $\exists x \vartheta (x,\overline{b})$ wählt die Verifiziererin ein Element $a \in A$ und zieht zu $\vartheta(a,\overline{b})$.
+    \item Analog darf an einer Position $\forall x \vartheta(x,\overline{b})$ der Falsifizierer ein Element $a \in A$ auswählen und zur Position $\vartheta(a,\overline{b})$ ziehen.
+\end{itemize}
+
+Für jeden Satz $\psi \in \FO(\tau)$ und jede $\tau$-Struktur $\A$ gilt: $\A \models \psi$ genau dann, wenn die Verifiziererin eine Gewinnstrategie für das Spiel $MC(\A,\psi)$ von der Anfangsposition $\psi$ hat.
+
+\paragraph{Endliche Spiele} Allgemeine Spiele sind zwischen Spieler 0 und Spieler 1 auf einem Spielgraphen $\mathcal{G}=(V,V_0,E)$, mit Menge $V$ der \emph{Spielpositionen}, Teilmenge $V_0 \subseteq V$ der Positionen, an denen Spieler 0 am Zug ist, und der Menge $E \subseteq V \times V$ an möglichen Zügen.
+
+Für eine Position $v$ sei $vE:=\{w:(v,w)\in E\}$ die Menge der unmittelbaren Nachfolgerpositionen. Eine Position $v$ mit $vE=\emptyset$ ist eine Endpositionen. Wenn im Spiel eine Endposition erreicht wird, hat der Spieler verloren der am Zug ist, aber nicht ziehen kann. Die Menge der Endpositionen für $\sigma \in \{0,1\}$ ist $T_{\sigma}:=\{v \in V_{1-\sigma}:vE=\emptyset\}$.
+
+Eine \emph{Partie} ist mit Anfangsposition $v_0$ ein endlicher oder unendlicher Pfad $(v_0,v_1,\ldots,v_m)$ bzw. $(v_o,v_1,\ldots)$, so dass $(v_{i-1},v_i) \in E$ für alle $i>0$ und $v_m$ eine Endposition ist.
+
+Eine \emph{Strategie} für Spieler $\sigma$ ist eine Funktion $f:\{v \in V_{\sigma}:vE \ne \emptyset \}\rightarrow V$. $f$ ist eine \emph{Gewinnstratgie}, wenn Spieler $\sigma$ jede Partie mit Anfangsposition $v_0$ gewinnt, wenn er mit Strategie $f$ spielt.
+
+Die \emph{Gewinnregion} von Spieler $\sigma$ ist $W_{\sigma}=\{\,v:\text{Spieler $\sigma$ hat eine Gewinnstrategie von Position $v$ aus}\,\}$
+
+Ein Spiel ist \emph{determiniert}, wenn $W_0 \cup W_1=V$.
+
+Auswertungsspiele in FO haben die Eigenschaft, das alle Partien endlich sind. Solche Spiele werden \emph{fundiert} genannt. Fundierte Spiele sind determiniert.
+
+\paragraph{Strategierproblem}
+Sei \emph{Game} das Strategieproblem mit endlichen Spielgraphen:
+$\mathrm{Game}=\{(\mathcal{G},v):\textnormal{Spieler }0\textnormal{ hat eine Gewinnstrategie für }\mathcal{G}\textnormal{ von Position }v\}$
+
+Man kann Game in Polynomialzeit lösen. Sei die Menge $W_{\sigma}^n$ der Positionen von denen Spieler $\sigma$ eine Strategie hat, um in höchstens $n$ Schritten zu gewinnen. Dann gibt es einen Algorithmus, der induktiv $W_{\sigma}^0=T_{\sigma}$ berechnet, indem $W_{\sigma}^n$ über
+\[W_{\sigma}^{n+1}=\{v \in V_{\sigma}:vE \cap W_{\sigma}^n \ne \emptyset \} \cup \{v \in V_{1-\sigma}:vE \subseteq W_{\sigma}^n\}\]
+berechnet wird. Man kann also aus einer Position in höchstens $n + 1$ Zügen gewinnen, wenn man selbst am Zug ist und in eine Position ziehen kann, aus der man in höchstens $n$ Zügen gewinnen kann, oder in der der Gegenspieler am Zug ist, aber dieser nur in Positionen ziehen kann, aus denen man selbst in höchstens $n$ Zügen gewinnen kann.
+
+\section{Definierbarkeit der Prädikatenlogik}
+\subsection{Definierbarkeit}
+In einer Struktur $\A$ heißt eine Relation $R \subseteq A^n$ \emph{definierbar} wenn es eine Formel $\psi(x_1, \ldots, x_n)$ gibt, sodass
+\[\A \models \psi(\overline{a}) \text{ gdw.\ } \overline{a} \in R\]
+
+Eine Funktion $f$ heißt definierbar, wenn die Relation $R$ mit $(a_1, \ldots, a_n, b) \in R$ gdw.\ $f(a_1,\ldots,a_n) = b$ definierbar ist.
+
+\subsection{Das Isomorphielemma}
+
+Ein \emph{Isomorphismus} $\pi$ zwischen zwei $\tau$-Strukturen $\A$ und $\B$ ist eine Funktion von $A$ nach $B$ mit den folgenden Eigenschaften:
+\begin{itemize}
+\item $\pi$ ist bijektiv.
+\item Für jedes Funktionssymbol $f$ gilt $\pi(f^\A(a_1, \ldots, a_n)) = f^\B(\pi(a_1),\ldots,\pi(a_n))$.
+\item Für jedes Relationssymbol $R$ ist $(a_1,\ldots,a_n) \in R^\A$ gdw.\ $(\pi(a_1),\ldots,\pi(a_n)) \in R^\B$.
+\end{itemize}
+Für Isomorphismen schreiben wir auch $\pi: \A \isoTo \B$. Ein Automorphismus von $\A$ ist ein Isomorphismus $\pi : \A \isoTo \A$.
+
+Für $\tau$-Strukturen $\A, \B$ mit $\pi : \A \isoTo \B$ und Formeln $\varphi \in \FO(\tau)$ ist
+\[(\A, \beta) \models \varphi \text{ gdw.\ } (\B, \pi \circ \beta) \models \varphi\]
+
+\subsection{Theorien und elementar äquivalente Strukturen}
+
+Eine Theorie ist eine erfüllbare Satzmenge $T \subseteq \FO(\tau)$, sodass für jeden Satz $\varphi \in \FO(\tau)$ mit $T \models \varphi$ bereits $\varphi \in T$ gilt.
+
+Eine Theorie ist vollständig, wenn für jeden Satz $\varphi \in \FO(\tau)$ entweder $\varphi \in T$ oder $\neg \varphi \in T$ ist.
+
+Zu einer $\tau$-Struktur $\A$ ist $\Th(\A)$ die Menge aller von $\A$ erfüllten Sätze. Diese ist immer vollständig.
+Für eine Modellklasse $\K$ ist $\Th(\K) = \bigcap_{\A \in \K} \Th(\A)$.
+
+Zwei $\tau$-Strukturen $\A$ und $\B$ heißen \emph{elementar äquivalent} ($\A \equiv \B$), wenn für jeden Satz $\varphi \in \FO(\tau)$ gilt
+\[\A \models \varphi \text{ gdw. } \B \models \varphi\]
+
+Es ist $\A \equiv \B$ genau dann wenn $\Th(\A) = \Th(\B)$ ist.
+
+\subsection{Ehrenfeucht-Fra\"issé-Spiele}
+
+Ein \emph{lokaler (oder partieller) Isomorphismus} von $\tau$-Struktur $\A$ zu $\tau$-Struktur $\B$ ist eine injektive Abbildung $p : D \to B$ mit $D \subseteq A$. Für alle $n \in \mathbb{N}$, alle $n$-stelligen Relationssymbole $R \in \tau$ und alle $a_1, \ldots, a_n \in D$ muss gelten:
+\[ (a_1, \ldots, a_n) \in R^\A \text{ gdw. } (p a_1, \ldots, p a_n) \in R^\B \]
+
+Das \emph{Ehrenfeucht-Fra\"issé-Spiel} $G_m(\A, \B)$ wird von zwei Spielern gespielt. Das \emph{Spielfeld} besteht aus Strukturen $\A$ und $\B$. Wir nehmen an, dass $A \cup B = \emptyset$. Wir nennen die Spieler den \emph{Herausforder} (Spieler I) und die \emph{Duplikatorin} (Spieler II). Eine Partie besteht aus $m$ Zügen.
+
+\begin{itemize}
+  \item Im Zug $i$ bestimmt der Herausforderer entweder ein Element $a_i \in A$ oder ein $b_i \in B$. Die Duplikatoren wählt dann ein Element aus der anderen Strutkur aus.
+  \item Nach $m$ Zügen gibt es einen Gewinner: Die Duplikatorin hat gewonnen, wenn die Menge $\Set{(a_,b_1), \ldots,  (a_n, b_n)}$ ein lokaler Isomorphismus ist. Andernfalls hat der Herausforderer gewonnen.
+\end{itemize}
+
+Eine \emph{Gewinnstrategie} ist eine Funktion, die für jedes Teilspiel in jeder Position Züge nennt, die einen Gewinn garantieren, egal was der Gegner tut.
+
+Der \emph{Satz von Ehrenfeucht-Fra\"issé} gibt uns die folgenden beiden Äquivalenzen:
+
+\begin{center}
+\begin{minipage}{0.3\textwidth}
+\centering
+$\A \equiv \B$ \\
+$\Updownarrow$ \\
+Die Duplikatorin gewinnt das EF-Spiel $G(\A, \B)$
+\end{minipage}\hspace{0.1\textwidth}
+\begin{minipage}{0.3\textwidth}
+\centering
+$\A \equiv_m \B$ \\
+$\Updownarrow$ \\
+Die Duplikatoren gewinnt das EF-Spiel $G_m(\A, \B)$
+\end{minipage}
+\end{center}
+
+Wir haben für den obigen Satz die folgende stärkere Aussage verwendet:
+
+Seien $\A, \B$ $\tau$-Strukturen, $\overline{a} = a_1, \ldots, a_n \in \A,\ \overline{b} = b_1, \ldots b_n \in \B$. Wenn es eine Formel $\psi(\overline{x}) = m$ gibt, so dass $\A \models \psi(\overline{a})$ und $\B \models \neg \psi(\overline{b})$, dann hat der Herausforderer eine Gewinnstrategie für $G_m(\A, \overline{a}, \B, \overline{b})$.
+
+Mit dem Satz von Ehrenfeucht-Fra\"issé kann man dann Folgendes beweisen:
+
+Es gibt keinen Satz $\psi \in \FO(\tau)$, so dass für jeden endlichen und gerichteten Graphen $G = (V, E)$ gilt: $G \models \psi$ gdw.\ $G$ zusammenhängend ist.
+
+\section{Vollständigkeitssatz, Kompaktheitssatz, Unentscheidbarkeit}
+
+\subsection{Regeln des Sequenzenkalküls der Prädikatenlogik}
+
+\begin{minipage}{0.15\textwidth}~\\
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi(t) \Rightarrow \Delta$}
+  \LeftLabel{$(S \Rightarrow)$}
+  \UnaryInfC{$\Gamma, t \doteq t', \psi(t') \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+  \LeftLabel{$(\lnot \Rightarrow)$}
+  \UnaryInfC{$\Gamma, \lnot \psi \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
+  \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
+  \LeftLabel{$(\lor \Rightarrow)$}
+  \BinaryInfC{$\Gamma, \psi \lor \theta \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi, \theta \Rightarrow \Delta$}
+  \LeftLabel{$(\land \Rightarrow)$}
+  \UnaryInfC{$\Gamma, \psi \land \theta \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \Rightarrow \Delta \psi$}
+  \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
+  \LeftLabel{$(\to \Rightarrow)$}
+  \BinaryInfC{$\Gamma, \psi \to \theta \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi(c) \Rightarrow \Delta$}
+  \LeftLabel{$(\exists \Rightarrow)$}
+  \RightLabel{*}
+  \UnaryInfC{$\Gamma, \exists x \psi(x) \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi(t) \Rightarrow \Delta$}
+  \LeftLabel{$(\forall \Rightarrow)$}
+  \UnaryInfC{$\Gamma, \forall x \psi(x) \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, t = t \Rightarrow \Delta$}
+  \LeftLabel{$(=)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta$}
+\end{prooftree} %DONE
+
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi(t)$}
+  \LeftLabel{$(\Rightarrow S)$}
+  \UnaryInfC{$\Gamma, t \doteq t' \Rightarrow \Delta, \psi(t')$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
+  \LeftLabel{$(\Rightarrow \lnot)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \lnot \psi $}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi, \theta$}
+  \LeftLabel{$(\Rightarrow \lor)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \lor \theta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+  \AxiomC{$\Gamma\Rightarrow \Delta, \theta$}
+  \LeftLabel{$(\Rightarrow \land)$}
+  \BinaryInfC{$\Gamma \Rightarrow \Delta, \psi \land \theta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma, \psi \Rightarrow \Delta, \theta$}
+  \LeftLabel{$(\Rightarrow \to)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \to \theta$}
+\end{prooftree} %DONE
+
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi(t)$}
+  \LeftLabel{$(\Rightarrow \exists)$}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \exists x \psi(x)$}
+\end{prooftree}
+
+\begin{prooftree}
+  \AxiomC{$\Gamma \Rightarrow \Delta, \psi(c)$}
+  \LeftLabel{$(\Rightarrow \forall)$}
+  \RightLabel{*}
+  \UnaryInfC{$\Gamma \Rightarrow \Delta, \forall x \psi(x)$}
+\end{prooftree} %DONE
+\end{minipage}
+
+\begin{center}
+$*$wenn c in $\Gamma$, $\Delta$ und $\psi$ nicht vorkommt
+\end{center}
+
+\subsection{Der Vollständigkeitssatz}
+
+Ein Satz $\varphi \in \FO(\tau)$ heißt aus einer Satzmenge $\Phi \subseteq \FO(\tau)$ ableitbar ($\Phi \proves \varphi$), wenn es eine endliche Teilmenge $\Gamma \subseteq \Phi$ gibt, sodass für die Sequenz $\Gamma \Rightarrow \varphi$ ein Beweis im Sequenzenkalkül existiert.
+
+Eine Satzmenge $\Phi$ heißt inkonsistent, wenn jeder Satz aus ihr ableitbar ist.
+
+Für jede Satzmenge $\Phi \subseteq \FO(\tau)$ und jeden Satz $\psi \in \FO(\tau)$ ist
+\[
+\Phi \models \psi \text{ gdw.\ } \Phi \proves \psi
+\]
+\[
+\Phi \text{ ist unerfüllbar gdw.\ } \Phi \text{ inkonsistent ist}
+\]
+
+\subsubsection{Herbrand-Strukturen}
+
+Eine $\tau$-Herbrand-Struktur ist eine Struktur mit Universum $\T(\tau)$, bei der die Funktionssymbole ``auf sich selbst'' abgebildet werden, d.h.\ in jeder Herbrand-Struktur $\He$ ist für jeden Term $t \in \T(\tau)$ $\interpret{t}^\He = t$.
+
+Zu einer Menge atomarer Sätze $\Sigma \subseteq \FO(\tau)$ ist $\He(\Sigma)$ die Herbrandstruktur mit   \\
+$R^{\He(\Sigma)} = \{\overline{a} \;|\; R\overline{a} \in \Sigma\}$.
+
+\subsubsection{Kongruenzrelationen}
+
+Sei $\A$ eine $\tau$-Struktur. ${\sim} \subseteq A \times A$ ist eine Kongruenzrelation auf $\A$, wenn sie die folgenden Eigenschaften erfüllt:
+\begin{itemize}
+\item $\sim$ ist eine Äquivalenzrelation.
+\item Für alle Funktionssymbole $f \in \tau$ gilt, wenn $a_1 \sim a_1', \ldots, a_n \sim a_n'$, auch $f a_1 \ldots a_n \sim f a_1' \ldots a_n'$.
+\item Für alle Relationssymbole $R$ und $a_1 \sim a_1', \ldots, a_n \sim a_n'$ ist \\$(a_1, \ldots, a_b) \in R^\A \text{ gdw.\ }(a_1', \ldots, a_n') \in R^\A$.
+\end{itemize}
+
+\subsubsection{Faktorstruktur}
+
+Sei $\A$ eine $\tau$-Struktur und $\sim$ eine Kongruenzrelation auf $\A$.   \\
+Dann ist $\A /_{\sim}$ die Struktur der Äquivalenzklassen bzgl.\ $\sim$ mit $f^{\A /_{\sim}}([a_1],\ldots, [a_n]) = [f^\A(a_1,\ldots,a_n)]$ und $R^{\A/_{\sim}} = \{([a_1],\ldots,[a_n]) \;|\; (a_1,\ldots,a_n) \in R^\A\}$.
+
+\subsubsection{Abschluss unter Substitution}
+
+Eine Satzmenge $\Phi$ heißt \emph{abgeschlossen unter Substitution}, wenn für jeden Grundterm $t$ der Satz $t = t$ in $\Phi$ ist und wenn $t = t'$ und $\psi(t)$ in $\Phi$ sind, auch $\psi(t')$ in $\Phi$ ist.
+
+\subsubsection{Kanonisches Modell}
+
+Sei eine Menge atomarer Sätze $\Sigma$, die abgeschlossen unter Substitution ist. Dann ist $\A(\Sigma) := \He(\Sigma)/_{\sim}$ mit $t \sim t'$ gdw.\ $t = t' \in \Sigma$ das \emph{Kanonische Modell} von $\Sigma$.
+
+\subsubsection{Hintikka-Mengen}
+
+Für zwei Satzmengen $\Gamma, \Delta$ mit den folgenden Eigenschaften ist $\Gamma \cup \{\,\neg \varphi \;|\; \varphi \in \Delta\,\}$ eine \emph{Hintikka-Menge}:
+\begin{itemize}
+\item $\Gamma$ und $\Delta$ sind disjunkt.
+\item $\Gamma$ ist abgeschlossen unter Substitution.
+\item Wenn $\neg \psi \in \Gamma$, dann ist $\psi \in \Delta$. Wenn $\neg \psi \in \Delta$, dann ist $\psi \in \Gamma$.
+\item Wenn $\varphi \lor \psi \in \Gamma$, dann ist $\varphi$ oder $\psi$ in $\Gamma$. Wenn $\varphi \lor \psi \in \Delta$, dann sind $\varphi$ und $\psi$ in $\Delta$.
+\item Wenn $\exists x\, \psi(x) \in \Gamma$, dann gibt es einen Grundterm $t$, sodass $\psi(t) \in \Gamma$. Wenn $\exists x\, \psi(x) \in \Delta$, dann ist $\psi(t) \in \Delta$ für alle Grundterme $t$.
+\end{itemize}
+
+Für jede Hintikka-Menge $\Phi$ ist $\A(\Sigma)$ mit $\Sigma$ der Menge der atomaren Sätze in $\Phi$ ein Modell von $\Phi$.
+
+\subsection{Der Kompaktheitssatz}
+
+Der Kompaktheitssatz der Prädikatenlogik ist analog zu dem der Aussagenlogik:
+
+Für jede Formelmenge $\Phi \subseteq \FO(\tau)$ und Formel $\psi \in \FO(\tau)$ gilt:
+\[\Phi \models \psi \text{ gdw.\ eine endliche Teilmenge $\Phi_0 \subseteq \Phi$ existiert sodass } \Phi_0 \models \psi\]
+\[\Phi \text{ ist erfüllbar gdw.\ jede endlichte Teilmenge $\Phi_0 \subseteq \Phi$ erfüllbar ist}\]
+
+\subsection{Die Sätze von Löwenheim-Skolem}
+
+\emph{Absteigend:}
+\begin{itemize}
+\item[] Jede erfüllbare abzählbare Satzmenge hat ein abzählbares Modell.
+\end{itemize}
+
+\emph{Aufsteigend:}
+\begin{itemize}
+\item Jede Satzmenge, die beliebig große endliche Modelle hat, hat ein unendliches Modell.
+\item Jede Satzmenge $\Phi$, die ein unendliches Modell hat, hat für jede unendliche Kardinalzahl $\kappa \ge \abs{\Phi}$ ein Modell der Größe $\kappa$.
+\end{itemize}
+
+\subsection{Unentescheidbarkeit der Prädikatenlogik}
+
+Das Erfüllbarkeitsproblem (``hat eine Formel ein Modell'') und das Gültigkeitsproblem (``ist eine Formel eine Tautologie'') sind unentscheidbar.
+
+Das Gültigkeitsproblem ist semi-entscheidbar.
+
+\section{Modallogik, Temporale Logik und Monadische Logik}
+
+\subsection{Modallogik}
+
+\begin{minipage}[t]{0.3\textwidth}
+\begin{center}
+\emph{Atomare Eigenschaften:} \\
+$P_i \in \ML$ \\
+mit $i \in I$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{center}
+\emph{Aussagenlogische Junktoren:} \\
+$\neg \psi,\ (\psi \land \phi),\ (\psi \lor \phi),\ (\psi \to \phi) \in \ML$ \\
+mit $\psi,\ \phi \in \ML$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{center}
+\emph{Modallogische Junktoren:} \\
+$\langle a \rangle \psi,\ [a] \psi$ \\
+mit $a \in A$ und $\psi \in \ML$
+\end{center}
+\end{minipage}
+\ \\
+
+Falls $|A| = 1$ schreibt man statt $\langle a \rangle \psi$ und $[a] \psi$ $\Diamond \psi$ (``möglicherweise $\psi$'') und $\Box \psi$ (``notwendigerweise $\psi$'').
+
+Ein \emph{Transitionssytem} oder eine \emph{Kripkestruktur} mit Aktionen aus $A$ und atomaren Eigenschaften $\Set{P_i : i \in I}$ ist eine Struktur $\K = (V,(E_a)_{a \in A},(P_i)_{i \in I})$ mit:
+
+\begin{minipage}[t]{0.3\textwidth}
+\begin{center}
+\emph{Zustände:} \\
+$v \in V$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{center}
+\emph{Transitionen:} \\
+$E_a \subseteq V \times V$ \\
+mit $a \in A$
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\textwidth}
+\begin{center}
+\emph{Eigenschaften der Zustände:} \\
+$P_i \subseteq V$ \\
+mit $i \in I$
+\end{center}
+\end{minipage}
+\ \\
+
+Statt $(u,v) \in E_a$ schreibt man auch $u \overset{a}{\to} v$.
+
+Wir definieren die \emph{Modellbeziehung} $\K,v \models \psi$ ($\psi$ gilt im Zustand $v$ von $\K$) induktiv:
+\begin{enumerate}
+\item $\K,v \models P_i$ gdw. $v \in P_i$.
+\item $\neg \psi$, $(\psi \land \varphi)$, $(\psi \lor \varphi)$ und $(\psi \to \varphi)$ sind wie üblich definiert.
+\item $\K,v \models \langle a \rangle \psi $ wenn ein $w$ existiert mit $(v,w) \in E_a$ und $\K,w \models \psi $.
+\item $\K,v \models [a] \psi $ wenn für alle $w$ mit $(v,w) \in E_a$ gilt, dass $\K,w \models \psi $.
+\end{enumerate}
+
+Jeder Formel $\psi$ und jedem Transitionssystem $\K$ kann man die \emph{Extension} zuordnen, d.h.\ die $v$, an denen $\psi$ gilt: $\interpret{\psi}^\K := \Set{v | \K, v \models \psi}$.
+
+Wir können $\ML$ als Fragment von $\FO$ auffassen: \\
+Zu jeder Formel $\psi \in \ML$ existiert eine Formel $\psi^\ast(x)$ in $\FO^2$, so dass für alle Transitionssysteme $\K$ und alle Zustände $v$ von $\K$ gilt:
+$\K,v \models \psi \text{ gdw.\ }\K \models \psi^\ast(v)$.
+
+\subsection{Bisimulation}
+
+Eine \emph{Bisimulation} zwischen zwei Transitionssystemen $\K = (V, (E_a)_{a \in A}, (P_i)_{i \in I})$ und\\ $\K' = (V', (E'_a)_{a \in A}, (P'_i)_{i \in I})$ ist eine Relation $Z \subseteq V \times  V'$, so dass für alle $(v, v') \in Z$ gilt:
+
+\begin{itemize}
+  \item $v \in P_i$ gdw. $v' \in P'_i$ für alle $in \in I$.
+  \item \emph{Hin:} Für alle $a \in A$, $w \in W$ mit $v \overset{a}{\to} w$ existiert ein $v' \overset{a}{\to} w'$ und es ist $(w, w') \in Z$.
+  \item \emph{Her:} Für alle $a \in A$, $w' \in V'$ mit $v' \overset{a}{\to} w'$ existiert ein $w \in V$ mit $v \overset{a}{\to} w$ und es ist $(w, w') \in Z$.
+\end{itemize}
+
+Das \emph{Bisimulationsspiel} auf zwei Kripkestrukturen $\K$ und $\K'$.
+Auf beiden befindet sich jeweils ein Spielstein.
+\begin{itemize}
+\item[] Spieler I bewegt seinen Stein entlang einer Transition $v \overset{a}{\to} w$.
+\item[] Spieler II muss dann entsprechend einen Zug $v' \overset{a}{\to} w'$ in der anderen Struktur machen.
+\item[] Am Anfang und nach jedem Zug wird überprüft, ob für die aktuelle Position $v, v'$ gilt: $v \in P_i$ gdw. $v' \in P'_i$ für alle $i \in I$. Wenn nicht, hat Spieler I gewonnen, sonst geht das Spiel weiter.
+\item[] Spieler II gewinnt genau dann das Bisimulationsspiel auf $\K, \K'$ von $(u,u')$, wenn $\K, u \sim \K', u'$.
+\end{itemize}
+
+
+Für alle Kripkestrukturen $\K, \K'$ gilt: Wenn $\K, v \sim \K, v$, dann ist $\K, v \to \K', v'$ für alle $n$. Die Umkehrung gilt jedoch nicht: es gibt $\K, v$ und $\K, v'$, so dass $\K, v \sim_n \K', v'$ aber $\K, v \not\sim \K', v'$.
+
+Die \emph{Modaltiefe} $\mathrm{md}(\psi)$ ist definiert analog zum Quantorenrang.
+
+Auch wieder analog zur Prädikatenlogik definieren wir elementare Äquivalenz:
+
+\begin{minipage}{0.4\textwidth}
+\centering
+$\K, v \equiv_\ML \K', v'$ \\
+{\small wenn für alle $\psi \in \ML$ gilt: \\}
+$\K, v \models \psi$ gdw.\ $\K', v' \models \psi$.
+\end{minipage}\hspace{0.1\textwidth}
+\begin{minipage}{0.4\textwidth}
+\centering
+$\K, v \equiv_\ML^n \K', v'$ \\
+{\small wenn für alle $\psi \in \ML$ mit $\mathrm{md}(md) \leq n$ gilt: \\}
+$\K, v \models \psi$ gdw.\ $\K', v' \models \psi$.
+\end{minipage}
+\ \\
+
+Für Kripkestrukturen $\K, \K'$ und $u \in \K, u' \in \K'$:
+
+\begin{minipage}{0.4\textwidth}
+\centering
+$\K, u \sim \K', u'$ \\
+$\Downarrow$ \\
+$\K, u \equiv_\ML \K', u'$
+\end{minipage}\hspace{0.1\textwidth}
+\begin{minipage}{0.4\textwidth}
+\centering
+$\K, u \sim_n \K', u'$ \\
+$\Downarrow$ \\
+$\K, u \equiv_\ML^n \K', u'$
+\end{minipage}
+\ \\
+
+Für endlich verzweigte Transitionssysteme können wir sogar sagen, dass $\K, u \sim \K', u'$ genau dann gilt, wenn $\K, u \equiv_\ML K', u'$.
+
+\subsection{Abwicklungen und Baummodell-Eigenschaft}
+
+Ein Baum mit Wurzel $v$ ist ein Transitionssystem, in dem es zu jeden Knoten $w \ne v$ genau einen Pfad von $v$ zu $w$ gibt.
+
+Zu jedem Transitionssystem $\K$ mit Knoten $v$ gibt es einen Baum $\K'$ mit Wurzel $v'$, sodass $\K, v \sim \K', v'$. Um diesen zu konstruieren, wird das Transitionssystem ``abgewickelt'':    \\
+Man erzeugt einen Baum mit Wurzel $w'$ für alle Nachfolger $w$ von $v$ in $\K$, fügt diese disjunkt zusammen und fügt die Wurzel $v'$ mit einer Kante entsprechenden Types von $v'$ nach $w'$ ein.
+
+\subsection{Temporale Logiken}
+
+$\LTL$ (``linear temporal logic'') erweitert Aussagenlogische Formeln mit den Variablen $P_1,\ldots,P_n$ um die folgende Syntax:
+\begin{itemize}
+\item Wenn $\varphi \in \LTL$ ist auch $\X\varphi \in \LTL$.
+\item Wenn $\varphi, \psi \in \LTL$ ist auch $\varphi \until \psi \in \LTL$.
+\end{itemize}
+
+Interpretationen von $\LTL$-Formeln sind (möglicherweise unendliche) Wörter $v_1v_2\ldots$ mit einer aktuellen Position $v_i$ und einem Wahrheitswert für jedes $P_j$ an jedem $v_k$. Der Wahrheitswert von booleschen Operatoren ist wie üblich. $P_i$ wird sein Wahrheitswert an der aktuellen Position zugeordnet. $\X\varphi$ ist erfüllt, wenn die aktuelle Position nicht die letzte ist und an der nächsten Position $\varphi$ gilt. $\varphi\until\psi$ gilt wenn es eine folgende Position gibt, an der $\psi$ gilt und an allen Positionen davor ab der aktuellen Position $\varphi$ gilt.
+
+$\CTL$ (``computation tree logic'') ist die Zusammenfassung von $\ML$ und $\LTL$: Sie erweitert Aussagenlogische Formeln in den Variablen $P_1,\ldots,P_n$ um die folgende Syntax:
+\begin{itemize}
+\item Wenn $\varphi \in \CTL$ sind auch $\mathrm{E}\X\varphi$ und $\mathrm{A}\X\varphi$ in $\CTL$.
+\item Wenn $\varphi, \psi \in \CTL$ sind auch $\mathrm{E}(\varphi \until \psi)$ und $\mathrm{A}(\varphi\until\psi)$.
+\end{itemize}
+
+Interpretationen von $\CTL$-Formeln sind Transitionssysteme mit einer aktuellen Position.
+\begin{itemize}
+\item $\mathrm{E}\X\psi$ und $\mathrm{A}\X\psi$ sind analog zu $\Diamond \psi$ bzw.\ $\Box \psi$.
+\item $\mathrm{E}(\psi \until \vartheta)$ ist erfüllt, wenn es einen Pfad ab der aktuellen Position gibt, auf dem an einer Stelle $\vartheta$ und an allen Stellen davor $\psi$ gilt. $\mathrm{A}(\psi \until \vartheta)$ ist analog mit allen Pfaden.
+\end{itemize}
+
+\subsection{Monadische Logik}
+
+Monadische Logik ($\MSO$) ist eine Erweiterung von $\FO$ um Quantifizierung von einstelligen Relationssymbolen.
+
+\end{document}
