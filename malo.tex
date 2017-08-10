@@ -242,8 +242,8 @@ Die \emph{Schlussregeln} sind, für $\Delta, \Gamma$ beliebige endliche Formelme
 \end{prooftree}
 \begin{prooftree}
   \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
-  \AxiomC{$\Gamma \Rightarrow \Delta, \theta$}
-  \LeftLabel{$(\Rightarrow \to)$}
+  \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
+  \LeftLabel{$(\to \Rightarrow)$}
   \BinaryInfC{$\Gamma, \psi \to \theta \Rightarrow \Delta$}
 \end{prooftree}
 \end{minipage}
@@ -266,7 +266,7 @@ Die \emph{Schlussregeln} sind, für $\Delta, \Gamma$ beliebige endliche Formelme
 \end{prooftree}
 \begin{prooftree}
   \AxiomC{$\Gamma, \psi \Rightarrow \Delta, \theta$}
-  \LeftLabel{$(\to \Rightarrow)$}
+  \LeftLabel{$(\Rightarrow \to)$}
   \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \to \theta$}
 \end{prooftree}
 \end{minipage}
@@ -622,7 +622,7 @@ Es gibt keinen Satz $\psi \in \FO(\tau)$, so dass für jeden endlichen und geric
 \end{prooftree} %DONE
 
 \begin{prooftree}
-  \AxiomC{$\Gamma, \Rightarrow \Delta \psi$}
+  \AxiomC{$\Gamma, \Rightarrow \Delta, \psi$}
   \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
   \LeftLabel{$(\to \Rightarrow)$}
   \BinaryInfC{$\Gamma, \psi \to \theta \Rightarrow \Delta$}
