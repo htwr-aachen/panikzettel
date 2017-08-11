@@ -176,7 +176,7 @@ Der \emph{Kompaktheitssatz}:
 $\Phi$ ist erfüllbar genau dann, wenn jede endliche Teilmenge von $\Phi$ erfüllbar ist.
 \item
 Für $\Phi \subseteq \AL, \psi \in \AL$:\\
-$\Phi \models \psi$ genau dann, wenn eine endliche Teilmenge $\Psi_0 \subseteq \Psi$ existiert, so dass $\Psi_0 \models \psi$.
+$\Phi \models \psi$ genau dann, wenn eine endliche Teilmenge $\Phi_0 \subseteq \Phi$ existiert, so dass $\Phi_0 \models \psi$.
 \end{itemize}
 
 \subsection{Resolution}
@@ -278,7 +278,7 @@ Der Sequenzenkalkül ist korrekt und vollständig.
 \subsection{Strukturen}
 Eine \emph{Signatur} $\tau$, z.B. $\tau=\{+,\cdot,0,1\}$, ist eine Menge von Funktions- und Relationssymbolen. Jedes Symbol hat eine feste, endliche Stelligkeit.
 
-Eine Signatur heißt $\emph{relational}$, wenn sie nur Relationssymbole, bzw. $\emph{funktional}$ oder auch $\tau$-Algebra, wenn sie nur Funksionssymbole enthält. Nullstellige Funktionssymbole heißen auch $\emph{Konstantensymbole}$.
+Eine Signatur heißt $\emph{relational}$, wenn sie nur Relationssymbole, bzw. $\emph{funktional}$ oder auch $\tau$-Algebra, wenn sie nur Funktionssymbole enthält. Nullstellige Funktionssymbole heißen auch $\emph{Konstantensymbole}$.
 
 Eine $\tau\emph{-Struktur}$ $\A=(A,P_1,P_2,\ldots,f_1,f_2,\ldots)$ besteht aus einem nichtleeren $\emph{Universum}$ $A$, sowie einer Signatur $\tau=\{P_1,P_2,\ldots,f_1,f_2,\ldots\}$.
 
@@ -286,7 +286,7 @@ $\A$ ist $\emph{Substruktur}$ von $\B$, kurz $\A \subseteq \B$, bzw. $\B$ ist $\
 \begin{itemize}
     \item $A \subseteq B$
     \item Für alle Relationssymbole $R \in \tau$ gilt: $R^{\A}=R^{\B} \cap A^n$
-    \item Für alle Funksionssymbole $f \in \tau$ gilt: $f^{\A}=f^{\B}|_A$
+    \item Für alle Funktionssymbole $f \in \tau$ gilt: $f^{\A}=f^{\B}|_A$
 \end{itemize}
 
 Ein $\emph{Redukt}$ ist eine Struktur, die durch Weglassen von Relationen und Funktionen in der Signatur entsteht.
@@ -361,7 +361,7 @@ mit $x \in \VAR$ und $\psi \in \FO(\tau)$
 
 Formeln, die nur den Relationsausdrücke und solche mit dem Gleich enthalten, heißen \emph{atomar} oder \emph{Atom}. \emph{Literale} sind Atome und deren Negationen. Formeln ohne Quantoren heißen \emph{quantorenfrei}.
 
-Eine Variable $x$ kommt \emph{gebunden} in einer Formel $\psi$ vor, $\psi$ eine Unterformel $\exists x \psi'$ oder $\forall x \psi'$ enthält. Eine Variable, die nicht durch einen Quantor gebunden ist kommt \emph{frei} vor. In einer Formel kann eine Variable gleichzeitig gebunden und frei vorkommen.
+Eine Variable $x$ kommt \emph{gebunden} in einer Formel $\psi$ vor, falls $\psi$ eine Unterformel $\exists x \psi'$ oder $\forall x \psi'$ enthält. Eine Variable, die nicht durch einen Quantor gebunden ist, kommt \emph{frei} vor. In einer Formel kann eine Variable gleichzeitig gebunden und frei vorkommen.
 
 Der \emph{Quantorrenrang} einer Formel ist wie folgt definiert:
 \[\begin{array}{cc}
