@@ -1,0 +1,1103 @@
+\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{ifsym}
+\usepackage{amsmath}
+\usepackage{pifont}
+\usepackage[pdftex]{hyperref}
+\usepackage{bookmark}
+\usepackage[ngerman]{babel}
+\usepackage{braket}
+\usepackage{courier}
+\usepackage{pifont}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage{tikz-er2}
+\usepackage{todonotes}
+\usepackage{textcomp}
+\usepackage[binary-units=true,retain-unity-mantissa=false]{siunitx}
+\usepackage{pgfplots}
+\usepackage{bussproofs}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\pgfplotsset{width=10cm,compat=1.9,tick label style={color=white}, every axis x label/.style={
+  at={(0.5,0)},
+  below,
+  yshift=-5pt}}
+
+\usepackage{BTrees} % B Trees
+
+% Definitions
+
+\makeatletter
+\AtBeginDocument{
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
+}
+\lstset{
+  basicstyle=\lst@ifdisplaystyle\small\fi\ttfamily,
+}
+\makeatother
+
+\lstset{
+  breaklines,
+  breakatwhitespace,
+  keepspaces,
+  literate=%
+    {Ö}{{\"O}}1
+    {Ä}{{\"A}}1
+    {Ü}{{\"U}}1
+    {ß}{{\ss}}1
+    {ü}{{\"u}}1
+    {ä}{{\"a}}1
+    {ö}{{\"o}}1
+    {~}{{\textasciitilde}}1
+    {θ}{{$\theta$}}1
+}
+
+\newlength{\currentparskip}
+\newenvironment{minipageparskip}
+  {\setlength{\currentparskip}{\parskip} % save the value
+   \begin{minipage}{\textwidth} % open the minipage
+   \setlength{\parskip}{\currentparskip} % restore the value
+  }
+  {\end{minipage}}
+
+\newcommand{\NF}{\mathrm{NF}} % NF
+\newcommand{\BCNF}{\mathrm{BCNF}} % BCNF
+\newcommand\pro{\item[$+$]}
+\newcommand\con{\item[$-$]}
+\newcommand{\Sch}{\mathrm{Sch}} % Schema
+\newcommand{\sql}[1]{\lstinline[language=sql, mathescape=true]{#1}}
+\newcommand{\lojoin}{\;{\tiny \textifsym{d|><|}}\;}
+\newcommand{\rojoin}{\;{\tiny \textifsym{|><|d}}\;}
+\newcommand{\ojoin}{\;{\tiny \textifsym{d|><|d}}\;}
+
+\title{Datenbanken und Informationssysteme Panikzettel}
+\author{Mathis Müller, Luca Oeljeklaus, Tobias Polock, Philipp Schröer}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section{Einführung}
+
+Dieser Panikzettel ist eine mehr oder weniger informelle Zusammenfassung der Vorlesung Datenbanken und Informationssysteme bei Prof.\ Matthias Jarke und Prof.\ Stefan Decker im Sommersemester 2017. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen.
+
+Dieses Projekt ist lizenziert unter \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC-BY-SA-4.0} und wird auf dem Git-Server der RWTH verwaltet: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+
+\section{Entity-Relationship-Modell}
+
+Das ER-Modell nutzt \emph{Objekttypen} mit \emph{Beziehungen} zwischen diesen. Beide können \emph{Eigenschaften} haben. Als Notation für das ER-Modell gibt es ER-Diagramme:
+
+\begin{center}
+\scalebox{0.8}{
+\begin{tikzpicture}
+    \node[entity] (Obj1) {Objekttyp};
+    \node[attribute, above = of Obj1] {\key{Schlüsseleigenschaft}} edge [link] (Obj1);
+    \node[multi attribute, left = of Obj1] {Multi-Eigenschaft} edge [link] (Obj1);
+    \node[ident relationship, right = of Obj1] (rel) {Beziehung} edge [link] node [above] {1} node [below] {(0,n)} (Obj1);
+    \node[weak entity, right = of rel] (Obj2) {Schwacher Objekttyp} edge [total, link] node [above] {n} node [below] {(1,1)} (rel);
+    \node[attribute, above = of Obj2] {\discriminator{Schlüsseleigenschaft}} edge [link] (Obj2);
+    \node[isa, below = of Obj1] (isa) {isA} edge [link] (Obj1);
+    \node[above right = 0 and 0.2 of isa] {t};
+    \node[entity, below left = of isa] {Untertyp} edge [->, link] (isa);
+    \node[entity, below right = of isa] {Untertyp} edge [->, link] (isa);
+\end{tikzpicture}
+}
+\end{center}
+
+\emph{Schwache Objekttypen} sind von der Existenz des übergeordneten Typs abhängig.
+
+Die Vererbung mit \lstinline{isA} kann in vier verschiedenen Formen vorkommen:
+
+\begin{itemize}
+  \item \emph{Disjunkt}, wenn die Pfeile von dem \lstinline{isA} weg zeigen. Oder \emph{nicht disjunkt}, wenn Pfeile auf das \lstinline{isA} zeigen.
+  \item \emph{Total}, wenn ein \lstinline{t} an dem \lstinline{isA} steht. Dann sind die gelisteten Untertypen alle Untertypen. Sonst ist die Vererbung \emph{partiell}, markiert mit einem \lstinline{p}.
+\end{itemize}
+
+Wir haben zwei Notationen für Kardinalitäten von Beziehungen:
+
+\begin{itemize}
+  \item Im Diagramm bedeutet die \texttt{m:n}-Notation, dass \texttt{1 Objekttyp} in \texttt{Beziehung} zu \texttt{n} \texttt{schwachen Objekttypen} steht.
+
+  \item Die \texttt{(min,max)}-Notation bedeutet, dass genau einem \texttt{Objekttyp} zwischen \texttt{0} und \texttt{n} \texttt{schwachen Objekttypen} zugeordnet werden können.
+\end{itemize}
+
+\section{Relationales Datenmodell}
+Im relationalen Datenmodell werden Objekte und Beziehungen zwischen Objekten als Relationen modelliert.
+
+Eine \textit{Relation} $R$ mit \textit{Grad} $k$ eine Teilmenge des kartesischen Produktes von $k$ Mengen (auch \textit{Wertebereich} oder \textit{Domain} genannt) $D_1, \ldots, D_k$. Dann ist $R \subseteq D_1 \times \ldots \times D_k.$
+
+Ein \textit{Relationenschema} $\mathcal{R}=(X, \Sigma_X)$ besteht aus einem Relationssymbol $R$, einer endlichen Menge $X$ von Attributen und einer Menge $\Sigma_X$ von intrarelationalen Abhängigkeiten über $X$.
+
+Eine Relation $r$ mit Schema $\mathcal{R}=(X, \Sigma_X)$ ist eine konkrete Ausprägung des Relationenschemas. Sie heißt \textit{konsistent/gültig}, falls $r$ alle Abhängigkeiten aus $\Sigma_X$ erfüllt.
+
+%Interrelationale Abhängikeiten
+%Inklusionsabhängigkeit
+%Exklusionsabhängigkeit
+
+Ein \textit{Datenbankschema} $\mathcal{D} = (\mathcal{R}, \Sigma_\mathcal{R})$ besteht aus einer Menge $\mathcal{R}$ an Relationenschemata und einer Menge $\Sigma_\mathcal{R}$ an interrelationalen Abhängigkeiten über $\mathcal{R}$
+
+Eine \textit{Datenbank} $D = {r_1, \ldots , r_n}$ mit Schema $\mathcal(D) = (\mathcal{R}, \Sigma_\mathcal{R})$ ist eine Menge an Relationen $r_1, \ldots, r_n$. Die Datenbank heißt konsistent oder gültig, falls sowohl inter- als auch intrarelationale Abhängigkeiten erfüllt sind.
+
+\subsection{Vom ER-Diagramm in das Relationale Modell}
+Generell wird jeder Entity-Typ mit seinen Attributen in eine Tabelle/Relation gepackt und jede Beziehung zwischen Entity-Typen
+%1:n Beziehung
+%n:m Beziehung
+%Rekusive Beziehungen
+%Generalisierun/Spezialisierung
+%Schwache Entity Typen
+
+\subsection{Relationale Algebra, Relationenkalkül, Tupelkalkül und Domänenkalkül}
+Anfragen an eine Datenbank müssen auf eine gewisse Weise formuliert werden. In konkreten Datenbankimplementierungen werden hierfür Anfragesprachen genutzt. Die Grundlage dafür sind die \textit{Relationale Algebra} und das \textit{Relationale Kalkül}, bei welchem man zwischen dem Tupel- und Bereichskalkül unterscheidet.
+
+\subsubsection{Relationale Algebra}
+Die relationale Algebra arbeitet auf Relationen (also Mengen) und definiert verschiedene Operationen zur Manipulation der Relationen.
+
+Es existieren folgende Basisoperationen:
+\begin{itemize}
+\item \textbf{Vereinigung}: $R \cup S = \{t \;|\; t \in R \lor t \in S\}$.
+\item \textbf{Differenz}: $R - S = \{t \;|\; t \in R \land t \notin S\}$.   \\
+Für Vereinigung und Differenz beide Relationen das selbe Schema besitzen.
+\item \textbf{Kartesisches Produkt}: $R \times S = \{(a_1, \ldots, a_r, b_1, \ldots b_s) \;|\; (a_1, \ldots, a_r) \in R \land (b_1, \ldots, b_s) \in S\}$.
+\item \textbf{Selektion}: $\sigma_F(R) = \{t \in R \;|\; t \text{ erfüllt } F\}$.
+\item \textbf{Projektion}: $\pi_{A_{i_1}, \ldots, A_{i_m}}(R) = \{(a_{i_1}, \ldots, a_{i_m}) \;|\;(a_1, \ldots, a_k) \in R\}$, wobei $R$ den Grad $k$ hat und $i_1, \ldots i_m \in [1,k]$ gilt.
+\item \textbf{Umbenennung}: $\rho_S(R)$ von Relation $R$ in $S$.
+\item \textbf{Umbenennung}: $\rho_{A^\prime \leftarrow A}(R)$ von Attribut $A$ in $A^\prime$.
+\end{itemize}
+
+Aus den Basisoperationen ableitbare Operationen:
+\begin{itemize}
+\item \textbf{Durchschnitt}: $R \cap S = \{t \in R \land t \in S\}$. Es muss $\Sch(R) = \Sch(S)$ gelten.
+\item \textbf{Quotient}: $R \div S = \Set{(a_1, \ldots, a_m)| \forall(b_1, \ldots, b_n) \in S: (a_1, \ldots, a_m, b_1, \ldots b_n) \in R}$. Hier muss offenbar $\Sch(S) \subseteq \Sch(R)$ und $S \neq \emptyset$ gelten.
+\item \textbf{Natural Join}: Sei $k$ die Anzahl der gemeinsamen Attribute von $R$ und $S$, $A_1, \ldots, A_m, B_1, \ldots, B_k$ die Attribute von $R$ und $B_1, \ldots, B_k, C_1, $. Außerdem muss $\Sch(R) \cap \Sch(S) \neq \emptyset$ sein. Dann ist $$R \bowtie S = \pi_{A_1, \ldots, A_m,B_1,\ldots,B_k,C_1,\ldots,C_n} (\sigma_{R.B_1 = S.B_1 \land \ldots \land R.B_k = S.B_k}(R \times S))$$ der Natural-Join zwischen $R$ und $S$.
+\item \textbf{Theta-Join}: $R \bowtie_\theta S = \sigma_\theta(R \times S) = \Set{t \cup s | s \in R \land t \in S \land t \cup s \text{ erfüllt } \theta}$. $t \cup s$ stellt das Tupel dar, welches alle Einträge von $s$ und $t$ in dieser Reihenfolge enthält.
+\item \textbf{Left-Outer-Join}: $R \lojoin S$. Hier werden auch die Tupel aus $R$ aufgenommen, die keinen Join-Partner in $S$ finden, indem sie um den Grad von $S$ an ``\sql{NULL}''-Einträgen am Ende erweitert werden.
+\item \textbf{Right-Outer-Join}: $R \rojoin S$. Äquivalent zum Left-Outer-Join werden Tupel aus $S$ ohne Join-Partner aufgenommen und um den Grad von $R$ an ``\sql{NULL}''-Einträgen am Anfang erweitert.
+\item \textbf{Full-Outer-Join}: $R \ojoin S = R \lojoin S \cup R \rojoin S$.
+\item \textbf{Left-Semi-Join}: $R \ltimes S = \sigma_R(R \bowtie S)$. Es bleiben also alle Tupel aus $R$ übrig, die einen Join-Partner in $S$ gefunden haben.
+\item \textbf{Right-Semi-Join}: $R \rtimes S = \sigma_S(R \bowtie S)$.
+\end{itemize}
+
+Da man in der relationalen Algebra immer auch die Operationen angibt, welche zur Bearbeitung einer Anfrage notwendig sind, ist die eine \textit{prozedurale} (formale) Sprache. \emph{Wie} eine Operation erfüllt wird steht im Vordergrund.
+
+\subsubsection{Relationenkalkül}
+Dieser zur relationalen Algebra gleich mächtige Kalkül ist eine \textit{deklarative} (formale) Sprache. Ausdrücke beschreiben die Eigenschaften der Tupel des Ergebnisses. \emph{Was} eine zulässiges Tupel der Ergebnisrelation ist steht im Vordergrund.
+
+Der Kalkül gliedert sich in das Tupel- und das Domänenkalkül. Diese unterscheiden sich lediglich in ihrer Darstellungsweise der Tupel. Im Tupelkakül stellen Variablen immer Tupel dar, während im Domänenkalkül Variablen stets Werte von Attributen verschiedener Domänen repräsentieren.
+
+Ein Ausdruck des Tupelkalküls hat die Form $\set{ t | \varphi(t)}$ wobei $t$ eine sog. \textit{Tupelvariable} ist und $\varphi(t)$ eine prädikatenlogische Formel erster Stufe ist.
+
+Ist das Schema $(A_1:D_1, \ldots, A_k:D_k)$ einer Tupelvariable $t$ nicht aus dem Zusammenhang klar, oder möchte man eine neue Relation erzeugen, so gibt man das Schema folgendermaßen an: $$\Set{t \in (A_1:D_1, \ldots, A_k:D_k) | \varphi(t)}.$$
+
+Als Kurzschreibweise hat sich der Tupelkonstruktor etabliert: $$\Set{[t.A_1, \ldots, t.A_n] | \varphi(t)} = \Set{t \in (A_1:D_1, \ldots, A_k:D_k) | \varphi(t)}.$$
+
+Zur Auswertung müssen alle Tupelvariablen einer Formel $\varphi(t)$ durch konkrete Belegungen interpretiert werden. In der Ergebnisrelation landen dann alle Tupel $r$ mit dem durch die Tupelvariable festgelegten Schema, welche bei der Interpretation der Formel eine 'wahre' Aussage liefern. Für die also gilt $I(\varphi(r|t)) = \textbf{true}$, wobei alle vorkommen von $t$ durch $r$ ersetzt werden und der Aussage dann durch $I$ ein Wahrheitswert zugewiesen wird.
+
+\textit{Bereichsvariablen} sind im Domänenkalkül das Pendant zu den Tupelvariablen. Ein Ausdruck mit $k$ Bereichsvariablen $x_1:D_1, \ldots x_k:D_k$ hat die Form $\Set{x_1, \ldots, x_k | \varphi(x_1, \ldots, x_k)}$. Außerdem findet hier der Tupelkonstruktor ebenfalls seine Verwendung.
+\section{SQL}
+
+\emph{SQL} ist eine relationale Datenbanksprache, die auf einer Mischung der relationalen Algebra und des relationalen Kalküls aufbaut. Wir behandeln hier zwei Teilsprachen von SQL, die \emph{Data Definition Language} (DDL) für das Schema und die \emph{Data Manipulation Language} (DML) für das Bearbeiten und Anfragen von Daten.
+
+Wir haben verschiedene Datentypen, unter anderem \lstinline{NUMBER}, \lstinline{DECIMAL}, \lstinline{CHAR(n)} (Zeichenkette mit fester Länge), \lstinline{VARCHAR(n)} (Zeichenkette mit maximaler Länge), \lstinline{DATE} oder \lstinline{BOOLEAN}.
+
+\subsection{Die DDL von SQL}
+
+\textbf{Relation anlegen}
+
+\begin{minipage}[c]{0.3\textwidth}
+Eine Relation \lstinline{Panikzettel} erstellen mit zwei Attributen, die beide nicht \lstinline{NULL} sein dürfen. Der Modulname ist der primäre Schlüssel.
+\end{minipage}\hspace{0.05\textwidth}
+\begin{minipage}[c]{0.65\textwidth}
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Panikzettel (
+    Modul VARCHAR (500) NOT NULL PRIMARY KEY,
+    Kuerzel VARCHAR (50) NOT NULL
+  )
+\end{lstlisting}
+\end{minipage}~\\
+
+Wir können auch mit \emph{Foreign Keys} im Schema sichern, dass Referenzen auf andere Relationen erhalten bleiben: Mit dem Spaltenattribut \lstinline{REFERENCES AndereTabelle(Attr1, Attr2)}.
+
+Schlüssel können auch über mehrere Attribute spannen. Dazu schreibt man nach dem Attributen z.B.: \lstinline{FOREIGN KEY (Modul, Kuerzel) REFERENCES AndereTabelle(Modul, Kuerzel)}.
+
+\textbf{Relation ändern}\\ \lstinline{ALTER TABLE Name} gefolgt von \lstinline{ADD Attributname Typ} oder \lstinline{DROP COLUMN Attributname}.
+
+\textbf{Relation löschen}\\ \lstinline{DROP TABLE Name}.
+
+\textbf{Sichten}\\ Sichten sind Relationen, die über Anfragen definiert sind. \lstinline{CREATE VIEW NurKuerzel AS SELECT Kuerzel FROM Panikzettel}. Löschen mit \lstinline{DROP VIEW Name}.
+
+\subsection{Die DML von SQL}
+
+Wir wollen an dieser Stelle einfach die Basisoperationen der relationalen Algebra in SQL übersetzen.
+
+Nehmen wir an, dass wir folgendes Schema haben: $R(A, B, C, D), S(E, F, G)$ und $T(A, B, C, D)$.
+
+\begin{itemize}
+  \item \textbf{Vereinigung}: $R \cup T$: \sql{SELECT * FROM R UNION SELECT * FROM T}.
+  \item \textbf{Differenz}: $R \setminus T$: \sql{SELECT * FROM R MINUS SELECT * FROM T}.
+  \item \textbf{Kreuzprodukt}: $R \times T$: \sql{SELECT * FROM R CROSS JOIN T}.
+  \item \textbf{Selektion}: $\sigma_{B=b}(R)$: \sql{SELECT * FROM WHERE B = `b`}.
+  \item \textbf{Projektion}: $\sigma_{A,C}(R)$: \sql{SELECT DISTINCT A, C FROM R}.
+  \item \textbf{Umbenennung}: $\rho_V(R)$: \sql{SELECT V.A FROM R AS V}.
+  \item \textbf{Umbenennung}: $\rho_{K \leftarrow C}(R)$: \sql{SELECT A, B, C, AS K, D FROM R}.
+  \item \textbf{Relation}: $R$: \sql{SELECT * FROM R}.
+  \item \textbf{Theta-Join}: $R \bowtie_{\theta(B, F)} S$ = \sql{SELECT * FROM R, S WHERE θ(B, F)}.
+  \item \textbf{Natural Join}: $R \bowtie U$ = \sql{SELECT * FROM R, U}.
+\end{itemize}
+
+Mit Funktionen kann man auch Mengen von Werten weiterverrechnen. Dazu gibt es etwa \sql{COUNT}, \sql{MIN}, \sql{MAX}, \sql{SUM} und \sql{AVG}.
+
+Mithilfe von \sql{GROUP BY} können Tupel zu Gruppen zusammengefasst werden. Man könnte eine Anfrage der Form \sql{SELECT .. FROM .. GROUP BY attr1, attr2 HAVING bedingung} schreiben.
+
+Mit \sql{ORDER BY attr1, attr2, ... [ASC|DESC]} bei einem \sql{SELECT} können dann die Tupel sortiert werden. Die Sortierungsrichtung ist optional.
+
+\textbf{Joins}
+
+\begin{minipageparskip}
+\begin{minipage}[t]{0.5\textwidth}
+Klassischer Stil:
+\begin{lstlisting}[language=SQL]
+SELECT K.KName, Ware
+FROM Kunde K, Auftrag
+WHERE K.KName = Auftrag.KName
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+SQL92:
+\begin{lstlisting}[language=SQL]
+SELECT KName, Ware
+FROM Kunde NATURAL JOIN Auftrag
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}[t]{0.5\textwidth}
+Theta-Join mit expliziter Join-Bedingung:
+\begin{lstlisting}[language=SQL]
+SELECT Kunde.KName, Ware
+FROM Kunde JOIN Auftrag
+ON Kunde.KName = Auftrag.KName
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+Analog andere Joins:\\
+\lstinline{[LEFT|RIGHT|FULL] (OUTER) JOIN}.
+\end{minipage}
+\end{minipageparskip}
+
+Analog zum \lstinline{SELECT} gibt es auch \lstinline{INSERT INTO}, \lstinline{DELETE FROM} und \lstinline{UPDATE ... SET}.
+
+\section{Relationale Entwurfstheorie}
+\subsection{Funktionale Abhängigkeiten}
+Eine \emph{funktionale Abhängigkeit} (FD) $\alpha \to \beta$ in einer Relation mit Attributmenge $X \supseteq \alpha \cup \beta$ besagt, dass wenn alle Werte der Attribute aus $\alpha$ bekannt sind, die Werte der Attribute aus $\beta$ eindeutig bestimmt sind. An den funktionalen Abhängigkeiten lässt sich die Qualität eines Relationsschemas erkennen, daraus ergeben sich die Normalformen (\ref{sec:normalformen}).
+
+Formal sagt man, dass $\alpha \to \beta$ in $R$ gilt, wenn
+\[r.\alpha = r'.\alpha \implies r.\beta = r'.\beta\]
+für alle $r, r' \in R$.
+
+Ein Superschlüssel ist eine Menge $\kappa \subseteq X$, sodass $\kappa^+ = X$ ist. Ein Schlüsselkandidat ist ein (bzgl.\ $\subseteq$) minimaler Superschlüssel.
+
+Man kann funktionale Abhängigkeiten auseinander ableiten. Man sagt: Eine funktionale Abhängigkeit $f$ folgt aus einer Menge funktionaler Abhängigkeiten $F$, geschrieben $F \models f$, wenn in jeder Relation, die alle Abhängigkeiten aus $F$ erfüllt, auch $f$ erfüllt ist. Um solche Implikationen syntaktisch zu prüfen, gibt es das Armstrong-Kalkül.
+\subsection{Armstrong-Kalkül}
+Die Axiome sind:
+
+\begin{center}
+\begin{minipage}{0.3\textwidth}
+\centering
+\emph{Reflexivität}:
+\begin{prooftree}
+    \AxiomC{$\beta \subseteq \alpha$}
+    \RightLabel{$A_1$}
+    \UnaryInfC{$\alpha \to \beta$}
+\end{prooftree}
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+\centering
+\emph{Verstärkung}:
+\begin{prooftree}
+    \AxiomC{$\alpha \to \beta$}
+    \RightLabel{$A_2$}
+    \UnaryInfC{$\alpha\gamma \to \beta\gamma$}
+\end{prooftree}
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+\centering
+\emph{Transitivität}:
+\begin{prooftree}
+    \AxiomC{$\alpha \to \beta$}
+    \AxiomC{$\beta \to \gamma$}
+    \RightLabel{$A_3$}
+    \BinaryInfC{$\alpha \to \gamma$}
+\end{prooftree}
+\end{minipage}
+\end{center}
+
+Die (geschlossene) Hülle einer Menge funktionaler Abhängigkeiten ist
+\[F^+ := \Set{f | F \vdash f} = \Set{f | F \models f}\]
+Die Attributhülle einer Menge von Attributen $\alpha$ ist
+\[\alpha^+ = \Set{x | \alpha \to \Set{x} \in F^+}\]
+
+Wir haben die folgenden weiteren Regeln eingeführt:
+
+\begin{center}
+\begin{minipage}{0.3\textwidth}
+\centering
+\emph{Vereinigung}:
+\begin{prooftree}
+    \AxiomC{$\alpha \to \beta$}
+    \AxiomC{$\alpha \to \gamma$}
+    \RightLabel{$A_4$}
+    \BinaryInfC{$\alpha \to \beta\gamma$}
+\end{prooftree}
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+\centering
+\emph{Dekomposition}:
+\begin{prooftree}
+    \AxiomC{$\alpha \to \beta\gamma$}
+    \RightLabel{$A_5$}
+    \UnaryInfC{$\alpha \to \beta$}
+\end{prooftree}
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+\centering
+\emph{Pseudotranistivität}:
+\begin{prooftree}
+    \AxiomC{$\alpha \to \beta$}
+    \AxiomC{$\beta\gamma \to \delta$}
+    \RightLabel{$A_6$}
+    \BinaryInfC{$\alpha\gamma \to \delta$}
+\end{prooftree}
+\end{minipage}
+\end{center}
+
+\subsection{Kanonische Überdeckung}
+
+Statt der Hülle (mit vielen Redundanzen) verwendet man auch die \emph{kanonische Überdeckung}. Dies ist eine Menge $F_C$ mit den folgenden Eigenschaften:
+\begin{itemize}
+\item $F_C^+ = F^+$.
+\item In jedem $\alpha \to \beta \in F_C$ kann man keine $A \in \alpha$ oder $B \in \beta$ weglassen.
+\item Jede linke Seite ist eindeutig.
+\end{itemize}
+
+Um die kanonische Überdeckung zu erhalten, nutzt man den folgenden Algorithmus:
+\begin{enumerate}
+\item Linksreduktion: Entferne unnötige Elemente der linken Seiten.
+\item Rechtsreduktion: Entferne unnötige Elemente der rechten Seiten.
+\item Entferne FDs der Form $\alpha \to \emptyset$.
+\item Fasse gleiche linke Seiten zusammen.
+\end{enumerate}
+
+\textbf{Beispiel} Ausgehend von den FDs:
+\begin{align*}
+A &\to BE & A &\to D & F &\to A \\ AC &\to F & BC &\to E & C &\to A
+\end{align*}
+\begin{minipage}[t]{0.49\textwidth}
+\emph{1. Schritt: Linksreduktion}
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item Prüfe, ob $A$ in der Hülle von $C$ ist.
+\item $C \to F$, dann $F \to A$.
+\item Bedingung a) ist erfüllt.
+\item Lösche $A$ aus $AC \to F$.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Prüfe, ob $B$ in der Hülle von $C$ ist.
+\item $C \to A$, dann $A \to BE$.
+\item Bedingung a) ist erfüllt.
+\item Lösche $A$ aus $AC \to F$.
+\end{enumerate}
+\end{enumerate}
+Zwischenergebnis:
+\begin{align*}
+A &\to BE \\ A &\to D \\ F &\to A \\ C &\to F \\ C &\to E \\ C &\to A
+\end{align*}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.49\textwidth}
+\emph{2. Schritt: Rechtsreduktion}
+\begin{enumerate}\itemsep0em
+\item $B$ und $E$ tauchen sonst nicht in der Hülle von $A$ auf.
+\item $D$ auch nicht.
+\item $A$ nicht in der Hülle von $F$.
+\item $F$ nicht in der Hülle von $C$.
+\item Durch $C \to A$ und $A \to BE$ ist $E$ schon in der Hülle von $C$. Löschen.
+\item Durch $C \to F$ und $F \to A$ ist A es auch. Löschen.
+\end{enumerate}
+Zum Schluss noch zusammenkürzen ergibt:
+\begin{align*}
+A &\to BED \\F &\to A \\ C &\to F
+\end{align*}
+\end{minipage}
+
+\subsection{Normalformen} \label{sec:normalformen}
+Zur Vermeidung von Redundanzen ist es wünschenswert, ein Relationenschema in eine verlustlose und wenn möglich abhängigkeitserhaltende Zerlegung zu bringen, die einer gewissen Form entspricht.
+
+\emph{Verlustlos} heißt, dass alle Informationen erhalten bleiben, d.h.\ dass der Natural Join der neuen Tabellen genau die alte Tabelle liefert.
+\emph{Abhängigkeitserhaltend} heißt, dass sich alle funktionalen Abhängigkeiten des alten Schemas aus den funktionalen Abhängigkeiten der neuen Schemata ergeben.
+
+Es gilt $1\NF \supseteq 2\NF \supseteq 3\NF \supseteq \BCNF (\supseteq 4\NF \supseteq 5\NF)$.
+
+Das heißt, um z.B. ein Relationsschema in 2NF zu bringen müssen wir sie zuerst in 1NF bringen.
+\subsection*{Erste Normalform (1NF)}
+
+Attribute von Relationen in $1\NF$ haben einen atomaren Wertebereich. D.h. sie sind selbst keine Mengen oder Tupel, etc.
+
+
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+ nicht in 1NF: \\
+\ \\
+  \begin{tabular}{ | c | c | c |}
+    \hline
+    Vater & Mutter & Kind \\ \hline \hline
+    Johann & Martha & \{Else, Lucia\} \\ \hline
+    Johann & Maria & \{Theo, Jose\} \\ \hline
+    Heinz & Martha & \{Cleo\} \\ \hline
+  \end{tabular}
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+  in 1NF: \\
+\ \\
+  \begin{tabular}{ | c | c | c |}
+    \hline
+    Vater & Mutter & Kind \\ \hline \hline
+    Johann & Martha & Else \\ \hline
+    Johann & Martha & Lucia \\ \hline
+    Johann & Maria & Theo \\ \hline
+    Johann & Maria & Jose \\ \hline
+    Heinz & Martha & Cleo \\ \hline
+  \end{tabular}
+\end{center}
+\end{minipage}
+
+\subsection*{Zweite Normalform (2NF)}
+
+Die 2NF Form erreicht man, indem man Attribute, die verschiedenen Konzepten angehören, aufspaltet, und nur noch die Schlüsselkandidaten der Relation zusammenhält. Dabei müssen die Nichtschlüssel-Attribute einem Schlüsselkandidaten zugeordnet werden, von dem sie funktional Abhängig sind. Sei im folgenden die Relation der Vorlesungen und des Professors, der sie hält, gegeben:
+
+\begin{minipageparskip}
+\begin{center}
+\begin{tabular}{| c | c | c | c | c | c | c |}
+    \hline
+    \underline{PersNr} & Name & Rang & Raum & \underline{VorlNr} & Titel & SWS \\ \hline
+\end{tabular}
+\end{center}
+\end{minipageparskip}
+
+Da Name, Rang und Raum von \underline{PersNr} funktional abhängig sind und Titel und SWS von \underline{VorlNr} abhängen, teilt sich die Relation wie folgt auf:
+
+\begin{minipageparskip}
+\begin{minipage}[t]{0.4\textwidth}
+\begin{center}
+\begin{tabular}{| c | c | c | c |}
+    \hline
+    \underline{PersNr} & Name & Rang & Raum \\ \hline
+\end{tabular}
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.2\textwidth}
+\begin{center}
+\begin{tabular}{| c | c |}
+    \hline
+    \underline{PersNr} & \underline{VorlNr} \\ \hline
+\end{tabular}
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.4\textwidth}
+\begin{center}
+\begin{tabular}{| c | c | c |}
+    \hline
+    \underline{VorlNr} & Titel & SWS \\ \hline
+\end{tabular}
+\end{center}
+\end{minipage}
+\end{minipageparskip}
+
+Das heißt, wir haben für zwei Konzepte getrennte Relationen, und eine weitere Relation, die diese über ihre Schlüsselkandidaten verknüpft.
+
+\subsection*{Dritte Normalform (3NF)}
+Ein Relationsschema $(X, F)$ ist in 3NF, wenn für alle Nichtschlüsselattribute $B \in X$ und $\alpha \to \Set{B} \in F^+$ die Menge $\alpha$ ein Superschlüssel ist. (Ein Nichtschlüsselattribut kommt in keinem Schlüsselkandidaten vor.)
+
+Um eine Relation in 3NF zu bringen, wendet man den Synthese-Algorithmus an. Um ein Relationsschema $\mathcal{R} = (X,F)$ zu zerlegen:
+\begin{enumerate}
+\item Berechne kanonische Überdeckung $F_C$.
+\item Für jedes $\alpha \to \beta \in F_C$:
+\begin{itemize}
+\item[] Erstelle Relationsschema der in $\alpha \to \beta$ vorkommenden Attribute:\\ $(\alpha \cup \beta, \Set{\alpha' \to \beta' \in F_C | \alpha', \beta' \subseteq \alpha \cup \beta})$.
+\end{itemize}
+\item Falls kein Schema einen Schlüsselkandidaten von $\mathcal{R}$ enthält:
+\begin{itemize}
+\item[] Wähle einen Schlüsselkandidaten $\kappa$ und erstelle Schema $(\kappa, \Set{\kappa \to \kappa})$.
+\end{itemize}
+\item Lösche jede Relation, deren Attributmenge in der Attributmenge einer anderen Relation enthalten ist.
+\end{enumerate}
+
+\subsection{Boyce-Codd Normalform (BCNF)}
+Ein Relationsschema $(X, F)$ ist in BCNF wenn für alle nichttrivialen $\alpha \to \beta \in F^+$ $\alpha$ ein Superschlüssel ist.
+
+Um eine Relation in BCNF zu bringen, gibt es den Dekompositionsalgorithmus:
+\begin{itemize}
+\item[] Solange ein $\mathcal{R}_i = (X_i, F_i)$ nicht in BCNF ist:
+\begin{enumerate}
+\item Finde nichttriviale abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$.
+\item $X_{i1} := \alpha \cup \beta$, $X_{i2} := X_i \setminus \beta$
+\item Ersetze $\mathcal{R}_i$ durch $\mathcal{R}_{i1}$ und $\mathcal{R}_{i2}$ mit Attributmengen $X_{i1}$ bzw.\ $X_{i2}$ und FDs durch Einschränkung von $F_i^+$.
+\end{enumerate}
+\end{itemize}
+\section{Relationale Anfragebearbeitung}
+\subsection{Anfrageoptimierung}
+Wenn wir mit dem Kanonischen Auswertungsplan Anfragen auswerten, haben wir meistens ziemlich miese Performance. Der Restrukturierungsalgorithmus kann den Kanonischen Auswertungsplan optimieren.
+
+\subsubsection{Kanonischer Auswertungsplan}
+Einfache SQL-Anfragen der Form links werden übersetzt in die Formel auf der rechten Seite.
+
+\begin{minipage}[t]{0.58\textwidth}
+\begin{enumerate}
+  \item Kartesisches Produkt von $R1, R2, \ldots$
+  \item Selektionen der Bedingungen
+  \item Projektion der Ergebnistupel
+\end{enumerate}
+\end{minipage}\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.30\textwidth}
+\begin{lstlisting}[language=SQL,mathescape,belowskip=0.1\baselineskip]
+SELECT $A1$, $A2$, $\ldots$
+FROM $R1$, $R2$, $\ldots$
+WHERE $B1$ AND $B2$, $\ldots$
+\end{lstlisting}%
+\begin{center}%
+\rotatebox{-90}{$\leadsto$}%
+\end{center}
+$\pi_{A_1, A_2}(\sigma_{B_2}(\sigma_{B_1}(R_1 \times R_2)))$
+\end{minipage}
+
+\subsubsection{Restrukturierungsalgorithmus}
+
+Der Restrukturierungsalgorithmus wendet einfache Regeln an, um Auswertungspläne zu vereinfachen.
+
+\begin{enumerate}
+  \item Aufbrechen von Selektionen ($\sigma_{a \land b} = \sigma_a \cdot \sigma b$).
+  \item Alle Selektionen so weit wie möglich nach innen ziehen.
+  \item Selektionen und Kreuzprodukte zu Joins zusammenfassen.
+  \item Projektionen so weit wie möglich innen einfügen oder nach innen verschieben.
+  \item Einzelne Selektionen wieder zusammen fassen.
+\end{enumerate}
+\textbf{Beispiel:} \\
+{\fontsize{9pt}{10pt}\selectfont\lstinline{SELECT Beruf FROM Personen AS p, Berufe AS b WHERE Vorname = 'Basti' AND Gehalt >= 300 AND p.Nr == b.Nr}} \\
+\begin{center}
+\hfill
+\scalebox{0.8}{%
+\begin{tikzpicture}[every node/.style={rounded corners=2.5mm, draw=black!80}, level distance = 2.5em, baseline=(base)]
+  \begin{scope}
+    \node[draw] {$\Pi[Beruf]$} child {
+      node[draw, align=center] (base) {$\sigma[Vorname = {'Basti'} $\\$\land Gehalt \ge 300 \land p.Nr = b.Nr]$} child {
+          node [draw] {$\times$} child {
+              node [draw=none] {Personen}} child {
+              node [draw=none] {Berufe}}}};
+  \end{scope}
+\end{tikzpicture}
+}
+\hfill$\overset{1}{\leadsto}$\hfill
+\scalebox{0.8}{
+\begin{tikzpicture}[every node/.style={rounded corners=2.5mm, draw=black!80}, level distance = 2.5em, baseline=(base)]
+\begin{scope}
+\node[draw] {$\Pi[Beruf]$} child {
+    node[draw] (base) {$\sigma[Vorname = 'Basti']$} child {
+        node [draw] {$\sigma[Gehalt \ge 300]$} child {
+            node [draw] {$\sigma[p.Nr = b.Nr]$} child {
+                node [draw] {$\times$} child {
+                    node [draw=none] {Personen}} child {
+                    node [draw=none] {Berufe}}}}}};
+\end{scope}
+\end{tikzpicture}
+}
+\hfill$\overset{2}{\leadsto}$\hfill
+\scalebox{0.8}{
+\begin{tikzpicture}[every node/.style={rounded corners=2.5mm, draw=black!80}, level distance = 2.5em, sibling distance = 10em, baseline=(base)]
+\begin{scope}
+\node[draw] {$\Pi[Beruf]$} child {
+    node [draw] (base) {$\sigma[p.Nr = b.Nr]$} child {
+        node [draw] {$\times$} child {
+            node[draw] {$\sigma[Vorname = 'Basti']$} child {
+                node [draw=none] {Personen}
+            }
+        } child {
+            node [draw] {$\sigma[Gehalt \ge 300]$} child {
+                node [draw=none] {Berufe}}}}};
+\end{scope}
+\end{tikzpicture}
+}\hfill\\\bigskip
+\hfill\hfill$\overset{3}{\leadsto}$\hfill
+\scalebox{0.8}{
+\begin{tikzpicture}[every node/.style={rounded corners=2.5mm, draw=black!80}, level distance = 2.5em, sibling distance = 10em, baseline=(base)]
+\begin{scope}
+\node[draw] {$\Pi[Beruf]$} child {
+    node [draw] (base) {$\Join p.Nr = b.Nr$} child {
+        node[draw] {$\sigma[Vorname = 'Basti']$} child {
+            node [draw=none] {Personen}
+        }
+    } child {
+        node [draw] {$\sigma[Gehalt \ge 300]$} child {
+            node [draw=none] {Berufe}}}};
+\end{scope}
+\end{tikzpicture}
+}
+\hfill$\overset{4}{\leadsto}$\hfill
+\scalebox{0.8}{
+\begin{tikzpicture}[every node/.style={rounded corners=2.5mm, draw=black!80}, level distance = 2.5em, sibling distance = 10em, baseline=(base)]
+\begin{scope}
+\node[draw] {$\Pi[Beruf]$} child {
+    node [draw] (base) {$\Join p.Nr = b.Nr$} child {
+        node[draw] {$\Pi[Nr]$} child {
+            node[draw] {$\sigma[Vorname = 'Basti']$} child {
+                node [draw=none] {Personen}
+        }}
+    } child {
+        node [draw] {$\Pi[Beruf, Nr]$} child {
+            node [draw] {$\sigma[Gehalt \ge 300]$} child {
+                node [draw=none] {Berufe}}}}};
+\end{scope}
+\end{tikzpicture}
+}
+\hfill\hfill
+\end{center}
+
+\subsection{Indexstrukturen}
+Indexstrukturen dienen der effizienten Implementierung der Selektion.
+
+\subsubsection{B-Bäume}
+Ein \textit{B-Baum} ist ein Baumstruktur mit Parameter $M \in 2\mathbb{N}$ (und $m = M/2$) wobei für eine nicht-leeren B-Baum folgende Eigenschaften gelten:
+\begin{itemize}
+\item Jeder Knoten enthält höchstens $M$ Schlüssel.
+\item Die Wurzel enthält mindestens einen Schlüssel.
+\item Jeder Knoten außer der Wurzel enthält mindestens $m = M/2$ Schlüssel.
+\item Ein innerer Knoten mit $b$ Schlüsseln hat genau b+1 Kinder.
+\item Alle Blätter befinden sich auf der selben Höhe.
+\end{itemize}
+
+\scalebox{0.64}{
+         \begin{tikzpicture}
+            %
+            \xyshift{40mm}{0}{\btreeinodefour{root}{8}{33}{60}{70}};
+            %
+            \xyshift{-40mm}{-20mm}{\btreelnodefour{n1}{3}{4}{11}{19}}
+            \xyshift{-0mm}{-20mm}{\btreelnodefour{n2}{23}{27}{}{}}
+            \xyshift{40mm}{-20mm}{\btreelnodefour{n3}{36}{40}{44}{52}}
+            \xyshift{80mm}{-20mm}{\btreelnodefour{n4}{63}{64}{}{}}
+            \xyshift{120mm}{-20mm}{\btreelnodefour{n5}{77}{81}{}{}}
+            %
+            \foreach \x in {1,2,...,5} { \btreelink{root-\x}{n\x} }
+         \end{tikzpicture}
+}
+
+Um den Baum nach einem Element zu \textbf{durchsuchen}, wird beginnend in der Wurzel auf den jeweiligen Knoten eine binäre Suche ausgeführt und immer im entsprechenden Teilbaum gesucht. Komplexität: $\mathcal{O}(\log_2N)$.
+
+Zur Erfüllung einer \textbf{Bereichsanfrage} (min, max) wird der kleinste Wert, welcher größer oder gleich min ist, rekursiv gesucht. Dann findet ein in-order Traversierung bis zum größten Element, welches kleiner oder gleich max ist, durchgeführt.
+
+Beim \textbf{Einfügen} eines neuen Elements wird erst ein zum Objekt passender Knoten gesucht und dort eingefügt. Falls das Blatt deswegen überläuft, so wird der Knoten gesplittet. Komplexität: $\mathcal{O}(\log_mN)$
+
+\textbf{Löschen}:
+Erst einmal wird der Knoten gesucht, welcher den zu löschenden Schlüssel beinhaltet. Es treten drei Fälle auf.
+\begin{itemize}
+\item Ist der Knoten ein Blatt, so wird der Schlüssel gelöscht. Hat der Knoten nun weniger als $M/2$ Schlüssel, so findet eine Verschmelzung statt.
+\item Ist der Knoten ein innerer, so wir der zu löschende Schlüssel durch den größten Schlüssel $l$ im linken Teilbaum ersetzt. Dann wird $l$ aus seinem Blatt gelöscht und ggf. findet auch hier eine rekursive Verschmelzung statt.
+\item Handelt es sich beim Knoten um die Wurzel, wird das Objekt einfach gelöscht.
+\end{itemize}
+
+\textbf{Verschmelzen}:
+Existiert ein Nachbarknoten mit mehr als $M/2$ Schlüsseln, so findet ein Ausgleich statt. Die Schlüssel der beiden Knoten werden gleichmäßig auf beide Knoten verteilt und ein neuer \textit{Trennschlüssel} bestimmt. Sonst gibt es keinen Nachbarknoten mit genügend Schlüsseln, aber mindestens einen mit genau $M/2$ Schlüsseln. Beide Knoten verschmelzen ihre Elemente und den Trennschlüssel im Vorgänger miteinander zu einem neuen Knoten mit $M$ Elementen.
+
+\textbf{B\texttt{+}-Bäume}: B\texttt{+}-Bäume sind B-Bäume, deren Knoten nur Schlüssel enthalten und wo die Blätter verkettet sind um schnelle Iteration zu ermöglichen. Die echten Daten werden dann an einem anderen Ort gespeichert.
+
+\section{XML}
+
+XML ist ein kompaktes und effizientes Format in einem passenden Anwendungskontext. XML-Dokumente bestehen aus Bäumen, wobei die \emph{Elementknoten} auch \emph{Attribute} haben können.
+
+\subsection{XML Schema}
+
+Mit XML Schema können wir für XML-Dokumente ein Schema in XML definieren. Man verwendet \lstinline{http://www.w3.org/2001/XMLSchema} als Namespace.
+
+\begin{lstlisting}[language=XML,mathescape]
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+$\llap{\textrm{\ding{172}}}$    xmlns="http://panikzettel.philworld.de.de/Panikzettel"
+$\llap{\textrm{\ding{173}}}$    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+$\llap{\textrm{\ding{174}}}$    targetNamespace="http://panikzettel.philworld.de.de/Panikzettel"
+    elementFormDefault="qualified">
+$\llap{\textrm{\ding{175}}}$    <xs:complexType name="PanikzettelType">
+        <xs:sequence>
+            <xs:element name="Titel" type="xs:string" />
+            <xs:element name="Datum" type="xs:date" />
+        </xs:sequence>
+        <xs:attribute name="URL" type="xs:string" />
+    </xs:complexType>
+$\llap{\textrm{\ding{176}}}$    <xs:complexType name="PanikzettelListeType">
+        <xs:sequence>
+            <xs:element name="Panikzettel" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+$\llap{\textrm{\ding{177}}}$    <xs:element name="PanikzettelListe" type="PanikzettelListeType"/>
+</xs:schema>
+\end{lstlisting}
+
+\begin{enumerate}
+  \item Der Standardnamespace ist die angegebene URI.
+  \item Wir importieren XML Schema als \lstinline{xs}.
+  \item Wir deklarieren gerade für die angegebene URI.
+  \item Ein Knotentyp, wo jeder Knoten dann \lstinline{Titel} und \lstinline{Datum} in der angegebenen Reihenfolge enthält und entweder davor oder danach einen \lstinline{URL}-Knoten.
+  \item Ein Knotentyp, der beliebig viele Elemente mit Namen \lstinline{Panikzettel} enthalten darf.
+  \item Der Wurzelknoten jedes Dokumentes, was dieses neue Schema verwendet, muss \lstinline{PanikzettelListe} heißen und ist vom Typ \lstinline{PanikzettelListeType}.
+\end{enumerate}
+
+\subsection{XPath}
+
+Mit XPath können wir Knoten in XML-Bäumen suchen. Diese Suche wird ``Lokalisierung'' genannt. Eine XPath-Anfrage kann dann durch \lstinline{/} getrennte Lokalisierungsschritte enthalten; diese Ausdrücke nach dem \lstinline{/} selektieren dann weiter auf die zutreffenden Knoten von zuvor.
+
+Ein einzelner Lokalisierungsschritt hat die Struktur \lstinline{Achse::Test[Prädikat]}. Die \emph{Achsen} machen aus jedem Knoten eine bestimmte andere Menge von Knoten, siehe dazu Beispiele. Ein \emph{Knotentest} prüft eine einfache Bedingung, meist etwa einen Knotennamen. Das \emph{Prädikat} prüft dann komplexere Bedingungen.
+
+Mögliche Achsen sind: \lstinline{self}, \lstinline{attribute}, \lstinline{child} oder \lstinline{parent} oder \lstinline{ancestor}. Knotentests können unter anderem sein: \lstinline{node()} (immer wahr), \lstinline{*} (wahr für jeden Knoten der Achse), \lstinline{element(Name)}, \lstinline{attribute(Name)}.
+
+In Pfadausdrücken gibt es Abkürzungen wie \lstinline{.}, \lstinline{..}, \lstinline{/} am Anfang (für den Wurzelknoten), \lstinline{@} (Attribute), \lstinline{//} (alle Nachfahren und der Knoten selber) und \lstinline{[n]} für das n-te Element.
+
+Ein Beispiel: \lstinline{/Universität/Fakultäten/Fakultät[FakName="Informatik"]//Vorlesung@Name} (das Name-Attribut aller Informatik-Vorlesungen).
+
+\section{RDF}
+
+RDF ist ein Graph-basiertes Datenmodell mit Knoten und Kanten. RDF an sich gibt keine Serialisierung, d.h.\ auch keine Sprache vor. Alle RDF-Daten sind Tripel (Subjekt, Prädikat, Objekt). Subjekt und Objekt sind Knoten, das Prädikat ist eine (gerichtete) Kante.
+
+Als Typen gibt es URIs, Literale (Werte wie Text oder Zahlen) oder \emph{Blank Nodes} (Knoten nur mit einer Identität). Als Subjekte können URIs und Blank Nodes auftreten, als Prädikate nur URIs und Objekte können von jedem Typ sein. Bei Literalen kann ein Datentyp angegeben werden.
+
+\subsection{Turtle}
+
+Turtle ist ein ``knappes'' Datenformat für RDF.
+
+\begin{itemize}
+  \item URIs: \lstinline{<http://panikzettel.philworld.de/>}.
+  \item Literale: \lstinline{"Hallo Welt"@DE} (mit Sprache) oder \lstinline{"31"^^xsd:int} (mit Typ).
+  \item Tripel werden durch einen Punkt getrennt, die Tripeleinträge werden nacheinander aufgeschrieben. Mehrere Tripel mit gleichem Objekt oder zusätzlich gleichem Prädikat können zusammengefasst werden.
+  \item Namespace-Abkürzung deklarieren: \lstinline{@prefix rdfs <http://www.w3.org/2000/01/rdf-schema>} kürzt die lange URI als \lstinline{rdfs} ab.
+  \item Blank Nodes: \lstinline{_:lokalerName}.
+\end{itemize}
+
+\subsection{SPARQL}
+
+SPARQL kann man als SQL für RDF verstehen. Anfragen mit SPARQL bestehen aus vier Teilen, in denen Variablen \lstinline{?name} auftauchen können:
+
+\begin{enumerate}
+  \item Definition von Namespaces, etwa \lstinline{PREFIX ex: <http://example.com/resources/>}.
+  \item Anfrageklausel (Projektion): \lstinline{SELECT}, \lstinline{ASK}, \lstinline{CONSTRUCT}, \lstinline{DESCRIBE}.
+  \item \lstinline{WHERE}-Klausel.
+  \item Anfragemodifikatoren, etwa \lstinline{ORDER BY}.
+\end{enumerate}
+
+Eine Anfrage kann dann etwa so aussehen:
+
+\begin{lstlisting}
+SELECT ?person ?job
+  WHERE {
+    ?person foaf:knows :Panikzettel.
+    ?person foaf:name ?name.
+    FILTER (str(?name) == "Basti").
+    OPTIONAL { ?person foaf:job ?job }
+  }
+\end{lstlisting}
+
+Dabei ist \lstinline{FILTER} ein SPARQL-Filterausdruck, der das Ergebnis weiter einschränkt. \lstinline{OPTIONAL} erlaubt es, möglicherweise vorhandenene Werte mit aus zu geben.
+
+\subsection{RDF Schema (RDFS)}
+
+Das \emph{RDF Schema} ist ein RDF Vokabular, um in RDF ein Schema für RDF-Daten zu definieren. Der Namespace ist \lstinline{http://www.w3.org/2000/01/rdf-schema#}, meist abgekürzt als \lstinline{rdfs}.
+
+In RDF selber gibt es \emph{Klassen} und Zugehörigkeit zu Klassen kann man mit \lstinline{ex:EineAInstanz rdf:type ex:A} festlegen. Eine Entität kann Instanz mehrerer Klassen sein.
+
+Mit RDF Schema kann man nun auch etwa \emph{Unterklassen} definieren: \lstinline{ex:A rdfs:subClassOf ex:OberA}. Die Typinformationen sind transitiv, also implizit gilt nun auch schon \lstinline{ex:EineAInstanz rdf:type ex:OberA}.
+
+Prädikate können ähnlich definiert werden: \lstinline{ex:haben rdf:type rdf:Property}. Dann können wir dies nutzen: \lstinline{ex:Jon ex:haben ex:keineAhnung}. Mit \lstinline{rdfs:domain} und \lstinline{rdfs:range} können erlaubte Typen für Subjekt und Objekt respektive für ein Prädikat angegeben werden.
+
+Man möchte an dieser Stelle bemerken, wie \lstinline{rdf} und \lstinline{rdfs} drunter und drüber verwendet werden. Das ist leider Absicht.
+\pagebreak
+\section{Transaktionsverwaltung}
+\subsection{Transaktionskonzept}
+Transaktionen werden durch das ACID-Prinzip  charakterisiert.
+
+\begin{minipage}[t]{0.45\textwidth}
+%\begin{center}
+\emph{Atomicity}: \\
+Der Effekt einer Transaktion kommt entweder ganz oder gar nicht zu tragen.\\
+\ \\
+\emph{Isolation}: \\
+Veränderungen anderer Nutzer werden nicht wahrgenommen.
+%\end{center}
+\end{minipage}
+\hspace{0.10\textwidth}
+\begin{minipage}[t]{0.45\textwidth}
+%\begin{center}
+\emph{Consistency}: \\
+Eine konsistente Datenbank ist auch nach einer Transaktion konsistent. \\
+\ \\
+\emph{Durability}: \\
+Der Effekt einer Transaktion ist dauerhaft.
+%\end{center}
+\end{minipage} \\
+\medskip
+
+Definitionen:
+\begin{itemize}
+\item $\textrm{DB} = \Set{x,y,z,...}$
+unsere Datenbank, eine Menge von Objekten.
+\item $p_i$
+ein beliebiger Zugriff auf eine Objekt.
+\item $s$
+eine für eine Menge von Transaktionen definierte Reihenfolge von Zugriffen, auch Schedule genannt.
+\item $r(x)$ und $w(x)$, $x \in \textrm{DB}$
+die Lese- und Schreibzugriffe auf Objekte.
+\item $t = p_1,...,p_n$
+eine Transaktion aus endlich vielen Zugriffen.
+\item $c_i \textrm{ und } a_i$
+die $\texttt{commit}$ bzw. $\texttt{abort}$ Pseudoaktionen von $t_i$, die eine Transaktion abschließen und sich ausschließen.
+\end{itemize}
+
+Wir notieren nebenläufige Transaktionen und ihre Zugriffe mit Indizes:
+$$t_i = r_i(x)w_i(y) \textrm{ und } t_j=w_j(x)t_j(y)$$
+
+\subsection{Synchronisation}
+
+Falls verschiedene Transaktionen nicht isoliert sind kann es zu Anomalien kommen:
+\begin{itemize}
+\item \emph{Lost Updates}: Änderungen einer Transaktion können von einer anderen überschrieben werden. In dem Schedule $r_1(x)r_2(x)w_2(x)w_1(x)$ berücksichtigt $t_1$ die Veränderung von $x$ von $t_2$ nicht.
+\item \emph{Dirty read/write}: So bezeichnen wir das Lesen bzw. Überschreiben von Daten einer nicht abgeschlossenen Transaktion.
+\item \emph{Nicht-reproduzierbares Lesen}: Ein Wert wird zwischen zwei Lesezugriffen einer Transaktion verändert.
+\item \emph{Phantomproblem}: Ähnlich zum nicht-reproduzierbaren Lesen, auch \emph{Inconsistent read} genannt, da zwischen Lesezugriffen bearbeitete Werte inkonsistent sind.
+\end{itemize}
+
+Sei $T = \Set{t_1,...,t_n}$ eine Menge von Transaktionen. Dann ist:
+\begin{itemize}
+\item \emph{shuffle$(T)$}: Die Menge aller Folgen von Aktionen, die $t_1,...,t_n$ als Teilfolgen, und keine weiteren Aktionen enthält.
+\item \emph{Vollständiges Schedule}: Eine Folge $s \in \textrm{shuffle}(T)$, die die Aktionen $c_i$ oder $a_i$ für $t_i \in T$ einschließt.
+\item \emph{Serielles Schedule}: Ist ein vollständiges Schedule, für das eine Permutation $\rho \textrm{ von } \Set{1,...,n}$ gibt, so dass $s = t_{\rho(1)},...,t_{\rho(n)}$
+\end{itemize}
+
+Wir definieren folgende Mengen:
+
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+$\texttt{op}(s)$ \\
+Menge aller Aktionen in $s$ \\
+\ \\
+$\texttt{commit}(s)$ \\
+Menge der bestätigten Transaktionen \\
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+$\texttt{trans}(s)$ \\
+Menge aller Transaktionen in $s$ \\
+\ \\
+$\texttt{abort}(s)$ \\
+Menge der abgebrochenen Transaktionen \\
+\end{center}
+\end{minipage}
+\begin{center}
+$\texttt{active}(s) = \texttt{trans}(s) \setminus (\texttt{commit}(s) \cup \texttt{abort}(s))$ \\
+Menge der aktiven Transaktionen
+\end{center}
+
+Sei $s$ ein Schedule mit zwei Transaktionen $t$ und $t'$. Dann ist:
+\begin{itemize}
+\item \emph{Konflikt}: zwei Zugriffe $p$ und $q$, von denen mindestens eins ein Schreibzugriff ist, arbeiten auf demselben Objekt.
+\item \emph{Menge der Konfliktbeziehungen}: $C(s) = \Set{(p,q)|p \textrm{ steht vor } q \textrm{ und befinden sich im Konflikt}}$
+\item $conf(s)$ bezeichnet die Menge der Konfliktbeziehungen in $s$ nach Bereinigung von abgebrochenen Transaktionen.
+\end{itemize}
+\subsubsection*{Konfliktserialisierbarkeit (CSR)}
+\begin{minipage}[t]{0.45\textwidth}
+Zwei Schedules $s$ und $s'$ sind \emph{konfliktäquivalent}, auch $s \approx_c s'$ geschrieben falls:
+\begin{itemize}
+\item $op(s) = op(s')$
+\item $conf(s) = conf(s')$
+\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.1\textwidth}
+\begin{center}
+
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.45\textwidth}
+Ein vollständiger Schedule $s$ ist \emph{konfliktserialisierbar}, falls ein serieller Schedule $s'$ mit $s \approx_c s'$ existiert. \\
+Man schreibt $s \in $ CSR.
+\end{minipage}
+
+Wir definieren den \emph{Konfliktgraph} $G(s)=(v,E)$ mit
+\begin{itemize}
+\item $V = commit(s)$
+\item $E = \Set{(t,t')|t \neq t' \land \exists p \in t, \exists q \in t':(p,q) \in conf(s)}$
+\end{itemize}
+$$s \in \textrm{CSR} \Leftrightarrow G(s) \textrm{ ist azyklisch}$$
+
+Durch CSR werden Lost Update und das Phantomproblem vermieden, nicht aber dirty read/writes.
+
+\subsubsection*{''liest von''-Notation}
+
+In einem Schedule $s$ heißt $p <_s q$, dass $p$ vor $q$ stattfindet. Wir sagen $t_i$ \emph{liest $x$ von} $t_j$ in $s$ wenn:
+\begin{itemize}
+\item $w_j(x) <_s r_i(x)$
+\item $a_j \not < r_i(x)$
+\item $w_j(x) <_s w_k(x) <_s r_i(x) \to a_k <_s r_i(x)$
+\end{itemize}
+
+\begin{minipage}[t]{0.28\textwidth}
+\subsubsection*{Rücksetzbarkeit (RC)}
+\begin{center}
+$s$ ist \emph{zurücksetzbar} wenn gilt: \\
+
+$t_i$ liest von $t_j$ in $s$ $\land c_i \in s \to c_j <_s c_i$
+\end{center}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
+\subsubsection*{verm. kaskadierende Aborts (ACA)}
+\begin{center}
+$s$ vermeidet kaskadierende Aborts, falls: \\
+
+$t_i$ liest $x$ von $t_j$ in $s \to c_j <_s r_i(x)$
+\end{center}
+\end{minipage}
+\hspace{0.02\textwidth}
+\begin{minipage}[t]{0.28\textwidth}
+\subsubsection*{Striktheit (ST)}
+\begin{center}
+$s$ ist strikt, falls: \\
+
+$w_j(x) <_s p_i(x) \to $ $ a_j <_s p_i(x) \lor c_j <_s p_i(x)$
+\end{center}
+\end{minipage}
+\medskip
+
+Ein Schedule heißt \emph{korrekt}, falls es in der Klasse CSR und in einer der Klassen RC, ACA oder ST liegt.
+
+\subsection{Protokolle zur Synchronisation}
+
+Mit \emph{Sperren} synchronisieren wir Zugriffe auf Objekte. Ein Objekt wird vor einem Zugriff gesperrt und danach wieder freigegeben. Bei mehreren simultanen Transaktionen sind Lesesperren untereinander kompatibel, Schreibzugriffe jedoch nicht.
+
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+\emph{Lesesperren}:
+\begin{itemize}
+\item $rl_i(x)$ (lock)
+\item $ru_i(x)$ (unlock)
+\end{itemize}
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{center}
+\emph{Schreibsperren}:
+\begin{itemize}
+\item $wl_i(x)$ (lock)
+\item $wu_i(x)$ (unlock)
+\end{itemize}
+\end{center}
+\end{minipage}
+\smallskip
+
+Es gelten folgende Regeln für Sperren:
+\begin{enumerate}
+\item Falls $t_i$ eine Aktion $p_i(x)$ enthält, dann davor (irgendwann) $pl_i(x)$ und danach (irgendwann) $pu_i(x)$.
+\item Für jedes von $t_i$ verwendete $x$ existiert genau ein $rl_i(x)$ bzw. $wl_i(x)$.
+\item Unlocks sind nicht redundant.
+\end{enumerate}
+Für ein Schedule $s$ bezeichnen wir mit DT$(s)$ die Inklusion der Aktionen $r$, $w$, $a$ und $c$.
+
+\subsubsection*{2-Phasen Sperrprotokoll (2PL)}
+
+\begin{minipage}[t]{0.45\textwidth}
+\begin{itemize}
+\item Phase eins: \emph{lock}-Aktionen
+\item Phase zwei: \emph{unlock}-Aktionen
+\end{itemize}
+\end{minipage}
+\hspace{0.1\textwidth}
+\begin{minipage}[t]{0.45\textwidth}
+Nach der ersten \emph{unlock}-Aktion einer Transaktion darf keine \emph{lock}-Aktion mehr stattfinden.\\
+2PL erfüllt CSR, auch genannt \emph{s-sicher}.
+\end{minipage}
+\bigskip
+
+\begin{minipage}[t]{0.45\textwidth}
+\subsubsection*{Konservatives/statisches 2PL (C2PL)}
+Alle Sperren einer Transaktion werden vor dem ersten tatsächlichen Zugriff gesetzt.
+\begin{itemize}
+\item Kein Abbruch von Transaktionen.
+\item Alle Zugriffe müssen im voraus bekannt sein.
+\item Ggf. muss die Transaktion warten.
+\end{itemize}
+\end{minipage}
+\hspace{0.1\textwidth}
+\begin{minipage}[t]{0.45\textwidth}
+\subsubsection*{Strenges/dynamisches 2PL (S2PL)}
+Schreibsperren einer Transaktion werden erst nach dem letzten Zugriff aufgehoben.
+\begin{itemize}
+\item S2PL erfüllt CSR und ST und ist daher sicher.
+\item Werden auch Lesesperren gehalten sprich man von starken S2PL (SS2PL).
+\end{itemize}
+\end{minipage}
+
+Nachteile von 2PL-Protokollen sind:
+\begin{itemize}
+\item Bei großen Objekten gibt es wenige Sperren zu verwalten, aber mehr Konflikte zwischen Transaktionen.
+\item Bei kleinen Objekten gibt es viele Sperren zu verwalten, dafür weniger Konflikte zwischen Transaktionen.
+\end{itemize}
+
+\begin{minipage}[t]{0.45\textwidth}
+\subsection{Recovery}
+Potenzielle Fehler:
+\begin{itemize}
+\item \emph{Transaktionsfehler}: z. B. Abbruch der Anwendung, Verletzung von Zugriffsrechten, Rollback vom Benutzer, Transaktionskonflikt. \\
+Lösung: \emph{Rücksetzen}: Den Anfangszustand vor der Transaktion sichern und wiederherstellen.
+\item \emph{Systemfehler}: z. B. Stromausfall, Ausfall der CPU, Absturz des OS. \\
+Lösung: \emph{Warmstart}: UNDO aller nicht abgeschlossenen Transaktionen.
+\item \emph{Medienfehler}: Datenverlust durch Schaden am Speichermedium. \\
+Lösung: \emph{Kaltstart}: Aufsetzen eines Backups. REDO aller bereits commiteten Transaktionen. UNDO aller nicht abgeschlossenen Transaktionen.
+\end{itemize}
+Techniken:
+\begin{itemize}
+\item \emph{Duplizierung}: z. B. Bänder, Spiegelplatten, weitere Rechenzentren.
+\item \emph{Logging}: Protokollierung aller Vorgänge.
+\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.1\textwidth}
+\begin{center}
+
+\end{center}
+\end{minipage}
+\begin{minipage}[t]{0.45\textwidth}
+\subsection{Datenschutz}
+Schutz der Daten vor unberechtigter Manipulation. Maßnahmen:
+\begin{itemize}
+\item \emph{Identifikation}: z. B. Passwort oder Personal.
+\item Schutz vor physischen Übergriffen: Diebstahl von Speichermedien, Anzapfen von Leitungen.
+\item \emph{Verschlüsselung}.
+\end{itemize}
+\emph{DBS-spezifische Maßnahmen}
+\begin{itemize}
+\item \emph{DAC}: Sicherheitssubjekte (wer Zugriff hat), und Sicherheitsobjekte (auf welche Daten), dazu Rechte (Einfügen, Entfernen, Modifizieren). \\
+Datenerzeuger sind für Sicherheit verantwortlich, Granularität der Objekte erhöht stark die Verwaltung der Rechte.
+\item \emph{MAC}: Sicherheitseinstufung von Daten (Sensitivität) und Personen (Vertrauenswürdigkeit) (streng geheim, unklassifiziert etc.). Zugriff erlaubt solange Vertrauenswürdigkeit $>$ Sensitivität. \\
+Potentiell höhere Sicherheit, Zusammenarbeit von Benutzern mit unterschiedlichen Vertrauenswürdigkeiten schwer.
+\end{itemize}
+\end{minipage}
+
+
+\end{document}

@@ -15,3 +15,4 @@ compile_pdf:
       - swt.pdf
       - datkom.pdf
       - malo.pdf
+      - dbis.pdf
