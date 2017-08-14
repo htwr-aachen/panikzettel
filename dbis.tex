@@ -452,7 +452,7 @@ Zur Vermeidung von Redundanzen ist es wünschenswert, ein Relationenschema in ei
 Es gilt $1\NF \supseteq 2\NF \supseteq 3\NF \supseteq \BCNF (\supseteq 4\NF \supseteq 5\NF)$.
 
 Das heißt, um z.B. ein Relationsschema in 2NF zu bringen müssen wir sie zuerst in 1NF bringen.
-\subsection*{Erste Normalform (1NF)}
+\subsubsection{Erste Normalform (1NF)}
 
 Attribute von Relationen in $1\NF$ haben einen atomaren Wertebereich. D.h. sie sind selbst keine Mengen oder Tupel, etc.
 
@@ -486,7 +486,7 @@ Attribute von Relationen in $1\NF$ haben einen atomaren Wertebereich. D.h. sie s
 \end{center}
 \end{minipage}
 
-\subsection*{Zweite Normalform (2NF)}
+\subsubsection{Zweite Normalform (2NF)}
 
 Die 2NF Form erreicht man, indem man Attribute, die verschiedenen Konzepten angehören, aufspaltet, und nur noch die Schlüsselkandidaten der Relation zusammenhält. Dabei müssen die Nichtschlüssel-Attribute einem Schlüsselkandidaten zugeordnet werden, von dem sie funktional Abhängig sind. Sei im folgenden die Relation der Vorlesungen und des Professors, der sie hält, gegeben:
 
@@ -530,7 +530,7 @@ Da Name, Rang und Raum von \underline{PersNr} funktional abhängig sind und Tite
 
 Das heißt, wir haben für zwei Konzepte getrennte Relationen, und eine weitere Relation, die diese über ihre Schlüsselkandidaten verknüpft.
 
-\subsection*{Dritte Normalform (3NF)}
+\subsubsection{Dritte Normalform (3NF)}
 Ein Relationsschema $(X, F)$ ist in 3NF, wenn für alle Nichtschlüsselattribute $B \in X$ und $\alpha \to \Set{B} \in F^+$ die Menge $\alpha$ ein Superschlüssel ist. (Ein Nichtschlüsselattribut kommt in keinem Schlüsselkandidaten vor.)
 
 Um eine Relation in 3NF zu bringen, wendet man den Synthese-Algorithmus an. Um ein Relationsschema $\mathcal{R} = (X,F)$ zu zerlegen:
@@ -547,7 +547,7 @@ Um eine Relation in 3NF zu bringen, wendet man den Synthese-Algorithmus an. Um e
 \item Lösche jede Relation, deren Attributmenge in der Attributmenge einer anderen Relation enthalten ist.
 \end{enumerate}
 
-\subsection{Boyce-Codd Normalform (BCNF)}
+\subsubsection{Boyce-Codd Normalform (BCNF)}
 Ein Relationsschema $(X, F)$ ist in BCNF wenn für alle nichttrivialen $\alpha \to \beta \in F^+$ $\alpha$ ein Superschlüssel ist.
 
 Um eine Relation in BCNF zu bringen, gibt es den Dekompositionsalgorithmus:
