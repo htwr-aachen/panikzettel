@@ -75,7 +75,7 @@ Dieses Projekt ist lizenziert unter CC-BY-SA-4.0 und wird auf dem Git-Server der
 \subsection{Logik}
 Eine Logik ist eine (typischerweise induktiv definierte) Menge von Formeln (Syntax) zusammen mit einem Typ von Interpretationen, mithilfe derer man einer Formel einen Wahrheitswert zuordnen kann (Semantik).
 
-Für eine Interpretation $\J$ ist $\interpret{\varphi}^\J$ der Wahrheitswert von $\varphi$ unter $\J$. Wenn $\interpret{\varphi}^\J = 1$ ist, sagen wir dass $\J$ ein Modell von $\varphi$ ist ($\J \models \varphi$). Als Modell einer Formelmenge ($\J \models \Phi$) bezeichnen wir eine Interpretation, die ein Modell aller Formeln aus $\Phi$ ist. Das Symbol $\models$ verwenden wir auch für die semantische Folgerungsbeziehung: Für eine Menge $\Phi$ von Formeln bedeutet $\Phi \models \psi$, dass für jedes Modell, das Modell aller Formeln aus $\Phi$ ist auch Modell von $\psi$ ist.
+Für eine Interpretation $\J$ ist $\interpret{\varphi}^\J$ der Wahrheitswert von $\varphi$ unter $\J$. Wenn $\interpret{\varphi}^\J = 1$ ist, sagen wir dass $\J$ ein Modell von $\varphi$ ist ($\J \models \varphi$). Als Modell einer Formelmenge ($\J \models \Phi$) bezeichnen wir eine Interpretation, die ein Modell aller Formeln aus $\Phi$ ist. Das Symbol $\models$ verwenden wir auch für die semantische Folgerungsbeziehung: Für eine Menge $\Phi$ von Formeln bedeutet $\Phi \models \psi$, dass jedes Modell, welches Modell aller Formeln aus $\Phi$ ist, auch Modell von $\psi$ ist.
 
 Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat. Eine Formel ist \emph{gültig} oder \emph{allgemeingültig} wenn jede passende Interpretation ein Modell ist. Zwei Formeln $\varphi$ und $\psi$ sind äquivalent wenn für Interpretationen $\J$ die auf beide passen $\interpret{\varphi}^\J = \interpret{\psi}^\J$ ist.
 
@@ -428,7 +428,7 @@ Eine Klasse $K$ von $\tau$-Strukturen ist \emph{axiomatisiert durch $\Phi$}, wen
 
 Die \emph{Semantische Folgerungsbeziehung:} Sei $\Phi \subseteq \FO(\tau), \psi \in \FO(\tau)$. \emph{$\psi$ folgt aus $\Phi$}, wenn jede zu $\Phi \cup \Set{\psi}$ passende Interpretation, die Modell von $\Phi$ ist, auch Modell von $\psi$ ist. Wir schreiben auch $\Phi \models \psi$ und $\phi \models \psi$ wenn $\Phi = \Set{\phi}$.
 
-Eine Formel ist \emph{erfüllbar}, wenn sei ein Modell hat, sonst \emph{unerfüllbar}. Eine Formel ist \emph{allgemeingültig} (kurz $\models \psi$) gdw.\ $\emptyset \models \psi$. Zwei Formeln sind \emph{logisch äquivalent} (kurz $\psi \equiv \varphi$), wenn $\psi \models \varphi$ und $\varphi \models \psi$.
+Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat, sonst \emph{unerfüllbar}. Eine Formel ist \emph{allgemeingültig} (kurz $\models \psi$) gdw.\ $\emptyset \models \psi$. Zwei Formeln sind \emph{logisch äquivalent} (kurz $\psi \equiv \varphi$), wenn $\psi \models \varphi$ und $\varphi \models \psi$.
 
 % TODO: Existenzieller/Universeller Abschluss?
 
