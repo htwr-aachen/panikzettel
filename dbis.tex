@@ -248,8 +248,8 @@ Nehmen wir an, dass wir folgendes Schema haben: $R(A, B, C, D), S(E, F, G)$ und 
   \item \textbf{Vereinigung}: $R \cup T$: \sql{SELECT * FROM R UNION SELECT * FROM T}.
   \item \textbf{Differenz}: $R \setminus T$: \sql{SELECT * FROM R MINUS SELECT * FROM T}.
   \item \textbf{Kreuzprodukt}: $R \times T$: \sql{SELECT * FROM R CROSS JOIN T}.
-  \item \textbf{Selektion}: $\sigma_{B=b}(R)$: \sql{SELECT * FROM WHERE B = `b`}.
-  \item \textbf{Projektion}: $\sigma_{A,C}(R)$: \sql{SELECT DISTINCT A, C FROM R}.
+  \item \textbf{Selektion}: $\sigma_{B=b}(R)$: \sql{SELECT * FROM R WHERE B = `b`}.
+  \item \textbf{Projektion}: $\pi_{A,C}(R)$: \sql{SELECT DISTINCT A, C FROM R}.
   \item \textbf{Umbenennung}: $\rho_V(R)$: \sql{SELECT V.A FROM R AS V}.
   \item \textbf{Umbenennung}: $\rho_{K \leftarrow C}(R)$: \sql{SELECT A, B, C, AS K, D FROM R}.
   \item \textbf{Relation}: $R$: \sql{SELECT * FROM R}.
