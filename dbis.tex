@@ -251,7 +251,7 @@ Nehmen wir an, dass wir folgendes Schema haben: $R(A, B, C, D), S(E, F, G)$ und 
   \item \textbf{Selektion}: $\sigma_{B=b}(R)$: \sql{SELECT * FROM R WHERE B = `b`}.
   \item \textbf{Projektion}: $\pi_{A,C}(R)$: \sql{SELECT DISTINCT A, C FROM R}.
   \item \textbf{Umbenennung}: $\rho_V(R)$: \sql{SELECT V.A FROM R AS V}.
-  \item \textbf{Umbenennung}: $\rho_{K \leftarrow C}(R)$: \sql{SELECT A, B, C, AS K, D FROM R}.
+  \item \textbf{Umbenennung}: $\rho_{K \leftarrow C}(R)$: \sql{SELECT A, B, C AS K, D FROM R}.
   \item \textbf{Relation}: $R$: \sql{SELECT * FROM R}.
   \item \textbf{Theta-Join}: $R \bowtie_{\theta(B, F)} S$ = \sql{SELECT * FROM R, S WHERE θ(B, F)}.
   \item \textbf{Natural Join}: $R \bowtie U$ = \sql{SELECT * FROM R, U}.
