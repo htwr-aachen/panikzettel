@@ -80,7 +80,7 @@
 \newcommand{\ojoin}{\;{\tiny \textifsym{d|><|d}}\;}
 
 \title{Datenbanken und Informationssysteme Panikzettel}
-\author{Mathis Müller, Luca Oeljeklaus, Tobias Polock, Philipp Schröer}
+\author{Mathis Müller, Luca Oeljeklaus, Tobias Polock,\\ Julian Schakib-Ekbatan, Philipp Schröer}
 \date{\today}
 
 \begin{document}
@@ -151,14 +151,49 @@ Ein \textit{Datenbankschema} $\mathcal{D} = (\mathcal{R}, \Sigma_\mathcal{R})$ b
 
 Eine \textit{Datenbank} $D = {r_1, \ldots , r_n}$ mit Schema $\mathcal(D) = (\mathcal{R}, \Sigma_\mathcal{R})$ ist eine Menge an Relationen $r_1, \ldots, r_n$. Die Datenbank heißt konsistent oder gültig, falls sowohl inter- als auch intrarelationale Abhängigkeiten erfüllt sind.
 
-% TODO
-%\subsection{Vom ER-Diagramm in das Relationale Modell}
-%Generell wird jeder Entity-Typ mit seinen Attributen in eine Tabelle/Relation gepackt und jede Beziehung zwischen Entity-Typen
-%1:n Beziehung
-%n:m Beziehung
-%Rekusive Beziehungen
-%Generalisierun/Spezialisierung
-%Schwache Entity Typen
+\subsection{Vom ER-Diagramm in das Relationale Modell}
+Wenn man ein ER-Diagramm in ein Relationales Modell überführt gilt es verschiedene Fälle zu beachten. Um die Form der Relation zu verdeutlichen, werden hier Beispiele aus der Luft gegriffen. Grundsätzlich gilt:
+
+\begin{itemize}
+  \item Für jedes \textbf{Objekt} eine Relation anlegen: Student(\underline{Matrikelnummer}, AnzahlAnstehendeKlausuren, Panik, \ldots).
+  \item Für jede \textbf{n:m-Beziehung} (zwischen Student-Objekten und Panikzettel-Objekten):
+    \begin{itemize}
+      \item Relation: Liest(\underline{Matrikelnummer}, \underline{PanikzettelID}, \ldots), es können noch mehr Attribute an der Beziehung beteiligt sein.
+      \item Interrelationen: Liest[Matrikelnummer] $\subseteq$ Student[Matrikelnummer] und Liest[PanikzettelID] $\subseteq$ Panikzettel[PanikzettelID].
+    \end{itemize}
+\end{itemize}
+
+Es gibt weitere Arten von Beziehungen:
+\begin{itemize}
+  \item \textbf{1:n Beziehung}: Keine eigene Relation für die Beziehung anlegen, sondern Primärschlüssel des Objekts, welches nur einmal auftritt, als Attribut in die Relation des $n$-mal auftretenden Objekts aufnehmen. Also z.B.\ $n$-Studenten, die auf genau eine Webseite zugreifen:
+    \begin{itemize}
+      \item Relation ändern: Student(\underline{Matrikelnummer}, \ldots, URL), sei URL hier Primärschlüssel der Webseite.
+      \item Interrelation: Student[URL] $\subseteq$ Webseite[URL].
+    \end{itemize}
+  \item \textbf{Rekursive Beziehung}: Habe etwa in einem Repository jede Version Vorgänger und Nachfolger, die selbst wieder Versionen sind:
+    \begin{itemize}
+      \item Relation (neben der Relation für \emph{Version}): Voraussetzen(\underline{Vorgänger}, \underline{Nachfolger}).
+      \item Interrelation: Voraussetzen[Vorgänger] $\subseteq$ Version[VersionsID] und Voraussetzen[Nachfolger] $\subseteq$ Version[VersionsID].
+    \end{itemize}
+  \item \textbf{n-stellige Beziehungen}: Sind mehr als zwei Objekte an der Beziehung beteiligt, hat die Beziehungsrelation trotzdem nur zwei Primärschlüssel. Die restlichen Primärschlüssel als einfache Attribute in die Beziehung mit aufnehmen.
+  \item \textbf{1:1 Beziehung}: Gegebenenfalls zu einem Objekt verschmelzen, dabei nur einen der Primärschlüssel als Primärschlüssel behalten.
+\end{itemize}
+
+Folgende Fälle muss man auch noch beachten:
+\begin{itemize}
+  \item \textbf{Mehrwertiges Attribut}: Eigene Relation für das Attribut mit Fremdschlüssel zum dazugehörigen Objekt und eine Interrelation zu diesem.
+    \begin{itemize}
+      \item Student(\underline{Matrikelnummer}, Name, \ldots).
+      \item Telefonnummern(\underline {Nummer}, \underline{Matrikelnummer}).
+      \item Telefonnummern[MatrikelNummer] $\subseteq$ Student[Matrikelnummer].
+    \end{itemize}
+  \item \textbf{Schwache Objekttypen}: Fremdschlüssel des starken Objekts als Attribut in der Relation des Schwachen und Interrelation zu diesem (wie beim mehrwertigen Attribut).
+  \item \textbf{Generalisierung/Spezialisierung}:
+    \begin{itemize}
+      \item Relationen für die Objekte formulieren.
+      \item Wenn Generalisierung total: keine Relation für die generalisierte Entity nötig.
+  \end{itemize}
+\end{itemize}
 
 \subsection{Relationale Algebra, Relationenkalkül, Tupelkalkül und Domänenkalkül}
 Anfragen an eine Datenbank müssen auf eine gewisse Weise formuliert werden. In konkreten Datenbankimplementierungen werden hierfür Anfragesprachen genutzt. Die Grundlage dafür sind die \textit{Relationale Algebra} und das \textit{Relationale Kalkül}, bei welchem man zwischen dem Tupel- und Bereichskalkül unterscheidet.
@@ -555,7 +590,7 @@ Um eine Relation in BCNF zu bringen, gibt es den Dekompositionsalgorithmus:
 \begin{itemize}
 \item[] Solange ein $\mathcal{R}_i = (X_i, F_i)$ nicht in BCNF ist:
 \begin{enumerate}
-\item Finde nichttriviale abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$.
+\item Finde nichttriviale Abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$.
 \item $X_{i1} := \alpha \cup \beta$, $X_{i2} := X_i \setminus \beta$
 \item Ersetze $\mathcal{R}_i$ durch $\mathcal{R}_{i1}$ und $\mathcal{R}_{i2}$ mit Attributmengen $X_{i1}$ bzw.\ $X_{i2}$ und FDs durch Einschränkung von $F_i^+$.
 \end{enumerate}
@@ -707,7 +742,7 @@ Ein \textit{B-Baum} ist ein Baumstruktur mit Parameter $M \in 2\mathbb{N}$ (und 
 
 Um den Baum nach einem Element zu \textbf{durchsuchen}, wird beginnend in der Wurzel auf den jeweiligen Knoten eine binäre Suche ausgeführt und immer im entsprechenden Teilbaum gesucht. Komplexität: $\mathcal{O}(\log_2N)$.
 
-Zur Erfüllung einer \textbf{Bereichsanfrage} (min, max) wird der kleinste Wert, welcher größer oder gleich min ist, rekursiv gesucht. Dann findet ein in-order Traversierung bis zum größten Element, welches kleiner oder gleich max ist, durchgeführt.
+Zur Erfüllung einer \textbf{Bereichsanfrage} (min, max) wird der kleinste Wert, welcher größer oder gleich min ist, rekursiv gesucht. Dann wird eine in-order Traversierung bis zum größten Element, welches kleiner oder gleich max ist, durchgeführt.
 
 Beim \textbf{Einfügen} eines neuen Elements wird erst ein zum Objekt passender Knoten gesucht und dort eingefügt. Falls das Blatt deswegen überläuft, so wird der Knoten gesplittet. Komplexität: $\mathcal{O}(\log_mN)$
 
