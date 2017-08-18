@@ -590,11 +590,7 @@ Um eine Relation in BCNF zu bringen, gibt es den Dekompositionsalgorithmus:
 \begin{itemize}
 \item[] Solange ein $\mathcal{R}_i = (X_i, F_i)$ nicht in BCNF ist:
 \begin{enumerate}
-<<<<<<< HEAD
-\item Finde nichttriviale abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$.
-=======
 \item Finde nichttriviale Abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$.
->>>>>>> Vorschlag zu 3.1 ER Diagramme überführen. Kleine Tippfehler in 5.4.4 und 6.2.1 korrigiert.
 \item $X_{i1} := \alpha \cup \beta$, $X_{i2} := X_i \setminus \beta$
 \item Ersetze $\mathcal{R}_i$ durch $\mathcal{R}_{i1}$ und $\mathcal{R}_{i2}$ mit Attributmengen $X_{i1}$ bzw.\ $X_{i2}$ und FDs durch Einschränkung von $F_i^+$.
 \end{enumerate}
@@ -746,11 +742,7 @@ Ein \textit{B-Baum} ist ein Baumstruktur mit Parameter $M \in 2\mathbb{N}$ (und 
 
 Um den Baum nach einem Element zu \textbf{durchsuchen}, wird beginnend in der Wurzel auf den jeweiligen Knoten eine binäre Suche ausgeführt und immer im entsprechenden Teilbaum gesucht. Komplexität: $\mathcal{O}(\log_2N)$.
 
-<<<<<<< HEAD
-Zur Erfüllung einer \textbf{Bereichsanfrage} (min, max) wird der kleinste Wert, welcher größer oder gleich min ist, rekursiv gesucht. Dann findet ein in-order Traversierung bis zum größten Element, welches kleiner oder gleich max ist, durchgeführt.
-=======
 Zur Erfüllung einer \textbf{Bereichsanfrage} (min, max) wird der kleinste Wert, welcher größer oder gleich min ist, rekursiv gesucht. Dann wird eine in-order Traversierung bis zum größten Element, welches kleiner oder gleich max ist, durchgeführt.
->>>>>>> Vorschlag zu 3.1 ER Diagramme überführen. Kleine Tippfehler in 5.4.4 und 6.2.1 korrigiert.
 
 Beim \textbf{Einfügen} eines neuen Elements wird erst ein zum Objekt passender Knoten gesucht und dort eingefügt. Falls das Blatt deswegen überläuft, so wird der Knoten gesplittet. Komplexität: $\mathcal{O}(\log_mN)$
 
