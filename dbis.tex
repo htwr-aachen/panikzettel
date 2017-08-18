@@ -152,47 +152,47 @@ Ein \textit{Datenbankschema} $\mathcal{D} = (\mathcal{R}, \Sigma_\mathcal{R})$ b
 Eine \textit{Datenbank} $D = {r_1, \ldots , r_n}$ mit Schema $\mathcal(D) = (\mathcal{R}, \Sigma_\mathcal{R})$ ist eine Menge an Relationen $r_1, \ldots, r_n$. Die Datenbank heißt konsistent oder gültig, falls sowohl inter- als auch intrarelationale Abhängigkeiten erfüllt sind.
 
 \subsection{Vom ER-Diagramm in das Relationale Modell}
-Wenn man ein ER-Diagramm in ein Relationales Modell überführt gilt es verschiedene Fälle zu beachten. Um die Form der Relation zu verdeutlichen werden Beispiele aus der Luft gegriffen. Grundsätzlich gilt:
+Wenn man ein ER-Diagramm in ein Relationales Modell überführt gilt es verschiedene Fälle zu beachten. Um die Form der Relation zu verdeutlichen, werden hier Beispiele aus der Luft gegriffen. Grundsätzlich gilt:
+
 \begin{itemize}
-\item Für jedes \textbf{Objekt} eine Relation anlegen: Student(\underline{MatrikelNummer}, AnzahlAnstehendeKlausuren, Panik, \ldots)
-\item Für jede \textbf{n:m-Beziehung} (zwischen Student-Objekten und Panikzettel-Objekten):
-\begin{itemize}
-\item Relation: Liest(\underline{Matrikelnummer}, \underline{PanikzettelID}, \ldots), es können noch mehr Attribute an der Beziehung beteiligt sein.
-\item Interrelationen: Liest[Matrikelnummer] $\subseteq$ Student[Matrikelnummer] und Liest[PanikzettelID] $\subseteq$ Panikzettel[PanikzettelID]
+  \item Für jedes \textbf{Objekt} eine Relation anlegen: Student(\underline{Matrikelnummer}, AnzahlAnstehendeKlausuren, Panik, \ldots).
+  \item Für jede \textbf{n:m-Beziehung} (zwischen Student-Objekten und Panikzettel-Objekten):
+    \begin{itemize}
+      \item Relation: Liest(\underline{Matrikelnummer}, \underline{PanikzettelID}, \ldots), es können noch mehr Attribute an der Beziehung beteiligt sein.
+      \item Interrelationen: Liest[Matrikelnummer] $\subseteq$ Student[Matrikelnummer] und Liest[PanikzettelID] $\subseteq$ Panikzettel[PanikzettelID].
+    \end{itemize}
 \end{itemize}
-\end{itemize}
+
 Es gibt weitere Arten von Beziehungen:
 \begin{itemize}
-\item \textbf{1:n Beziehung}: \textbf{keine} eigene Relation für die Beziehung anlegen, sondern Primärschlüssel des Objekts, das nur einmal auftritt, als \emph{Attribut} in die Relation des $n$-mal auftretenden Objekts aufnehmen. Also z.B. $n$-Studenten, die auf 1 Webseite zugreifen:
-\begin{itemize}
-\item Relation ändern: Student(\underline{Matrikelnummer}, \ldots, URL), sei URL hier Primärschlüssel der Webseite.
-\item Interrelation: Student[URL] $\subseteq$ Webseite[URL]
+  \item \textbf{1:n Beziehung}: Keine eigene Relation für die Beziehung anlegen, sondern Primärschlüssel des Objekts, welches nur einmal auftritt, als Attribut in die Relation des $n$-mal auftretenden Objekts aufnehmen. Also z.B.\ $n$-Studenten, die auf genau eine Webseite zugreifen:
+    \begin{itemize}
+      \item Relation ändern: Student(\underline{Matrikelnummer}, \ldots, URL), sei URL hier Primärschlüssel der Webseite.
+      \item Interrelation: Student[URL] $\subseteq$ Webseite[URL].
+    \end{itemize}
+  \item \textbf{Rekursive Beziehung}: Habe etwa in einem Repository jede Version Vorgänger und Nachfolger, die selbst wieder Versionen sind:
+    \begin{itemize}
+      \item Relation (neben der Relation für \emph{Version}): Voraussetzen(\underline{Vorgänger}, \underline{Nachfolger}).
+      \item Interrelation: Voraussetzen[Vorgänger] $\subseteq$ Version[VersionsID] und Voraussetzen[Nachfolger] $\subseteq$ Version[VersionsID].
+    \end{itemize}
+  \item \textbf{n-stellige Beziehungen}: Sind mehr als zwei Objekte an der Beziehung beteiligt, hat die Beziehungsrelation trotzdem nur zwei Primärschlüssel. Die restlichen Primärschlüssel als einfache Attribute in die Beziehung mit aufnehmen.
+  \item \textbf{1:1 Beziehung}: Gegebenenfalls zu einem Objekt verschmelzen, dabei nur einen der Primärschlüssel als Primärschlüssel behalten.
 \end{itemize}
-\item \textbf{Rekursive Beziehung}: Jede \emph{Version} im Repository hat Vorgänger und Nachfolger, die selbst wieder eine Version sind:
-\begin{itemize}
-\item Relation (neben der Relation für \emph{Version}): Voraussetzen(\underline{Vorgänger}, \underline{Nachfolger})
-\item Interrelation: Voraussetzen[Vorgänger] $\subseteq$ Version[VersionsID] und Voraussetzen[Nachfolger] $\subseteq$ Version[VersionsID]
-\end{itemize}
-\item \textbf{n-stellige Beziehungen}: Sind mehr als zwei Objekte an der Beziehung beteiligt hat die Beziehungsrelation trotzdem nur zwei Primärschlüssel, die restlichen Primärschlüssel als einfache Attribute in die Beziehung mit aufnehmen.
-\item \textbf{1:1 Beziehung}: Gegebenenfalls zu einem Objekt verschmelzen, nur einen der Primärschlüssel als Primärschlüssel behalten.
-\end{itemize}
+
 Folgende Fälle muss man auch noch beachten:
 \begin{itemize}
-\item \textbf{mehrwertiges Attribut}: Eigene Relation für das Attribut mit Fremdschlüssel zum dazugehörigen Objekt und eine Interrelation zu diesem.
-\begin{itemize}
-\item Student(\underline{Matrikelnummer}, Name, \ldots)
-\item Telefonnummern(\underline {Nummer}, \underline{Matrikelnummer})
-\item Telefonnummern[MatrikelNummer] $\subseteq$ Student[Matrikelnummer]
-\end{itemize}
-\item \textbf{Schwache Entity Typen}: Fremdschlüssel des starken Objekts als Attribut in der Relation des Schwachen und Interrelation zu diesem (wie beim mehrwertigen Attribut).
-\end{itemize}
-\begin{itemize}
-\item \textbf{Generalisierung/Spezialisierung}:
-\begin{itemize}
-\item Relationen für die Objekte formulieren.
-\item Wenn Generalisierung disjunkt: Student $\cap$ EhrlichUndHartArbeitenderMensch = $\varnothing$.
-\item Wenn Generalisierung total: keine Relation für die generalisierte Entity nötig.
-\end{itemize}
+  \item \textbf{Mehrwertiges Attribut}: Eigene Relation für das Attribut mit Fremdschlüssel zum dazugehörigen Objekt und eine Interrelation zu diesem.
+    \begin{itemize}
+      \item Student(\underline{Matrikelnummer}, Name, \ldots).
+      \item Telefonnummern(\underline {Nummer}, \underline{Matrikelnummer}).
+      \item Telefonnummern[MatrikelNummer] $\subseteq$ Student[Matrikelnummer].
+    \end{itemize}
+  \item \textbf{Schwache Objekttypen}: Fremdschlüssel des starken Objekts als Attribut in der Relation des Schwachen und Interrelation zu diesem (wie beim mehrwertigen Attribut).
+  \item \textbf{Generalisierung/Spezialisierung}:
+    \begin{itemize}
+      \item Relationen für die Objekte formulieren.
+      \item Wenn Generalisierung total: keine Relation für die generalisierte Entity nötig.
+  \end{itemize}
 \end{itemize}
 
 \subsection{Relationale Algebra, Relationenkalkül, Tupelkalkül und Domänenkalkül}
