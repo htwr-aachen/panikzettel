@@ -207,7 +207,7 @@ Nun definieren wir \emph{Resolution} für jede Klauselmenge $\Kl$:
 
 Die Klauselmenge $\Kl$ ist genau dann unerfüllbar, wenn $\square \in \Res^\ast(\Kl)$.
 
-Einheitsresolution ist eine Variante von Resolution, bei der man eine Resolvente $C$ von $C_1$ und $C_2$ nur bilden darf, wenn $C_1$ oder $C_2$ nur ein Element entält. Diese ist auf Horn-Klauseln vollständig.
+Einheitsresolution ist eine Variante von Resolution, bei der man eine Resolvente $C$ von $C_1$ und $C_2$ nur bilden darf, wenn $C_1$ oder $C_2$ nur ein Element enthält. Diese ist auf Horn-Klauseln vollständig.
 
 \subsection{Der aussagenlogische Sequenzenkalkül}
 
@@ -312,7 +312,7 @@ Als Beispiele haben wir verschiedene Strukturen mit der Prädikatenlogik definie
 
 \emph{Wohlordnungen} sind lineare Ordnungen ohne unendliche absteigende Ketten, d.h.\ es gibt keine unendliche Folge $a_0, a_1, \ldots$ in $A$, so dass $a_{i+1} < a_i$ für alle $i \in \mathbb{N}$.
 
-\emph{Wortstrukturen} sind Strukturen für ein Wort über einem Alphabet. Für jedes Wort $w$ heißt die Wortstruktur $\mathfrak{B}(w)$ mit der Signatur $\Set{<} \cup \Set{P_a : a \in \mathrm{Alphabet}(w)}$. Das Universum von $\mathfrak{B}(w)$ ist die Menge $\Set{0,\, \ldots,\, n-1}$. $<$ ist die übliche Ordnung und $P_a := \Set{i < n : w_i = a}$.
+\emph{Wortstrukturen} sind Strukturen für ein Wort über einem Alphabet. Für jedes Wort $w$ ist $\mathfrak{B}(w)$ die Wortstruktur mit der Signatur $\Set{<} \cup \Set{P_a : a \in \mathrm{Alphabet}(w)}$. Das Universum von $\mathfrak{B}(w)$ ist die Menge $\Set{0,\, \ldots,\, n-1}$. $<$ ist die übliche Ordnung und $P_a := \Set{i < n : w_i = a}$.
 
 \emph{Transitionssysteme} bestehen aus Zustandsmenge $S$ und Aktionsmenge $A$. Dazu gibt es meist Eigenschaftsmenge $B$. Das Universum der Struktur ist dann $S$ und zwei Relationsmengen: Für jedes $b \in B$ ein $P_b$ die einstellige Relation der Zustände mit Eigenschaft $b$. Die zweistellige Relationen $E_a$ treffen auf $(s,t)$ zu, wenn es von Zustand $s$ einen Übergang $a$ zu $t$ gibt.
 
@@ -412,9 +412,9 @@ $\beta[x/a](y) :=  \begin{cases}
 \end{minipage}
 \medskip
 
-Ein \emph{Modell} einer Formel $\psi$ ist eine Interpretation $\J$, so dass $\frei(\psi) \subseteq \dom(\beta)$ und $\interpret{\psi}^\J = 1$. Wir schreiben: $(\A, \beta) \models \psi$ oder auch $\A \models \psi$. Ein \emph{Modell einer Formelmenge} $\Phi$ ist ein $\J$ so, dass $\A \models \varphi$ für alle $\varphi \in \Phi$.
+Ein \emph{Modell} einer Formel $\psi$ ist eine Interpretation $\J = (\A, \beta)$, so dass $\frei(\psi) \subseteq \dom(\beta)$ und $\interpret{\psi}^\J = 1$. Wir schreiben: $(\A, \beta) \models \psi$ oder auch $\A \models \psi$. Ein \emph{Modell einer Formelmenge} $\Phi$ ist ein $\J$ so, dass $\A \models \varphi$ für alle $\varphi \in \Phi$.
 
-Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $\psi$ vorkommende Funktions- oder Relationssymbole das ``Ergebnis'' nicht ändern. Sei $\psi \in \FO(\sigma \cap \tau)$ und $(\A, \beta)$ eine $\sigma$-Interpretation und $(\A', \beta')$ eine $\tau$-Interpratation und es gelte zusätzlich:
+Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $\psi$ vorkommende Funktions- oder Relationssymbole das ``Ergebnis'' nicht ändern. Sei $\psi \in \FO(\sigma \cap \tau)$ und $(\A, \beta)$ eine $\sigma$-Interpretation und $(\A', \beta')$ eine $\tau$-Interpretation und es gelte zusätzlich:
 \begin{itemize}
     \item $\A \upharpoonright (\sigma \cap \tau) = \A' \upharpoonright (\sigma \cap \tau)$.
     \item $\frei(\psi) \subseteq \dom(\beta) \cap \dom(\beta')$ und $\beta(x) = \beta'(x)$ für alle $x \in \frei(\psi)$.
@@ -474,7 +474,7 @@ Eine Formel ist \emph{bereinigt}, wenn keine Variable sowohl frei als auch gebun
 
 Eine Formel ist in \emph{Pränex-Normalform} (PNF), wenn sie bereinigt ist und alle Quantoren nur zusammen am Anfang der Formel auftauchen. Jede FO-Formel lässt sich in PNF bringen.
 
-Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und ersetzen dann jede existenziell quantifizierte Variable durch ein neues Funktionssymbol (und entfernen jeden Existenzquantor).
+Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel in Skolem-Normalform erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und ersetzen dann jede existenziell quantifizierte Variable durch ein neues Funktionssymbol (und entfernen jeden Existenzquantor).
 
 % TODO: relationale Skolem-Normalform?
 
@@ -555,11 +555,11 @@ Es ist $\A \equiv \B$ genau dann wenn $\Th(\A) = \Th(\B)$ ist.
 Ein \emph{lokaler (oder partieller) Isomorphismus} von $\tau$-Struktur $\A$ zu $\tau$-Struktur $\B$ ist eine injektive Abbildung $p : D \to B$ mit $D \subseteq A$. Für alle $n \in \mathbb{N}$, alle $n$-stelligen Relationssymbole $R \in \tau$ und alle $a_1, \ldots, a_n \in D$ muss gelten:
 \[ (a_1, \ldots, a_n) \in R^\A \text{ gdw. } (p a_1, \ldots, p a_n) \in R^\B \]
 
-Das \emph{Ehrenfeucht-Fra\"issé-Spiel} $G_m(\A, \B)$ wird von zwei Spielern gespielt. Das \emph{Spielfeld} besteht aus Strukturen $\A$ und $\B$. Wir nehmen an, dass $A \cap B = \emptyset$. Wir nennen die Spieler den \emph{Herausforder} (Spieler I) und die \emph{Duplikatorin} (Spieler II). Eine Partie besteht aus $m$ Zügen.
+Das \emph{Ehrenfeucht-Fra\"issé-Spiel} $G_m(\A, \B)$ wird von zwei Spielern gespielt. Das \emph{Spielfeld} besteht aus Strukturen $\A$ und $\B$. Wir nehmen an, dass $A \cap B = \emptyset$. Wir nennen die Spieler den \emph{Herausforderer} (Spieler I) und die \emph{Duplikatorin} (Spieler II). Eine Partie besteht aus $m$ Zügen.
 
 \begin{itemize}
-  \item Im Zug $i$ bestimmt der Herausforderer entweder ein Element $a_i \in A$ oder ein $b_i \in B$. Die Duplikatoren wählt dann ein Element aus der anderen Strutkur aus.
-  \item Nach $m$ Zügen gibt es einen Gewinner: Die Duplikatorin hat gewonnen, wenn die Menge $\Set{(a_,b_1), \ldots,  (a_n, b_n)}$ ein lokaler Isomorphismus ist. Andernfalls hat der Herausforderer gewonnen.
+  \item Im Zug $i$ bestimmt der Herausforderer entweder ein Element $a_i \in A$ oder ein $b_i \in B$. Die Duplikatorin wählt dann ein Element aus der anderen Struktur aus.
+  \item Nach $m$ Zügen gibt es einen Gewinner: Die Duplikatorin hat gewonnen, wenn die Menge $\Set{(a_1, b_1), \ldots,  (a_n, b_n)}$ ein lokaler Isomorphismus ist. Andernfalls hat der Herausforderer gewonnen.
 \end{itemize}
 
 Eine \emph{Gewinnstrategie} ist eine Funktion, die für jedes Teilspiel in jeder Position Züge nennt, die einen Gewinn garantieren, egal was der Gegner tut.
@@ -577,13 +577,13 @@ Die Duplikatorin gewinnt das EF-Spiel $G(\A, \B)$
 \centering
 $\A \equiv_m \B$ \\
 $\Updownarrow$ \\
-Die Duplikatoren gewinnt das EF-Spiel $G_m(\A, \B)$
+Die Duplikatorin gewinnt das EF-Spiel $G_m(\A, \B)$
 \end{minipage}
 \end{center}
 
 Wir haben für den obigen Satz die folgende stärkere Aussage verwendet:
 
-Seien $\A, \B$ $\tau$-Strukturen, $\overline{a} = a_1, \ldots, a_n \in \A,\ \overline{b} = b_1, \ldots b_n \in \B$. Wenn es eine Formel $\psi(\overline{x}) = m$ gibt, so dass $\A \models \psi(\overline{a})$ und $\B \models \neg \psi(\overline{b})$, dann hat der Herausforderer eine Gewinnstrategie für $G_m(\A, \overline{a}, \B, \overline{b})$.
+Seien $\A, \B$ $\tau$-Strukturen, $\overline{a} = a_1, \ldots, a_n \in \A,\ \overline{b} = b_1, \ldots b_n \in \B$. Wenn es eine Formel $\psi(\overline{x})$ mit $\qr(\psi) = m$ gibt, so dass $\A \models \psi(\overline{a})$ und $\B \models \neg \psi(\overline{b})$, dann hat der Herausforderer eine Gewinnstrategie für $G_m(\A, \overline{a}, \B, \overline{b})$.
 
 Mit dem Satz von Ehrenfeucht-Fra\"issé kann man dann Folgendes beweisen:
 
@@ -870,8 +870,7 @@ Auf beiden befindet sich jeweils ein Spielstein.
 \item[] Spieler II gewinnt genau dann das Bisimulationsspiel auf $\K, \K'$ von $(u,u')$, wenn $\K, u \sim \K', u'$.
 \end{itemize}
 
-
-Für alle Kripkestrukturen $\K, \K'$ gilt: Wenn $\K, v \sim \K, v$, dann ist $\K, v \to \K', v'$ für alle $n$. Die Umkehrung gilt jedoch nicht: es gibt $\K, v$ und $\K, v'$, so dass $\K, v \sim_n \K', v'$ aber $\K, v \not\sim \K', v'$.
+Für alle Kripkestrukturen $\K, \K'$ gilt: Wenn $\K, v \sim \K, v$, dann ist $\K, v \sim_n \K', v'$ für alle $n$. Die Umkehrung gilt jedoch nicht: es gibt $\K, v$ und $\K, v'$, so dass $\K, v \sim_n \K', v'$ aber $\K, v \not\sim \K', v'$.
 
 Die \emph{Modaltiefe} $\mathrm{md}(\psi)$ ist definiert analog zum Quantorenrang.
 
@@ -914,7 +913,7 @@ Für endlich verzweigte Transitionssysteme können wir sogar sagen, dass $\K, u 
 Ein Baum mit Wurzel $v$ ist ein Transitionssystem, in dem es zu jedem Knoten $w \ne v$ genau einen Pfad von $v$ zu $w$ gibt.
 
 Zu jedem Transitionssystem $\K$ mit Knoten $v$ gibt es einen Baum $\K'$ mit Wurzel $v'$, sodass $\K, v \sim \K', v'$. Um diesen zu konstruieren, wird das Transitionssystem ``abgewickelt'':    \\
-Man erzeugt einen Baum mit Wurzel $w'$ für alle Nachfolger $w$ von $v$ in $\K$, fügt diese disjunkt zusammen und fügt die Wurzel $v'$ mit einer Kante entsprechenden Types von $v'$ nach $w'$ ein.
+Man erzeugt einen Baum mit Wurzel $w'$ für alle Nachfolger $w$ von $v$ in $\K$, fügt diese disjunkt zusammen und fügt die Wurzel $v'$ mit einer Kante entsprechenden Typs von $v'$ nach $w'$ ein.
 
 \subsection{Temporale Logiken}
 
