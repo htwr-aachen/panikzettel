@@ -77,7 +77,7 @@ Eine Logik ist eine (typischerweise induktiv definierte) Menge von Formeln (Synt
 
 Für eine Interpretation $\J$ ist $\interpret{\varphi}^\J$ der Wahrheitswert von $\varphi$ unter $\J$. Wenn $\interpret{\varphi}^\J = 1$ ist, sagen wir dass $\J$ ein Modell von $\varphi$ ist ($\J \models \varphi$). Als Modell einer Formelmenge ($\J \models \Phi$) bezeichnen wir eine Interpretation, die ein Modell aller Formeln aus $\Phi$ ist. Das Symbol $\models$ verwenden wir auch für die semantische Folgerungsbeziehung: Für eine Menge $\Phi$ von Formeln bedeutet $\Phi \models \psi$, dass jedes Modell, welches Modell aller Formeln aus $\Phi$ ist, auch Modell von $\psi$ ist.
 
-Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat. Eine Formel ist \emph{gültig} oder \emph{allgemeingültig} wenn jede passende Interpretation ein Modell ist. Zwei Formeln $\varphi$ und $\psi$ sind äquivalent wenn für Interpretationen $\J$ die auf beide passen $\interpret{\varphi}^\J = \interpret{\psi}^\J$ ist.
+Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat. Eine Formel ist \emph{gültig} oder \emph{allgemeingültig}, wenn jede passende Interpretation ein Modell ist. Zwei Formeln $\varphi$ und $\psi$ sind äquivalent, wenn für Interpretationen $\J$, die auf beide passen, $\interpret{\varphi}^\J = \interpret{\psi}^\J$ ist.
 
 \subsection{Kalküle}
 
@@ -185,7 +185,7 @@ Die Resolution ist ein syntaktisches Verfahren, um Unerfüllbarkeit von Formeln 
 
 Dazu ist eine \emph{Klausel} eine endliche Menge von Literalen. $\square$ ist die leere Klausel. $\Kl(\psi)$ ist die \emph{Klauselmenge} einer Formel $\psi$. $\Kl(\psi)$ enthält für jede Disjunktion in $\psi$ eine Menge mit den darin vorkommenden Literalen.
 
-Die leere Klauselmenge $\square$ ist erfüllbar. Wenn $\square \in \Kl$, dann ist $\Kl$ unerfüllbar.
+Die leere Klauselmenge $K = \emptyset$ ist erfüllbar. Wenn $\square \in \Kl$, dann ist $\Kl$ unerfüllbar.
 
 Eine \emph{Resolvente} von zwei Klauseln $C_1$ und $C_2$ ist eine Klausel $C$, genau wenn es ein Literal $Y$ gibt mit $Y \in C_1, \overline{Y} \in C_2$, sodass $C = (C_1 \setminus \{Y\}) \cup (C_2 \setminus \{\overline{Y}\})$ Dafür gibt es eine graphische Notation:\\
 \begin{center}
@@ -213,7 +213,7 @@ Einheitsresolution ist eine Variante von Resolution, bei der man eine Resolvente
 
 Eine \emph{Sequenz} ist ein Ausdruck der Form $\Gamma \Rightarrow \Delta$ für endliche Formelmengen $\Gamma, \Delta \subseteq \AL$.
 
-Eine Sequenz ist \emph{gültig}, wenn jedes Modell von $\Gamma$ auch ein Modell von mindestens einer Formel aus $\Delta$ ist, also wenn $\bigwedge \Gamma \Rightarrow \bigvee \Delta$.
+Eine Sequenz ist \emph{gültig}, wenn jedes Modell von $\Gamma$ auch ein Modell von mindestens einer Formel aus $\Delta$ ist, also wenn $\bigwedge \Gamma \models \bigvee \Delta$.
 
 \emph{Axiome} vom Sequenzenkalkül sind alle Sequenzen der Form $\Gamma,\ \psi \Rightarrow \Delta,\ \psi$.
 
@@ -506,7 +506,7 @@ Die \emph{Gewinnregion} von Spieler $\sigma$ ist $W_{\sigma}=\{\,v:\text{Spieler
 
 Ein Spiel ist \emph{determiniert}, wenn $W_0 \cup W_1=V$.
 
-Auswertungsspiele in FO haben die Eigenschaft, das alle Partien endlich sind. Solche Spiele werden \emph{fundiert} genannt. Fundierte Spiele sind determiniert.
+Auswertungsspiele in FO haben die Eigenschaft, dass alle Partien endlich sind. Solche Spiele werden \emph{fundiert} genannt. Fundierte Spiele sind determiniert.
 
 \paragraph{Strategieproblem}
 Sei \emph{Game} das Strategieproblem mit endlichen Spielgraphen:
@@ -776,7 +776,7 @@ Für jede Formelmenge $\Phi \subseteq \FO(\tau)$ und Formel $\psi \in \FO(\tau)$
 \item Jede Satzmenge $\Phi$, die ein unendliches Modell hat, hat für jede unendliche Kardinalzahl $\kappa \ge \abs{\Phi}$ ein Modell der Größe $\kappa$.
 \end{itemize}
 
-\subsection{Unentescheidbarkeit der Prädikatenlogik}
+\subsection{Unentscheidbarkeit der Prädikatenlogik}
 
 Das Erfüllbarkeitsproblem (``hat eine Formel ein Modell'') und das Gültigkeitsproblem (``ist eine Formel eine Tautologie'') sind unentscheidbar.
 

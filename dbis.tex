@@ -239,7 +239,7 @@ Ist das Schema $(A_1:D_1, \ldots, A_k:D_k)$ einer Tupelvariable $t$ nicht aus de
 
 Als Kurzschreibweise hat sich der Tupelkonstruktor etabliert: $$\Set{[t.A_1, \ldots, t.A_n] | \varphi(t)} = \Set{t \in (A_1:D_1, \ldots, A_k:D_k) | \varphi(t)}.$$
 
-Zur Auswertung müssen alle Tupelvariablen einer Formel $\varphi(t)$ durch konkrete Belegungen interpretiert werden. In der Ergebnisrelation landen dann alle Tupel $r$ mit dem durch die Tupelvariable festgelegten Schema, welche bei der Interpretation der Formel eine 'wahre' Aussage liefern. Für die also gilt $I(\varphi(r|t)) = \textbf{true}$, wobei alle vorkommen von $t$ durch $r$ ersetzt werden und der Aussage dann durch $I$ ein Wahrheitswert zugewiesen wird.
+Zur Auswertung müssen alle Tupelvariablen einer Formel $\varphi(t)$ durch konkrete Belegungen interpretiert werden. In der Ergebnisrelation landen dann alle Tupel $r$ mit dem durch die Tupelvariable festgelegten Schema, welche bei der Interpretation der Formel eine 'wahre' Aussage liefern. Für die also gilt $I(\varphi(r|t)) = \textbf{true}$, wobei alle Vorkommen von $t$ durch $r$ ersetzt werden und der Aussage dann durch $I$ ein Wahrheitswert zugewiesen wird.
 
 \textit{Bereichsvariablen} sind im Domänenkalkül das Pendant zu den Tupelvariablen. Ein Ausdruck mit $k$ Bereichsvariablen $x_1:D_1, \ldots x_k:D_k$ hat die Form $\Set{x_1, \ldots, x_k | \varphi(x_1, \ldots, x_k)}$. Außerdem findet hier der Tupelkonstruktor ebenfalls seine Verwendung.
 \section{SQL}
@@ -990,7 +990,7 @@ Durch CSR werden Lost Update und das Phantomproblem vermieden, nicht aber dirty 
 In einem Schedule $s$ heißt $p <_s q$, dass $p$ vor $q$ stattfindet. Wir sagen $t_i$ \emph{liest $x$ von} $t_j$ in $s$ wenn:
 \begin{itemize}
 \item $w_j(x) <_s r_i(x)$
-\item $a_j \not < r_i(x)$
+\item $a_j \not <_s r_i(x)$
 \item $w_j(x) <_s w_k(x) <_s r_i(x) \to a_k <_s r_i(x)$
 \end{itemize}
 
