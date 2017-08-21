@@ -412,7 +412,7 @@ $\beta[x/a](y) :=  \begin{cases}
 \end{minipage}
 \medskip
 
-Ein \emph{Modell} einer Formel $\psi$ ist eine Interpretation $\J = (\A, \beta)$, so dass $\frei(\psi) \subseteq \dom(\beta)$ und $\interpret{\psi}^\J = 1$. Wir schreiben: $(\A, \beta) \models \psi$ oder auch $\A \models \psi$. Ein \emph{Modell einer Formelmenge} $\Phi$ ist ein $\J$ so, dass $\A \models \varphi$ für alle $\varphi \in \Phi$.
+Ein \emph{Modell} einer Formel $\psi$ ist eine Interpretation $\J = (\A, \beta)$, so dass $\frei(\psi) \subseteq \dom(\beta)$ und $\interpret{\psi}^\J = 1$. Wir schreiben: $(\A, \beta) \models \psi$ oder auch $\A \models \psi$. Ein \emph{Modell einer Formelmenge} $\Phi$ ist ein $\J$ so, dass $\J \models \varphi$ für alle $\varphi \in \Phi$.
 
 Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $\psi$ vorkommende Funktions- oder Relationssymbole das ``Ergebnis'' nicht ändern. Sei $\psi \in \FO(\sigma \cap \tau)$ und $(\A, \beta)$ eine $\sigma$-Interpretation und $(\A', \beta')$ eine $\tau$-Interpretation und es gelte zusätzlich:
 \begin{itemize}
@@ -559,7 +559,7 @@ Das \emph{Ehrenfeucht-Fra\"issé-Spiel} $G_m(\A, \B)$ wird von zwei Spielern ges
 
 \begin{itemize}
   \item Im Zug $i$ bestimmt der Herausforderer entweder ein Element $a_i \in A$ oder ein $b_i \in B$. Die Duplikatorin wählt dann ein Element aus der anderen Struktur aus.
-  \item Nach $m$ Zügen gibt es einen Gewinner: Die Duplikatorin hat gewonnen, wenn die Menge $\Set{(a_1, b_1), \ldots,  (a_n, b_n)}$ ein lokaler Isomorphismus ist. Andernfalls hat der Herausforderer gewonnen.
+  \item Nach $m$ Zügen gibt es einen Gewinner: Die Duplikatorin hat gewonnen, wenn die Menge $\Set{(a_1, b_1), \ldots,  (a_m, b_m)}$ ein lokaler Isomorphismus ist. Andernfalls hat der Herausforderer gewonnen.
 \end{itemize}
 
 Eine \emph{Gewinnstrategie} ist eine Funktion, die für jedes Teilspiel in jeder Position Züge nennt, die einen Gewinn garantieren, egal was der Gegner tut.
@@ -870,7 +870,7 @@ Auf beiden befindet sich jeweils ein Spielstein.
 \item[] Spieler II gewinnt genau dann das Bisimulationsspiel auf $\K, \K'$ von $(u,u')$, wenn $\K, u \sim \K', u'$.
 \end{itemize}
 
-Für alle Kripkestrukturen $\K, \K'$ gilt: Wenn $\K, v \sim \K, v$, dann ist $\K, v \sim_n \K', v'$ für alle $n$. Die Umkehrung gilt jedoch nicht: es gibt $\K, v$ und $\K, v'$, so dass $\K, v \sim_n \K', v'$ aber $\K, v \not\sim \K', v'$.
+Für alle Kripkestrukturen $\K, \K'$ gilt: Wenn $\K, v \sim \K', v'$, dann ist $\K, v \sim_n \K', v'$ für alle $n$. Die Umkehrung gilt jedoch nicht: es gibt $\K, v$ und $\K', v'$, so dass $\K, v \sim_n \K', v'$ aber $\K, v \not\sim \K', v'$.
 
 Die \emph{Modaltiefe} $\mathrm{md}(\psi)$ ist definiert analog zum Quantorenrang.
 
