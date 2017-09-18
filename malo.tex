@@ -496,7 +496,7 @@ Für jeden Satz $\psi \in \FO(\tau)$ und jede $\tau$-Struktur $\A$ gilt: $\A \mo
 
 \paragraph{Endliche Spiele} Allgemeine Spiele sind zwischen Spieler 0 und Spieler 1 auf einem Spielgraphen $\mathcal{G}=(V,V_0,E)$, mit Menge $V$ der \emph{Spielpositionen}, Teilmenge $V_0 \subseteq V$ der Positionen, an denen Spieler 0 am Zug ist, und der Menge $E \subseteq V \times V$ an möglichen Zügen.
 
-Für eine Position $v$ sei $vE:=\{w:(v,w)\in E\}$ die Menge der unmittelbaren Nachfolgerpositionen. Eine Position $v$ mit $vE=\emptyset$ ist eine Endpositionen. Wenn im Spiel eine Endposition erreicht wird, hat der Spieler verloren der am Zug ist, aber nicht ziehen kann. Die Menge der Endpositionen für $\sigma \in \{0,1\}$ ist $T_{\sigma}:=\{v \in V_{1-\sigma}:vE=\emptyset\}$.
+Für eine Position $v$ sei $vE:=\{w:(v,w)\in E\}$ die Menge der unmittelbaren Nachfolgerpositionen. Eine Position $v$ mit $vE=\emptyset$ ist eine Endpositionen. Wenn im Spiel eine Endposition erreicht wird, hat der Spieler verloren der am Zug ist, aber nicht ziehen kann. Die Menge der Endpositionen, in denen Spieler $\sigma \in \{0,1\}$ gewinnt, ist $T_{\sigma}:=\{v \in V_{1-\sigma}:vE=\emptyset\}$.
 
 Eine \emph{Partie} ist mit Anfangsposition $v_0$ ein endlicher oder unendlicher Pfad $(v_0,v_1,\ldots,v_m)$ bzw. $(v_o,v_1,\ldots)$, so dass $(v_{i-1},v_i) \in E$ für alle $i>0$ und $v_m$ eine Endposition ist.
 
