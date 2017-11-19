@@ -89,7 +89,7 @@ Da die Menge der Reellen Zahlen nicht im Computer darstellbar ist${}^{\textrm{[C
 
 Für IEEE Double-precision floating point-Zahlen ist $\eps = 2.2204 \times 10^{-16}$.
 
-Die Abbildung $\fl : \mathbb{R} \to \mathbb{M}(b,m,r,R)$ rundet gegen $+\infty$ bzw.\ $-\infty$. Es gilt $\fl(x) = x (1 + \varepsilon)$ für ein $\abs \varepsilon \leq \eps$.
+Die Abbildung $\fl : \mathbb{R} \to \mathbb{M}(b,m,r,R)$ rundet. Es gilt $\fl(x) = x (1 + \delta)$ für ein $\abs \delta \leq \eps$.
 
 Für Multiplikation und Division von Maschinenzahlen ist $\kappa_\text{rel} \leq 1$. Diese Operationen sind also immer gut konditioniert. Bei Addition und Subtraktion gilt dagegen $\kappa_\text{rel} \gg 1$, wenn das Ergebnis gegen Null geht.
 
@@ -249,7 +249,7 @@ Die folgenden Eigenschaften sind schön zu beweisen:
 \end{minipage}
 
 Mit Householder schauen wir uns immer die erste Spalte $a_1$ an und spiegeln die auf die Ebene zum Einheitsvektor $e_1$. Danach wiederholen wir das Gleiche auf der Teilmatrix $A$ ohne erste Zeile und Spalte (in den $Q_v$ fügen wir passen Nullen ein).
-\[v = a_1 + \sign(a_{1,1}) \norm{a_1} e\]
+\[v = a_1 + \sign(a_{1,1}) \norm{a_1} e_1\]
 
 Mit $Q_i$ als $Q_v$ mit $v$ für Teilmatrix $i$ ist dann die QR-Zerlegung:
 \[Q_{n-1} \ldots Q_2 Q_1 A = R \text{ bzw. } A = Q_1^T Q_2^T \ldots Q_{n-1}^T R = QR\]
@@ -264,6 +264,12 @@ Bei einem \emph{Linearen Ausgleichsproblem} wollen wir ein überbestimmtes LGS s
 Im Folgenden werden wir annehmen, dass es sich bei der gewählten Norm um die $2$-Norm handelt, da das Problem sonst nicht eindeutig lösbar ist.
 
 Geometrische Vorstellung: Wir wollen $x^\ast$ so, dass das Residuum $r = b - Ax^\ast$ orthogonal auf $Ax^\ast$ steht, denn dann wird $r$ am kleinsten.
+
+Für die Kondition des Problems gilt mit $\cos \Theta = \frac{\norm{A x^\ast}_2}{\norm{b}_2}$ und $\kappa_2(A) = \frac{\max_{\norm{x} = 1} \norm{Ax}_2}{\min_{\norm{x} = 1} \norm{Ax}_2}$:
+\begin{align*}
+    \frac{\norm{\tilde x - x^\ast}}{\norm{x^\ast}} &\leq \frac{\kappa_2(A)}{\cos \Theta} \frac{\norm{\tilde b - b}_2}{\norm{b}_2} \\
+    \frac{\norm{\tilde x - x^\ast}}{\norm{x^\ast}} &\leq (\kappa_2(A) + \kappa_2(A)^2 \tan \Theta) \frac{\norm{\tilde A - A}_2}{\norm{A}_2}
+\end{align*}
 
 \subsection{Normalengleichungen}
 
