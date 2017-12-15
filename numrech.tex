@@ -307,141 +307,168 @@ Sind die Singulärvektoren nach betragsmäßiger Größe geordnet, ergibt sich d
 
 \subsection{Fixpunktiteration}
 
-Für eine Funktion $\Phi: \mathbb{R}^n \to \mathbb{R}^n$  heißt $x \in \mathbb{R}^n$ Fixpunkt von $\Phi$ genau dann wenn
-\[\Phi(x) = x\]
-gilt.
+Für eine Funktion $\Phi: \mathbb{R}^n \to \mathbb{R}^n$ heißt $x \in \mathbb{R}^n$ Fixpunkt von $\Phi$ gdw. $\Phi(x) = x$.
 
-Es sei eine abgeschlossene nichtleere Teilmenge $M \subseteq \mathbb{R}^n$, auf der $\Phi$ eine Selbstabbildung und Kontraktion ist, d.h. $\Phi(M) \subseteq M$ und es gibt ein $\theta < 1$ sodass für alle $x,y \in M$, $x \ne y$ $\norm{\Phi(x)-\Phi(y)} \le \theta \norm{x-y}$ ist.	\\
-Dann hat $\Phi$ einen eindeutigen Fixpunkt $x^\ast \in M$ und die Fixpunktiteration
-\[x_{i+1} = \Phi(x_i)\]
-konvergiert für alle $x_0 \in M$ mit
-\begin{align*}
-	\norm{x_k-x^\ast} &\le \frac{\theta^k}{1-\theta}\norm{x_1-x_0}	&&	\text{(a priori)}	\\
-	\norm{x_k-x^\ast} &\le \frac{\theta}{1-\theta} \norm{x_k-x_{k-1}}	&&	\text{(a posteriori)}
-\end{align*}
+Damit die Fixpunktiteration auf $\Phi$ funktioniert, muss gelten:
+\begin{itemize}
+  \item Selbstabbildung auf einem $E \subseteq \mathbb{R}^n$: $\Phi : E \to E$.
+  \item Kontraktion: $\norm{\Phi(x) - \Phi(y)} \leq L \norm{x-y}$ für alle $x,y \in E$ mit $L < 1$.
+\end{itemize}
+
+Nach dem \emph{Banachschen Fixpunktsatz} gilt dann: $\Phi$ hat einen eindeutigen Fixpunkt $x^\ast \in E$ und die Fixpunktiteration $x^{i+1} = \Phi(x^i)$ konvergiert für alle $x^0 \in E$.
+
+Fehlerabschätzungen:
+\begin{alignat*}{3}
+	\norm{x^k-x^\ast} &\le \frac{L^k}{1-L} \norm{x^1-x^0} &\mbox{\small $\quad\text{bzw. } \log \left( (1-L) \frac{\norm{x_k-x^\ast}}{\norm{x^1-x^0}} \right) / \log(L) \le k$}	\quad&&	\text{\emph{(a priori)}}	\\
+	\norm{x^k-x^\ast} &\le \frac{L}{1-L} \norm{x^k-x^{k-1}}	& &&	\text{\emph{(a posteriori)}}
+\end{alignat*}
+
+Das Nullstellenproblem $f(x^\ast) = 0$ ist äquivalent zum Fixpunktproblem
+\[ x^\ast = \Phi(x^\ast) \quad\text{mit}\quad \Phi(x) := x - M_{x^\ast} f(x) \]
+und mit einer Matrix $M_{x^\ast}$, die in einer Umgebung von $x^\ast$ invertierbar ist.
 
 \subsection{Newton-Verfahren}
 
-Es sei $F : \mathbb{R}^n \to \mathbb{R}^n$ stetig differenzierbar. Dann ist
-\[x_{k+1} = x_k - F'(x_k)^{-1}F(x_k)\]
-die Newton-Iteration zum Startwert $x_0$. Diese konvergiert lokal quadratisch.
+Es sei $F : \mathbb{R}^n \to \mathbb{R}^n$ stetig differenzierbar. Beim \emph{(klassischen) Newton-Verfahren} lösen wir in jedem Schritt:
+\[ F'(x^k) \underbrace{(x^{k+1} - x^k)}_{:= s^k} = -F(x^k) \quad\text{bzw.}\quad x^{k+1} = x_k - (F'(x^k))^{-1} \cdot F(x^k) \]
+$s^k$ ist die Schrittweite ($x^{k+1} = x^k + s^k$). Das Newton-Verfahren konvergiert lokal quadratisch.
+
+Das \emph{vereinfachte Newton-Verfahren} verwndet statt $F'(x^k)$ einfach $F'(x^0)$ in jedem Schritt, d.h. die Iteration ist gegeben durch:
+\[ x^{k+1} = x_k - (F'(x^0))^{-1} \cdot F(x^k) \]
+Dabei geht quadratische Konvergenz verloren, aber  über LR-Zerlegung gewinnen wir Effizienz (in $F'(x_0) (x^{k+1} - x^k) = -F(x^k)$ wiederholen sich linke Seiten).
 
 \section{Nichtlineare Ausgleichsrechnung}
 
-Beim nichtlinearen Ausgleichsproblem such man für eine Funktion $F : \mathbb{R}^n \to \mathbb{R}^m$ ein $x^\ast$ sodass
-\[x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{F(x)}_2\]
-
-Dies Formulieren wir um als Suche nach dem Minimum von
-\[\phi(x) : \mathbb{R}^n \to \mathbb{R}, x \mapsto \frac{1}{2} \norm{F(x)}_2^2 \]
-
-Diese hat an einer Stelle $x^\ast$ ein lokales Minimum, wenn
-\begin{align*}
-	\grad\phi(x^\ast) &= 0	\\
-    \phi''(x^\ast) &~\text{s.p.d.}
-\end{align*}
+Beim \emph{nichtlinearen Ausgleichsproblem} sucht man für eine (nicht unbedingt lineare) Funktion $F : \mathbb{R}^n \to \mathbb{R}^m$ ein $x^\ast$ sodass
+\[ x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{F(x)}_2 \]
 
 \subsection{Gauß-Newton-Verfahren}
 
-Im Gauss-Newton-Verfahren bestimmen wir diese Nullstelle von $\grad\phi(x^\ast) = 0$ über eine Newton-Iteration. Allerdings ersetzen wir dabei in jedem Schritt die Funktion $F$ durch eine lineare Approximation mithilfe der Taylorentwicklung. Die Iteration geht also wie folgt, hier als Matlab/Octave-Code:
+Die lineare Approximation von $F(x)$ ist $F(x^k) + F'(x^k)(x-x^k)$ (Taylor-Entwicklung).
 
-\begin{lstlisting}[language=octave]
-function [x_star] = gauss_newton(f, df, x0, tolerance, maxIterations):
-    x = x0;
-    iterations = 0;
-    fx = eval(f,x);
-    dfx = eval(df,x);
-    while (norm(dfx' * fx) > tolerance && iterations < maxIterations):
-        step = least_squares(dfx,-fx);
-        x = x + step;
-        fx = eval(f,x);
-        dfx = eval(df,x);
-        iterations = iterations + 1;
-    end
-    x_star = x;
-end
-\end{lstlisting}
+Das \emph{Gauß-Newton-Verfahren} ist eine Fixpunktiteration, bei der $F(x)$ linear approximiert wird:
+\[ x^{k+1} = \arg \min_{x \in \mathbb{R}^n} \norm{ \underbrace{F(x^k)}_{\widehat{=} -b} + \underbrace{F'(x^k)}_{\widehat{=} A} \underbrace{(x-x^k)}_{\widehat{=} s^k} }_2 \]
+In jedem Schritt wird also ein lineares Ausgleichsproblem $\arg\min_{s^k \in \mathbb{R}^n} \norm{A s^k - b}_2$ gelöst.
 
-wobei \lstinline[language=octave]{least_squares(A,b)} das Lineare Ausgleichsproblem
-\[x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{Ax-b}_2\]
-löst.
+Wenn $F'(x)$ vollen Rang hat, können wir auch schreiben (über Normalengleichung):
+\[ x^{k+1} = x^k - (F'(x^k)^T F'(x^k))^{-1} \cdot F'(x^k)^T F(x^k) \]
+
+\subsection{Bonus: Newton-Verfahren}
+
+Eigentlich nur hier zum Vergleich der Gauß-Newton-Fixpunktiteration mit der Newton-Iteration.
+
+Wir wissen, dass gilt:
+\[ x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{F(x)}_2 = \argmin_{x \in \mathbb{R}^n} \frac{1}{2} \norm{F(x)}_2^2 = \argmin_{x \in \mathbb{R}^n} \frac{1}{2} F(x)^T \cdot F(x) \]
+
+$\phi(x) := \frac{1}{2} F(x)^T \cdot F(x)$ hat an einer Stelle $x^\ast$ ein lokales Minimum genau wenn $\grad\phi(x^\ast) = 0$ und wenn $\phi''(x^\ast)$ symmetrisch positiv definit ist.
+Also könnte man mit dem Newton-Verfahren eine Nullstelle von $\grad \phi(x)$ bestimmen:
+\begin{align*}
+  x^{k+1} &= x^k - (\phi''(x^k))^{-1} \grad \phi(x^k) \\
+          &= x^k - (F'(x^k)^T F'(x^k) + \underbrace{\sum_{i=1}^m F_i(x^k) F_i''(x^k))^{-1} \grad \phi(x^k)}_\text{hässliche Summe}
+\end{align*}
+Die hässliche Summe wird beim Gauß-Newton-Verfahren ignoriert.
 
 \subsection{Levenberg-Marquardt-Verfahren}
 
-Das Levenberg-Marquardt-Verfahren ist eine Modifikation des Gauß-Verfahrens bei dem bei der Berechnung der Schrittweite ein Dämpfungsfaktor $\mu$ eingefügt wird. Statt des lineare Ausgleichsproblems
-\[s^k = \argmin_{s \in \mathbb{R}^n} \norm*{DF(x^k)s + F(x^k)}\]
-lösen wir also das Problem
-\[s^k = \argmin_{s \in \mathbb{R}^n} \norm*{\left(\begin{array}{c}
-    F'(x^k)	\\	\mu I
-\end{array}\right)s + \left(\begin{array}{c}
-    F(x^k)	\\	0
-\end{array}\right)}\]
+Das \emph{Levenberg-Marquardt-Verfahren} ist eine Modifikation des Gauß-Newton-Verfahrens, bei dem bei der Berechnung der Schrittweite $s^k = x^{k+1} - x^k$ ein Dämpfungsfaktor $\mu > 0$ eingefügt wird:
+\[ s^k = \argmin (\norm{F'(x^k)s^k + F(x^k)}^2_2 + \mu^2 \norm{s^k}^2_2 = \argmin_{s \in \mathbb{R}^n} \norm{\underbrace{\begin{pmatrix} F'(x^k) \\ \mu I \end{pmatrix}}_{\substack{\text{immer voller}\\\text{Rang}}} s + \begin{pmatrix} F(x^k) \\ 0 \end{pmatrix}}_2 \]
+
+Als Fixpunktiteration:
+\[ x^{k+1} = x^k - (F'(x^k)^T F'(x^k) + \mu^2 I)^{-1} \cdot F'(x^k) F(x^k) \]
 
 \section{Interpolation}
-Den Raum der Polynome vom Grad $n$ bezeichnen wir als $\Pi_n$, und deren Elemente als $P_n (x)$. Zudem haben wir Daten (z.B. Messwerte) $(x_i,f(x_i) = y_i),\, i \in \{0,\ldots,n\}$ gegeben, und wollen diese durch ein Polynom $P_n (f|x_0,\ldots, x_n) = P_n (x)$ darstellen, es soll also $P_n (x_i) = y_i$ sein. Ein solches Polynom existiert immer eindeutig.
+Den Raum der Polynome vom Grad $n$ bezeichnen wir als $\Pi_n$, und deren Elemente als $P_n (x)$. Wir haben Daten (z.B. Messwerte) $(x_i,f(x_i) = y_i),\, i \in \{0,\ldots,n\}$ gegeben und wollen diese durch ein Polynom $P_n(x)$ darstellen: Es soll also $P_n(x_i) = y_i$ für alle $i$ gelten. Ein solches Polynom existiert immer eindeutig.
 
-\subsection{Lagrange-Fundamentalpolynome}
-Die Lagrange-Fundamentalpolynome (erfüllen unsere Interpolationsbedingung), sind gegeben durch:
+\subsection{Lagrange-Polynominterpolation}
+Die \emph{Lagrange-Fundamentalpolynome} $\ell_i(x)$ bilden eine Orthogonalbasis von $\Pi_n$:
+\[
+  \ell_i(x) := \prod_{\substack{k = 0 \\ k \neq i}}^n \frac{x - x_k}{x_i - x_k},
+  \quad\text{dafür gilt}\quad
+  \ell_i(x_j) = \delta_{ij} = \begin{cases}
+    1, &\text{falls } i = j \\
+    0, &\text{falls } i \neq j
+  \end{cases}
+\]
 
-\[\ell_i(x) = \prod_{\substack{k = 0 \\ k \neq i}}^n \frac{x - x_k}{x_i - x_k}\]
+Dann ist das \emph{Lagrange-Interpolationspolynom}:
+\[ P_n(f|x_0,\ldots, x_n) := \sum_{j=0}^n f (x_j) \ell_j = P_n(x) \]
 
-Diese bilden eine Orthogonalbasis von $\Pi_n$.
+\subsection{Auswertung des Polynoms durch das Neville-Aitken-Schema}
+Wir wollen nun den Wert unseres Interpolationspolynoms an \emph{einer festen Stelle} $x$ auswerten, ohne das Polynom explizit aufzustellen und dann erst auszuwerten.
 
-Dann ist das Interpolationspolynom
+Wir definieren:
+\[ P_{i,k} := P(f|x_{i-k},\ldots,x_i)(x), \]
+also insbesondere
+\[ P_{i,0} = P(f|x_i)(x) = f(x_i) \quad\text{und}\quad P_{n,n} = P(f|x_0,\ldots,x_n)(x) \]
 
-\[P_n (x) = \sum_{j=0}^n f (x_j) \ell_j\]
+Das \emph{Neville-Aitken-Schema} berechnet $P_n(f|x_0,\ldots, x_n)(x) = P_{n,n}$ rekursiv:
 
-\subsection{Auswertung des Polynoms durch das Neville-Aitken Schema}
-Wir wollen nun den Wert unseres Interpolationspolynoms an der festen Stelle $x$ durch ein rekursives Schema auswerten. Dazu setzen wir:
-
-\[P_{i,k} = P(f|x_{i-k},\ldots,x_i)\]
-also
-\[P_{i,0} = P(f|x_i)(x) = f(x_i)\]
-und
-\[P_{n,n} = P(f|x_0,\ldots,x_n)\]
-
-Insbesondere wollen wir also $P_{n,n}$ bestimmen. Das Schema lässt sich dann rekursiv berechnen durch:
-
-\[P_{i,k} = P_{i,k-1} + \frac{x - x_i}{x_i - x_{i-k}} (P_{i,k-1} - P_{i-1,k-1})\]
-
-Die Rekursionsendpunkte sind dann $P_{i,0}$.
+\begin{minipage}{0.6\textwidth}
+\begin{align*}
+  P_{i,0} &= f(x_i) \\
+  P_{i,k} &= P_{i,k-1} + \frac{x - x_i}{x_i - x_{i-k}} (P_{i,k-1} - P_{i-1,k-1})
+\end{align*}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}{C|CCCC}
+& P_{i,0} & P_{i,1} & P_{i,2} & \ldots \\
+\hline
+x_0 & f(x_0) \\
+x_1 & f(x_1) & P_{1,1} \\
+x_2 & f(x_2) & P_{2,1} & P_{2,2} \\
+\vdots & \vdots \\
+x_n  & f(x_n) & \ldots & \ldots  & P_{n,n}
+\end{tabular}
+\end{minipage}
 
 \subsection{Berechnung der Potenzform über ein LGS}
-Wir können das Interpolationspolynom $P_n(x)$ auch über das folgende Gleichungssystem bestimmen:
+Wir können das Interpolationspolynom $P_n(x)$ auch über das folgende LGS bestimmen, welches wegen der Vandermode-Matrix im Allgemeinen lächerlich schlecht konditioniert ist:
 
-\[\underbrace{\begin{pmatrix} 1 & x_0 & x_0^2 & \cdots & x_0^n \\ \vdots & \vdots & \vdots & \vdots & \vdots \\ 1 & x_n & x_n^2 & \ldots & x_n^n\end{pmatrix}}_{\text{Vandermonde-Matrix $V_n$}} \cdot \begin{pmatrix} a_0 \\ \vdots \\ a_n \end{pmatrix} = \begin{pmatrix} y_0 \\ \vdots \\ y_n \end{pmatrix}\]
+\[\underbrace{\begin{pmatrix} 1 & x_0 & x_0^2 & \cdots & x_0^n \\ \vdots & \vdots & \vdots & \vdots & \vdots \\ 1 & x_n & x_n^2 & \ldots & x_n^n\end{pmatrix}}_{\text{Vandermonde-Matrix $V_n$}} \begin{pmatrix} a_0 \\ \vdots \\ a_n \end{pmatrix} = \begin{pmatrix} y_0 \\ \vdots \\ y_n \end{pmatrix}\]
 
-Jedoch hat dies den gravierenden Nachteil, dass die Vandermonde-Matrix im Allgemeinen sehr schlecht konditioniert ist.
+\subsection{Auswertung der Potenzform mit dem Horner-Schema}
+Falls die Potenzform des Polynoms $P_n (x)$ vorliegt, kann diese durch geschickte Klammerung schnell (etwa halber Rechenaufwand) für ein $x$ ausgewertet werden.
 
-\subsection{Auswertung der Potenzform mittels Horner-Schema}
-Falls die Potenzform des Polynoms $P_n (x)$ vorliegt, kann diese durch geschickte Klammerung sehr schnell für ein $x$ ausgewertet werden.
-
-\[a_0 + a_1x + \hdots + a_nx^n = a_0 + x\cdot (a_1 + x\cdot (a_2 + (\hdots  x\cdot (a_{n_1} + xa_n) \hdots) ) )\]
+\[ a_0 + a_1x + \hdots + a_nx^n = a_0 + x\cdot (a_1 + x\cdot (a_2 + (\hdots  x\cdot (a_{n_1} + xa_n) \hdots) ) ) \]
 
 \subsection{Newtonsche Interpolationsformel}
-Sei $P(f|x_0,\ldots,x_{n-1})$ gegeben und wir wollen nun mit möglichst wenig Aufwand $P(f|x_0,\ldots,x_n)$ berechnen. Dies können wir wie folgt erreichen:
+Sei $P(f|x_0,\ldots,x_{n-1})$ gegeben und wir wollen nun mit möglichst wenig Aufwand $P(f|x_0,\ldots,x_n)$ berechnen.
 
-\[P(f|x_0,\ldots,x_n)(x) = P(f|x_0,\ldots,x_{n-1}) (x) + \delta_n(x-x_0)\ldots (x-x_{n-1})\]
+Es gilt:
+\[P(f|x_0,\ldots,x_n)(x) = P(f|x_0,\ldots,x_{n-1}) (x) + \underbrace{\delta_n(x-x_0)\cdots (x-x_{n-1})}_\textit{Korrekturterm}\]
+mit $\delta_n$ der Koeffizient der höchsten Potenz $x^n$, bzw. $[x_0,\ldots,x_n]f$ weil der Koeffizient eben von $x_0, \ldots, x_n$ abhängt:
+\[\ \delta_n \eqdef [x_0,\ldots,x_n]f \eqdef \frac{f(x_n) - P(f|x_0,\ldots,x_{n-1})(x_n)}{(x_n -x_0)\ldots (x_n-x_{n-1})} \]
 
-mit
+So lässt sich auch von einer einzigen Stützstelle (z.B. $P(f|x_0)$) aus das gesamte Interpolationspolynom $P(f|x_0,\ldots,x_n)$ rekursiv bestimmen. Wir erhalten die \emph{Newtonsche Interpolationsformel}:
+\begin{align*}
+  P(f|x_0,\ldots,x_n)(x) &= [x_0]f + (x-x_0)\cdot [x_0,x_1]f \\
+                         &+ (x-x_0)\cdots(x-x_1)\cdot [x_0,x_1,x_2]f \\
+                         &+ \ldots \\
+                         &+ (x-x_0)\cdots(x-x_{n-1})\cdot [x_0,\ldots,x_n]f
+\end{align*}
 
-\[\delta_n = \frac{f(x_n) - P(f|x_0,\ldots,x_{n-1})(x_n)}{(x_n -x_0)\ldots (x_n-x_{n-1})} \eqdef [x_0,\ldots,x_n]f\]
+Die sich wiederholenden Polynome $\omega_i(x)$ bilden die \emph{Newtonsche Basis} von $\Pi_n$:
+\[ \omega_0 \defeq 1,\quad\quad \omega_1 \defeq (x-x_0),\quad\quad \ldots,\quad\quad \omega_n \defeq (x-x_0)\ldots (x-x_{n-1}) \]
 
-Mit dieser sogenannten Newtonschen Interpolationsformel lässt sich rekursiv beginnend bei einer Stützstelle (z.B. $P(f|x_0)$) das komplette Polynom $P(f|x_0,\ldots,x_n)$ bestimmen. Als Knotenpolynome $\omega_i (x)$ bezeichnen wir die hierbei entstehende Polynome:
+Für die Newtonsche Interpolationsformel haben wir das rekursive \emph{Schema der dividierten Differenzen} für verschiedene Stützstellen $x_0,\ldots,x_n$:
 
-\begin{eqnarray}
-\omega_0 &\defeq& 1 \nonumber \\
-\omega_1 &\defeq& (x-x_0) \nonumber \\
-&\vdots& \nonumber \\
-\omega_n &\defeq& (x-x_0)\ldots (x-x_{n-1}) \nonumber
-\end{eqnarray}
-
-Diese bilden die Newton-Basis von $\Pi_n$.
-
-Mit der Rekursionsformel von Aitken lässt sich zudem zeigen, dass für verschiedene Stützstellen $x_0,\ldots,x_n$ folgendes gilt:
-
+\begin{minipage}{0.4\textwidth}
 \[ [x_0,\ldots,x_n]f = \frac{[x_1,\ldots, x_n]f - [x_0,\ldots, x_{n-1}]f}{x_n - x_0} \]
-
-Diese Terme werden auch als dividierte Differenzen bezeichnet.
+\end{minipage}\hspace{0.1\textwidth}
+\begin{minipage}{0.5\textwidth}
+\setlength{\tabcolsep}{0.5em}
+\renewcommand{\arraystretch}{0.4}
+\small
+\begin{tabular}{C|CCCCCC}
+& [x_i]f & & [x_i,x_{i+1}]f & & [x_i,x_{i+1},x_{i+2}]f \\
+\hline
+x_0 & [x_0]f \\
+    & &> & [x_0,x_1]f \\
+x_1 & [x_1]f & & &> &[x_0,x_1,x_2]f \\
+    & &> & [x_1,x_2]f \\
+x_2 & [x_2]f
+\end{tabular}
+\end{minipage}
 
 \subsection{Fehlerabschätzung}
 Der Fehler der Polynominterpolation $P_n (f|x_0,\ldots,x_n) (x)$ zur interpolierten Funktion $f(x)$, auf dem Intervall $[a,b]$, kann abgeschätzt werden durch:
