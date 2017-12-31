@@ -477,17 +477,25 @@ Der Fehler der Polynominterpolation $P_n (f|x_0,\ldots,x_n) (x)$ zur interpolier
 
 \section{Numerische Differentiation}
 
-Der nummerischen Differentiation liegt folgender Gedanke zugrunde:
+Wir reduzieren die numerische Differentiation auf Polynominterpolation:
+Die abzuleitende Funktion wird erst durch ein Polynom interpoliert.
+Das Interpolationspolynom kann dann leicht abgeleitet werden.
+Die $n$-te Ableitung eines Polynoms ist $n! \cdot (\text{Koeffizient } n)$.
+Bei der Newton-Interpolationsformel ist dieser $n$-te Koeffizient genau $[x_0,\ldots,x_n]f$.
+Wir erhalten:
+\[ f^{(n)}(x) \quad\approx\quad P(f|x_0, \ldots, x_n)^{(n)} (x) = n! \cdot [x_0,\ldots,x_n]f \]
 
-\[P(f|x_0, \ldots, x_n)^{(n)} (x) = n![x_0,\ldots,x_n]f \approx f^{(n)} (x)\]
+Spezialfälle für äquidistante Stützstellen $x_j = x_0 + j \cdot h$ und $x \in [x_0, x_n]$:
+\begin{align*}
+  f'(x) &\approx [x_0,x_1]f = \frac{f(x_1) - f(x_0)}{h} \\
+  f''(x) &\approx 2! \cdot [x_0,x_1,x_2]f \\
+         &= \frac{f(x_2) - 2 \cdot f(x_1) + f(x_0)}{h^2}
+\end{align*}
 
-\subsection{Complex Step Differentiation}
-
-Für analytische $f: \mathbb{C} \to \mathbb{C}$ mit $f(\mathbb{R}) \subseteq \mathbb{R}$ und $x \in \mathbb{R}$ ist
-
-\[ f'(x) = \lim_{h \to 0} \frac{f(x+ih)}{h} \]
-
-Dies kann durch kleine $h$ angenähert werden. Dabei wird Auslöschung durch Wahl von zu kleinen $h$ vermieden.\footnote{Martins, Joaquim RRA, Peter Sturdza, and Juan J. Alonso. ``The complex-step derivative approximation.'' ACM Transactions on Mathematical Software (TOMS) 29.3 (2003): 245-262.}
+Fehler $\varepsilon$ in den Daten, $\abs{f(y) - \tilde{f}(y)} \leq \varepsilon$, können zu Auslöschung führen.
+Für die zweite Ableitung mit äquidistanten Stützstellen mit Differenzenquotienten:
+\[ \abs{\tilde{f}'' - f''(x)} \leq \underbrace{\frac{4 \cdot \varepsilon}{h^2}}_\text{Rundungsfehler} + \underbrace{c \cdot h^2}_\text{Diskretisierungsfehler} \]
+Die Fehlerschranke wird für $h = \sqrt[4]{4 \cdot \varepsilon/c}$ minimal.
 
 \section{Numerische Integration}
 
