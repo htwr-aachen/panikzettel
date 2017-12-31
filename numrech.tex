@@ -9,6 +9,7 @@
 \usepackage[pdftex,pdfencoding=auto,psdextra]{hyperref}
 \usepackage{xcolor}
 \usepackage{array}
+\usepackage{cool}
 \usepackage{microtype}
 \usepackage{lmodern}
 
@@ -499,79 +500,74 @@ Die Fehlerschranke wird für $h = \sqrt[4]{4 \cdot \varepsilon/c}$ minimal.
 
 \section{Numerische Integration}
 
-Der Ansatz bei der numerischen Integration ist der Folgende: Das Integral $\int_a^b f(x) dx$ wird in Teilstücke aufgeteilt und dann werden diese Teilintegrale mithilfe einer einfach integrierbaren Funktion approximiert.
+Der Ansatz bei der numerischen Integration einfach:
+Das Integral $\Int{f(x)}{x,a,b}$ wird in Teilstücke aufgeteilt und dann werden diese Teilintegrale mithilfe einer einfach integrierbaren Funktion approximiert.
 
-Formal teilen wir also das Intervall $[a, b]$ in Teilintervalle $[t_{k-1}, t_k]$ auf und approximieren wie folgt:
-
+Formal teilen wir also das Intervall $[a, b]$ in Teilintervalle $[t_{k-1}, t_k]$ auf und approximieren $f$ durch ein $g_k$ für jedes Intervall:
 \[
-	\int_a^b f(x) dx = \sum_{k=1}^n \int_{t_{k-1}}^{t_k} f(x) dx \approx \sum_{k=1}^n \int_{t_{k-1}}^{t_k} g_k(x)dx
+  \Int{f(x)}{x,a,b} = \sum_{k=1}^n \Int{f(x)}{x,t_{k-1},t_k} \approx \sum_{k=1}^n \Int{g_k(x)}{x,t_{k-1},t_k}
 \]
 
 \subsection{Kondition}
 
-Betrachten wir nun die Kondition des Approximierens von Integranden. Wenn wir $f$ durch $\tilde{f}$ approximieren:
-
-\begin{align*}
-	I = \int_a^b f(x) dx & & \tilde{I} = \int_a^b \tilde{f}(x) dx
-\end{align*}
+Zunächst die Kondition der Integration mit Approximation.
+Wir approximieren $f$ durch $\tilde{f}$.
+\[
+  I = \Int{f(x)}{x,a,b} \qquad\qquad \tilde{I} = \Int{\tilde{f}(x)}{x,a,b}
+\]
 
 Dann gilt: $\abs{I - \tilde{I}} \leq (b - a) \norm{f - \tilde{f}}_\infty$. Also ist die Kondition:
-
 \[
   \frac{\abs{I - \tilde{I}}}{\abs{I}} \leq \underbrace{\frac{\int_a^b \norm{f}_\infty dx}{\norm{\int_a^b f(x) dx}}}_{\kappa_\mathrm{rel}} \cdot \frac{\norm{f - \tilde{f}}_\infty}{\norm{f}_\infty}
 \]
 
 \subsection{Quadraturformeln}
 
-Wenn über einem Intervall $[c, d]$ mithilfe der Punkte $x_0, \ldots, x_m \in [c, d]$ die Funktion $f$ approximiert wird, ergibt sich eine sogenannte \emph{Quadraturformel}:
+Eine Approximation einer Funktion $f$ mit Stellen $x_0, \ldots, x_m \in [c, d]$ zur Integration wird \emph{Quadraturformel} genannt:
+\[ I_m(f) := \Int{P(f \vert x_0, \ldots, x_m)(x)}{x,c,d} \]
 
-\[
-  I_m(f) = \int_c^d P(f \vert x_0, \ldots, x_m)(x) dx
-\]
+Ist $f$ ein Polynom mit Grad $\leq m$, dann gibt die Quadraturformel ein exaktes Ergebnis.
 
-Diese Quadraturformel ist für Polynome mit bis zu Grad $m$ exakt. Formal: Für $g \in \Pi_m$ gilt $I_m(g) = \int_c^d g(x) dx$.
+In die Quadraturformeln wird nun die Definition des Lagrange-Integrationspolynoms eingesetzt.
+Ein wenig Umformen ergibt die folgenden Formeln. Sei dazu $h = d - c$.
+\begin{align*}
+  I_m(f) = h \sum_{j=0}^m c_j f(x_j) && c_j := \frac{1}{h} \int_c^d \underbrace{\prod_{\substack{k=0 \\ k\neq j}}^m \frac{x - x_k}{x_j - x_k}}_{\ell_{jm}(x)} dx
+\end{align*}
+
+Die Lagrange-Fundamentalpolynome $\ell_{jm}$ sind nur von den Stützstellen, aber nicht von den Funktionswerten abhängig.
 
 \subsection{Newton-Cotes-Formeln}
 
-Wir können die Quadraturformel mithilfe der Lagrange-Fundamentalpolynome $c_j$ auch folgendermaßen schreiben, wobei $h = d - c$:
+Wir setzen die Stützstellen äquidistant mit der Form:
+\begin{center}
+  \begin{tabular}{cc}
+    $m = 0$ & $m > 0$ \\
+    $x_0 = c + \frac{1}{2} h$ & $x_j = c + \frac{j}{m} h$
+  \end{tabular}
+\end{center}
 
+Man erhält dann die \emph{Newton-Cotes-Formeln} mit normierten Stützstellen $\xi_j$ und Gewichten $c_j$. Die Gewichte sind unabhängig vom Intervall $[c, d]$.
+\[ I_m(f) = h \sum_{j=0}^m c_j f(c + \xi_j h) \]
+
+\begin{center}
+  \renewcommand{\arraystretch}{1.7}
+  \begin{tabular}{|C|c|C|C|C|}
+  \hline
+  m	&	&	\xi_j	&	c_j	&	I_m(f) - \int_c^d f(x) dx	\\\hline
+  0	&	Mittelpunktsregel	&	\frac{1}{2}	&	1	&	-\frac{1}{24}h^3 f^{(2)}(\xi)	\\
+  1	&	Trapezregel	&	0, 1	&	\frac{1}{2}, \frac{1}{2}	&	\frac{1}{12}h^3 f^{(2)}(\xi)	\\
+  2	&	Simpson-Regel	&	0, \frac{1}{2}, 1	&	\frac{1}{6}, \frac{4}{6}, \frac{1}{6}	&	\frac{1}{90} \left ( \frac{1}{2} h \right)^5 f^{(4)}(\xi)	\\
+  3	&	$\frac{3}{8}$-Regel	&	0, \frac{1}{3}, \frac{2}{3},~1	&	\frac{1}{8}, \frac{3}{8}, \frac{3}{8}, \frac{1}{8}	&	\frac{3}{80} \left( \frac{1}{3} h \right)^5 f^{(4)}(\xi)	\\
+  4	&	Milne-Regel	&	0, \frac{1}{4}, \frac{1}{2}, \frac{3}{4}, 1	&	\frac{7}{90}, \frac{32}{90}, \frac{12}{90}, \frac{32}{90}, \frac{7}{90}	&	\frac{8}{945}\left(\frac{1}{4}h\right)^7f^{(6)}(\xi)	\\
+  \hline
+  \end{tabular}
+\end{center}
+
+Man beachte, dass der Exaktheitsgrad der Newton-Cotes-Formeln immer ungerade ist, d.h. entweder $m$ oder $m+1$.
+
+Mit der Integralaufteilung, die in der Kapiteleinleitung beschrieben wurde, erhalten wir die \emph{summierten Newton-Cotes-Formeln}. Jetzt ist $h = \frac{b - a}{n}$.
 \[
-  I_m(f) = h \sum_{j=0}^m c_j f(x_j)
-\]
-
-Die Lagrange-Fundamentalpolynome $\ell_{jm}$ sind nur von den Stützstellen, aber \emph{nicht von den Funktionswerten} abhängig.
-
-\[
-  c_j = \frac{1}{h} \int_c^d \prod_{\substack{k=0 \\ k\neq j}}^m \frac{x - x_k}{x_j - x_k} dx = \frac{1}{h} \int_c^d \ell_{jm}(x) dx
-\]
-
-Man erhält dann die Newton-Cotes-Formeln mit \emph{normierten} Stützstellen $\xi_j$ und Gewichten $c_j$. Diese sind unabhängig vom Intervall $[c, d]$.
-
-\[
-  I_m(f) = h \sum_{j=0}^m c_j f(c + \xi_j h)
-\]
-
-Mit äquidistanten Stützstellen:
-
-\renewcommand{\arraystretch}{1.2}
-
-\begin{tabular}{|C|c|C|C|C|}
-\hline
-m	&	&	\xi_j	&	c_j	&	I_m(f) - \int_c^d f(x) dx	\\\hline
-0	&	Mittelpunktsregel	&	\frac{1}{2}	&	1	&	-\frac{1}{24}h^3 f^{(2)}(\xi)	\\
-1	&	Trapezregel	&	0, 1	&	\frac{1}{2}, \frac{1}{2}	&	\frac{1}{12}h^3 f^{(2)}(\xi)	\\
-2	&	Simpson-Regel	&	0, \frac{1}{2}, 1	&	\frac{1}{6}, \frac{4}{6}, \frac{1}{6}	&	\frac{1}{90} \left ( \frac{1}{2} h \right)^5 f^{(4)}(\xi)	\\
-3	&	$\frac{3}{8}$-Regel	&	0, \frac{1}{3}, \frac{2}{3},~1	&	\frac{1}{8}, \frac{3}{8}, \frac{3}{8}, \frac{1}{8}	&	\frac{3}{80} \left( \frac{1}{3} h \right)^5 f^{(4)}(\xi)	\\
-4	&	Milne-Regel	&	0, \frac{1}{4}, \frac{1}{2}, \frac{3}{4}, 1	&	\frac{7}{90}, \frac{32}{90}, \frac{12}{90}, \frac{32}{90}, \frac{7}{90}	&	\frac{8}{945}\left(\frac{1}{4}h\right)^7f^{(6)}(\xi)	\\
-\hline
-\end{tabular}\\
-
-Der Exaktheitsgrad der Newton-Cotes-Formeln ist also immer ungerade, d.h. entweder $m$ oder $m+1$.
-
-Nun lässt sich, wie in der Kapiteleinleitung beschrieben, die Integralaufteilung zur Approximation durchführen. Damit kommen wir zu den summierten Newton-Cotes-Formeln. Mit $h = \frac{b - a}{n}$:
-
-\[
-  \int_a^b f(x) dx \approx \sum_{k=1}^n h \sum_{j=0}^m c_j f(a + (k-1) h + \xi_j h)
+  \int_a^b f(x) dx \quad\approx\quad \sum_{k=1}^n h \sum_{j=0}^m c_j f(a + (k-1) h + \xi_j h)
 \]
 
 \subsection{Gauß-Quadratur}
