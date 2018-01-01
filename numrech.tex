@@ -1,19 +1,5 @@
-\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
-\usepackage[utf8]{inputenc}
-\usepackage{mathtools}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage[english,ngerman]{babel}
-\usepackage{braket}
-\usepackage{listings}
-\usepackage[pdftex,pdfencoding=auto,psdextra]{hyperref}
-\usepackage{xcolor}
-\usepackage{array}
-\usepackage{cool}
-\usepackage{microtype}
-\usepackage{lmodern}
+\documentclass{panikzettel}
 
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
 \DeclareMathOperator*\argmin{arg\,min}
 \DeclareMathOperator\sign{sign}
@@ -23,31 +9,8 @@
 \newcommand{\eps}{\mathrm{eps}}
 \newcommand{\grad}{\nabla}
 
-\lstset{
-    mathescape=true,
-    basicstyle=\ttfamily
-}
-\lstset{literate=%
-    {Ö}{{\"O}}1
-    {Ä}{{\"A}}1
-    {Ü}{{\"U}}1
-    {ß}{{\ss}}1
-    {ü}{{\"u}}1
-    {ä}{{\"a}}1
-    {ö}{{\"o}}1
-    {~}{{\textasciitilde}}1
-}
-
+\usepackage{array}
 \newcolumntype{C}{>{$}c<{$}}
-
-\makeatletter
-\AtBeginDocument{
-  \hypersetup{
-    pdftitle = {\@title},
-    pdfauthor = {\@author}
-  }
-}
-\makeatother
 
 \title{Numerisches Rechnen Panikzettel}
 \author{``der Dude'', Luca Oeljeklaus,\\ Tobias Polock, Philipp Schröer, Caspar Zecha}
