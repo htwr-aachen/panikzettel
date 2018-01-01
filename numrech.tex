@@ -572,46 +572,54 @@ Mit der Integralaufteilung, die in der Kapiteleinleitung beschrieben wurde, erha
 
 \subsection{Gauß-Quadratur}
 
-Anstatt äquidistante Stützstellen zu wählen, können wir auch andere Stützstellen verwenden. Diese Verallgemeinerung, die Gauß-Quadratur, der Newton-Cotes-Formeln erreicht dann einen Exaktheitsgrad von bis zu $2m + 1$.
+Die \emph{Gauß-Quadratur} erreicht einen Exaktheitsgrad von $2m + 1$, also hat doppelt so hohen Exaktheitsgrad wie benötigte Funktionsauswertungen.
 
-Genauer können wir sagen: Es existieren Stützstellen $\omega_0, \ldots, \omega_m \in (c, d)$ (hier im \emph{offenen} Intervall!), so dass mit $h = d - c$ gilt
-
+Es existieren Stützstellen $\omega_0, \ldots, \omega_m \in (c, d)$ (offenes Intervall!), so dass mit $h = d - c$ gilt:
 \[
   h \sum_{i=0}^m \omega_i f(x_i) = \int_c^d f(x) dx + E_f(x)
 \]
 
-Dabei ist $E_g(h)$ der Fehler, welcher bei allen $g \in \Pi_{2m+1}$ gleich null ist. Sonst gilt für passendes $\xi \in [c, d]$
-
+Dabei ist $E_f(h)$ der Fehler mit passendem $\xi \in [c, d]$. Für $f \in \Pi_{2m+1}$ ist $E_f(h) = 0$.
 \[
-  \abs*{E_g(h)} = \frac{((m+1)!)^4}{((2m+2)!)^3 (2m+3)} h^{2m+3} \abs*{g^{(2m+3)}}
+  \abs*{E_f(h)} = \frac{((m+1)!)^4}{((2m+2)!)^3 (2m+3)}~ h^{2m+3}~ \abs*{f^{(2m+3)}(\xi)}
 \]
 
-Wir schreiben auch auch $I_{k,n} \approx \int_a^b f(x) dx$, wobei $[a, b]$ in $n$ Teilintervalle mit Länge $\frac{b-a}{n} = h$ und auf jedem Teilintervall eine Gauß-Quadratur mit $k = m + 1$ Stützstellen angewandt wird.
+Wir schreiben auch $I_{k,n}$ für die Approximation des Integrals mit $n$ Teilintervallen der Länge $\frac{b-a}{n} = h$, wobei in jedem Teilintervall die Gauß-Quadratur auf $k = m + 1$ Stützstellen angewandt wird.
 
-Jetzt stellt sich die Frage: Mehr oder weniger Teilintervalle für größere Präzision? Für $I_{2k,n}$ und $I_{k,2n}$ wird die Anzahl der Funktionsauswertungen verdoppelt im Vergleich zu $I_{k,n}$. Außerdem kann man herausfinden, dass $\abs{I - I_{2k,n}} \ll \abs{I - I_{k,2n}}$. Also wird in der Praxis oft $n$ klein gewählt, oft auch $n = 1$.
+Für den kleinsten Fehler: Mehr oder weniger Teilintervalle für größere Präzision? Für $I_{2k,n}$ und $I_{k,2n}$ wird die Anzahl der Funktionsauswertungen verdoppelt im Vergleich zu $I_{k,n}$. Außerdem kann man herausfinden, dass $\abs{I - I_{2k,n}} \ll \abs{I - I_{k,2n}}$. Also wird in der Praxis oft $n$ klein gewählt, oft auch $n = 1$.
 
 \section{Lineare Gleichungssysteme: Iterative Lösungsverfahren}
 
-Die Lösung eines linearen Gleichungssystems lässt sich iterativ als
-\[x^{k+1} = x^k+ C(b-Ax^k)\]
-bestimmen, wobei $C$ eine ``gute'' Approximation für $A^{-1}$ ist.
+Für dünnbesetzte lineare Gleichungssysteme eignen sich iterative Lösungsverfahren.
+Dazu wird die folgende Fixpunktiteration durchgeführt, wobei $A^{-1}$ durch $C$ gut appproximiert wird.
+\[ x^{k+1} = x^k+ C(b-Ax^k) \]
 
-Dieses Verfahren konvergiert, wenn $\rho(I-CA) < 1$ ist. Dabei ist $\rho(A)$ der Spektralradius, der Betrag des betragsmäßig größten Eigenwertes von $A$.
+Die Iteration konvergiert, wenn für den Spektralradius $\rho(I-CA) < 1$ gilt.
+Der Spektralradius $\rho(A)$ ist der Betrag des betragsmäßig größten Eigenwerts von $A$.
 
-Da $\rho(A) \le \norm{A}$ für jede Vektornorm-induzierte Matrixnorm $\norm{\cdot}$ ist, konvergiert das Verfahren also insbesondere wenn $\norm{A} < 1$ für eine beliebige Matrixnorm $\norm{\cdot}$ ist.
+Da $\rho(A) \le \norm{A}$ für jede Vektornorm-induzierte Matrixnorm $\norm{\cdot}$ ist, konvergiert die Iteration also insbesondere wenn $\norm{A} < 1$ für eine beliebige Matrixnorm $\norm{\cdot}$ ist.
 
-Im Folgenden sei $A = D-L-U$ wobei $D$ nur Einträge auf, $L$ unterhalb und $U$ oberhalb der Diagonalen enthält.
+Im Folgenden sei die Zerlegung $A = D-L-U$, wobei $D$ nur Einträge auf, $L$ unterhalb und $U$ oberhalb der Diagonalen enthalten.
 
 \subsection{Jacobi-Verfahren}
 
-Beim Jacobi-Verfahren ist $C = D^{-1}$.
+Beim \emph{Jacobi-Verfahren} ist $C = D^{-1}$. $O(n)$ Operationen pro Iterationsschritt.
+
+Für Konvergenz reicht das \emph{starke Zeilensummenkriterium} (bzw. Spaltensummenkriterium):
+\[ \sum_{\substack{j=1\\j \neq i}} \abs{A_{ij}} < \abs{A_{ii}} \qquad \forall~i \in \Set{1, \ldots, n} \]
 
 \subsection{Gauß-Seidel-Verfahren}
 
-Beim Gauß-Seidel-Verfahren ist $C = (D-L)^{-1}$.
+Beim \emph{Gauß-Seidel-Verfahren} ist $C = (D-L)^{-1}$. Konvergenz wie beim Jacobi-Verfahren.
+\[
+  x^{k+1}_i = \underbrace{\vphantom{\Biggl(}a_{ii}^{-1}}_{D^{-1}} \Biggl(b_i - \underbrace{\sum_{j=1}^{i-1} a_{ij}~ x_j^{k+1}}_L - \underbrace{\sum_{j=i+1}^n a_{ij}~ x^k_j}_U \Biggr)
+\]
 
 \subsection{SOR-Verfahren}
 
-Beim SOR-Verfahren wählt man ein $\omega \in (0,2)$. Dann ist $C = (\omega D - L)^{-1}$.
+Beim \emph{Successive Over-Relaxation (SOR)}-Verfahren ist $C = (\frac{1}{\omega} D - L)^{-1}$ für ein $\omega \in (0,2)$.
+\[
+  x^{k+1}_i = x_i^k + \omega \cdot \underbrace{\vphantom{\Biggl(}a_{ii}^{-1}}_{D^{-1}} \Biggl(b_i - \underbrace{\sum_{j=1}^{i-1} a_{ij}~ x_j^{k+1}}_L - \underbrace{\sum_{j=i+1}^n a_{ij}~ x^k_j}_U \Biggr)
+\]
 
 \end{document}
