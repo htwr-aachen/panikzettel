@@ -70,7 +70,6 @@ Bei dem \emph{Flussproblem} versuchen wir den größten Fluss durch Kanten mit K
 \textbf{Ziel:} Maximiere $w(f) = \sum_{(s,v) \in E} f((s,v))$.
 \end{defi}
 \end{halfboxr}
-\bigbreak
 
 \begin{halfboxl}
 Das \emph{Restnetzwerk} zu $G$ und $f$ enthält Kanten mit Gewichten entsprechend möglicher Flussveränderung.
@@ -173,7 +172,6 @@ In einem Niveaunetzwerk $G'_f = (V, E_f',s,t,c')$ und mit Fluss $f'$ auf $G'$:
     $\pot(v) := \min \Set{\sum_{e \in N_\text{in}(v)} rest_f(e), \sum_{e \in N_\text{out}(v)} rest_f(e)}$
 \end{itemize}
 \end{defi}
-\bigbreak
 
 \begin{halfboxl}
 Die Idee: Suche gleich mehrere verbessernde Wege in $G_f$.
@@ -724,7 +722,6 @@ Insgesamt erhält man die Laufzeit $\bigo(\sqrt{n} \cdot m)$.
 \end{enumerate}
 \end{algo}
 \end{halfboxr}
-\bigbreak
 
 \begin{halfboxl}
 Die Bestimmung der inklusions-maximalen Menge von kürzesten verbessernden Pfaden ist in $\bigo(m)$ möglich.
