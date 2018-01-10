@@ -39,5 +39,8 @@ dbis.pdf: dbis.tex
 	cp deps/BTrees.sty BTrees.sty
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf dbis.tex
 
+effi.pdf: effi.tex
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf effi.tex
+
 clean:
 	latexmk -CA
