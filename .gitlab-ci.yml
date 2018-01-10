@@ -16,3 +16,4 @@ compile_pdf:
       - datkom.pdf
       - malo.pdf
       - dbis.pdf
+      - effi.pdf
