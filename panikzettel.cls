@@ -36,36 +36,6 @@
 \newcommand{\@minipagerestore}{\setlength{\parskip}{0.8\medskipamount}}
 \makeatother
 
-% More nested sections
-\DeclareNewSectionCommand[
-  style=section,
-  counterwithin=subsubsection,
-  font=\normalsize,
-  afterskip=1.5ex plus .2ex,
-  beforeskip=-3.25ex plus -1ex minus -.2ex,
-  indent=0pt,
-  level=4,
-  tocstyle=section,
-  toclevel=4,
-  tocindent=10em,
-  tocnumwidth=5em
-]{subsubsubsection}
-\setcounter{secnumdepth}{\subsubsubsectionnumdepth}
-\setcounter{tocdepth}{\subsubsubsectiontocdepth}
-\RedeclareSectionCommand[
-  level=5,
-  counterwithin=subsubsubsection,
-  toclevel=5,
-  tocindent=12em,
-  tocnumwidth=6em
-]{paragraph}
-\RedeclareSectionCommand[
-  level=6,
-  toclevel=6,
-  tocindent=14em,
-  tocnumwidth=7em
-]{subparagraph}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Utilities
 \usepackage{lipsum}
