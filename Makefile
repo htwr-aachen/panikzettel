@@ -18,7 +18,7 @@ bus.pdf: bus.tex
 maschinengestaltung_i.pdf: maschinengestaltung_i.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make maschinengestaltung_i.tex
 
-numrech.pdf: numrech.tex
+numrech.pdf: numrech.tex panikzettel.cls
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -use-make -pdf numrech.tex
 
 buk.pdf: buk.tex

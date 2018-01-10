@@ -1,7 +1,5 @@
 \documentclass{panikzettel}
 
-\DeclarePairedDelimiter\norm{\lVert}{\rVert}
-\DeclareMathOperator*\argmin{arg\,min}
 \DeclareMathOperator\sign{sign}
 \newcommand{\fl}{\mathrm{fl}}
 \newcommand{\defeq}{\vcentcolon =}
@@ -19,12 +17,15 @@
 
 \maketitle
 
-\begin{abstract}
-Dieser Panikzettel ist über die Vorlesung Numerisches Rechnen. Er basiert auf dem Foliensatz von Prof. Dr. Martin Grepl aus dem Wintersemester 17/18.	\\
-Dieser Panikzettel ist Open Source. Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
-\end{abstract}
-
 \tableofcontents
+
+\section{Einleitung}
+
+Dieser Panikzettel ist über die Vorlesung Numerisches Rechnen.
+Er basiert auf dem Foliensatz von Prof.\ Dr.\ Martin Grepl aus dem Wintersemester 17/18.
+
+Dieser Panikzettel ist Open Source.
+Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
 
 \section{Fehleranalyse: Kondition, Rundungsfehler, Stabilität}
 
@@ -62,14 +63,14 @@ Für Multiplikation und Division von Maschinenzahlen ist $\kappa_\text{rel} \leq
 \emph{Stabile} Algorithmen erzeugen Fehler nur in der Größenordnung des Fehlers, der durch die Kondition des Problems unvermeidbar ist.
 
 Ein \emph{rückwärts stabiles} Verfahren $\tilde{f}$, das eine Funktion $f$ approximiert, gibt die exakte Antwort auf eine nahezu richtige Frage: Für alle $x \in X$ gilt
-\[ \tilde{f}(x) = f(\tilde{x}) \text{ für ein } \tilde{x} \text{ mit } \frac{\norm{x-\tilde{x}}}{\norm{x}} = \mathcal{O}(\eps) \]
+\[ \tilde{f}(x) = f(\tilde{x}) \text{ für ein } \tilde{x} \text{ mit } \frac{\norm{x-\tilde{x}}}{\norm{x}} = \mathcal{O}(\eps). \]
 
 Dann wissen wir: $\frac{\norm{\tilde{f}(x) - f(x)}}{\norm{f(x)}} = \mathcal{O}(\kappa(x) \eps)$.
 
 \subsection{Taylorentwicklung}
 
 Funktionen lassen sich als die Taylorentwicklung darstellen. Für ein $\xi$ zwischen $x$ und $x_0$ ist
-\[f(x) = \sum_{i=0}^{n-1} \frac{f^{(i)}(x_0)}{i!}(x-x_0)^i + \frac{f^{(n)}(\xi)}{n!}(x-x_0)^n\]
+\[f(x) = \sum_{i=0}^{n-1} \frac{f^{(i)}(x_0)}{i!}(x-x_0)^i + \frac{f^{(n)}(\xi)}{n!}(x-x_0)^n.\]
 
 Somit lässt sich eine Funktion $f$ durch das sogenannte Taylorpolynom $n$-ten Grades approximieren:
 \[p_n(x) = \sum_{i=0}^{n} \frac{f^{(i)}(x_0)}{i!}(x-x_0)^i\]
@@ -78,7 +79,7 @@ Somit lässt sich eine Funktion $f$ durch das sogenannte Taylorpolynom $n$-ten G
 
 \subsection{Kondition und Störungssätze}
 
-Díe \emph{Konditionszahl einer Matrix} ist $\kappa(A)_{\norm{\cdot}} = \norm{A} \norm{A^{-1}}$ bzgl.\ der $\norm{\cdot}$-Norm.
+Die \emph{Konditionszahl einer Matrix} ist $\kappa(A)_{\norm{\cdot}} = \norm{A} \norm{A^{-1}}$ bzgl.\ der $\norm{\cdot}$-Norm.
 
 Für ein lineares Gleichungssystem $Ax = b$ mit Störung in $b$ bzw. in $A$ und $b$ gilt:
 \begin{align*}
@@ -156,7 +157,10 @@ Die Givens-Rotationsmatrix $G_{i,k}$ rotiert in der $x_i$-$x_k$-Ebene die Matrix
 
 $G_{i,i} = c = G_{k,k}$, $G_{i,k} = s$ und $G_{k,i} = -s$. Dazu Einsen auf die Diagonale und sonst Nullen.
 \begin{minipage}{0.7\textwidth}
+\small
 \[
+\arraycolsep=3pt
+\def\arraystretch{0.4}
   G_{i,k} = \left(\begin{array}{ccccccccccc}
     1 \\
     & \ddots  & & & & & & & & 0 \\
@@ -183,7 +187,7 @@ $G_{i,i} = c = G_{k,k}$, $G_{i,k} = s$ und $G_{k,i} = -s$. Dazu Einsen auf die D
 \end{minipage}
 
 Wir wenden also diese Rotationsmatrizen auf alle Elemente unterhalb der Diagonalen von $A$ an, sodass wir eine QR-Zerlegung für $A$ erhalten:
-\[ R = \underbrace{\ldots G_{2,3} \ldots G_{1,2}}_{Q^T} A \text{ bzw. }  A = \underbrace{G_{1,2}^T \ldots G_{2,3}^T \ldots}_{Q} R \]
+\[ R = \underbrace{\ldots G_{2,3} \ldots G_{1,2}}_{Q^T} A ~\text{ bzw. } ~A = \underbrace{G_{1,2}^T \ldots G_{2,3}^T \ldots}_{Q} R \]
 
 $Q$ wird nie explizit berechnet. Zur Lösung von $QRx = b$: Berechne $y = \ldots G_{2,3} \ldots G_{1,2} b$ und löse $Rx = y$ durch Rückwärtseinsetzen.
 
@@ -257,9 +261,9 @@ Berechnen wir $\hat{b} \in \mathbb{R}^n$ mit $Q^T b = \begin{pmatrix} \hat{b} \\
 
 \subsection{Singulärwertzerlegung (SVD)}
 
-Die \emph{Singulärwertzerlegung} einer Matrix $A \in \mathbb{R}^{n \times m}$ ist
-\[A = U\Sigma V^T\]
-mit orthogonalen Matrizen $U \in \mathbb{R}^{n \times n}, V \in \mathbb{R}^{m \times m}$ und einer Diagonalmatrix $\Sigma \in \mathbb{R}^{n \times m}$. Die nicht-null Einträge von $\Sigma$ heißen Singulärwerte von $A$, die Spalten von $U$ heißen Linkssingulärvektoren, die Spalten von $V$ heißen Rechstsingulärvektoren.
+Die \emph{Singulärwertzerlegung} einer Matrix $A \in \mathbb{R}^{n \times m}$ ist $A = U\Sigma V^T$.
+
+Dabei sind $U \in \mathbb{R}^{n \times n}$ und $V \in \mathbb{R}^{m \times m}$ orthogonalen Matrizen und $\Sigma \in \mathbb{R}^{n \times m}$ Diagonalmatrix. Die nicht-null Einträge von $\Sigma$ heißen Singulärwerte von $A$, die Spalten von $U$ heißen Linkssingulärvektoren, die Spalten von $V$ heißen Rechstsingulärvektoren.
 
 SVD gibt die Pseudoinverse $A^+ := V\Sigma^+ U^T$ mit $\Sigma^+$ der Diagonalmatrix, die die invertierten Singulärwerte von $A$ enthält.
 
@@ -275,7 +279,7 @@ Für eine Funktion $\Phi: \mathbb{R}^n \to \mathbb{R}^n$ heißt $x \in \mathbb{R
 
 Damit die Fixpunktiteration auf $\Phi$ funktioniert, muss gelten:
 \begin{itemize}
-  \item Selbstabbildung auf einem $E \subseteq \mathbb{R}^n$: $\Phi : E \to E$.
+  \item Selbstabbildung auf einem kompaktem $E \subseteq \mathbb{R}^n$: $\Phi : E \to E$.
   \item Kontraktion: $\norm{\Phi(x) - \Phi(y)} \leq L \norm{x-y}$ für alle $x,y \in E$ mit $L < 1$.
 \end{itemize}
 
@@ -297,14 +301,14 @@ Es sei $F : \mathbb{R}^n \to \mathbb{R}^n$ stetig differenzierbar. Beim \emph{(k
 \[ F'(x^k) \underbrace{(x^{k+1} - x^k)}_{:= s^k} = -F(x^k) \quad\text{bzw.}\quad x^{k+1} = x_k - (F'(x^k))^{-1} \cdot F(x^k) \]
 $s^k$ ist die Schrittweite ($x^{k+1} = x^k + s^k$). Das Newton-Verfahren konvergiert lokal quadratisch.
 
-Das \emph{vereinfachte Newton-Verfahren} verwndet statt $F'(x^k)$ einfach $F'(x^0)$ in jedem Schritt, d.h. die Iteration ist gegeben durch:
+Das \emph{vereinfachte Newton-Verfahren} verwendet statt $F'(x^k)$ einfach $F'(x^0)$ in jedem Schritt, d.h. die Iteration ist gegeben durch:
 \[ x^{k+1} = x_k - (F'(x^0))^{-1} \cdot F(x^k) \]
 Dabei geht quadratische Konvergenz verloren, aber  über LR-Zerlegung gewinnen wir Effizienz (in $F'(x_0) (x^{k+1} - x^k) = -F(x^k)$ wiederholen sich linke Seiten).
 
 \section{Nichtlineare Ausgleichsrechnung}
 
 Beim \emph{nichtlinearen Ausgleichsproblem} sucht man für eine (nicht unbedingt lineare) Funktion $F : \mathbb{R}^n \to \mathbb{R}^m$ ein $x^\ast$ sodass
-\[ x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{F(x)}_2 \]
+\[ x^\ast = \argmin_{x \in \mathbb{R}^n} \norm{F(x)}_2.\]
 
 \subsection{Gauß-Newton-Verfahren}
 
@@ -335,7 +339,7 @@ Die hässliche Summe wird beim Gauß-Newton-Verfahren ignoriert.
 \subsection{Levenberg-Marquardt-Verfahren}
 
 Das \emph{Levenberg-Marquardt-Verfahren} ist eine Modifikation des Gauß-Newton-Verfahrens, bei dem bei der Berechnung der Schrittweite $s^k = x^{k+1} - x^k$ ein Dämpfungsfaktor $\mu > 0$ eingefügt wird:
-\[ s^k = \argmin (\norm{F'(x^k)s^k + F(x^k)}^2_2 + \mu^2 \norm{s^k}^2_2 = \argmin_{s \in \mathbb{R}^n} \norm{\underbrace{\begin{pmatrix} F'(x^k) \\ \mu I \end{pmatrix}}_{\substack{\text{immer voller}\\\text{Rang}}} s + \begin{pmatrix} F(x^k) \\ 0 \end{pmatrix}}_2 \]
+\[ s^k = \argmin_{s \in \reals^n} (\norm{F'(x^k)s^k + F(x^k)}^2_2 + \mu^2 \norm{s^k}^2_2) = \argmin_{s \in \mathbb{R}^n}\, \norm{\underbrace{\begin{pmatrix} F'(x^k) \\ \mu I \end{pmatrix}}_{\substack{\text{immer voller}\\\text{Rang}}} s + \begin{pmatrix} F(x^k) \\ 0 \end{pmatrix}}_2 \]
 
 Als Fixpunktiteration:
 \[ x^{k+1} = x^k - (F'(x^k)^T F'(x^k) + \mu^2 I)^{-1} \cdot F'(x^k) F(x^k) \]
@@ -463,7 +467,7 @@ Die Fehlerschranke wird für $h = \sqrt[4]{4 \cdot \varepsilon/c}$ minimal.
 
 \section{Numerische Integration}
 
-Der Ansatz bei der numerischen Integration einfach:
+Der Ansatz bei der numerischen Integration ist einfach:
 Das Integral $\Int{f(x)}{x,a,b}$ wird in Teilstücke aufgeteilt und dann werden diese Teilintegrale mithilfe einer einfach integrierbaren Funktion approximiert.
 
 Formal teilen wir also das Intervall $[a, b]$ in Teilintervalle $[t_{k-1}, t_k]$ auf und approximieren $f$ durch ein $g_k$ für jedes Intervall:
@@ -560,20 +564,20 @@ Dazu wird die folgende Fixpunktiteration durchgeführt, wobei $A^{-1}$ durch $C$
 Die Iteration konvergiert, wenn für den Spektralradius $\rho(I-CA) < 1$ gilt.
 Der Spektralradius $\rho(A)$ ist der Betrag des betragsmäßig größten Eigenwerts von $A$.
 
-Da $\rho(A) \le \norm{A}$ für jede Vektornorm-induzierte Matrixnorm $\norm{\cdot}$ ist, konvergiert die Iteration also insbesondere wenn $\norm{A} < 1$ für eine beliebige Matrixnorm $\norm{\cdot}$ ist.
+Da $\rho(A) \le \norm{A}$ für jede Vektornorm-induzierte Matrixnorm $\norm{\cdot}$ ist, konvergiert die Iteration also insbesondere, wenn $\norm{A} < 1$ für eine beliebige Matrixnorm $\norm{\cdot}$ ist.
 
 Im Folgenden sei die Zerlegung $A = D-L-U$, wobei $D$ nur Einträge auf, $L$ unterhalb und $U$ oberhalb der Diagonalen enthalten.
 
 \subsection{Jacobi-Verfahren}
 
-Beim \emph{Jacobi-Verfahren} ist $C = D^{-1}$. $O(n)$ Operationen pro Iterationsschritt.
+Beim \emph{Jacobi-Verfahren} ist $C = D^{-1}$.
 
 Für Konvergenz reicht das \emph{starke Zeilensummenkriterium} (bzw. Spaltensummenkriterium):
 \[ \sum_{\substack{j=1\\j \neq i}} \abs{A_{ij}} < \abs{A_{ii}} \qquad \forall~i \in \Set{1, \ldots, n} \]
 
 \subsection{Gauß-Seidel-Verfahren}
 
-Beim \emph{Gauß-Seidel-Verfahren} ist $C = (D-L)^{-1}$. Konvergenz wie beim Jacobi-Verfahren.
+Beim \emph{Gauß-Seidel-Verfahren} ist $C = (D-L)^{-1}$. Konvergenz ist wie beim Jacobi-Verfahren.
 \[
   x^{k+1}_i = \underbrace{\vphantom{\Biggl(}a_{ii}^{-1}}_{D^{-1}} \Biggl(b_i - \underbrace{\sum_{j=1}^{i-1} a_{ij}~ x_j^{k+1}}_L - \underbrace{\sum_{j=i+1}^n a_{ij}~ x^k_j}_U \Biggr)
 \]
