@@ -72,10 +72,10 @@ Im Anhang~\ref{sec:entscheidbarkeitstabelle} haben wir eine Übersicht der Entsc
 
 \section{Grundlagen}
 \subsection{Die Turingmaschine (TM)}
-Damit wir uns mit Themen wie Berechenbarkeit und Komplexität von Problemen auseinandersetzen können, müssen wir uns erstmal klar machen was  ``berechnen'' überhaupt bedeutet. Wir führen hierzu das Modell der Turingmaschine ein, welche nach der Church-Turing-These (\ref{sec:church-turing}) eine universelle Rechenmaschine ist.
+Damit wir uns mit Themen wie Berechenbarkeit und Komplexität von Problemen auseinandersetzen können, müssen wir uns erstmal klar machen was  \glqq berechnen\grqq\ überhaupt bedeutet. Wir führen hierzu das Modell der Turingmaschine ein, welche nach der Church-Turing-These (\ref{sec:church-turing}) eine universelle Rechenmaschine ist.
 
 \subsubsection{Definition}
-Eine Turingmaschine $M$ wird definiert durch das 7-Tupel $$M= (Q, \Sigma,\Gamma, B, q_0, \overline{q}, \delta),$$ wobei $Q$ eine endliche Zustandsmenge, $\Sigma$ das Eingabealphabet, $\Gamma$ das Bandalphabet, $B$ das Leerzeichen, $q_0$ der Anfangszustand, $\overline{q}$ der Stoppzustand und \[\delta : (Q \setminus \overline{q}) \times \Gamma \to Q \times \Gamma \times \{R,L,N\}\]
+Eine Turingmaschine $M$ wird definiert durch das 7-Tupel $$M= (Q, \Sigma,\Gamma, B, q_0, \overline{q}, \delta),$$ wobei $Q$ eine endliche Zustandsmenge, $\Sigma$ das Eingabealphabet, $\Gamma$ das Bandalphabet, $B$ das Leerzeichen, $q_0$ der Anfangszustand, $\overline{q}$ der Endzustand und \[\delta : (Q \setminus \overline{q}) \times \Gamma \to Q \times \Gamma \times \{R,L,N\}\]
 die Zustandsübergangsfunktion ist.
 
 Eine \textbf{Konfiguration} einer TM ist ein String $\alpha q\beta$ mit $q \in Q, \alpha,\beta \in \Gamma^* $. $\alpha_1\ldots \alpha_n q \underbrace{\beta_1}_{\text{Kopf}}\ldots \beta_n$ bedeutet, dass die TM sich im Zustand $q$ befindet, während der Lesekopf auf dem ersten Symbol von $\beta$ und eine Position hinter dem letzten Symbol von $\alpha$ steht.
@@ -96,7 +96,7 @@ Die Sprache $L(M) = \{\, w \in \Sigma^\ast \,\vert\, M \text{ akzeptiert } w\,\}
 Falls $M$ zusätzlich auf allen Eingaben $v \notin L(M)$ mit 0 hält (d.h. immer terminiert), so ist $L(M)$ gerade die von $M$ \emph{entschiedene} Sprache.
 
 \subsubsection{TM-Berechen- und Entscheidbarkeit}
-Eine Funktion $f : \Sigma^* \to \Sigma^* \cup \{\perp\}$ ist (TM-)berechenbar, wenn eine eine TM $M$ existiert, sodass $f = f_M$ gilt.
+Eine Funktion $f : \Sigma^* \to \Sigma^* \cup \{\perp\}$ ist (TM-)berechenbar, wenn eine TM $M$ existiert, sodass $f = f_M$ gilt.
 
 Eine Sprache $L \in \Sigma^*$ ist (TM-)entscheidbar, falls eine TM existiert, die $L$ entscheidet.
 
@@ -224,7 +224,7 @@ Die Menge aller Gödelnummern (und damit die aller TMs) ist als Teilmenge von $\
 
 Da $\Sigma^\ast$ abzählbar ist, können wir Wörter nummerieren. Wir bezeichen also das $i$-te Wort als $w_i$. Das gleiche gilt für Turingmaschinen.
 
-Dann ist die Diagonalsprache $D$ die Menge der Wörter $w_i$, die von $M_i$ nicht akzeptiert werden. Diese ist unendscheidbar.
+Dann ist die Diagonalsprache $D$ die Menge der Wörter $w_i$, die von $M_i$ nicht akzeptiert werden. Diese ist unentscheidbar.
 
 \begin{proof}
 Angenommen $D$ sei entscheidbar. Dann sei $M_k$ die TM, die $D$ entscheidet.
@@ -252,6 +252,12 @@ Dann hält $M$ genau dann auf $\goedel{M}$, wenn $M$ nicht auf $\goedel{M}$ häl
 
 Also kann $H$ nicht entschieden werden.
 
+\subsubsection*{Unentscheidbarkeit des speziellen Halteproblems}
+Das spezielle Halteproblem ist eine Variante des Halteproblems. Die Definition lautet wie folgt:
+\[
+H_\varepsilon = \{ \langle M \rangle \mid M \text{ hält auf }\varepsilon \}
+\]
+Das spezielle Halteproblem ist unentscheidbar, da man aus einer TM $M$ und einem Wort $w$ eine TM $M^\prime$ konstruieren kann, wobei sich $M^\prime$ auf der Eingabe $\varepsilon$ genauso verhält wie $M$ auf der Eingabe $w$. Wäre also das spezielle Halteproblem $H_\varepsilon$ entscheidbar, wäre auch das Halteproblem $H$ entscheidbar.
 \subsubsection{Unterprogrammtechnik (Turingreduktion)}
 Mithilfe der Unterprogrammtechnik kann auch die  Unentscheidbarkeit eines Entscheidungsproblems aufgezeigt werden:
 
@@ -271,13 +277,13 @@ Eine Sprache $L$ heißt semi-entscheidbar, falls es eine TM  $M$ gibt, welche di
 Ein Beispiel für eine semi-entscheidbare Sprache ist das Halteproblem. Eine TM $M$, welche $H$ erkennt, lässt sich grob wie folgt beschreiben:  Simuliere die eingegebene Turingmaschine auf dem eingegebenen Wort und gebe dann 1 aus. Denn wenn die simulierte Maschine hält, akzeptiert $M$ die Eingabe, ansonsten läuft die simulierte TM ewig und die Eingabe wird nie akzeptiert.
 
 \subsubsection{Rekursive Aufzählbarkeit}
-Ein \emph{Aufzähler} ist eine TM mit einem angeschlossenen Drucker, also ein zusätliches Ausgabeband, auf dem der Kopf sich nur nach rechts bewegen darf.  Ein Aufzähler für eine Sprache $L$ druckt nun alle Worte aus $L$ aus, wobei sich Wörter wiederholen dürfen.
+Ein \emph{Aufzähler} ist eine TM mit einem angeschlossenen Drucker, also ein zusätzliches Ausgabeband, auf dem der Kopf sich nur nach rechts bewegen darf.  Ein Aufzähler für eine Sprache $L$ druckt nun alle Worte aus $L$ aus, wobei sich Wörter wiederholen dürfen.
 
 Eine Sprache, für welche ein Aufzähler existiert heißt \textbf{rekursiv aufzählbar}. Es lässt sich relativ leicht zeigen (gute Übung!), dass eine Sprache genau dann \textbf{rekursiv aufzählbar} ist, wenn sie \textbf{semi-entscheidbar} ist.
 
 Wenn eine Sprache $L$ und ihr Komplement $\comp{L}$ rekursiv aufzählbar sind, dann ist $L$ entscheidbar.
 
-Eine Sprache $L$ kann genau eine von den folgenden  Eigenschaften haben:
+Eine Sprache $L$ hat genau eine der folgenden Eigenschaften:
 
 \begin{enumerate}
 \item  $L$ ist entscheidbar. Dann ist auch $\comp{L}$ entscheidbar.
@@ -285,6 +291,15 @@ Eine Sprache $L$ kann genau eine von den folgenden  Eigenschaften haben:
 \item $\comp{L}$ ist rekursiv aufzählbar, $L$ jedoch nicht (Diagonalsprache $D$ bspw.)
 \item Weder $L$ noch $\comp{L}$ sind rekursiv aufzählbar (Allgemeines Halteproblem $H_\text{all}$ bspw.)
 \end{enumerate}
+
+\subsubsection{Abschlusseigenschaften}
+Die folgenden Abschlusseigenschaften gelten für entscheidbare bzw. semi-entscheidbare Sprachen $L_1$ und $L_2$:
+\begin{itemize}
+\item Sind $L_1$ und $L_2$ entscheidbar, ist auch $L_1\cap L_2$ entscheidbar.
+\item Sind $L_1$ und $L_2$ semi-entscheidbar, ist auch $L_1\cap L_2$ semi-entscheidbar.
+\item Sind $L_1$ und $L_2$ entscheidbar, ist auch $L_1\cup L_2$ entscheidbar.
+\item Sind $L_1$ und $L_2$ semi-entscheidbar, ist auch $L_1\cup L_2$ semi-entscheidbar.
+\end{itemize}
 
 \subsection{Die Technik der Reduktion}
 \label{sec:reduktion}
@@ -301,7 +316,7 @@ Wir schreiben $L_1 \leq L_2$. Falls $L_1 \leq L_2$, so gelten folgende Eigenscha
 \end{enumerate}
 
 \subsection{Mächtigkeit von Programmiersprachen}
-Eine Programmiersprache sowie ein Rechnermodell wird als \emph{Turing-mächtig}, wenn man mit ihr  jedes von einer TM berechenbare Problem berechnen kann.
+Eine Programmiersprache sowie ein Rechnermodell wird als \emph{Turing-mächtig} bezeichnet, wenn man mit ihr jedes von einer TM berechenbare Problem berechnen kann.
 
 \subsubsection{WHILE-Programme}
 Ein  WHILE-Programm  ist ein Programm, welches nur aus Zuweisungen und  (geschachtelten, hintereinanderausgeführten) \lstinline{WHILE}-Schleifen besteht. Als Konstanten kennen WHILE-Programme nur $-1, 0, 1$. 
@@ -313,7 +328,7 @@ Wir können WHILE-Programme auch induktiv definieren:
 \item Für $P$ ein WHILE-Programm ist auch \lstinline{WHILE $x_i \neq 0$ DO $P$ END} ein WHILE-Programm.
 \end{itemize}
 
-Aufpassen: Das letzte WHILE-Programm in einem ``Block'' (etwa innerhalb einer Schleife) hat kein Semikolon am Ende, wie man es von vielen anderen Programmiersprachen gewohnt ist.
+Aufpassen: Das letzte WHILE-Programm in einem \glqq Block\grqq\ (etwa innerhalb einer Schleife) hat kein Semikolon am Ende, wie man es von vielen anderen Programmiersprachen gewohnt ist.
 
 Das Ergebnis einer Programmausführung wird in der Variable $x_0$ hinterlegt. Alle Variablen (außer die Eingabevariablen $x_1,\ldots,x_k$) sind standardmäßig mit $0$ initialisiert. Es lässt sich zeigen, dass  WHILE-Programme Turing-mächtig sind.
 
