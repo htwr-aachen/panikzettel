@@ -263,7 +263,7 @@ Berechnen wir $\hat{b} \in \mathbb{R}^n$ mit $Q^T b = \begin{pmatrix} \hat{b} \\
 
 Die \emph{Singulärwertzerlegung} einer Matrix $A \in \mathbb{R}^{n \times m}$ ist $A = U\Sigma V^T$.
 
-Dabei sind $U \in \mathbb{R}^{n \times n}$ und $V \in \mathbb{R}^{m \times m}$ orthogonalen Matrizen und $\Sigma \in \mathbb{R}^{n \times m}$ Diagonalmatrix. Die nicht-null Einträge von $\Sigma$ heißen Singulärwerte von $A$, die Spalten von $U$ heißen Linkssingulärvektoren, die Spalten von $V$ heißen Rechstsingulärvektoren.
+Dabei sind $U \in \mathbb{R}^{n \times n}$ und $V \in \mathbb{R}^{m \times m}$ orthogonalen Matrizen und $\Sigma \in \mathbb{R}^{n \times m}$ Diagonalmatrix. Die nicht-null Einträge von $\Sigma$ heißen Singulärwerte von $A$, die Spalten von $U$ heißen Linkssingulärvektoren, die Spalten von $V$ heißen Rechtssingulärvektoren.
 
 SVD gibt die Pseudoinverse $A^+ := V\Sigma^+ U^T$ mit $\Sigma^+$ der Diagonalmatrix, die die invertierten Singulärwerte von $A$ enthält.
 
@@ -302,7 +302,7 @@ Es sei $F : \mathbb{R}^n \to \mathbb{R}^n$ stetig differenzierbar. Beim \emph{(k
 $s^k$ ist die Schrittweite ($x^{k+1} = x^k + s^k$). Das Newton-Verfahren konvergiert lokal quadratisch.
 
 Das \emph{vereinfachte Newton-Verfahren} verwendet statt $F'(x^k)$ einfach $F'(x^0)$ in jedem Schritt, d.h. die Iteration ist gegeben durch:
-\[ x^{k+1} = x_k - (F'(x^0))^{-1} \cdot F(x^k) \]
+\[ x^{k+1} = x^k - (F'(x^0))^{-1} \cdot F(x^k) \]
 Dabei geht quadratische Konvergenz verloren, aber  über LR-Zerlegung gewinnen wir Effizienz (in $F'(x_0) (x^{k+1} - x^k) = -F(x^k)$ wiederholen sich linke Seiten).
 
 \section{Nichtlineare Ausgleichsrechnung}
