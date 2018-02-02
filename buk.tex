@@ -263,6 +263,16 @@ Mithilfe der Unterprogrammtechnik kann auch die  Unentscheidbarkeit eines Entsch
 
 Um zu zeigen, dass ein Problem $N$ unentscheidbar ist, konstruiert man mithilfe einer TM, die $N$ entscheidet eine TM, die ein bekanntes unentscheidbares Problem entscheidet. Dies ist ein Widerspruch, es kann also keine TM geben, die $N$ entscheidet.
 
+\subsubsection{Postsches Korrespondenzproblem}
+Beim Postschen Korrespondenzproblem (PCP oder PKP) geht es darum, für eine Menge von oben und unten beschrifteten Dominos eine nichtleere Folge der Dominos zu finden, so dass sich oben und unten dasselbe Wort ergibt. Dabei darf jeder Stein in der Folge beliebig oft verwendet werden.
+
+Beim modifizierten PCP (MPCP oder MPKP) ist die Aufgabenstellung gleich wie beim PCP, nur dass der erste Stein der Folge vorgegeben ist.
+
+Es lässt sich zeigen, dass MPCP auf PCP reduzierbar ist und dass das Halteproblem $H$ auf MPCP reduzierbar ist. Damit ist auch $H$ auf PCP reduzierbar. Insgesamt folgt, dass sowohl MPCP als auch PCP unentscheidbar sind. Achtung: Das bedeutet nicht, dass sich zu einer gegebenen PCP-Instanz keine Lösung finden lässt, es bedeutet nur, dass es keinen allgemeinen Algorithmus für beliebige Instanzen gibt.
+
+Es gibt einige Varianten des PCP, wobei manche dieser Varianten entscheidbar sind:
+Wenn die Wörter auf den Dominos alle die Länge 1 haben, ist das PCP für solche Instanzen entscheidbar. Außerdem ist das PCP entscheidbar, wenn es nur einen oder nur zwei Dominos gibt. Für 7 oder mehr Dominos sowie für genau 5 Dominos ist das PCP hingegen unentscheidbar. Ungeklärt ist, ob das PCP für 3 oder 4 Steine entscheidbar ist.
+
 \subsection{Der Satz von Rice}
 Der Satz von Rice besagt, dass (nicht-trivale) Aussagen über von TM-berechneten Funktionen nicht entscheidbar sind.
 
@@ -316,18 +326,6 @@ Wir schreiben $L_1 \leq L_2$. Falls $L_1 \leq L_2$, so gelten folgende Eigenscha
 \end{enumerate}
 
 Reduzierbarkeit ist transitiv, für drei Sprachen $L_1,L_2,L_3$ mit $L_1\leq L_2$ und $L_2 \leq L_3$ gilt also auch $L_1\leq L_3$.
-
-\subsection{Postsches Korrespondenzproblem}
-Beim Postschen Korrespondenzproblem (PCP oder PKP) geht es darum, für eine Menge von oben und unten beschrifteten Dominos eine nichtleere Folge der Dominos zu finden, so dass sich oben und unten dasselbe Wort ergibt. Dabei darf jeder Stein in der Folge beliebig oft verwendet werden.
-
-Beim modifizierten PCP (MPCP oder MPKP) ist die Aufgabenstellung gleich wie beim PCP, nur dass der erste Stein der Folge vorgegeben ist.
-
-Es lässt sich zeigen, dass MPCP auf PCP reduzierbar ist und dass das Halteproblem $H$ auf MPCP reduzierbar ist. Damit ist auch $H$ auf PCP reduzierbar. Insgesamt folgt, dass sowohl MPCP als auch PCP unentscheidbar sind. Achtung: Das bedeutet nicht, dass sich zu einer gegebenen PCP-Instanz keine Lösung finden lässt, es bedeutet nur, dass es keinen allgemeinen Algorithmus für beliebige Instanzen gibt.
-
-\subsubsection{Varianten des PCPs}
-Es gibt verschiedene Varianten des PCPs, von denen manche entscheidbar sind:
-
-Wenn die Wörter auf den Dominos alle die Länge 1 haben, ist das PCP für solche Instanzen entscheidbar. Außerdem ist das PCP entscheidbar, wenn es nur einen oder nur zwei Dominos gibt. Für 7 oder mehr Dominos sowie für genau 5 Dominos ist das PCP hingegen unentscheidbar. Ungeklärt ist, ob das PCP für 3 oder 4 Steine entscheidbar ist.
 
 \subsection{Mächtigkeit von Programmiersprachen}
 Eine Programmiersprache sowie ein Rechnermodell wird als \emph{Turing-mächtig} bezeichnet, wenn man mit ihr jedes von einer TM berechenbare Problem berechnen kann.
