@@ -227,7 +227,7 @@ Da $\Sigma^\ast$ abzählbar ist, können wir Wörter nummerieren. Wir bezeichen 
 Dann ist die Diagonalsprache $D$ die Menge der Wörter $w_i$, die von $M_i$ nicht akzeptiert werden. Diese ist unentscheidbar.
 
 \begin{proof}
-Angenommen $D$ sei entscheidbar. Dann sei $M_k$ die TM, die $D$ entscheidet.
+Angenommen $D$ sei entscheidbar. Dann existiert eine TM $M_k$, die $D$ entscheidet.
 
 Wir betrachten $w_k$:
 
@@ -261,7 +261,7 @@ Das spezielle Halteproblem ist unentscheidbar, da man aus einer TM $M$ und einem
 \subsubsection{Unterprogrammtechnik (Turingreduktion)}
 Mithilfe der Unterprogrammtechnik kann auch die  Unentscheidbarkeit eines Entscheidungsproblems aufgezeigt werden:
 
-Um zu zeigen, dass ein Problem $N$ unentscheidbar ist, konstruiert man eine TM für ein bekanntermaßen unentscheidbares Problem mit der Annahme, das eine TM die $N$ entscheidet gegeben ist.
+Um zu zeigen, dass ein Problem $N$ unentscheidbar ist, konstruiert man mithilfe einer TM, die $N$ entscheidet eine TM, die ein bekanntes unentscheidbares Problem entscheidet. Dies ist ein Widerspruch, es kann also keine TM geben, die $N$ entscheidet.
 
 \subsection{Der Satz von Rice}
 Der Satz von Rice besagt, dass (nicht-trivale) Aussagen über von TM-berechneten Funktionen nicht entscheidbar sind.
@@ -393,11 +393,11 @@ Eine Sprache $L$ ist $\NP$-vollständig, falls $L \in \NP$ gilt und $L$ $\NP$-sc
 
 \subsubsection[Kochrezept für NPC-Beweise]{Kochrezept für $\NPC$-Beweise}
 
-Es dient als gute Zusammenfassung, sich noch mal das aus der Vorlesung bekannte ``Kochrezept'' für Beweise der NP-Vollständigkeit von Problemen vor Augen zu führen. Um zu zeigen, dass eine Sprache $L$ in $\NPC$ liegt, zeigt man:
+Es dient als gute Zusammenfassung, sich noch mal das aus der Vorlesung bekannte \glqq Kochrezept\grqq\ für Beweise der NP-Vollständigkeit von Problemen vor Augen zu führen. Um zu zeigen, dass eine Sprache $L$ in $\NPC$ liegt, zeigt man:
 
 \begin{enumerate}
 \item Zeige, dass $L \in \NP$.
-\item Wähle eine Sprache $L' \in \NPC$, auf welche reduziert wird.
+\item Wähle eine Sprache $L' \in \NPC$, welche auf $L$ reduziert wird.
 \item Beschreibe die Reduktion, mit der Instanzen von $L'$ auf $L$ abgebildet werden.
 \item Zeige, dass diese Reduktion in polynomieller Zeit berechnet werden kann.
 \item Zeige die Korrektheit der Reduktion $f$: $x \in L' \iff f(x) \in L$.
@@ -405,13 +405,24 @@ Es dient als gute Zusammenfassung, sich noch mal das aus der Vorlesung bekannte 
 
 \subsection[NP-Vollständigkeit verschiedener Probleme]{$\NP$-Vollständigkeit verschiedener Probleme}
 
-Ein großer Teil der Vorlesung beschäftigt sich mit Reduktionen verschiedener Probleme, um $\NP$-Vollständigkeit zu beweisen. Wir wollen die Beweise hier nicht wiederholen, merken aber an, dass ein Verständnis dennoch klausurrelevant sein könnte.
+Ein großer Teil der Vorlesung beschäftigt sich mit Reduktionen verschiedener Probleme, um $\NP$-Vollständigkeit zu beweisen. Wir wollen die Beweise hier nicht wiederholen, merken aber an, dass ein Verständnis dennoch klausurrelevant sein könnte. Einige $\NP$-vollständige Probleme sind im Anhang Komplexitätstabelle aufgelistet.
 
 \subsubsection[SAT: Der Satz von Cook und Levin]{$\SAT$: Der Satz von Cook und Levin}
 Die Aussage des Satz von Cook und Levin ist, dass $\SAT$ $\NP$-vollständig ist. Es war das erste Problem, dessen $\NP$-Vollständigkeit bewiesen wurde, und zwar indem die beiden ein \textit{beliebiges} Problem aus $\NP$ auf $\SAT$ reduziert haben... Holy heck. Der Beweis ist zum Glück nicht klausurrelevant.
 
+\subsection{Pseudo-polynomiell lösbare und stark $\NP$-schwere Probleme}
+Für Entscheidungsprobleme, in denen Gewichte, Kosten, Abstände o. ä. wichtig sind, bezeichnen wir für eine Instanz $I$ eines solchen Problems den größten Zahlenwert in $I$ mit $Number(I)$. Für eine Instanz $I$ von $\textsc{Partition}$ wäre das beispielsweise das Maximum der Zahlen $a_1,\dots,a_n$.
+
+\subsubsection{Pseudo-polynomielle lösbare Probleme}
+Ein Problem ist in pseudo-polynomieller Zeit lösbar, wenn ein Algorithmus für das Problem existiert, dessen Laufzeit polynomiell in $\vert I \vert$ und $Number(I)$ auf Probleminstanzen $I$ beschränkt ist. Solche Probleme sind u. a. \textsc{Partition}, \textsc{Knapsack-E} und \textsc{Subset-Sum}.
+
+\subsubsection{Stark $\NP$-schwere Probleme}
+Ein Problem $X$ ist stark $\NP$-schwer, wenn $X$ beschränkt auf Instanzen $I$ mit $Number(I)\leq p(\vert I \vert)$ für ein Polynom $p$ immer noch $\NP$-schwer ist. Beispielsweise ist \textsc{Bin-Packing-E} stark $\NP$-schwer.
+
+Wenn es ein Problem gibt, das sowohl pseudo-polynomiell lösbar als auch stark $\NP$-schwer ist, gilt $\P=\NP$. Unter der Annahme $\P\neq\NP$ gibt es also kein solches Problem.
+
 \subsection[Approximationsalgorithmen für NP-schwere Probleme]{Approximationsalgorithmen für $\NP$-schwere Probleme}
-$\NP$-schwere Probleme lassen sich nur langsam lösen - auf unseren Computern in mehr als polynomieller Zeit (angenommen $\P \neq \NP$). Dennoch lassen sich $\NP$-schwere Probleme approximieren, sodass es bessere zeitliche Garantien für eine Lösung gibt, die in einem bestimmten Bereich der optimalen Lösung liegt.
+$\NP$-schwere Probleme lassen sich nur langsam lösen - auf unseren Computern nicht in polynomieller Zeit (angenommen $\P \neq \NP$). Dennoch lassen sich $\NP$-schwere Probleme approximieren, sodass es bessere zeitliche Garantien für eine Lösung gibt, die in einem bestimmten Bereich der optimalen Lösung liegt.
 
 Für ein Optimierungsproblem $\Pi$ sagen wir, dass für eine Instanz $I$ von $\Pi$ der optimale Zielfunktionswert $opt(I)$ ist.
 
