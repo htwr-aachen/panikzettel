@@ -93,7 +93,7 @@ Auf manchen Eingaben halten manche Turingmaschinen nicht, die Ausgabe wird dann 
 \subsubsection{Erkannte und entschiedene Sprachen}
 Die Sprache $L(M) = \{\, w \in \Sigma^\ast \,\vert\, M \text{ akzeptiert } w\,\}$ ist die von der TM $M$ erkannte Sprache.
 
-Falls $M$ zusätzlich auf allen Eingaben $v \notin L(M)$ mit 0 hält (d.h. immer terminiert), so ist $L(M)$ gerade die von $M$ \emph{entschiedene} Sprache.
+Falls $M$ zusätzlich auf allen Eingaben $v \notin L(M)$ mit 0 hält (d.h.\ immer terminiert), so ist $L(M)$ gerade die von $M$ \emph{entschiedene} Sprache.
 
 \subsubsection{TM-Berechen- und Entscheidbarkeit}
 Eine Funktion $f : \Sigma^* \to \Sigma^* \cup \{\perp\}$ ist (TM-)berechenbar, wenn eine TM $M$ existiert, sodass $f = f_M$ gilt.
@@ -198,7 +198,7 @@ b+1 &\text{sonst} \\
 $\ast$: Die Registermaschine lässt sich äquivalent auch als \emph{eingeschränkte RAM} formulieren, mit nur den mit $\cmark$ markierten Befehlen. Diese eingeschränkte RAM kann dann natürlich nur endlich viele Register verwenden, weil \lstinline{IND*}-Befehle fehlen.
 
 \subsection{Die Nichtdeterministische Turingmaschine (NTM)}
-Bei einer nichtdeterministischen Turingmaschine haben wir statt einer Übergangsfunktion eine Relation, d.h. es kann in einer Konfiguration mehrere direkt nachfolgende Konfigurationen geben. Diese Relation nennen wir im Allgemeinen $\delta$, und es ist
+Bei einer nichtdeterministischen Turingmaschine haben wir statt einer Übergangsfunktion eine Relation, d.h.\ es kann in einer Konfiguration mehrere direkt nachfolgende Konfigurationen geben. Diese Relation nennen wir im Allgemeinen $\delta$, und es ist
 
 \[\delta \subseteq ((Q \setminus \overline q) \times \Gamma) \times (Q\times \Gamma \times \{L,R,N\})\]
 
@@ -282,7 +282,7 @@ nicht entscheidbar.
 
 \subsection{Semi-Entscheidbarkeit und Rekursive Aufzählbarkeit}
 \subsubsection{Semi-Entscheidbarkeit}
-Eine Sprache $L$ heißt semi-entscheidbar, falls es eine TM  $M$ gibt, welche diese Sprache erkennt. Diese muss die Sprache allerdings nicht entscheiden, d.h. sie darf auf Eingaben $w \notin L$ auch nicht halten.
+Eine Sprache $L$ heißt semi-entscheidbar, falls es eine TM  $M$ gibt, welche diese Sprache erkennt. Diese muss die Sprache allerdings nicht entscheiden, d.h.\ sie darf auf Eingaben $w \notin L$ auch nicht halten.
 
 Ein Beispiel für eine semi-entscheidbare Sprache ist das Halteproblem. Eine TM $M$, welche $H$ erkennt, lässt sich grob wie folgt beschreiben:  Simuliere die eingegebene Turingmaschine auf dem eingegebenen Wort und gebe dann 1 aus. Denn wenn die simulierte Maschine hält, akzeptiert $M$ die Eingabe, ansonsten läuft die simulierte TM ewig und die Eingabe wird nie akzeptiert.
 
@@ -303,7 +303,7 @@ Eine Sprache $L$ hat genau eine der folgenden Eigenschaften:
 \end{enumerate}
 
 \subsubsection{Abschlusseigenschaften}
-Die folgenden Abschlusseigenschaften gelten für entscheidbare bzw. semi-entscheidbare Sprachen $L_1$ und $L_2$:
+Die folgenden Abschlusseigenschaften gelten für entscheidbare bzw.\ semi-entscheidbare Sprachen $L_1$ und $L_2$:
 \begin{itemize}
 \item Sind $L_1$ und $L_2$ entscheidbar, ist auch $L_1\cap L_2$ entscheidbar.
 \item Sind $L_1$ und $L_2$ semi-entscheidbar, ist auch $L_1\cap L_2$ semi-entscheidbar.
@@ -423,10 +423,10 @@ Ein großer Teil der Vorlesung beschäftigt sich mit Reduktionen verschiedener P
 Die Aussage des Satz von Cook und Levin ist, dass $\SAT$ $\NP$-vollständig ist. Es war das erste Problem, dessen $\NP$-Vollständigkeit bewiesen wurde, und zwar indem die beiden ein \textit{beliebiges} Problem aus $\NP$ auf $\SAT$ reduziert haben... Holy heck. Der Beweis ist zum Glück nicht klausurrelevant.
 
 \subsection{Pseudo-polynomiell lösbare und stark $\NP$-schwere Probleme}
-Für Entscheidungsprobleme, in denen Gewichte, Kosten, Abstände o. ä. wichtig sind, bezeichnen wir für eine Instanz $I$ eines solchen Problems den größten Zahlenwert in $I$ mit $Number(I)$. Für eine Instanz $I$ von $\textsc{Partition}$ wäre das beispielsweise das Maximum der Zahlen $a_1,\dots,a_n$.
+Für Entscheidungsprobleme, in denen Gewichte, Kosten, Abstände o.ä.\ wichtig sind, bezeichnen wir für eine Instanz $I$ eines solchen Problems den größten Zahlenwert in $I$ mit $Number(I)$. Für eine Instanz $I$ von $\textsc{Partition}$ wäre das beispielsweise das Maximum der Zahlen $a_1,\dots,a_n$.
 
 \subsubsection{Pseudo-polynomielle lösbare Probleme}
-Ein Problem ist in pseudo-polynomieller Zeit lösbar, wenn ein Algorithmus für das Problem existiert, dessen Laufzeit polynomiell in $\vert I \vert$ und $Number(I)$ auf Probleminstanzen $I$ beschränkt ist. Solche Probleme sind u. a. \textsc{Partition}, \textsc{Knapsack-E} und \textsc{Subset-Sum}.
+Ein Problem ist in pseudo-polynomieller Zeit lösbar, wenn ein Algorithmus für das Problem existiert, dessen Laufzeit polynomiell in $\vert I \vert$ und $Number(I)$ auf Probleminstanzen $I$ beschränkt ist. Solche Probleme sind u.a.\ \textsc{Partition}, \textsc{Knapsack-E} und \textsc{Subset-Sum}.
 
 \subsubsection{Stark $\NP$-schwere Probleme}
 Ein Problem $X$ ist stark $\NP$-schwer, wenn $X$ beschränkt auf Instanzen $I$ mit $Number(I)\leq p(\vert I \vert)$ für ein Polynom $p$ immer noch $\NP$-schwer ist. Beispielsweise ist \textsc{Bin-Packing-E} stark $\NP$-schwer.
