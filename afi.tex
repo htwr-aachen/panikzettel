@@ -1,0 +1,738 @@
+\documentclass{panikzettel}
+
+\usepackage{accents}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\newcolumntype{M}{>{\centering\arraybackslash$\displaystyle}X<{$}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+
+\title{Analysis für Informatiker Panikzettel}
+\author{Philipp Schröer}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Einleitung}
+
+Dieser Panikzettel ist über die Vorlesung Analysis für Informatiker bei Prof.\ Stamm im Wintersemester 2017/18.
+
+Dieser Panikzettel ist Open Source.
+Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+
+\section{Grundlagen}
+
+Wir werden hier \emph{nicht} die mathematischen Grundlagen der Vorlesung wiederholen. Induktion, Rekursion und Zahlen sollten schon verstanden sein. Die wichtigsten Ergebnisse wollen wir aber trotzdem hier sammeln.
+
+\subsection{Formeln und Ungleichungen}
+
+Das allgemeine Nullstellenproblem lässt sich über Formeln lösen:
+\begin{alignat*}{3}
+  ax^2 + bx + c = 0
+  &\quad\Leftrightarrow\quad
+  &&x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} \\
+  x^2 + px + q = 0
+  &\quad\Leftrightarrow\quad
+  &&x = -\frac{p}{2} \pm \sqrt{\left(\frac{p}{2}\right)^2 - q}
+\end{alignat*}
+
+Für den \emph{Binomialkoeffizienten} $\begin{pmatrix} n \\ k \end{pmatrix} := \frac{n!}{k!} \cdot (n-k)! \in \Q$ gilt mit $k,n \in \N_0$ und $k \leq n$:
+\begin{align*}
+  \begin{pmatrix} n \\ k \end{pmatrix} &= \begin{pmatrix} n \\ n - k \end{pmatrix} \\
+  \begin{pmatrix} n \\ k - 1 \end{pmatrix} + \begin{pmatrix} n \\ k \end{pmatrix} &= \begin{pmatrix} n + 1 \\ k \end{pmatrix}, \text{ falls } k > 0 \\
+  \begin{pmatrix} n \\ k \end{pmatrix} &= \begin{pmatrix} n \\ n - k \end{pmatrix}
+\end{align*}
+
+Die \emph{Binomische Formel} für $n \in \N_0$ und $a,b \in \mathbb{C}$:
+\begin{align*}
+  (a + b)^n = \sum_{k=0}^n \begin{pmatrix} n \\ k \end{pmatrix} a^k b^{n-k} = \sum_{k=0}^n \begin{pmatrix} n \\ k \end{pmatrix} a^{n-k} b^k
+\end{align*}
+
+Die \emph{Geometrische Summenformel} ist praktisch. Mit $q \neq 1$ und $a \neq b$:
+\begin{align*}
+  \sum_{k=0}^n q^k &= 1 + q + \ldots + q^n = \frac{q^{n+1}-1}{q-1} = \frac{1-q^{n+1}}{1-q} \\
+  \sum_{k=0}^n a^k b^{n-k} &= \frac{a^{n+1}-b^{n+1}}{a-b}
+\end{align*}
+
+Die \emph{Bernoullische Ungleichung} für $a \geq -1$:
+\[
+  (1+a)^n \geq 1 + na
+\]
+
+\subsection{Unendlichkeit}
+
+Eine Menge $M$ ist genau dann \emph{abzählbar}, wenn eine injektive Abbildung $g : M \to \N$ existiert.
+
+Wir können eine bijektive Abbildung $\phi : \N \to \N \times \N$ bauen, sodass auch $\N \times \N$ abzählbar ist. Also ist eine abzählbare Vereinigung abzählbarer Mengen auch abzählbar. $\Q$ ist abzählbar.
+
+Dagegen ist $\text{Pot}(\N)$ überabzählbar, genau wie $\Set{0,1}^\N$, die Menge der Abbildungen von $\N$ nach $\Set{0,1}$.
+
+\section{Folgen}
+\label{sec:folgen}
+
+Eine \emph{reelle Folge} ist eine Abbildung $\N \to \R$. Wir schreiben auch statt $\N \to \R, n \mapsto a_n$ kurz $(a_n)_{n \geq 1}$.
+
+Eine Folge ist \emph{monoton wachsend}, wenn gilt $a_{n+1} \geq a_n$ für alle $n \in \N$. \emph{Monoton fallend} analog $a_{n+1} \leq a_n$. \emph{Streng monoton} mit jeweils $>$ bzw. $<$.
+
+Eine Folge ist \emph{nach oben beschränkt}, wenn es ein $b \in \R$ gibt, sodass $a_n \leq b$ für alle $n \in \N$. \emph{Nach unten beschränkt} analog. Monoton wachsende Folgen sind nach oben, monoton fallende nach unten beschränkt. Eine Folge ist \emph{beschränkt}, wenn es ein $b \in \R$ gibt, sodass $\abs{a_n} \leq b$ für alle $n \in \N$.
+
+Eine Folge heißt \emph{konvergent}, wenn ein $a \in \R$ existiert, so dass zu jedem $\varepsilon > 0$ ein $n_0$ (abhängig von $\varepsilon$) existiert mit
+\[ \abs{a_n - a} < \varepsilon \text{ für alle } n \geq n_0 \]
+Dann ist $a$ der \emph{Grenzwert} der Folge $(a_n)_{n \geq 1}$.
+Eine \emph{Nullfolge} hat Grenzwert 0. Eine nicht konvergente Folge ist \emph{divergent}.
+
+Eine (reelle) Folge hat höchstens einen Grenzwert. Eine konvergente Folge ist (durch den Grenzwert) beschränkt.
+
+Die \emph{Limitenregeln} lassen Grenzwerte von konvergenten (!) Folgen zusammenrechnen.\\
+Seien $(a_n)_{n \geq 1}, (b_n)_{n \geq 1}$ konvergente Folgen mit Grenzwerten $a$ respektive $b$:
+\begin{alignat*}{4}
+  \lim_{n \to \infty}\; && \alpha \cdot a_n &= \alpha \cdot a \\
+  \lim_{n \to \infty}\; && a_n + b_n &= a + b \\
+  \lim_{n \to \infty}\; && a_n \cdot b_n &= a \cdot b \\
+  \lim_{n \to \infty}\; && \frac{a_n}{b_n} &= \frac{a}{b} &&\qquad \text{falls } b_n \neq 0\; \Forall n \in \N
+\end{alignat*}
+
+Die Folge $(a_n)_{n \geq 1}$ konvergiert genau dann, wenn $(a_n - a)_{n \geq 1}$ eine Nullfolge ist.
+
+Das \emph{Sandwich-Lemma}: Für ein $n_0 \in \N$:
+{\setlength{\abovedisplayskip}{0pt}
+\[
+  \begin{array}{c}
+    \displaystyle
+    \lim_{n \to \infty} a_n = \lim_{n \to \infty} b_n = b, \\
+    a_n \leq b_n \leq c_n \quad\Forall n \geq n_0
+  \end{array}
+  \qquad\Longrightarrow\qquad
+  \lim_{n \to \infty} b_n = b
+\]}
+
+Nützliche Aussagen zur Wurzelfunktion:
+\begin{itemize}
+  \item Für $q \in \R$ mit $\abs{q} < 1$ ist $(q^n)_{n \geq 1}$ eine Nullfolge.
+  \item $\lim_{n \to \infty} \sqrt[n]{n} = 1$.
+  \item Für $q \in \R$ mit $q > 0$ gilt $\lim_{n \to \infty} \sqrt[n]{q} = 1$.
+\end{itemize}
+\medskip
+
+Der \emph{Satz von L'Hospital} erlaubt die Bestimmung von Grenzwerten über \hyperref[sec:ableitungen]{Ableitungen}.
+Wenn $f$ und $g$ stetig differenzierbar sind und $\lim\limits_{x \to x_0} f(x) = \lim\limits_{x \to x_0} g(x) = 0$ gilt, dann folgt:
+\[ \lim_{x \to x_0} \frac{f(x)}{g(x)} = \lim_{x \to x_0} \frac{f'(x)}{g'(x)} \]
+
+Eine \emph{Teilfolge} $(a_k')_{k \geq 1}$ zur Folge $(a_n)_{n \geq 1}$ wird mit einer streng monoton wachsenden Indexfolge $(n_k)_{k \geq 1}$ gebaut. Jede Teilfolge konvergiert gegen den Grenzwert der ursprünglichen Folge.
+
+Eine Folge heißt \emph{Cauchy-Folge}, wenn es zu jedem $\varepsilon > 0$ ein $n_0$ (abhängig von $\varepsilon$) gibt, so dass
+\[ \abs{a_m - a_n} < \varepsilon \qquad \text{ für alle } m,n \geq n_0 \]
+Eine Folge ist genau dann eine Cauchy-Folge, wenn sie konvergiert.
+
+Eine Folge ist \emph{bestimmt divergent}, wenn es zu jedem $b \in \R, b > 0$ ein $n_0 \in \N$ gibt, so dass $a_n \geq b$ für alle $n \geq n_0$. Man schreibt $\lim_{n \to \infty} = \infty$. Analog für $-\infty$ mit $\leq$.
+
+\section{Reihen}
+\label{sec:reihen}
+
+\subsection{Konvergenz}
+
+Eine \emph{(unendliche) Reihe} besteht aus zwei Folgen: Der ``inneren Folge'' $(a_k)_{k \geq 1}$ und der Partialsummenfolge $(s_n)_{n \geq 1}$ sodass:
+\[ s_n = \sum_{k=1}^n a_k \quad \text{für alle } n \in \N \]
+Wir schreiben auch $\sum_{k=1}^\infty a_k$ für die Reihe und $\sum_{k=1}^\infty a_k = \lim_{n \to \infty} \sum_{k=1}^n a_k$.
+
+Wir können konvergente Reihen zusammen und auseinander ziehen. Mit $\alpha, \beta \in \R$:
+\[ \alpha \sum_{k=1}^\infty a_k + \beta \sum_{k=1}^\infty b_k = \sum_{k=1} (\alpha a_k + \beta b_k) \]
+
+Das \emph{Cauchy-Kriterium für Reihen}: Die Reihe $\sum_{k=1}^\infty a_k$ konvergiert genau dann, wenn es zu jedem $\varepsilon > 0$ ein $n_0 \in \N$ gibt, sodass
+\[ \abs{\sum_{k=m}^n a_k} < \varepsilon \quad \text{ für alle } n \geq m \geq n_0 \]
+
+Wenn die Reihe $\sum_{k=1}^\infty a_k$ konvergiert, muss auch $(a_k)_{k \geq 1}$ eine Nullfolge sein.
+
+Eine Reihe konvergiert genau dann, wenn die Folge der Partialsummen nach oben beschränkt ist.
+
+Das \emph{Leibniz-Kriterium} hilft bei alternierenden Folgen. Sei $(a_k)_{k \geq 1}$ eine monoton fallende Nullfolge. Dann konvergiert $\sum_{k=1}^\infty (-1)^k a_k$ und es gilt für alle $n \in \N$:
+\[ \abs{\sum_{k=n}^\infty (-1)^k a_k} \leq a_n \]
+
+\subsection{Absolute Konvergenz}
+
+Stärker als normale Konvergenz ist die \emph{absolute Konvergenz}: Hier muss für $\sum_{k=1}^\infty a_k$ sogar $\sum_{k=1}^\infty \abs{a_k}$ konvergieren.
+\begin{itemize}
+  \item Eine Reihe, die konvergiert, aber nicht absolut konvergiert, heißt \emph{bedingt konvergent}.
+  \item Wenn eine Reihe absolut konvergent ist, ist sie auch konvergent.
+\end{itemize}
+
+Zum Zeigen der absoluten Konvergenz hilft das \emph{Majorantenkriterium}. Sei $\sum_{k=1}^\infty c_k$ konvergent. Wenn $\abs{a_k} \leq c_k$ für alle $k \geq n_0$ gilt, ist $\sum_{k=1}^\infty$ absolut konvergent. Das Gegenstück, das \emph{Minorantenkriterium}, zeigt Divergenz von $\sum_{k=1}^\infty \abs{a_k}$, wenn $\sum_{k=1}^\infty c_k$ divergent ist.
+
+Alternativ das \emph{Quotientenkriterium}: Wenn $a_k \neq 0$ und $\abs{\frac{a_{k+1}}{a_k}} < 1$ für alle $k \geq n_0$ gilt, dann ist $\sum_{k=1}^\infty a_k$ absolut konvergent. Es geht auch: $\lim_{k \to \infty} \abs{\frac{a_{k+1}}{a_k}} < 1$. Wenn $> 1$, so folgt Divergenz. Achtung: $= 1$ sagt nichts aus!
+
+\subsection{Die Exponentialfunktion}
+
+Man kann die Eulersche Zahl $e$ ($e = e^1 = exp(1)$) durch eine Reihe darstellen.
+Für $x \in \N$:
+\[ e^x = \exp(x) := \sum_{k=0}^\infty \frac{x^k}{k!} \]
+
+$\exp(x)$ für $x \in \Q$ ist über die üblichen Potenzgesetze berechenbar: $\exp(\frac{p}{q}) = \sqrt[q](\exp(p))$.
+
+\subsection{Grenzwerttabelle}
+
+\begin{alignat*}{5}
+\text{\emph{Geometrische Reihe}}\qquad\qquad & \sum_{k=0}^\infty & q^k &= \frac{1}{1-q} && \qquad\text{für } \abs{q} < 1 \\
+\text{\emph{Harmonische Reihe}}\qquad\qquad & \sum_{k=1}^\infty & \frac{1}{k} &= \infty \\
+\text{\emph{``Huh?''}}\qquad\qquad & \sum_{k=1}^\infty & \frac{1}{k^2} &= \frac{\pi^2}{6}
+\end{alignat*}
+
+\section{Komplexe Zahlen}
+
+\subsection{Definition und Rechenregeln}
+
+Die \emph{komplexen Zahlen} sind definiert als $\CC = \Set{ z = x + iy | x,y \in \R }$.
+
+Für $z = x + iy \in \CC$ definieren wir:
+\begin{align*}
+  \Re(z) := x && \Im(z) := y && \overline{z} := x - iy
+\end{align*}
+
+Rechenregeln:
+\begin{align*}
+  i^2 &= -1 \\
+  (x + iy) + (u + iv) &= (x+u) + i(y+v) \\
+  (x+iy) \cdot (u + iv) &= (xu - yv) + i(xv + yu)
+\end{align*}
+
+Inverse lassen sich direkt bestimmen:
+\[ \frac{1}{z} = \frac{x}{x^2+y^2} - i \cdot \frac{y}{x^2+y^2} \]
+
+Für die komplexe Konjugation gibt es auch einige weitere Rechenregeln.
+\[ x = \frac{1}{2} (z + \overline{z}) \qquad\qquad y = \frac{1}{2i}(z-\overline{z}) \]
+\[ \overline{z+v} = \overline{z} + \overline{w} \qquad \overline{z \cdot w} = \overline{z} \cdot \overline{w} \qquad \overline{\left( \frac{z}{w} \right)} = \frac{\overline{z}}{\overline{w}} \]
+\[ z \cdot \overline{z} = x^2 + y^2 \]
+
+Der \emph{Betrag} einer komplexen Zahl: $\abs{z} := \sqrt{z \cdot \overline{z}} = \sqrt{x^2 + y^2}$.
+Für den Betrag gelten die üblichen Dreiecksungleichungen.
+
+Nach dem \emph{Fundamentalsatz der Algebra} hat jedes Polynom in $\CC$ auch eine Lösung in $\CC$.
+
+\subsection{Komplexe Folgen und Reihen}
+
+Die Definitionen von \hyperref[sec:folgen]{Abschnitt 2} und \hyperref[sec:reihen]{Abschnitt 3} lassen sich einfach mithilfe des Betrages für komplexe Zahlen übertragen.
+Einige Rechenregeln kann man auch übernehmen.
+
+Wird die Definition der Exponentialfunktion auf $\CC$ erweitert, so wird es interessant.
+
+\[ \exp(z + w) = \exp(z) \cdot \exp(w) \]
+\[ \exp(\overline{z}) = \overline{\exp(z)} \]
+\[ \abs{\exp(ix)} = 1 \qquad\Forall x \in \R \]
+
+\[ \cos(x) := \Re(\exp(ix)) \qquad\qquad \sin(x) := \Im(\exp(ix)) \]
+
+Per Definition gilt die \emph{Euler-Identität}:
+\[ \exp(ix) = \cos(x) + i \cdot \sin(x) \]
+
+Einige Rechenregeln für Sinus und Cosinus, mit $x,y \in \R$: \\
+\begin{halfboxl}
+  \vspace{-\baselineskip}
+  \begin{align*}
+    \cos(x+y) &= \cos(x) \cdot \cos(y) - \sin(x) \cdot \sin(y) \\
+    \sin(x+y) &= \cos(x) \cdot \sin(y) - \sin(x) \cdot \cos(y) \\
+    \cos(2x) &= \cos(x)^2 - \sin(x)^2 \\
+    \sin(2x) &= 2 \sin(x) \cos(x) \\
+    1 &= \cos(x)^2 + \sin(x)^2
+  \end{align*}
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{align*}
+    \sin(x) &= \cos(x - \frac{1}{2} \pi) \\
+    \sin(x + \pi) = -\sin(x), & \quad \sin(x + 2 \pi) = \sin(x) \\
+    \sin(2k \cdot \pi) = 0, & \quad \cos((2k+1) \cdot \frac{\pi}{2}) = 0 \\
+    \tan(x) &= \frac{\sin(x)}{\cos(x)}
+  \end{align*}
+\end{halfboxr}
+
+Zur Berechnung von Sinus und Cosinus:
+
+{\setlength{\extrarowheight}{10pt}
+\begin{tabularx}{\textwidth}{Y|Y|Y|Y|Y|Y|Y|Y|Y|Y}
+  x & $0$ & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\frac{2\pi}{3}$ & $\frac{3\pi}{4}$ & $\frac{5\pi}{6}$ & $\pi$ \\
+  $\sin(x)$ & $0$ & $\frac{1}{2}$ & $\frac{1}{2} \sqrt{2}$ & $\frac{1}{2} \sqrt{3}$ & $1$ & $\frac{1}{2} \sqrt{3}$ & $\frac{1}{2} \sqrt{2}$ & $\frac{1}{2}$ & $0$ \\
+  $\cos(x)$ & $1$ & $\frac{1}{2} \sqrt{3}$ & $\frac{1}{2} \sqrt{2}$ & $\frac{1}{2}$ & $0$ & $-\frac{1}{2}$ & $-\frac{1}{2} \sqrt{2}$ & $-\frac{1}{2} \sqrt{3}$ & $-1$
+\end{tabularx}}
+\medskip
+
+\section{Reelle Funktionen}
+
+\subsection{Umgebungen}
+
+Eine \emph{$\varepsilon$-Umgebung} um $x_0 \in \R$ mit $\varepsilon > 0$:
+\begin{align*}
+  U_\varepsilon(x_0) &:= \Set{ x \in \R | \abs{x-x_0} < \varepsilon } \\
+                     &\hphantom{:}= (x_0 - \varepsilon,~ x_0 + \varepsilon)
+\end{align*}
+
+Ein \emph{innerer Punkt} $x_0 \in M$ von $M \subset \R$ ist ein $x_0$ so, dass ein $\varepsilon > 0$ existiert mit $U_\varepsilon(x_0) \subset M$.
+Außerdem sei das \emph{Innere von M}, $\mathring{M}$, definiert als die Menge der inneren Punkte von M.
+
+$M$ ist \emph{offen}, wenn alle $x \in M$ auch innere Punkte sind ($M = \mathring{M}$).
+$M$ ist \emph{abgeschlossen}, wenn $\R \setminus M$ offen ist.
+
+\subsection{Funktionen}
+
+Der \emph{Graph} einer Funktion $f : A \to B$ ist die Menge $G_f = \Set{ (x, f(x)) | x \in A }$.
+
+Wir definieren außerdem Addition und Multiplikation für Funktionen.\footnote{Mehr zu Funktionen als Vektorräume im \href{./la.pdf}{Panikzettel Lineare Algebra}.}
+Sei $D \subset \R$ nicht leer und $f, g : D \to \R$ und $\alpha \in \R$.
+\begin{alignat*}{3}
+  f + g,\quad& x \to f(x) + g(x) \\
+  \alpha f,\quad& x \to \alpha \cdot (f(x)) \\
+  f \cdot g,\quad& x \to f(x) \cdot g(x) \\
+  \frac{f}{g},\quad& x \to \frac{f(x)}{g(x)} &&\qquad \text{falls } g(x) \neq 0~~\Forall x \in D
+\end{alignat*}
+
+Monotonie lässt sich auf Funktionen übertragen.
+$f : D \to E$ mit $D, E \subset \R$ ist \emph{monoton wachsend}, wenn für alle $x, y \in D$ mit $x < y$ immer $f(x) \leq f(y)$ gilt. \emph{Monoton fallend} analog mit $\geq$. \emph{Streng monoton wachsend} bzw. \emph{fallend} analog mit $<$ bzw. $>$.
+
+Wenn $f$ streng monoton wachsend/fallend ist, dann ist $f^{-1}$ injektiv und ebenfalls streng monoton wachsend/fallend.
+
+$f$ ist \emph{nach oben/unten beschränkt}, wenn $f(D)$ nach oben/unten beschränkt ist.
+
+\subsection{Polynome und rationale Funktionen}
+
+Eine Funktion $p : \R \to \R$ heißt \emph{(reelles) Polynom}, wenn es $n \in \N_0$ und $a_0,\ldots,a_n \in \R$ gibt, sodass
+\[ p(x) = \sum_{k=0}^n a_k x^k \qquad \text{für alle } x \in \R \]
+Der \emph{Grad} $n$ von $f$ erfüllt $a_i = 0~\Forall i > n$.
+
+Ein Polynom $f$ vom Grad $n$ hat höchstens $n$ Nullstellen.
+Beweisidee: Für jede Nullstelle $\alpha$ ist $(x - \alpha)$ ein Teiler von $f$. Es kann nicht mehr als $n$ solcher Teiler geben.
+
+Haben wir mindestens $n+1$ verschiedene Stellen $x_0,\ldots,x_n$, dann ist das ein Polynom vom Grad $n$ dadurch eindeutig bestimmt.
+Anders gesagt: Haben zwei Polynome vom Grad $\leq n$ mindestens $n+1$ gleiche Werte, so sind die Polynome gleich.
+
+Zwei Wachstumssätze für ein Polynom $p$ mit Koeffizienten $a_i$:
+\begin{itemize}
+  \item Es gibt ein $r \in \R_+$, so dass
+        \[ \frac{1}{2} \cdot a_n \cdot \abs{x}^n \leq \abs{p(x)} \leq 2 \cdot a_n \cdot \abs{x}^n \qquad\text{für alle } \abs{x} \geq r \]
+  \item Sei $\rho > 0$. Dann gibt es ein $M > 0$ so dass
+        \[ \abs{p(x)} \leq M \cdot \abs{x}^n \qquad\text{für alle } x \in \R, \abs{x} \geq \rho \]
+\end{itemize}
+
+\section{Funktionen: Grenzwerte und Stetigkeit}
+
+\subsection{Grenzwerte}
+
+Sei $D \subset \R$ nicht leer. Dann ist $x_0 \in \R$ ein \emph{Häufungspunkt von $D$}, wenn $D \cap (U_\rho(x_0) \setminus \Set{x_0})$ für jedes $\rho > 0$ nicht leer ist.
+Ist $x_0 \in D$ aber kein Häufungspunkt von $D$, dann ist $x_0$ ein \emph{isolierter Punkt von $D$}.
+
+Sei $f : D \to \R$ und $x_0$ Häufungspunkt von $D$. Dann ist $L \in \R$ der \emph{Grenzwert von $f$ für $x \to x_0$}, wenn
+\[ \abs{f(x) - L} < \varepsilon \qquad \text{für alle } x \in D \text{ und } \abs{x-x_0} \in (0, \delta) \]
+mit einem von $\varepsilon$ abhängigem $\delta > 0$. Man schreibt $\lim_{x \to x_0} f(x) = L$.
+
+Grenzwerte von Funktionen kann man auch über Folgen beschreiben.
+Sei $L$ der Grenzwert von $f$ für $x \to x_0$.
+Äquivalent gilt: Für jede Folge $(x_n)_{n \geq 1}$ in $D \setminus \Set{x_0}$ mit $\lim_{n \to \infty} x_n = L$ gilt $\lim_{n \to \infty} f(x_n) = L$.
+
+Damit erhalten wir auch für die Grenzwerte $\lim_{x \to x_0} f(x) = L_f$ und analog für $L_g$:
+\begin{alignat*}{4}
+  \lim_{x \to x_0} && (\alpha f)(x) &= \alpha L_f \\
+  \lim_{x \to x_0} && (f + g)(x) &= L_f + L_g \\
+  \lim_{x \to x_0} &&  (f \cdot g)(x) &= L_f \cdot L_g \\
+  \lim_{x \to x_0} && (\frac{f}{g})(x) &= \frac{L_f}{L_g} &&\qquad \text{falls } L_g \neq 0
+\end{alignat*}
+
+Konvergenz kann es auch nur einseitig geben.
+Sei $x_0$ Häufungspunkt von $D \cap (x_0, \infty)$ und $g = f{\big|}_{D \cap (x_0, \infty)}$.
+Wenn $\lim_{x \to x_0} g(x) = L$, dann ist $f$ \emph{rechtsseitig konvergent gegen $L$ für $x \to x_0$}, geschrieben $\lim_{x \downarrow x_0} f(x) = L$.
+Analog \emph{linksseitig konvergent} als  $\lim_{x \uparrow x_0} f(x) = L$ mit $D \cap (-\infty, x_0)$.
+
+Divergenz geht wieder ähnlich wie bei den Folgen.
+$f$ ist \emph{bestimmt divergent gegen $\infty$}, wenn es zu jedem $M > 0$ ein $R \in D$ gibt, so dass
+\[ f(x) > M \qquad \text{für alle } x > R \]
+Analog für $-\infty$.
+Auch analog für rechtsseitige Grenzwerte mit $x \in D \cap (x_0,a)$ und $a \in D \cap (x_0, \infty)$, linksseitige Grenzwerte mit $x \in D \cap (b,x_0)$ und $b \in D \cap (-\infty,x_0)$.
+
+\subsection{Stetige Funktionen}
+
+Stetige Funktionen sind solche, die man ``ohne Sprünge in einer Linie'' zeichnen kann.
+
+Sei $f : D \to \R$ und $x_0 \in D$.
+\begin{itemize}
+  \item Ist $x_0$ Häufungspunkt von $D$ und $\lim_{x \to x_0} f(x) = f(x_0)$, dann heißt $f$ \emph{stetig in $x_0$}.
+  \item Ist $x_0$ kein Häufungspunkt von $D$, so ist $f$ auch stetig in $x_0$.
+  \item $f$ ist stetig auf $E \subset D$, wenn $f$ auf jedem $x_0 \in E$ stetig ist.
+\end{itemize}
+
+Dass $f$ stetig in $x_0$ ist, ist äquivalent dazu, dass für jede Folge $(x_n)_{n \geq 1}$ in $D$ mit $\lim_{n \to \infty} x_n = x_0$ gilt:
+\[ \lim_{n \to \infty} f(x_n) = f(x_0) \]
+
+Seien $f : D_f \to \R$ und $g : D_g \to \R$ stetig in $x_0 \in D_f \cap D_g$. Dann sind auch stetig: $\alpha f$, $f + g$, $f \cdot g$ und $f / g$ (wenn $g(x_0) \neq 0$).
+
+Sei $f : D_f \to \R$ stetig in $x_0$ und $g : D_g \to \R$ stetig in $f(x_0)$. Dann ist $g \circ f$ stetig in $x_0$.
+
+Polynomfunktionen sind stetig auf $\R$.
+Rationale Funktionen sind stetig auf ihrem maximalen Definitionsbereich.
+$\exp$, $\sin$, $\cos$ sind stetig auf $\R$.
+
+Wenn $f$ stetig in $x_0 \in D$ ist, dann gibt es eine Umgebung $U$ von $x_0$, so dass $f|_{D \cap U}$ beschränkt ist.
+
+Wenn $f$ stetig und $f(x_0) > 0$ ($x_0 \in D$) ist, dann existiert eine Umgebung $U$ und ein $\rho > 0$, so dass $f(x) > \rho$  für alle $x \in D \cap U$.
+
+Sei $f$ streng monton und stetig. Dann ist auch die Umkehrfunktion $f^{-1}$ stetig.
+
+Sei $f : D \to \R$ stetig und $[a,b] \subset D$. Dann hat $f$ auf $[a,b]$ ein Minimum und ein Maximum.
+
+\emph{Zwischenwertsatz.} Sei $f : D \to \R$ stetig und $[a,b] \subset D$ und $a < b$.
+\begin{itemize}
+  \item Gilt $f(a) < 0$ und $f(b) > 0$ (oder andersrum), dann existiert ein $c \in [a,b]$ mit $f(c) = 0$.
+  \item Sei $m = \min \Set{ f(x) | x \in [a,b] }$ und $M = \max \Set{ f(x) | x \in [a,b] }$. Dann gilt $f([a,b]) = [m, M]$.
+\end{itemize}
+
+Mit dem Zwischenwertsatz kann man zeigen, dass jedes reelle Polynom ungeraden Grades eine Nullstelle in $\R$ hat.
+
+Eine Verfeinerung der Stetigkeit ist die \emph{Lipschitz-Stetigkeit}.
+Diese besteht, wenn es eine Konstante $L \in \R$ mit $L \geq 0$ gibt, sodass für alle $x,y \in D$ gilt:
+\[ \abs{f(x) - f(y)} \leq L \abs{x-y} \]
+
+\section{Differentialrechnung}
+
+\subsection{Ableitungen}
+\label{sec:ableitungen}
+
+Zunächst der \emph{Differenzenquotient} für $f$, $x_0$ und $h \neq 0$:
+\[ \frac{f(x_0 + h) - f(x_0)}{h} \]
+
+Sei $f : D \to \R$ und $x_0$ innerer Punkt von $D$.
+$f$ ist in $x_0$ \emph{differenzierbar}, wenn der folgende Grenzwert existiert:
+\[ f'(x_0) := \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h} \]
+Ebenfalls gibt es einseitige Differenzierbarkeit mit $\lim_{h \uparrow 0}$ ($f_-(x_0)$) und $\lim_{h \downarrow 0}$ ($f_+(x_0)$).
+$f$ ist \emph{differenzierbar auf $D$}, wenn $f$ in jedem $x_0 \in D$ differenzierbar ist.
+
+Wenn $f$ bei $x_0$ differenzierbar ist, dann ist $f$ auch stetig in $x_0$.
+
+$f'$, $f''$ und so weiter heißen die \emph{Ableitungen} einer entsprechend oft differenzierbaren Funktion $f$.
+
+Rechenregeln für Differentiation. Mit $f, g$ differenzierbar auf $x_0$:
+\begin{alignat*}{3}
+  (\alpha f)'&(x_0) = \alpha f'(x_0)\qquad &&\Forall \alpha \in \R \\
+  (f + g)'&(x_0) = f'(x_0) + g'(x_0) \\
+  (f \cdot g)'&(x_0) = f'(x_0) \cdot g(x_0) + f(x_0) \cdot g'(x_0) \\
+  \left(\frac{f}{g}\right)'&(x_0) = \frac{f'(x_0) g(x_0) - f(x_0) g'(x_0)}{g(x_0)^2}\qquad && \text{für } g(x_0) \neq 0 \\
+  (g \circ f)'&(x_0) = g'(f(x_0)) \cdot f'(x_0)
+\end{alignat*}
+Diese Regeln kann man leicht zeigen, indem man die Definition der Ableitung einsetzt und dann die Grenzwertregeln verwendet.
+
+Für eine stetige, injektive und differenzierbare Funktion $f$ gilt außerdem:
+\[ (f^{-1})'(y_0) = \frac{1}{f'(f^{-1}(y_0))} \]
+
+\subsection{Ableitungstabelle}
+
+{\setlength\extrarowheight{5pt}
+\begin{tabularx}{\textwidth}{M|M|M}
+D & f : D \to \R & f' : D \to \R \\ \hline
+\begin{array}{ll}
+  \R, & \text{ falls } n \in \N_0 \\
+  \R \setminus \Set{0}, & \text{ falls } n \in \mathbb{Z} \setminus \N_0 \\
+  (0, \infty), & \text{ falls } n \in \R \setminus \mathbb{Z}
+\end{array} & x^n & n \cdot x^{n-1} \\
+\R & \exp(x) & \exp(x) \\
+(0,\infty) & \ln(x) & \frac{1}{x} \\
+\R & \sin(x) & \cos(x) \\
+\R & \cos(x) & -\sin(x) \\
+\R & \arctan(x) & -\frac{1}{1+x^2} \\
+\end{tabularx}}
+
+\subsection{Der Mittelwertsatz der Differentialrechnung}
+
+Wenn $f$ in $x_0$ ein relatives Extremum hat, dann gilt $f'(x_0) = 0$.
+
+\emph{Satz von Rolle}. Sei $f : [a,b] \to \R$ stetig mit $a < b$ und $f$ auf $(a,b)$ differenzierbar mit $f(a) = f(b) = 0$. Dann existiert mindestens ein $x_0 \in (a,b)$ mit $f'(x_0) = 0$.
+
+\emph{Mittelwertsatz}. Sei $f : [a,b] \to \R$ und $a < b$ und $f$ differenzierbar auf $(a,b)$. Dann existiert mindestens ein $x_0 \in (a,b)$ mit
+\[ f'(x_0) = \frac{f(b) - f(a)}{b - a} \]
+Anders formuliert: Die Steigung der Tangente in $x_0$ ist gleich der Steigung der Sekante durch $(a, f(a))$ und $(b, f(b))$.
+
+Daraus folgen einige Sätze. Seien $I$ ein Intervall mit $\mathring{I} \neq \emptyset$ und $f : I \to \R$, $g : I \to \R$ beide stetig und auf $\mathring{I}$ differenzierbar.
+\begin{alignat*}{3}
+  \Forall x \in \mathring{I}: f'(x) = 0 &\Longleftrightarrow& ~\Exists c \in \R: (f(x) = c ~\Forall x \in I) \\
+  \Forall x \in \mathring{I}: f'(x) = g'(x) &\Longleftrightarrow& ~\Exists c \in \R: (f(x) = g(x) + c ~\Forall x \in I) \\
+  f \text{ ist monoton wachsend } &\Longleftrightarrow& f'(x) \geq 0 ~\Forall x \in \mathring{I} \\
+  f \text{ ist monoton fallend } &\Longleftrightarrow& f'(x) \leq 0 ~\Forall x \in \mathring{I} \\
+  f \text{ ist streng monoton wachsend } &\Longleftarrow& f'(x) > 0 ~\Forall x \in \mathring{I} \\
+  f \text{ ist streng monoton fallend } &\Longleftarrow& f'(x) < 0 ~\Forall x \in \mathring{I}
+\end{alignat*}
+
+Endlich können wir auch Extrema berechnen.
+
+Sei $\delta > 0$ so, dass $f$ in $U_\delta(x_0) \setminus \Set{ \delta }$ differenzierbar ist.
+\medbreak
+\begin{tabular}{ccc|c}
+  $\Forall x \in U_\delta(x_0)$ & & $\Forall x \in U_\delta(x_0)$ & $\Longrightarrow$ \\
+  mit $x > x_0$ & & mit $x < x_0$ &  \\
+  \hline
+  $f'(x) < 0$ &$\land$& $f'(x) > 0$ & $x_0$ ist strikte lokale Minimalstelle \\
+  $f'(x) > 0$ &$\land$& $f'(x) < 0$ & $x_0$ ist strikte lokale Maximalstelle
+\end{tabular}
+\medbreak
+Gilt entweder $f'(x) > 0$ oder $f'(x) < 0$ für alle $x \in U_\delta(x_0) \setminus \Set{x_0}$,\\ dann ist $x_0$ keine lokale Extremstelle.
+
+Sei $f$ zweimal stetig differenzierbar in einer Umgebung von $x_0$ und $x_0$ innerer Punkt von $D$.
+\begin{align*}
+  f'(x_0) = 0 \land f''(x_0) > 0 &\Rightarrow x_0 \text{ ist strikte lokale Maximalstelle} \\
+  f'(x_0) = 0 \land f''(x_0) < 0 &\Rightarrow x_0 \text{ ist strikte lokale Minimalstelle}
+\end{align*}
+
+\newpage
+\section{Stammfunktionen und Integrale}
+
+\subsection{Stammfunktionen}
+
+Wir definieren Stammfunktionen als die Umkehrung der Ableitung.
+
+$F : D \to \R$ ist eine \emph{Stammfunktion} von $f$, wenn $F$ auf $D$ differenzierbar ist mit $F' = f$.
+
+Für zwei Stammfunktionen $F, G$ von $f$ existiert immer ein $c \in \R$, sodass $F = G + c$.
+
+Für stetiges $f : I \to \R$ mit Stammfunktion $F$ schreiben wir auch $\Int{f(x)}{x,a,b} := F(b) - F(a) =: F|_a^b$.
+
+Wir erhalten Rechenregeln für Integrale.
+\begin{alignat*}{3}
+  \Int{f(x)}{x,a,b} + \Int{f(x)}{x,b,c} &= \Int{f(x)}{x,a,c} \\
+  \Int{\alpha f(x)}{x,a,b} &= \alpha \Int{f(x)}{x,a,b} \\
+  \Int{f(x) + g(x)}{x,a,b} &= \Int{f(x)}{x,a,b} + \Int{g(x)}{x,a,b} \\
+  \Int{f(t) \cdot g'(t)}{t,a,b} &= (f(t) \cdot g(t))|_a^b - \Int{f'(t) \cdot g(t)}{t,a,b} &&\qquad\textit{\small (partielle Integration)} \\
+  \Int{f(\phi(t)) \cdot \phi'(t)}{t,a,b} &= \Int{f(x)}{x,\phi(a),\phi(b)} &&\qquad\textit{\small (Substitutionsregel)}
+\end{alignat*}
+Für die letzten zwei Regeln benötigen wir stetig differenzierbare $f,g,\phi$.
+Partielle Integration entspricht der Produktregel der Differentiation und die Substitutionsregel der Kettenregel.
+
+Das Schreibweise \emph{unbestimmtes Integral} $\Int{f(x)}{x} = F(x)$ bedeutet nicht Gleichheit, sondern nur, dass $\Int{f(x)}{x,a,b} = F(x)|_a^b$ gilt.
+
+\subsection{Zerlegungssummen}
+
+Nach dem Mittelwertsatz der Differentialrechnung gilt für stetiges $f$:
+\[
+  \Int{f(x)}{x,a,b} = F(a) - F(b) = f(\xi) \cdot (b - a) \qquad\text{für ein } \xi \in (a,b)
+\]
+Das Integral entspricht also dem Flächeninhalt zwischen Funktion und x-Achse ihres Graphen.
+
+Über diese geometrische Interpretation können wir auch ein Integral direkt berechnen.
+Dazu wird die Fläche unter der Funktion in viele kleine Rechtecke eingeteilt.
+
+Die Breiten der Rechtecke sind durch eine \emph{Zerlegung} $Z$ eines Intervalls gegeben.
+$[a,b]$ wird durch viele Punkte $x_i$ getrennt, wobei $x_0 = a$ und $x_n = b$.
+
+Die Fläche der kleinen Rechtecke wird nun mit obiger Formel bestimmt, wobei für $\xi$ hier zwei Approximationen verfügbar sind.
+
+{\setlength{\extrarowheight}{10pt}
+\begin{tabularx}{\textwidth}{MM}
+  m_i = \min_{x \in [x_{i-1}, x_i]} f(x) & M_i = \max_{x \in [x_{i-1}, x_i]} f(x) \\
+  U(f,Z) = \sum_{i=1}^n m_i \cdot (x_i - x_{i-1}) & O(f,Z) = \sum_{i=1}^n M_i \cdot (x_i - x_{i-1}) \\
+  U(f) = \sup_{Z \in \mathcal{Z}} U(f,Z) & U(f) = \inf_{Z \in \mathcal{Z}} O(f,Z) \\
+  \text{\emph{Untersumme}} & \text{\emph{Obersumme}}
+\end{tabularx}}
+\medskip
+
+Jetzt sind $U(f)$ und $O(f)$ also die besten Annäherungen an die jeweiligen Summen.
+Genau wenn nun $U(f) = O(f)$ gilt, nennen wir $f$ \emph{integrierbar}:
+\[ \Int{f(x)}{x,a,b} = U(f) = O(f) \]
+Konvention schreibt für $a < b$ außerdem vor:
+\[ \Int{f(x)}{x,b,a} = -\Int{f(x)}{x,a,b} \]
+
+\subsection{Uneigentliche Integrale}
+
+Es gibt zwei Arten von uneigentlichen Integralen: Solche mit unbeschränkten Integrationsintervallen und solche mit unbeschränkten Integranden.
+
+Eine stetige Funktion $f$ ist \emph{uneigentlich integrierbar}, wenn $\lim_{b \to \infty} \Int{f(x)}{x,a,b}$ existiert. Wir schreiben $\Int{f(x)}{x,a,\infty} := \lim_{b \to \infty} \Int{f(x)}{x,a,b}$.
+Analoge Definition für untere Schranke auf $-\infty$, sowie oben und unten.
+
+Ist $f$ auf einer Grenze nicht definiert, aber existiert der Grenzwert, so können wir auch ein uneigentliches Integral aufstellen. Für $f : (a,b] \to \R$ und falls $\lim_{\alpha \downarrow a} \Int{f(x)}{x,\alpha,b}$ existiert, ist $f$ über $(a,b]$ \emph{uneigentlich integrierbar} und man schreibt auch einfach $\Int{f(x)}{x,a,b} := \lim_{\alpha \downarrow a} \Int{f(x)}{x,\alpha,b}$.
+Analoge Definition für oben unbeschränkt.
+
+Also aufpassen: Bei $\Int{f(x)}{x,a,b}$ prüfen, ob der Integrand an den Grenzen unbeschränkt ist.
+
+\subsection{Gewöhnliche Differentialgleichungen}
+
+\subsubsection{Separierbare Gewöhnliche Differentialgleichungen}
+
+Seien $F : I \to \R$, $g : J \to \R$ stetig.
+
+Eine \emph{separierbare gewöhnliche Differentialgleichung} hat die Form $y' = f(x) \cdot g(x)$.
+
+$\phi$ ist eine \emph{Lösung} der Differentialgleichung, wenn gilt:
+        \[ \phi'(x) = f(x) \cdot g(\phi(x)) \qquad \Forall x \in I' \subset I \]
+
+Ein \emph{Anfangswertproblem} fordert zusätzlich $y_0 := y(x_0) = \phi(x_0)$ für ein $x_0 \in I'$.
+
+\paragraph{Lösung über Umkehrfunktion}
+Wenn $g(y_0) \neq 0$ gilt, kann man über zwei Integrationen und einmal die Bestimmung der Umkehrfunktion eine Lösung bestimmen.
+\begin{itemize}
+  \item $F : I \to \R$ Stammfunktion von $f$ mit $F(x_0) = 0$,
+  \item $H : J' \to \R$ Stammfunktion von $\frac{1}{g}$ auf $J' \subset J$, \\
+        mit $y_0 \in J'$ und $g(y) \neq 0~\Forall y \in J'$ und $H(y_0) = 0$.
+\end{itemize}
+Dann gibt es ein $I' \subset I$ mit eindeutiger Lösung: $\phi(x) = H^{-1}(F(x)) \quad \Forall~x \in I'$.
+
+\subsubsection{Lineare Differentialgleichungen}
+
+Seien $I \subset \R$, $x_0 \in I$ und $a, b : I \to \R$ stetig.
+\bigskip
+
+\begin{halfboxl}
+\vspace{-\baselineskip}
+\begin{tightcenter}\emph{Homogene Gleichung} \end{tightcenter}
+\[ y' = a(x) \cdot y,\qquad y(x_0) = y_0 \]
+
+\bigskip
+\begin{tightcenter}\small{}Lösung: \end{tightcenter}
+\[ \phi(x) = y_0 \cdot \exp(\Int{a(t)}{t,x_0,x}) \]
+\end{halfboxl}%
+\begin{halfboxr}
+\vspace{-\baselineskip}
+\begin{tightcenter}\emph{Inhomogene Gleichung} \end{tightcenter}
+\[ y' = a(x) \cdot y + b(x),\qquad y(x_0) = y_0 \]
+
+\bigskip
+\begin{tightcenter}\small{}Lösung: \end{tightcenter}
+\[ \psi(x) = \phi(x) \cdot u(x) \]
+\[ \phi(x) = \exp(\Int{a(t)}{t,x_0,x}) \]
+\[  u(x) = y_0 + \Int{\frac{b(t)}{\phi(t)}}{t,x_0,x} \]
+\end{halfboxr}
+
+\section{Funktionen mehrerer Veränderlicher}
+
+Einigen Formalismus für Matrizen haben wir schon im \href{./la.pdf}{Panikzettel Lineare Algebra} notiert.
+
+Für $2 \times 2$-Matrizen gilt:
+\begin{itemize}
+  \item $\det A := a_{11} \cdot a_{22} - a_{12} \cdot a_{21}$.
+  \item Genau wenn $\det A \neq 0$ ist $A$ invertierbar und
+        \[ A^{-1} = \frac{1}{\det A} \cdot \begin{pmatrix} a_{22} & -a_{12} \\ -a_{21} & a_{11} \end{pmatrix} \]
+\end{itemize}
+
+\subsection{Kurven}
+
+Eine \emph{Kurve} ist ein Funktion $\phi : I \to \R^n$ mit $\phi_1, \ldots, \phi_n : I \to \R$ für die Komponenten.
+
+Eine Kurve ist \emph{stetig/differenzierbar/stetig differenzierbar}, wenn alle $\phi_i$ diese Eigenschaft haben.
+
+Die \emph{Ableitung} der Kurve $\phi$ ist
+\[ \phi' : I \to \R^n, t \mapsto \begin{pmatrix} \phi_1'(t) \\ \vdots \\ \phi_n'(t) \end{pmatrix} \]
+
+Das Bild $\phi(I) = \Set{ \phi(t) | t \in I}$ heißt \emph{Spur} von $\phi$.
+
+\subsection{Längenmessung}
+
+Als Verallgemeinerung des Absolutbetrags die \emph{Norm}:
+\[ \norm{x} := \sqrt{x_1^2 + \ldots + x_n^2} \]
+
+Für die Norm gilt wie für den Absolutbetrag:
+\begin{itemize}
+  \item $\norm{x} \geq 0$.
+  \item $\norm{x} = 0 \iff x = 0$.
+  \item $\norm{c \cdot x} = \abs{c} \cdot \norm{x}$.
+  \item $\norm{x+y} \leq \norm{x} + \norm{y}$ \emph{(Dreiecksungleichung)}.
+\end{itemize}
+
+Die \emph{offene Kugel} für ein $a \in \R^n$ und $r > 0$:
+\[ K_r(a) := \Set{x \in \R^n | \norm{x-a} < r } \]
+
+Ein $U \subset \R^n$ heißt \emph{Umgebung von $a$}, wenn es ein $r > 0$ gibt, sodass $K_r(a) \subset U$.
+
+$a \in M$ heißt \emph{innerer Punkt von $M$}, wenn es eine Umgebung $U$ von $a$ gibt, sodass $U \subset M$.
+$M$ heißt \emph{offen}, wenn jeder Punkt von $M$ ein innerer Punkt ist.
+
+\subsection{Stetigkeit}
+
+Eine Kurve $f$ ist \emph{stetig in $a$} für ein $a \in M$, wenn es zu jedem $\varepsilon > 0$ ein $\delta > 0$ gibt, sodass $\norm{f(x) - f(a)} < \varepsilon$.
+
+\subsection{Differentialrechnung}
+
+\subsubsection{Partielle Differenzierbarkeit}
+
+Die \emph{Richtungsableitung} ist
+\[ D_v~f(a) := \lim_{t \to 0} \frac{1}{t}~(f(a+tv) - f(a)) \]
+in Richtung $v \in \R^n \setminus \Set{0}$ von $f$ im Punkt $a$.
+
+Die \emph{partielle Ableitung} einer Funktion in einem Punkt ist einfach die Richtungsableitung in Richtung $e_i$, wobei $e_i$ ein Einheitsvektor ist.
+Wir schreiben auch $D_k~f(a) := \pderiv{f}{x_k} := D_{e_k}~f(a)$.
+
+Die \emph{Funktionalmatrix/Jacobi-Matrix/Differential} von $F$ an der Stelle $x$, sowie der \emph{Gradient}:
+\[
+  D~f(x) := \begin{pmatrix} D_1~f(x) & \ldots & D_n~f(x) \end{pmatrix} \qquad\qquad \nabla f(a) := D~f(a)^T
+\]
+Damit können wir eine Richtungsableitung auch folgendermaßen berechnen:
+\[ D_v~f(a) = D~f(a) \cdot v \]
+
+Begriffe \emph{partiell differenzierbar} und \emph{stetig partiell differenzierbar} analog zu Begriffen in vorherigen Abschnitten.
+
+\subsubsection{Totale Differenzierbarkeit}
+
+$f$ heißt \emph{total differenzierbar} in $a \in U$ ($U$ offen), wenn man $f$ wie folgt darstellen kann:
+\[ f(x) = f(a) + T \cdot (x - a)  + \norm{x-a} \cdot \phi(x) \]
+Mit einer Matrix $T \in \R^{m \times n}$ und einer stetigen Funktion $\phi : U \to \R^m$.
+
+Äquivalent: Es gibt ein $T \in \R^{m \times n}$, sodass
+\[ \lim_{x \to a} \frac{1}{\norm{x-a}} (f(x) - f(a) - T \cdot (x-a)) = 0 \]
+
+Ist $f$ total differenzierbar in $a$, dann ist $f$ auch partiell differenzierbar in $a$. Außerdem ist $T$ eindeutig bestimmt durch:
+\[
+  T_{i,j} = ((D~f)(a))_{i,j} = \pderiv{f_i}{x_j}(a)
+\]
+
+$f$ ist \emph{total differenzierbar}, wenn $f$ in allen Punkten $a \in U$ total differenzierbar ist.
+
+Die Kettenregel:
+\begin{alignat*}{3}
+  && (D~(g \circ f))(a) &= (D~g)(f(a)) \cdot (D~f)(a) \\
+\Leftrightarrow\quad && \pderiv{(g \circ f)_i}{x_j}(a) &= \sum_{k=1}^m \pderiv{g_i}{y_k}(f(a)) \cdot \pderiv{f_k}{x_j}(a)
+\end{alignat*}
+
+Wenn $f : U \to \R^n$ injektiv und stetig diffbar ist, $f(U)$ offen und $f^{-1}$ diffbar, dann gilt:
+\[ D~f^{-1}(y) = (D~f(f^{-1}(y)))^{-1} \]
+
+\subsubsection{Der Satz von der Umkehrfunktion}
+
+Sei $f : M \to \R^n$ stetig diffbar und $a \in M$ so, dass $D~f(a)$ invertierbar ist. \\
+Dann existieren offene $U \subset M$ mit $a \in U$ und $V \subset f(M)$ mit $f(a) \in V$ so, dass
+\begin{itemize}
+  \item $f|_U : U \to V$ bijektiv ist,
+  \item Für alle $x \in U$ ist $D~f(x)$ invertierbar,
+  \item $(f|_U)^{-1}$ ist stetig diffbar,
+  \item $(D~f^{-1})(y) = (D~f)(f^{-1}(y))^{-1}$.
+\end{itemize}
+
+\subsubsection{Der Satz über implizite Funktionen}
+
+Dieser Satz erlaubt das Umstellen von komplizierteren Gleichungssystemen nach bestimmten Parametern, sodass das System als Nullstellenproblem in einer Umgebung der Lösung gelöst werden kann:
+\[ f \begin{pmatrix} x \\ y \end{pmatrix} = 0 \quad\Leftrightarrow\quad f \begin{pmatrix} x \\ g(x) \end{pmatrix} = 0 \]
+Hier wurde nach $x$ aufgelöst, sodass $y$ als $g(x)$ dargestellt wird.
+
+Sei unsere Umgebung nun um $c$. Wir setzen $D_x~f$ als die Jacobi-Matrix mit Spalten für Parameter, nach denen aufgelöst wird, sowie $D_y~f$ analog für implizit dargestellte Parameter.
+
+Voraussetzungen:
+\begin{itemize}
+  \item $f : M \to R^{m+n}$ ist stetig diffbar,
+  \item $f(c) = 0$,
+  \item $(D_y~f)(c)$ ist invertierbar (bspw. über $\det (D_y~f)(c) \neq 0$ zeigen).
+\end{itemize}
+
+Dann sagt der \emph{Satz über implizite Funktionen}: Es gibt ein $g : U \to V$ mit $U$ Umgebung von $a$, $V$ Umgebung von $f(a)$, gegeben durch die Ableitung:
+\[ (D~g)(x) = - \left( (D_y~f) \begin{pmatrix} x \\ g(x) \end{pmatrix} \right)^{-1} \cdot \left( (D_x~f) \begin{pmatrix} x \\ g(x) \end{pmatrix} \right) \]
+
+\subsection{Gewöhnliche Differentialgleichungen: Existenz und Eindeutigkeit}
+
+Ein \emph{System von $n$ gewöhnlichen Differentialgleichungen} mit $D \subset \R \times \R^n$ offen und $f : D \to \R^n$:
+\begin{tightcenter} $y' = f(x,y)$. \end{tightcenter}
+
+Eine Lösung ist eine Kurve $\phi : I \to \R^n$ mit:
+\begin{itemize}
+  \item $\phi$ ist diffbar,
+  \item $(x, \phi(x)) \in D \quad\Forall x \in I$,
+  \item $f(x, \phi(x)) \in D \quad\Forall x \in I$.
+\end{itemize}
+
+Wir haben nur einen Satz zur Existenz von Lösungen: \\
+Wenn $f$ stetig ist und alle partiellen Ableitungen $\pderiv{f_i}{x_j}$ existieren und stetig sind, dann hat jedes Anfangswertproblem eine eindeutige Lösung auf einem passenden Intervall.
+
+\end{document}

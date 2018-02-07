@@ -1,4 +1,4 @@
-all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf datkom.pdf malo.pdf dbis.pdf effi.pdf
+all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf datkom.pdf malo.pdf dbis.pdf effi.pdf afi.pdf
 
 la.pdf: la.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
@@ -41,6 +41,9 @@ dbis.pdf: dbis.tex
 
 effi.pdf: effi.tex panikzettel.cls
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf effi.tex
+
+afi.pdf: afi.tex panikzettel.cls
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf afi.tex
 
 clean:
 	latexmk -CA
