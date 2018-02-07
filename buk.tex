@@ -117,7 +117,7 @@ Die Gödelnummer einer TM $M$ schreiben wir als $\goedel{M}$.
 Die Universelle Turingmaschine $U$ führt beliebige Turingmaschinen aus, die durch Gödelnummern kodiert werden. Ihre Eingabe ist $\goedel{M} w$, die zu simulierende TM $M$ und $w$ die Eingabe für $M$.
 
 \subsubsection{Mehrband-TMen}
-Mehrband-TMen sind eine Verallgemeinerung von TMen, da sie einfach mehrere Speicherbänder und mehrere Lese-/Schreibeköpfe haben. Für $k$ Bänder gilt: 
+Mehrband-TMen sind eine Verallgemeinerung von TMen, da sie einfach mehrere Speicherbänder und mehrere Lese-/Schreibköpfe haben. Für $k$ Bänder gilt: 
 \[\delta : (Q \setminus \overline{q}) \times \Gamma^k \to Q \times \Gamma^k \times \{L,R,N\}^k.\]
 Mehrere Bänder erhöhen aber nicht die Berechnungskraft, da jede Mehrband-TM, die mit Rechenzeit $t(n)$ und Platz $s(n)$ auskommt, mit Zeitbedarf $\mathcal{O}(t^2(n))$ und Platzbedarf $\mathcal{O}(s(n))$ auf einer herkömmlichen TM simuliert werden kann. 
 
@@ -457,6 +457,18 @@ Wenn $\P \neq \NP$: Das allgemeine TSP ist nicht effizient approximierbar.
 
 Für metrisches TSP dagegen, das heißt TSP, wo die Knoten des zu durchwandernden Graphen in einem metrischen Raum liegen, gibt es aber einen effizienten 2-Approximationsalgorithmus.
 
+\subsection[coNP]{$\coNP$}
+
+Die Komplexitätsklasse $\coNP$ besteht aus den Entscheidungsproblemen, für die wir in polynomieller Zeit Nein-Instanzen mit einem passenden Zertifikat mit polynomieller Länge entscheiden können.
+
+\subsubsection[coNP-Vollständigkeit]{$\coNP$-Vollständigkeit}
+
+Ein Problem in $\coNP$ heißt $\coNP$-vollständig, wenn sich alle Probleme in $\coNP$ auf das Problem reduzieren lassen.
+
+Für jedes $\NP$-vollständige Entscheidungsproblem $X$ ist das Komplement $\overline{X}$ $\coNP$-vollständig. Dabei werden Ja-Instanzen in $X$ zu Nein-Instanzen in $\overline{X}$ und umgekehrt. Dabei müssen die Zertifikate nicht geändert werden, ein Zertifikat $y$ für ein $x\in X$ ist ebenfalls ein Zertifikat für $x\notin\overline{X}$.
+
+Es wird angenommen, dass $\NP\neq\coNP$ gilt. Wenn allerdings $\coNP$ ein $\NP$-vollständiges Problem enthält, gilt $\NP=\coNP$.
+
 \appendix
 
 \section{Entscheidbarkeitstabelle}
@@ -477,7 +489,7 @@ $\comp H_\varepsilon$ & $\comp H_\varepsilon = \{\goedel{M} \mid \text{$M$ hält
 \hline
 $H_\text{all}$ & $H_\text{all} = \{\goedel{M} \mid \text{$M$ hält auf jeder Eingabe}\}$ & \xmark \\
 \hline
-$\comp H_\text{All}$ & $\comp H_\text{All} = \{\goedel{M} \mid \text{$M$ hält auf keiner Eingabe}\} \cup \overline{\text{Syn}}$ & \xmark \\ 
+$\comp H_\text{all}$ & $\comp H_\text{all} = \{\goedel{M} \mid \text{$M$ hält auf keiner Eingabe}\} \cup \overline{\text{Syn}}$ & \xmark \\ 
 \hline
 Nullstellenproblem & Für ganzzahliges Polynom: ex. Nullstelle in $\mathbb{Z}$? & semi \\
 \hline
