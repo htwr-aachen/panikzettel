@@ -44,11 +44,11 @@ Das allgemeine Nullstellenproblem lässt sich über Formeln lösen:
   &&x = -\frac{p}{2} \pm \sqrt{\left(\frac{p}{2}\right)^2 - q}
 \end{alignat*}
 
-Für den \emph{Binomialkoeffizienten} $\begin{pmatrix} n \\ k \end{pmatrix} := \frac{n!}{k!} \cdot (n-k)! \in \Q$ gilt mit $k,n \in \N_0$ und $k \leq n$:
+Für den \emph{Binomialkoeffizienten} $\begin{pmatrix} n \\ k \end{pmatrix} := \frac{n!}{k! \cdot (n-k)!} \in \Q$ gilt mit $k,n \in \N_0$ und $k \leq n$:
 \begin{align*}
   \begin{pmatrix} n \\ k \end{pmatrix} &= \begin{pmatrix} n \\ n - k \end{pmatrix} \\
   \begin{pmatrix} n \\ k - 1 \end{pmatrix} + \begin{pmatrix} n \\ k \end{pmatrix} &= \begin{pmatrix} n + 1 \\ k \end{pmatrix}, \text{ falls } k > 0 \\
-  \begin{pmatrix} n \\ k \end{pmatrix} &= \begin{pmatrix} n \\ n - k \end{pmatrix}
+  \begin{pmatrix} n \\ k \end{pmatrix} &\in \N
 \end{align*}
 
 Die \emph{Binomische Formel} für $n \in \N_0$ und $a,b \in \mathbb{C}$:
