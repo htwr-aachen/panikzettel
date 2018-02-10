@@ -153,7 +153,7 @@ Ausführlich erklärt in unserem \href{http://panikzettel.philworld.de/la.pdf#pa
 
 \subsubsection{Givens-Rotation}
 
-Die Givens-Rotationsmatrix $G_{i,k}$ rotiert in der $x_i$-$x_k$-Ebene die Matrix $A$ so, dass in $G_{i,k} A$ der Eintrag an Position $i, k$ Null wird.
+Die Givens-Rotationsmatrix $G_{i,k}$ rotiert in der $x_i$-$x_k$-Ebene die Matrix $A$ so, dass in $G_{i,k} A$ der Eintrag an Position $k,i$ Null wird.
 
 $G_{i,i} = c = G_{k,k}$, $G_{i,k} = s$ und $G_{k,i} = -s$. Dazu Einsen auf die Diagonale und sonst Nullen.
 \begin{minipage}{0.7\textwidth}
@@ -179,10 +179,10 @@ $G_{i,i} = c = G_{k,k}$, $G_{i,k} = s$ und $G_{k,i} = -s$. Dazu Einsen auf die D
 \begin{minipage}{0.3\textwidth}
 \begin{align*}
    r &= \pm\norm*{\left(\begin{array}{c}
-   A_{i,i}  \\  A_{i,k}
+   A_{i,i}  \\  A_{k,i}
    \end{array}\right)}_2  \\
    c &= \frac{A_{i,i}}{r} \\
-   s &= \frac{A_{i,k}}{r}
+   s &= \frac{A_{k,i}}{r}
 \end{align*}
 \end{minipage}
 
