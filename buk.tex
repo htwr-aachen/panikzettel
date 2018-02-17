@@ -347,7 +347,7 @@ Das Ergebnis einer Programmausführung wird in der Variable $x_0$ hinterlegt. Al
 Ein Beispielprogramm in WHILE:
 
 \begin{lstlisting}
-WHILE $x_0$  > 0 DO
+WHILE $x_0$  \neq 0 DO
   $x_1$  := $x_0$ + 1;
   $x_0$ := $x_0$ - 1
 END
@@ -489,7 +489,7 @@ $\comp H_\varepsilon$ & $\comp H_\varepsilon = \{\goedel{M} \mid \text{$M$ hält
 \hline
 $H_\text{all}$ & $H_\text{all} = \{\goedel{M} \mid \text{$M$ hält auf jeder Eingabe}\}$ & \xmark \\
 \hline
-$\comp H_\text{all}$ & $\comp H_\text{all} = \{\goedel{M} \mid \text{$M$ hält auf keiner Eingabe}\} \cup \overline{\text{Syn}}$ & \xmark \\ 
+$\comp H_\text{all}$ & $\comp H_\text{all} = \{\goedel{M} \mid \text{$M$ hält nicht auf jeder Eingabe}\} \cup \overline{\text{Syn}}$ & \xmark \\ 
 \hline
 Nullstellenproblem & Für ganzzahliges Polynom: ex. Nullstelle in $\mathbb{Z}$? & semi \\
 \hline
