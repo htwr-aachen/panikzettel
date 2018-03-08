@@ -178,7 +178,7 @@ Die Idee: Suche gleich mehrere verbessernde Wege in $G_f$.
 Dies machen wir in einem \emph{Niveaunetzwerk}, einem Restnetzwerk in dem es nur Kanten zwischen benachbarten Schichten gibt, d.h. nur Kanten zwischen Knoten mit unterschiedlicher Distanz zu $s$.
 Darin bestimmen wir einen Sperrfluss.
 
-Die Anzahl der Iterationen ist maximal $n-1$: In jedem Schritt werden alle Wege der Länge $l = \dist_{G_f'}(s,t)$ getrennt. Neu entstehende Kanten führten vorher von Schicht $i$ zu $i-1$, damit müssen neue Wege mindestens Länge $l+2$ haben.
+Die Anzahl der Iterationen ist maximal $n-1$: In jedem Schritt $i$ werden alle Wege der Länge $l_i = \dist_{G_f'}(s,t)$ getrennt. Neu entstehende Kanten führten vorher von Schicht $i$ zu $i-1$, damit müssen neue Wege mindestens Länge $l_i+2$ haben.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -201,15 +201,15 @@ Die Anzahl der Iterationen ist maximal $n-1$: In jedem Schritt werden alle Wege 
 \end{halfboxr}
 
 \begin{halfboxl}
-Ein Sperrfluss kann in $\bigo(n^2)$ mit \emph{Forward-Backward-Propagation}  bestimmt werden.
+Ein Sperrfluss kann in $\bigo(n^2)$ mit wiederholter \emph{Forward-Backward-Propagation} bestimmt werden.
 
 \emph{Forward Propagation}: Knotenpotentiale $\pot(v)$ vorwärts durch das Niveaunetzwerk schieben, beginnend vom Knoten mit kleinstem Potential. \emph{Backward Propagation} ist analog: Statt $\Vout(v)$ $\Vin(v)$ verwenden. Eine \emph{Propagationsphase} führt Forward und Backward Propagation aus.
 
-Jede Propagationsphase läuft in $\bigo(n+l)$ mit $l$ Anzahl neu saturierter Kanten. Nach maximal $n-1$ Propagationsphasen ist ein Sperrfluss gefunden. Also Laufzeit für Forward-Backward-Propagation: $\bigo(\sum_{i=1}^{n-1} (n+l)) = \bigo(m + n^2)$.
+Jede Propagationsphase läuft in $\bigo(n+l_i)$ mit $l_i$ Anzahl neu saturierter Kanten. Nach maximal $n-1$ Propagationsphasen ist ein Sperrfluss gefunden. Also Laufzeit für die iterierte Propagation: $\bigo(\sum_{i=1}^{n-1} (n+l_i)) = \bigo(n^2 + m)$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
-\begin{algo}{Forward-Backward-Propagation}
+\begin{algo}{Iterierte Propagation}
 \textbf{Eingabe:} $G'_f = (V, E'_f, s, t, c')$. \\
 \textbf{Ausgabe:} Sperrfluss $f'$.
 \tcblower
@@ -460,7 +460,7 @@ Der Algorithmus läuft in $\bigo(m^3 \cdot n^2 \cdot \log n) \cap \bigo(m^2 \cdo
         \begin{itemize}
             \item Solange es in $G_f$ einen Kreis $C$ mit negativen Kosten gibt:
                 \begin{enumerate}
-                    \item Setzte $C = \hyperref[algo:min-mean-cycle]{min-mean-cycle} (V)$
+                    \item Setze $C = \hyperref[algo:min-mean-cycle]{min-mean-cycle} (V)$
                     \item Bestimme maximalen zyklischen Fluss $f'$ auf $C$.
                     \item $f = f + f'$.
                 \end{enumerate}
@@ -499,7 +499,7 @@ Damit erhalten wir insgesamt die oben genannte Laufzeit, wenn jede Iteration, d.
 \textbf{Ziel:} Minimiere $\overline{l}(C)$.
 \end{defi}
 
-Wir werden Werte $d_k(v)$ für die Kosten des günstigsten Kantenzuges eines beliebigen Knoten nach $v$ mit Länge $k$ verwenden, wobei $v \in V, k \in \nat$.
+Wir werden Werte $d_k(v)$ für die Kosten des günstigsten Kantenzuges eines beliebigen Knotens nach $v$ mit Länge $k$ verwenden, wobei $v \in V, k \in \nat$.
 
 Dann ist $d_0(v) = 0$ für alle $v \in V$ und $d_{n+1}(v) = \min_{(w,v) \in E} d_n(w) + l((w,v))$. Also können diese Werte in $\bigo(nm)$ mittels dynamischer Programmierung bestimmt werden.
 
@@ -554,7 +554,7 @@ Dabei ändert sich der Wert keines Kreises, da das Potential jedes Knotens je ei
 \begin{enumerate}
     \item Bestimme $d_j(v)$ für $v \in V, 0 \le j \le n$:
         \begin{itemize}
-            \item Setzte $d_0(v) = 0$ für alle $v \in V$.
+            \item Setze $d_0(v) = 0$ für alle $v \in V$.
             \item Für alle $j$ von $1$ bis $n$:
                 \begin{itemize}
                     \item Setze $d_j(v) = \infty$.
@@ -696,11 +696,12 @@ Zum Laufzeitbeweis:
     \item $M$ ist genau dann ein Maximum Matching, wenn es keinen verbessernden Pfad gibt.
     \item Wegen $\abs{M} \leq \floor{n/2}$ gibt es höchstens $\floor{n/2}$ Schleifendurchläufe, jede Schleife läuft in $\bigo(m)$.
 \end{itemize}
+\bigskip
 
 \begin{halfboxl}
 Eine Verbesserung der Laufzeit ist möglich, wenn direkt alle kürzesten verbessernden Pfade gesucht werden.
 
-Mit nicht maximalen Matching $M$ und Maximum Matching $M'$ gibt es in $M$ einen verbessernden Pfad der Länge maximal $2 \cdot \floor*{\frac{\abs{M}}{\abs{M'} - \abs{M}}} + 1$.
+Mit nicht-Maximum Matching $M$ und Maximum Matching $M'$ gibt es in $M$ einen verbessernden Pfad der Länge maximal $2 \cdot \floor*{\frac{\abs{M}}{\abs{M'} - \abs{M}}} + 1$.
 
 Teilt man die Iterationen in zwei Phasen auf, die Erste mit $\abs{M} \leq \floor{\abs{M'} - \sqrt{\abs{M'}}}$, ergeben sich maximal $\sqrt{\abs{M'}}$ Iterationen pro Phase.
 
@@ -716,8 +717,8 @@ Insgesamt erhält man die Laufzeit $\bigo(\sqrt{n} \cdot m)$.
     \item Setze $M = \emptyset$.
     \item Solange es verbessernde Pfade gibt:
         \begin{enumerate}
-            \item Finde inklusions-maximale Menge von knotendisjunkten verbessernden Pfaden $P_1, \ldots, P_l$ der kürzesten Länge $l$.
-            \item $M = M \oplus E(P_1) \oplus \ldots \oplus E(P_l)$.
+            \item Finde inklusions-maximale Menge von knotendisjunkten verbessernden Pfaden $P_1, \ldots, P_i$ der kürzesten Länge $l$.
+            \item $M = M \oplus E(P_1) \oplus \ldots \oplus E(P_i)$.
         \end{enumerate}
 \end{enumerate}
 \end{algo}
@@ -826,7 +827,7 @@ Falls $\mathrm{P} \ne \mathrm{NP}$ gilt, gibt es für beliebiges $k \in \nat$  k
 
 Das selbe folgt für Independent Set (äquivalent zu Clique im Komplementgraphen).
 
-Der Beweis geht über das Graphenprodukt $G^k = G \times C_k$ von zyklischen Graphen, wobei $C_k$ der Cliquengraph in der Iterartion $k$ ist.
+Der Beweis geht über das Graphenprodukt $G^k = G \times C_k$ von zyklischen Graphen, wobei $C_k$ der Cliquengraph in der Iteration $k$ ist.
 Wenn es einen Algorithmus mit additivem Fehler $k$ gäbe, dann erhält man über einige Schritte mit Eingabe $G^{k+1}$, dass Clique in P liegen muss.
 \mrhere{clique}
 \end{halfboxl}%
@@ -869,14 +870,14 @@ Eine 2-Approximation ist durch Bestimmung des \hyperref[sec:matchings]{inklusion
 \tcblower
 \begin{enumerate}
     \item Bestimme inklusions-maximales Matching $M \subset E$ auf $G$.
-    \item Wähle Vertex Cover $\bigcup_{e \in M} e$.
+    \item Wähle Vertex Cover $\bigcup_{\Set{u,v} \in M} \Set{u,v}$.
 \end{enumerate}
 \end{algo}
 \end{halfboxr}
 
 \subsection{TSP und Delta-TSP}
 
-Beim \emph{Travelling Salesman Problem} soll in einem vollständigen Graph ein Hamiltonkreis gefunden werden, also einer, der über alle Knoten führt.
+Beim \emph{Travelling Salesman Problem} soll in einem vollständigen Graph ein Hamiltonkreis gefunden werden, also einer, der über alle Knoten führt. TSP ist nicht approximierbar.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -1030,7 +1031,7 @@ Bei dem \emph{Zentrumsproblem} wird eine Knotenmenge $Z$ (Zentren) der Größe $
 \-\hspace{3em} $\rad(Z) := \max\limits_{v \in V} w(v) \cdot \dist(v,Z)$
 \end{defi}
 
-Das ursprünglihce Zentrumsproblem \emph{ohne Knotenkosten} kann erreicht werden, indem man die Knotenkosten auf $1$ setzt.
+Das ursprüngliche Zentrumsproblem \emph{ohne Knotenkosten} kann erreicht werden, indem man die Knotenkosten auf $1$ setzt.
 
 Falls $\mathrm{P} \ne \mathrm{NP}$ gilt, gibt es keinen polynomiellen $2-\varepsilon$ Approximationsalgorithmus für das Zentrumsproblem.
 Eine Reduktion auf das Dominating Set Problem zeigt dies.
@@ -1044,11 +1045,11 @@ Eine Reduktion auf das Dominating Set Problem zeigt dies.
 \textbf{Ausgabe:} $Z \subset V$.
 \tcblower
 \begin{enumerate}
-    \item Setzte $Z = \emptyset$ und $U = V$
+    \item Setze $Z = \emptyset$ und $U = V$
     \item Solange $U \neq \emptyset$:
     \begin{enumerate}
         \item $z = \argmax_{u \in U} \{ w(u) \}$
-        \item $Z = Z \setminus \{ u \}$
+        \item $Z = Z \cup \{ z \}$
         \item $U = U \setminus \{ v \in U | w(v) \cdot dist(v,z) \leq 2 \cdot R \}$
     \end{enumerate}
 \end{enumerate}
@@ -1237,10 +1238,10 @@ Für das PTAS werden wir zunächst einen Algorithmus ansehen, der zusätzlich zu
 \textbf{Ausgabe:} Zuweisung Jobs auf Maschinen oder \texttt{Makespan zu klein}.
 \tcblower
 \begin{enumerate}
-    \item Bestimme große Jobs $J' = \Set{i \le n | p_i > \varepsilon Z^\ast}$
-    \item Bestimme normierte gerundete Laufzeiten $p_i^\ast = \ceil*{\frac{p_i}{\varepsilon^2Z^\ast}}$
-    \item Bestimme mit \hyperref[subsec:binPacking]{Bin Packing Algorithmus} Zuteilung für $J'$, oder gebe \texttt{Makespan zu klein} zurück, wenn dies nicht möglich ist
-    \item Verteile mit \hyperref[algo:LL]{LL} die kleinen Jobs
+    \item Bestimme große Jobs $J' = \Set{i \le n | p_i > \varepsilon Z^\ast}$.
+    \item Bestimme normierte gerundete Laufzeiten $p_i^\ast = \ceil*{\frac{p_i}{\varepsilon^2Z^\ast}}$.
+    \item Bestimme mit \hyperref[subsec:binPacking]{Bin Packing Algorithmus} Schedule für $J'$ mit $Z' = \floor*{(1+\varepsilon) \frac{1}{\varepsilon^2}}$, oder gebe \texttt{Makespan zu klein} zurück, wenn dies nicht möglich ist.
+    \item Verteile mit \hyperref[algo:LL]{LL} die kleinen Jobs.
 \end{enumerate}
 \end{algo}
 
@@ -1254,9 +1255,9 @@ Für das PTAS werden wir zunächst einen Algorithmus ansehen, der zusätzlich zu
     \begin{itemize}
         \item Führe \hyperref[algo:ptasHelper]{Hilfsalgorithmus} aus.
         \item Falls \texttt{Makespan zu klein}, erhöhe untere Schranke.
-        \item Ansonsten verringere obere Schranke
+        \item Ansonsten verringere obere Schranke.
     \end{itemize}
-    \item Gebe zur letzten oberen Schranke berechnete Zuweisung zurück
+    \item Gebe zur letzten oberen Schranke berechnete Zuweisung zurück.
 \end{enumerate}
 \end{algo}
 
@@ -1264,7 +1265,7 @@ Für das PTAS werden wir zunächst einen Algorithmus ansehen, der zusätzlich zu
 Um die Approximation an einen gegebenen Makespan zu finden, unterteilen wir zunächst die Jobs in \emph{große} und \emph{kleine} Jobs:
 Ein Job ist \emph{groß}, wenn er mindestens Laufzeit $\varepsilon Z^\ast$ hat. Wir vereinfachen nun die Verteilung der großen Jobs, indem wir statt der exakten Laufzeit Slots der Größe $\varepsilon^2 Z^\ast$ Verteilen. Dann gibt es nur $\frac{1}{\varepsilon^2}$ verschiedene Jobgrößen zu betrachten.
 
-Wie wir diese Jobs verteilen, werden wir in Teil~\ref{subsec:binPacking} betrachten. Aus dem dort beschriebenen Algorithmus erhalten wir entweder eine Verteilung auf die $m$ Maschienen mit Makespan $(1+\varepsilon)Z^\ast$ oder erkennen, dass es keine solche Zuweisung gibt.
+Wie wir diese Jobs verteilen, werden wir in Teil~\ref{subsec:binPacking} betrachten. Aus dem dort beschriebenen Algorithmus erhalten wir entweder eine Verteilung auf die $m$ Maschinen mit Makespan $(1+\varepsilon)Z^\ast$ oder erkennen, dass es keine solche Zuweisung gibt.
 
 Anschließend müssen wir noch die kleinen Jobs verteilen. Dafür verwenden wir einfach die LL-Heuristik (\hyperref[algo:LL]{Algorithmus~}\ref{algo:LL}). Dabei können wir nicht mehr als $\varepsilon Z^\ast$ additiven Fehler über den optimalen Makespan machen, da der Fehler bei LL nur aus einem Job kommen kann. Also erhalten wir den gewünschten Approximationsfaktor, solange $Z^\ast$ nicht größer als der optimale Makespan ist.
 
@@ -1319,7 +1320,7 @@ Für das Schedulingproblem hängen $k$ und $b$ nur von $\varepsilon$ ab, sind al
 
 \section{Lineare Programmierung}
 
-In einem \emph{Linearen Programm (LP)} soll eine linare \emph{Zielfunktion} unter Einhaltung von linaren \emph{Nebenbedingungen} maximiert werden.
+In einem \emph{Linearen Programm (LP)} soll eine lineare \emph{Zielfunktion} unter Einhaltung von linearen \emph{Nebenbedingungen} maximiert werden.
 
 In der Vorlesung werden LP's nur in \emph{kanonischer From} in \emph{Matrixschreibweise} betrachtet.
 
@@ -1534,7 +1535,7 @@ Die Laufzeit ist abhängig von der Länge der Zahlendarstellungen. Bei der Pertu
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
-\begin{theo}{Laufzeit mit Pertrubierung}
+\begin{theo}{Laufzeit mit Perturbierung}
 Die Laufzeit eines Pivotschrittes mit Perturbierung ist polynomiell zur Eingabenlänge.
 \end{theo}
 \end{halfboxr}
@@ -1549,9 +1550,9 @@ Dabei wird im Simplexverfahren Schritt 4 b $\hat{b}_k$ durch $p_{\delta,k}(\vare
 
 \subsection{Ellipsoid-Methode}
 
-Die \emph{Ellipsoid-Methode} ist ein Algorithmus, der in polynomieller Laufzeit bestimmen kann, ob ein linares Ungleichungssystem eine Lösung hat, d.h. der Lösungsraum nicht leer ist.
+Die \emph{Ellipsoid-Methode} ist ein Algorithmus, der in polynomieller Laufzeit bestimmen kann, ob ein lineares Ungleichungssystem eine Lösung hat, d.h. der Lösungsraum nicht leer ist.
 
-Der Begriff der \emph{Kugel} und \emph{Ellipsoid} sind wichtig:
+Die Begriffe \emph{Kugel} und \emph{Ellipsoid} sind wichtig:
 $K_r(y)$ ist eine Kugel um den Punkt $y$ mit Radius $r$. Ein Ellipsoid ist eine affin transformierte Kugel.
 
 \begin{algo}{Ellipsoid-Methode}
@@ -1596,7 +1597,7 @@ Zu Teil 2: Durch Konstruktion von $G'$ mit den neuen Ungleichungen gilt für ein
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Eigenschaften des Ellipsoid-Methode}
-Ein lineares Ungleichungssystem $G$ mit Eingabenlänge $L$ kann in polynomieller Laufzeit in ein linares Ungleichungssystem $G'$ mit folgenden Eingenschaften umgewandelt werden:
+Ein lineares Ungleichungssystem $G$ mit Eingabenlänge $L$ kann in polynomieller Laufzeit in ein lineares Ungleichungssystem $G'$ mit folgenden Eingenschaften umgewandelt werden:
 \begin{enumerate}
     \item $G$ hat eine Lösung $\Leftrightarrow$ $G'$ hat eine Lösung.
     \item Der Lösungsraum von $G'$ ist in einer Kugel $K_r(0)$ mit $r \in 2^{\bigo(L^2)}$.
@@ -1625,7 +1626,7 @@ Der Spezialfall hat folgende Eigenschaften:
 \begin{enumerate}
     \item Pro Schleifendurchlauf verringert sich das Volumen des Ellipsoiden mindestens um einen Faktor von $2^{\frac{-1}{2(n+1)}}$.
     \item Die Ellipsoid-Methode terminiert nach $\bigo(n^2 \cdot L^4)$ Schleifendurchläufen.
-    \item Die Ellipsoid-Methode kann in polynomieller Zeit bestimmen, ob ein linares Ungleichungssystem eine Lösung hat.
+    \item Die Ellipsoid-Methode kann in polynomieller Zeit bestimmen, ob ein lineares Ungleichungssystem eine Lösung hat.
 \end{enumerate}
 \end{theo}
 \end{halfboxr}
@@ -1649,7 +1650,7 @@ Mit $n$ Variablen, $m$ Ungleichungen und Eingabelänge $L$.
 \begin{enumerate}
     \item Falls $\mathcal{A}(A \cdot x \geq b,A \cdot x \leq b, x \geq 0) = \emptyset$, gib \textbf{Keine Lösung} aus.
     \item Falls $\mathcal{A}(A \cdot x \geq b,A \cdot x \leq b, x \geq 0, c^T \cdot x \geq (\alpha \cdot m)^{m+1} +1 ) \neq \emptyset$, gib \textbf{unbeschränkt} aus.
-    \item Setzte $\tau = (\alpha \cdot m)^{-2(m+1)}$.
+    \item Setze $\tau = (\alpha \cdot m)^{-2(m+1)}$.
     \item Bestimme mit Binärsuche $K \in \mathbb{N}$ mit $\tau \cdot K \leq z^* < \tau \cdot (K+1)$.
     \begin{itemize}
         \item Rufe dazu $\mathcal{A}(A \cdot x \geq b,A \cdot x \leq b, x \geq 0, c^T \cdot x \geq \tau \cdot K)$ auf.
@@ -1658,7 +1659,7 @@ Mit $n$ Variablen, $m$ Ungleichungen und Eingabelänge $L$.
     \item Wiederhole $\forall i \in \underline{n}$:
     \begin{itemize}
         \item Falls $\mathcal{A}(A \cdot x \geq b,A \cdot x \leq b, x \geq 0, c^T \cdot x \geq \tau \cdot K, x_{j \in S \cup \{ i \} }) \neq \emptyset$.
-        \item so setzte $S = S \cup \{ i \}$, $m' = m' +0$, und $\overline{\delta}(m') = i$.
+        \item so setze $S = S \cup \{ i \}$, $m' = m' +0$, und $\overline{\delta}(m') = i$.
     \end{itemize}
     \item Bestimme $\delta$ aus $\overline{\delta}$ dadurch $x_{\delta} = A_{\delta}^{-1} \cdot b$.
 \end{enumerate}
@@ -1975,7 +1976,7 @@ Beweisideen der Fehlerwahrscheinlichkeit:
     \item Die Wahrscheinlichkeit, um in $j + 2i \le 3n$ Schritten nach $W^*$ zu kommen ist
     $$q_{j,i}= \binom{j + 2i}{i} \cdot \frac{j}{j+2i}\cdot \bigg(\frac{1}{3}\bigg)^{j+i} \cdot \bigg(\frac{2}{3}\bigg)^{i}.$$
     \item Es ergibt sich für das Erreichen von $W^*$ aus $j$, die Summe über alle $i$: $$q_j = \frac{1}{2\cdot \sqrt{3\pi j}}\cdot \bigg(\frac{1}{2}\bigg)^j.$$
-    \item Summieren wir über alle $j$ und runden das ganze schlau erhalten wir für das erreichen von $W^*$:
+    \item Summieren wir über alle $j$ und runden das ganze schlau, erhalten wir für das Erreichen von $W^*$:
     $$\Tilde{p} = \frac{1}{2 \cdot \sqrt{3 \pi n}} \cdot \bigg(\frac{3}{4}\bigg)^n.$$
     \item Die Fehlerwahrscheinlichkeit ist dann nach $t = \lceil 20 \cdot \sqrt{3\pi n} \big(\frac{4}{3}\big)^n \rceil$ lokalen Suchen:
     $$(1- \Tilde{p})^t \le e^{\Tilde{p}t}= e^{-10} \le 5 \cdot 10^{-5}.$$
@@ -2102,9 +2103,10 @@ Die Konfiguration $[a,b]$ ist scheinbar zu bevorzugen.
 \end{theo}
 
 \subsubsection{Obere Schranke}
-Im Folgenden zeigen wir einen Online-Algorithmus, der $3$-competitive ist.
 
 \begin{halfboxl}
+Im Folgenden zeigen wir einen Online-Algorithmus, der $3$-competitive ist.
+
 Die initialen Kosten sind einmalig, und erhöhen den competitiven Faktor nicht.
 
 Fall 1: Tritt auf, wenn eine Lese- oder Schreibanfrage an einen Knoten ohne Datei kommt. Es entstehen je eine Kosteneinheit für die Anfrage und die Migration, also Kosten von $2$.
@@ -2129,7 +2131,6 @@ Fall 2: Tritt auf, wenn eine Schreibanfrage an einen der Knoten kommt und beide 
 \end{halfboxr}
 
 Wir zeigen, dass das obige Verfahren $3$-competitive ist.
-
 Im Folgenden sei dazu $x \in \{a,b\}$.
 
 Wir starten in der Konfiguration $[a,b]$. Diese Konfiguration ändert sich erst nach dem ersten Schreibzugriff in $[a]$ oder $[b]$. O.B.d.A. gehen wir in die Konfiguration $[a]$. Von da aus gibt es nur einen möglichen Konfigurationswechsel auf $[a,b]$, ausgelöst durch Lesen oder Schreiben auf $b$. Es gibt also keine direkten Übergänge von $[a]$ auf $[b]$ oder umgekehrt, sondern nur von $[x]$ auf $[a,b]$ und von $[a,b]$ auf $[x]$.
@@ -2249,7 +2250,7 @@ Damit sind auch $FWF$ und $LRU$ $k$-competitive.
 \end{halfboxr}
 
 \subsubsection{Untere Schranke}
-Wir beweisen nun das deterministische Verfahren nur begrenzt gut sein können.
+Wir beweisen nun, dass deterministische Verfahren nur begrenzt gut sein können.
 
 \begin{theo}{Untere Schranke}
     Es gibt keinen deterministischen Online-Algorithmus für das Paging-Problem mit competitive-Faktor besser als $k$.
@@ -2257,7 +2258,7 @@ Wir beweisen nun das deterministische Verfahren nur begrenzt gut sein können.
 
 Um dies zu beweisen, vergleichen wir einen Online-Algorithmus $A$ mit einem optimalen Offline-Algorithmus $B$. Sei der Hauptspeicher beider Algorithmen $k+1$ Seiten und der Cache jeweils $k$ Seiten groß.
 
-Fülle nun beide Caches mit den geichen $k$ Seiten. Jetzt wird die Eingabesequenz so gewählt, dass $A$ immer die Seite nachlädt, die nicht im Cache ist, sondern als einzige nur im Hauptspeicher liegt. $B$ dagegen lagert diejenige Seite aus, die mindestens in den nächsten $k-1$ Schritten nicht angefragt wird.
+Fülle nun beide Caches mit den gleichen $k$ Seiten. Jetzt wird die Eingabesequenz so gewählt, dass $A$ immer die Seite nachlädt, die nicht im Cache ist, sondern als einzige nur im Hauptspeicher liegt. $B$ dagegen lagert diejenige Seite aus, die mindestens in den nächsten $k-1$ Schritten nicht angefragt wird.
 
 Bevor beide den Seitenfehler machen, müssen sie die selben Seiten im Cache haben. Also kann man dies unbeschränkt fortführen. Dann macht $A$ bei einer Sequenz mit Länge $k+m$ auch $k+m$ Seitenfehler, $B$ macht aber bei $k+m$ Anfragen höchstens $k+\ceil*{\frac{m}{k}}$ Seitenfehler.
 
