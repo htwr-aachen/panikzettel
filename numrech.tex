@@ -397,7 +397,7 @@ Wir können das Interpolationspolynom $P_n(x)$ auch über das folgende LGS besti
 \subsection{Auswertung der Potenzform mit dem Horner-Schema}
 Falls die Potenzform des Polynoms $P_n (x)$ vorliegt, kann diese durch geschickte Klammerung schnell (etwa halber Rechenaufwand) für ein $x$ ausgewertet werden.
 
-\[ a_0 + a_1x + \hdots + a_nx^n = a_0 + x\cdot (a_1 + x\cdot (a_2 + (\hdots  x\cdot (a_{n_1} + xa_n) \hdots) ) ) \]
+\[ a_0 + a_1x + \hdots + a_n x^n = a_0 +  x\cdot (a_1 + x \cdot (a_2 + x \cdot (\hdots  x \cdot (a_{n-1} + x a_n) \hdots) ) ) \]
 
 \subsection{Newtonsche Interpolationsformel}
 Sei $P(f|x_0,\ldots,x_{n-1})$ gegeben und wir wollen nun mit möglichst wenig Aufwand $P(f|x_0,\ldots,x_n)$ berechnen.
