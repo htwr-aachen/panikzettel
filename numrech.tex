@@ -339,7 +339,7 @@ Die hässliche Summe wird beim Gauß-Newton-Verfahren ignoriert.
 \subsection{Levenberg-Marquardt-Verfahren}
 
 Das \emph{Levenberg-Marquardt-Verfahren} ist eine Modifikation des Gauß-Newton-Verfahrens, bei dem bei der Berechnung der Schrittweite $s^k = x^{k+1} - x^k$ ein Dämpfungsfaktor $\mu > 0$ eingefügt wird:
-\[ s^k = \argmin_{s \in \reals^n} (\norm{F'(x^k)s^k + F(x^k)}^2_2 + \mu^2 \norm{s^k}^2_2) = \argmin_{s \in \mathbb{R}^n}\, \norm{\underbrace{\begin{pmatrix} F'(x^k) \\ \mu I \end{pmatrix}}_{\substack{\text{immer voller}\\\text{Rang}}} s + \begin{pmatrix} F(x^k) \\ 0 \end{pmatrix}}_2 \]
+\[ s^k = \argmin_{s \in \reals^n} (\norm{F'(x^k)s + F(x^k)}^2_2 + \mu^2 \norm{s}^2_2) = \argmin_{s \in \mathbb{R}^n}\, \norm{\underbrace{\begin{pmatrix} F'(x^k) \\ \mu I \end{pmatrix}}_{\substack{\text{immer voller}\\\text{Rang}}} s + \begin{pmatrix} F(x^k) \\ 0 \end{pmatrix}}_2 \]
 
 Als Fixpunktiteration:
 \[ x^{k+1} = x^k - (F'(x^k)^T F'(x^k) + \mu^2 I)^{-1} \cdot F'(x^k) F(x^k) \]
