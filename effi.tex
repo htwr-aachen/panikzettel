@@ -2044,7 +2044,7 @@ Offline-Algorithmen bekommen die gesamte Eingabe und können darauf das Problem 
 \begin{halfboxr}
 \vspace{-\baselineskip}
     \begin{defi}{c-competitive}
-        Sei $C_A(\rho)$ die Kosten der von $A$ berechneten Strategie auf der Eingabe $\rho$ und $C^*(p)$ die Kosten für die optimale Strategie. Dann ist $A$ $\textit{c-competitive}$ gdw. $\exists a$ für jede Eingabe $\rho$, so dass gilt: $$C_A(\rho) \leq c \cdot C^*(\rho)+a.$$
+        Sei $C_A(\rho)$ die Kosten der von $A$ berechneten Strategie auf der Eingabe $\rho$ und $C^*(p)$ die Kosten für die optimale Strategie. Dann ist $A$ $\textit{c-competitive}$ gdw. ein $a$ existiert, so dass für jede Eingabe $\rho$ gilt: $$C_A(\rho) \leq c \cdot C^*(\rho)+a.$$
     \end{defi}
 \end{halfboxr}
 
@@ -2147,7 +2147,7 @@ Damit ist gezeigt, dass unser Online-Algorithmus $3$-competitive ist.
 
 \subsubsection{Untere Schranke}
 
-Wir zeigen nun, dass kein Algorithmus competetive-Faktor kleiner $3$ hat.
+Wir zeigen nun, dass kein Algorithmus competitive-Faktor kleiner $3$ hat.
 
 Dazu zeigen wir für einen beliebigen Algorithmus $A$, dass es eine Eingabe und $3$ andere Algorithmen gibt, die auf der Eingabe zusammen die selben Kosten wie $A$ verursachen.
 
@@ -2164,7 +2164,7 @@ Auf der selben Eingabe betrachten wir diese anderen Algorithmen:
 
 Dann hat $B$ genau dann Migrationskosten, wenn $A$ Migrationskosten hat, aber auf dieser Eingabe nie Servicekosten. $C_A$ und $C_B$ haben nie Migrationskosten, aber in jedem Schritt hat genau einer von beiden Servicekosten.
 
-Also sind die Gesamtkosten von $A$ die Summe der Kosten dieser Algorithmen. Da der optimale Algorithmus nicht schlechter sein kann, kann $A$ keinen competetive-Faktor kleiner $3$ haben.
+Also sind die Gesamtkosten von $A$ die Summe der Kosten dieser Algorithmen. Da der optimale Algorithmus nicht schlechter sein kann, kann $A$ keinen competitive-Faktor kleiner $3$ haben.
 
 \subsection{Paging-Problem}
 Wir betrachten ein zweischichtiges Speichersystem: Ein großer, langsamer \emph{Hauptspeicher} und ein schneller \emph{Cache} mit Platz für $k$ Seiten. Dazu gibt es \emph{Anfragen} $t$ an den Speicher, die genau einer Seite entsprechen. Falls $t$ nicht im Cache ist (\textit{Seitenfehler}) so muss diese Seite \emph{nachgeladen werden}. Falls der Cache voll ist, muss eine Seite \emph{verdrängt} werden.
@@ -2232,14 +2232,14 @@ Damit sind auch $FWF$ und $LRU$ $k$-competitive.
 \begin{halfboxr}
 \vspace{-\baselineskip}
     \begin{theo}{LIFO}
-        \textit{LIFO} ist nicht $c$-competitive für beliebiges $c \in \mathbb{N}$.
+        \textit{LIFO} ist nicht $c$-competitive für beliebiges $c \in \mathbb{R}$.
     \end{theo}
 \end{halfboxr}
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
     \begin{theo}{LFU}
-        $LFU$ ist nicht $c$-competitive für beliebiges $c \in \mathbb{N}$.
+        $LFU$ ist nicht $c$-competitive für beliebiges $c \in \mathbb{R}$.
     \end{theo}
 \end{halfboxl}%
 \begin{halfboxr}
@@ -2268,7 +2268,7 @@ Da wir gesehen haben, dass deterministische Paging-Algorithmen höchstens k-comp
 Dabei wird der Zufallsanteil erst nach dem Wählen der Sequenz genutzt. Wir nennen den Algorithmus, oder Gegner, der die Eingabe erstellt, \emph{oblivious} (blind, vergesslich).
 
 \begin{defi}{c-competitive für Random}
-    Ein randomisierter Online-Algorithmus $A$ ist c-competitive gdw. $\exists a$ , so dass für jede durch einen oblivous Gegner bestimmte Anfragesequenz $\rho$ gilt: $$\mathbb{E}[C_A(\rho)] \leq c \cdot C^*(\rho)+a.$$
+    Ein randomisierter Online-Algorithmus $A$ ist c-competitive gdw. ein $a$ existiert, so dass für jede durch einen oblivous Gegner bestimmte Anfragesequenz $\rho$ gilt: $$\mathbb{E}[C_A(\rho)] \leq c \cdot C^*(\rho)+a.$$
 \end{defi}
 
 Dazu gibt es einen einfachen randomisierten Online-Algorithmus.
@@ -2307,10 +2307,10 @@ Der Online-Algorithmus bekommt einen Cache der Größe $m \cdot k$, wenn der Off
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{defi}{$(m,c)$-competitive}
-    Ein Online-Algorithmus $A$ ist $(m,c)-competitive$ gdw.
+    Ein Online-Algorithmus $A$ für das Paging-Problem ist $(m,c)-competitive$ gdw.
     \begin{itemize}
         \item $m$-mal so großer Cache wie Offline,
-        \item für jede Eingabesequenz $\rho$ $\exists a$, sodass $C_A(\rho) \leq c \cdot C^*(\rho)+a$.
+        \item es existiert ein $a$, sodass für jede Eingabesequenz $\rho$ gilt $C_A(\rho) \leq c \cdot C^*(\rho)+a$.
     \end{itemize}
 \end{defi}
 \end{halfboxr}
@@ -2321,7 +2321,7 @@ Dazu werden wir eine Potentialfunktion $\phi$ nutzen und zeigen, dass stets
 \[\mathbb{E}[C] + 2\mathbb{E}[\phi] \le 2 C^\ast\]
 ist, wobei $E[C]$ die erwarteten Kosten von $Random$ und $C^\ast$ die Kosten der optimalen Offline-Strategie sind.
 
-Wir definieren $\phi$ als die Anzahl der Seiten, die im Cache von $OPT$ sind, aber nicht im Cache von $Random$. Dann kann $\phi$ nicht negativ sein, also reicht die obige Invariante, um den competetive-Faktor zu zeigen.
+Wir definieren $\phi$ als die Anzahl der Seiten, die im Cache von $OPT$ sind, aber nicht im Cache von $Random$. Dann kann $\phi$ nicht negativ sein, also reicht die obige Invariante, um den competitive-Faktor zu zeigen.
 
 Die Invariante zeigen wir nun Schrittweise (deswegen auch die Potentialfunktion). Wir betrachten den Seitenzugriff auf eine Seite $p_t$ und unterscheiden viel Fälle:
 \begin{enumerate}
@@ -2472,7 +2472,7 @@ Trotz der~\pageref*{ende} Seiten, die wir schon haben, gibt es noch viel zu tun.
     \item\label{mrExp:min-weight-perfect-matching}\hyperlink{mr:min-weight-perfect-matching}{Minimum Weight Perfect Matching}    \\
     Wurde in der Übung Äquivalenz zu Max-Weight Matching gezeigt. Da das Problem beim \hyperref[algo:tsp-15-approx]{Algorithmus von Christofides} wieder auftaucht, könnte man das hier zumindest definieren.
     \item\label{mrExp:marking-comp}\hyperlink{mr:marking-comp}{Marking Algorithms}    \\
-    Man könnte den competetive-Faktor noch besser begründen.
+    Man könnte den competitive-Faktor noch besser begründen.
     \item\label{mrExp:fastcut-ewkeit}\hyperlink{mr:fastcut-ewkeit}{Fastcut: Erfolgswahrscheinlichkeit}    \\
     Die Ideen für die Erfolgswahrscheinlichkeit könnte man noch erklären.
 \end{itemize}
