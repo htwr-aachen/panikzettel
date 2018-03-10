@@ -409,8 +409,8 @@ mit $\delta_n$ der Koeffizient der höchsten Potenz $x^n$, bzw. $[x_0,\ldots,x_n
 
 So lässt sich auch von einer einzigen Stützstelle (z.B. $P(f|x_0)$) aus das gesamte Interpolationspolynom $P(f|x_0,\ldots,x_n)$ rekursiv bestimmen. Wir erhalten die \emph{Newtonsche Interpolationsformel}:
 \begin{align*}
-  P(f|x_0,\ldots,x_n)(x) &= [x_0]f + (x-x_0)\cdot [x_0,x_1]f \\
-                         &+ (x-x_0)\cdots(x-x_1)\cdot [x_0,x_1,x_2]f \\
+  P(f|x_0,\ldots,x_n)(x) &= [x_0]f + (x-x_0) \cdot [x_0,x_1]f \\
+                         &+ (x-x_0)(x-x_1) \cdot [x_0,x_1,x_2]f \\
                          &+ \ldots \\
                          &+ (x-x_0)\cdots(x-x_{n-1})\cdot [x_0,\ldots,x_n]f
 \end{align*}
@@ -418,10 +418,10 @@ So lässt sich auch von einer einzigen Stützstelle (z.B. $P(f|x_0)$) aus das ge
 Die sich wiederholenden Polynome $\omega_i(x)$ bilden die \emph{Newtonsche Basis} von $\Pi_n$:
 \[ \omega_0 \defeq 1,\quad\quad \omega_1 \defeq (x-x_0),\quad\quad \ldots,\quad\quad \omega_n \defeq (x-x_0)\ldots (x-x_{n-1}) \]
 
-Für die Newtonsche Interpolationsformel haben wir das rekursive \emph{Schema der dividierten Differenzen} für verschiedene Stützstellen $x_0,\ldots,x_n$:
+Für die Newtonsche Interpolationsformel haben wir das rekursive \emph{Schema der dividierten Differenzen} für verschiedene Stützstellen $x_i,\ldots,x_k$:
 
 \begin{minipage}{0.4\textwidth}
-\[ [x_0,\ldots,x_n]f = \frac{[x_1,\ldots, x_n]f - [x_0,\ldots, x_{n-1}]f}{x_n - x_0} \]
+\[ [x_i,\ldots,x_k]f = \frac{[x_{i+1},\ldots, x_k]f - [x_i,\ldots, x_{k-1}]f}{x_k - x_i} \]
 \end{minipage}\hspace{0.1\textwidth}
 \begin{minipage}{0.5\textwidth}
 \setlength{\tabcolsep}{0.5em}
@@ -441,7 +441,7 @@ x_2 & [x_2]f
 \subsection{Fehlerabschätzung}
 Der Fehler der Polynominterpolation $P_n (f|x_0,\ldots,x_n) (x)$ zur interpolierten Funktion $f(x)$, auf dem Intervall $[a,b]$, kann abgeschätzt werden durch:
 
-\[\abs*{f(x) - P_n (x)} \leq \abs*{\omega_{n+1}} \max_{\xi \in [a,b]} \frac{\abs*{f^{(n+1)}(\xi)}}{(n+1)!}\]
+\[\abs*{f(x) - P_n (x)} \leq \abs*{\omega_{n+1}(x)} \max_{\xi \in [a,b]} \frac{\abs*{f^{(n+1)}(\xi)}}{(n+1)!}\]
 
 \section{Numerische Differentiation}
 
@@ -541,7 +541,7 @@ Mit der Integralaufteilung, die in der Kapiteleinleitung beschrieben wurde, erha
 
 Die \emph{Gauß-Quadratur} erreicht einen Exaktheitsgrad von $2m + 1$, also hat doppelt so hohen Exaktheitsgrad wie benötigte Funktionsauswertungen.
 
-Es existieren Stützstellen $\omega_0, \ldots, \omega_m \in (c, d)$ (offenes Intervall!), so dass mit $h = d - c$ gilt:
+Es existieren Stützstellen $x_0, \ldots, x_m \in (c, d)$ (offenes Intervall!) und positive Gewichte $\omega_0, \ldots, \omega_m$, so dass mit $h = d - c$ gilt:
 \[
   h \sum_{i=0}^m \omega_i f(x_i) = \int_c^d f(x) dx + E_f(x)
 \]
@@ -555,6 +555,7 @@ Wir schreiben auch $I_{k,n}$ für die Approximation des Integrals mit $n$ Teilin
 
 Für den kleinsten Fehler: Mehr oder weniger Teilintervalle für größere Präzision? Für $I_{2k,n}$ und $I_{k,2n}$ wird die Anzahl der Funktionsauswertungen verdoppelt im Vergleich zu $I_{k,n}$. Außerdem kann man herausfinden, dass $\abs{I - I_{2k,n}} \ll \abs{I - I_{k,2n}}$. Also wird in der Praxis oft $n$ klein gewählt, oft auch $n = 1$.
 
+\newpage
 \section{Lineare Gleichungssysteme: Iterative Lösungsverfahren}
 
 Für dünnbesetzte lineare Gleichungssysteme eignen sich iterative Lösungsverfahren.
