@@ -1045,12 +1045,12 @@ Eine Reduktion auf das Dominating Set Problem zeigt dies.
 \textbf{Ausgabe:} $Z \subset V$.
 \tcblower
 \begin{enumerate}
-    \item Setze $Z = \emptyset$ und $U = V$
+    \item Setze $Z = \emptyset$ und $U = V$.
     \item Solange $U \neq \emptyset$:
     \begin{enumerate}
-        \item $z = \argmax_{u \in U} \{ w(u) \}$
-        \item $Z = Z \cup \{ z \}$
-        \item $U = U \setminus \{ v \in U | w(v) \cdot dist(v,z) \leq 2 \cdot R \}$
+        \item $z = \argmax_{u \in U} w(u)$.
+        \item $Z = Z \cup \{ z \}$.
+        \item $U = U \setminus \{ v \in U | w(v) \cdot dist(v,z) \leq 2 \cdot R \}$.
     \end{enumerate}
 \end{enumerate}
 \end{algo}
@@ -1184,7 +1184,7 @@ Für den Faktor betrachtet man die Maschine $j$, auf die der Job $p_{i'}$ der al
 Diese kann höchstens eine Last von $\frac{1}{m} \sum_{i < i'} p_i$ (weil minimal ausgelastet) vor der Zuteilung gehabt haben.
 {\small\begin{align*}
     ( \frac{1}{m} \sum_{i < i'} p_i ) + p_{i'} &=  ( \frac{1}{m} \sum_{i \leq i'} p_i ) + (1 - \frac{1}{m}) \cdot p_{i'}  \\
-    &\leq \opt + (2 - \frac{1}{m}) \cdot \opt
+    &\leq (2 - \frac{1}{m}) \cdot \opt
 \end{align*}}
 \end{halfboxl}%
 \begin{halfboxr}
@@ -1254,8 +1254,8 @@ Für das PTAS werden wir zunächst einen Algorithmus ansehen, der zusätzlich zu
     \item Führe binäre Suche nach $Z^\ast \in \Set{1\ldots S}$ durch:
     \begin{itemize}
         \item Führe \hyperref[algo:ptasHelper]{Hilfsalgorithmus} aus.
-        \item Falls \texttt{Makespan zu klein}, erhöhe untere Schranke.
-        \item Ansonsten verringere obere Schranke.
+        \item Falls \texttt{Makespan zu klein} bzw. \texttt{groß}, erhöhe untere Schranke bzw. verringere obere Schranke.
+        \item Wiederholen, wenn Intervall nicht degeneriert ist.
     \end{itemize}
     \item Gebe zur letzten oberen Schranke berechnete Zuweisung zurück.
 \end{enumerate}
@@ -1293,8 +1293,8 @@ Wir müssen für den \hyperref[algo:ptasHelper]{Hilfsalgorithmus des PTAS} noch 
 \end{itemize}
 \textbf{Ziel:}
 \begin{itemize}
-    \item $\Forall i \in \Set{1,2, \ldots ,m} : \sum\limits_{\mathclap{\substack{j = 1\\z(j)=i}}}^n w_j \le b$
-    \item[] Jeder Bin enthält höchstens $b$.
+    \item $\Forall i \in \Set{1,2, \ldots ,m}:$ $\sum\limits_{\mathclap{\substack{j = 1\\z(j)=i}}}^n w_j \le b$
+    \item[] Jeder Bin enthält höchstens $b$ Objekte.
 \end{itemize}
 \end{defi}
 
@@ -1322,7 +1322,7 @@ Für das Schedulingproblem hängen $k$ und $b$ nur von $\varepsilon$ ab, sind al
 
 In einem \emph{Linearen Programm (LP)} soll eine lineare \emph{Zielfunktion} unter Einhaltung von linearen \emph{Nebenbedingungen} maximiert werden.
 
-In der Vorlesung werden LP's nur in \emph{kanonischer From} in \emph{Matrixschreibweise} betrachtet.
+In der Vorlesung werden LP's nur in \emph{kanonischer Form} in \emph{Matrixschreibweise} betrachtet.
 
 \begin{halfboxl}
 Umformungen in kanonische Form:
@@ -1368,18 +1368,24 @@ Der Ansatz des \emph{Simplex-Verfahrens} ist intuitiv: Man läuft entlang der Ka
 Simplex geht zwar nicht immer den schnellsten Weg, aber kommt immer am Optimum an.
 Die Anzahl der Schritte ist nicht bekannt, denn die Laufzeit von Simplex ist nicht bewiesen.
 
-Zum Verständnis von Simplex verfahren, müssen erst die Konzepte der \emph{Algebraische Gleichungsform} und der \emph{Basislösung} eingeleitet werden.
+Zunächst einige Definitionen.
+Simplex arbeitet auf der Algebraischen Gleichungsform und bestimmt Basislösungen auf geordneten Spaltenauswahlen.
 
 \begin{halfboxl}
-Die \emph{Algebraische Gleichungsform} ist eine Umformung, bei der die Nebenbedingungen durch Einführung von Schlupfvariablen in Gleichungsform gebracht werden.
+Die \emph{Algebraische Gleichungsform} ist eine Umformung, bei der die Nebenbedingungen durch Einführung von \emph{Schlupfvariablen} in lineare Gleichungsform gebracht werden.
+Damit können wir die Matrixkalkül-Theorie nutzen.
 
-Für eine \emph{Basislösung} braucht man den Begriff der \emph{geordneten Auswahl}.
-
-Eine \emph{geordnete Auswahl} $\delta$ ist eine Abbildung $\delta$ $\underline{m} \mapsto \underline{n}$ mit $\forall i \in \underline{m-1} : \delta(i) < \delta(i+1)$.
+Eine \emph{geordnete Auswahl} $\delta$ ist eine Abbildung
+\begin{tightcenter}
+$\delta : \underline{m} \mapsto \underline{n}$ mit $\forall i \in \underline{m-1} : \delta(i) < \delta(i+1)$.
+\end{tightcenter}
 $\overline{\delta}$ ist die geordnete Auswahl der restlichen $d$ Elemente.
 Damit können Spalten aus $A$ ausgewählt und zu zwei neuen Matrizen $A_\delta$ und $A_{\overline{\delta}}$ gruppiert werden, analog für Elemente aus $x$ und $c$.
 
-So können die Nebenbedingungen aufgespalten werden: $A \cdot x = A_{\delta} \cdot x_{\delta} + A_{\overline{\delta}} \cdot x_{\overline{\delta}} = b$.
+Eine Aufspaltung der Nebenbedingungen:
+\begin{tightcenter}
+$A \cdot x = A_{\delta} \cdot x_{\delta} + A_{\overline{\delta}} \cdot x_{\overline{\delta}} = b$.
+\end{tightcenter}
 Mit $x_{\overline{\delta}} = 0$ gilt $x_{\delta} = A_{\delta}^{-1} b$.
 
 Das so aus den \emph{Basisvariablen} $x_{\delta}$ und den \emph{Nichtbasisvariablen} $x_{\overline{\delta}}$ zusammengesetzte $x$ heißt \emph{Basislösung zur Basis $\delta$}.
@@ -1401,17 +1407,17 @@ durch \\
 mit neuer Schlupfvariable $s_i \geq 0$. \\
 Dadurch entsteht ein neues LP mit: \\
 \-\hspace{1em} $c= \begin{pmatrix} c' \\ 0 \end{pmatrix} \in \mathbb{R}^{d+m}$ \\
-\-\hspace{1em} $A = \begin{pmatrix} A' & I_m \end{pmatrix} \in \mathbb{R}^{m \times d+m}$ \\
+\-\hspace{1em} $A = \begin{pmatrix} A' & I_m \end{pmatrix} \in \mathbb{R}^{m \times (d+m)}$ \\
 \-\hspace{1em} $x = \begin{pmatrix} x' \\ s \end{pmatrix} \in \mathbb{R}^{d+m}$
 \end{algo}
 \end{halfboxr}
 
-Eine Basislösung ist \emph{zulässig}, wenn $x_{\delta} \geq 0$ gilt.
-In einer zulässigen Basislösung sind $d$ Nichtbasisvariablen $0$. Wenn also eine Nichtbasisvariable $x_i$ $0$ ist, dann ist sie entweder eine Schlupfvarialbe $s_l$ oder eine Variable $x'_k$ aus dem originalen LP.
+Eine Basislösung heißt \emph{zulässig}, wenn $x_{\delta} \geq 0$ gilt.
+In einer zulässigen Basislösung sind $d$ Nichtbasisvariablen gleich $0$. Wenn also eine Nichtbasisvariable $x_i$ gleich $0$ ist, dann ist sie entweder eine Schlupfvariable $s_l$ oder eine Variable $x'_k$ aus dem originalen LP.
 
-Im ersten Fall liegt die Lösung auf der $l$-ten Hyperebene im originalen LP, im zweiten Fall liegt die Lösung auf der Hyperebene die durch $x'_k = 0$ bestimmt ist.
+Im ersten Fall liegt die Lösung auf der $l$-ten Hyperebene im originalen LP, im zweiten Fall liegt die Lösung auf der Hyperebene, die durch $x'_k = 0$ bestimmt ist.
 
-Somit liegt eine zulässige Basislösung auf $d$ Hyperebenen im originalen LP und entspricht somit einem Knoten das Lösungspolyhedrons des originalen LP.
+Somit liegt eine zulässige Basislösung auf $d$ Hyperebenen im originalen LP und entspricht einem Knoten vom Lösungspolyhedron des originalen LPs.
 
 \begin{algo}{Simplex}
 \textbf{Eingabe:} LP in kanonischer Form: \\
@@ -1435,79 +1441,91 @@ Somit liegt eine zulässige Basislösung auf $d$ Hyperebenen im originalen LP un
         \begin{enumerate}
             \item Falls $\Forall i \in \Set{1,\ldots,m} : \hat{a}_{i,j} \leq 0$, ist das LP unbeschränkt. Abbruch.
             \item Wähle $i = \argmin\limits_{1 \leq k \leq m} \Set{ \frac{\hat{b}_k}{\hat{a}_{k,j}} | \hat{a}_{k,j} > 0 }$.
-            \item Ersetze Spalte $A_{\delta(i)}$ durch Spalte $A_j$, dh. definiere $\delta$ so um, dass $\delta(i) = j$ und $\delta(j') = \delta(i)$ ist.
+            \item Ersetze Spalte $A_{\delta(i)}$ durch Spalte $A_j$, d.h. definiere $\delta$ so um, dass $\delta(i) = j$ und $\delta(j') = \delta(i)$ ist.
             \item Berechne $r = c_{\overline{\delta}}^T - c_\delta^T \cdot \hat{A}$.
         \end{enumerate}
 \end{enumerate}
 \end{algo}
 
 Simplex benötigt eine initiale zulässige Basislösung.
-Im zweiten Schritt des Algorithmus wird aus dem LP $P$ ein neues LP $P'$ konstruiert, welches per Konstruktion schon eine initiale Basislösung hat, $x = 0$.
-Mit der Basislösung wird $P'$ mit dem Simplex Verfahren gelöst. Wenn das Optimum von $P'$ $0$ ist, dann sind alle Hilfsvariablen auch $0$ und die Lösung von $P'$, hier $x^*$, hat folgende Eigenschaften:
-In $x^*$ sind $m$ Variablen ungleich $0$ und $x^*$ erfüllt alle Nebenbedingungen von $P$. Somit ist $x^*$ eine zulässige Basislösung von $P$.
+Dafür wird in Schritt 2 des Algorithmus aus dem LP $P$ ein neues LP $P'$ konstruiert, welches per Konstruktion schon eine initiale Basislösung hat: $x = 0$.
+Damit wird $P'$ mit dem Simplex-Verfahren rekursiv gelöst, wobei die Hilfsvariablen $h_k$ minimiert werden.
 
-In Schritt 3 und 4 werden $\hat{b} = A_{\delta}^{-1} \cdot b$ und $\hat{A} = A_{\delta}^{-1} \cdot A_{\overline{\delta}}$, verwendet. Die Spalte $A_{\delta(i)}$ wird \emph{Eingangspivotspalte} und $A_j$ \emph{Ausgangspivotspalte} gennant.
+Wenn hier für das Ergebnis $x^\ast$ bzw. $f^\ast$ gilt, dass $f(h^\ast) = 0$, dann sind alle Hilfsvariablen auch gleich~$0$.
+Außerdem sind dann alle $x^\ast_j \neq 0$ und und $x^\ast$ erfüllt alle Nebenbedingungen von $P$.
+Also ist $x^\ast$ eine zulässige Basislösung von $P$.
+
+Für Schritte 3 und 4 sind $\hat{b} = A_{\delta}^{-1} \cdot b$ und $\hat{A} = A_{\delta}^{-1} \cdot A_{\overline{\delta}}$, definiert.
+Die in Schritt 4 ersetzte Spalte $A_{\delta(i)}$ wird \emph{Eingangspivotspalte} genannt.
+Ihre Ersetzung $A_j$ mit $j = \overline{\delta}(j')$ heißt \emph{Ausgangspivotspalte}.
 
 Durch Umformungen können die Basisvariablen in Abhängigkeit der Nichtbasisvariablen ausgedrückt werden: $x_{\delta} = \hat{b} - \hat{A} \cdot x_{\overline{\delta}}$.
-So kann die Zielfunktion nur noch in Abhänigkeit der Nichtbasisvariablen ausgedrückt werden: $c^T \cdot x = c_{\delta}^T \cdot \hat{b} - r \cdot x_{\overline{\delta}}$.
+Selbiges für die Zielfunktion: $c^T \cdot x = c_{\delta}^T \cdot \hat{b} - r \cdot x_{\overline{\delta}}$.
 
 Es kann nun Folgendes gezeigt werden:
 \begin{itemize}
-    \item Eine Basislösung mit nicht positivem \emph{Vektor der reduzierten Kosten} $r$ ist eine optimale Lösung des LP.
+    \item Eine Basislösung mit nichtpositivem \emph{Vektor der reduzierten Kosten} $r$ ist eine optimale Lösung des LPs.
     \item Eine Erhöhung einer Nichtbasisvariable $x_j$, mit entsprechendem positiven Eintrag in $r$, erhöht die Zielfunktion.
     \item Wenn $x_j$ erhöht wird und die restlichen Nichtbasisvariablen auf $0$ fixiert bleiben, verändert sich die Basisvariable $x_{\delta(i)}$ in Abhängigkeit zu $\hat{a}_{i,j}$:
     \begin{itemize}
-        \item $\hat{a}_{i,j} \geq 0 : x_{\delta(i)}$ vergrößert sich, falls dies für alle Basisvariablen gilt, ist das LP unbeschränkt.
-        \item $\hat{a}_{i,j} < 0 : x_{\delta(i)}$ verkleinert sich.
+        \item $\hat{a}_{i,j} \geq 0$: $x_{\delta(i)}$ vergrößert sich. \\
+              Falls dies darüber hinaus für alle Basisvariablen gilt, dann ist das LP unbeschränkt.
+        \item $\hat{a}_{i,j} < 0$: $x_{\delta(i)}$ verkleinert sich.
     \end{itemize}
 \end{itemize}
+\medskip
 
-Daraus folgt, das Simplex das Optimum in Schritt 3 erkennen kann, und falls es nicht am Optimum ist, in Schritt 4 einen Pivotschritt ausführt, der einem Schritt entlang einer Kante des originalen Lösungspolyhedron in Richtung Optimum entspricht.
+Diese Eigenschaften ermöglichen die Erkennung des Optimums in Schritt 3.
+Weiterhin kann sonst in Schritt 4 immer ein Pivotschritt in Richtung Optimum ausgeführt werden.
 
 \begin{halfboxl}
-
-Die Beweisidee zu 1) ist, dass in einem Pivotschritt $\bigo(n \cdot m)$ viele algebraische Rechenoperationen ausgeführt werden.
-Diese arbeiten auf Zalendarstellungen, die in der Eingabe binär kodierte Ganzahlen und in den Zwischenschritten gekürzte Brüche, deren Nenner und Zähler binär kodiert sind.
-Man kann die Länge der Zahlendarstellungen in den Zwischenschritten mit Hilfe der Cramerschen Regel so abschätzen, dass sie polynomiell zur Länge der Binärdartellungen der Eingabezahlen ist.
+Ein Pivotschritt läuft in polynomieller Zeit, weil $\bigo(n \cdot m)$ viele algebraische Rechenoperationen ausgeführt werden.
+Die dabei verwendeten Zahlen lassen sich über gekürzte Brüche von Binärzahlen abschätzen.
+Mithilfe der Cramerschen Regel kann man dann sehen, dass die Länge der Zahlendarstellungen polynomiell in der Länge der Eingabezahlen ist.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Laufzeit von Simplex}
-\begin{enumerate}
-    \item Die Laufzeit eines Pivotschrittes ist polynomiell beschränkt in der Eingabenlänge.
-    \item Es kann ein LP mit $n$ Variablen konstruiert werden, welches beim Lösen $2^n - 1$ viele Pivotschritte benötigt.
+\begin{enumerate}[leftmargin=*]
+    \item Die Laufzeit eines Pivotschrittes ist polynomiell beschränkt in der Eingabelänge.
+    \item Es kann ein LP mit $n$ Variablen konstruiert werden, welches beim Lösen $2^n - 1$ Pivotschritte brauchen kann.
 \end{enumerate}
 \end{theo}
 \end{halfboxr}
+\vspace{-\baselineskip}
 
+Wir können außerdem eine Eingabe konstruieren, auf der Simplex exponentiell viele Pivotschritte nehmen kann.
+In dieser Eingabe gibt es aber auch Pfade polynomieller Länge.
+Es ist unbekannt, ob es auch eine Eingabe mit nur exponentiell langen Pfaden gibt, sodass es keine Ausführung von Simplex in Polynomialzeit gibt.
 \mrhere{lp-simplex}
 
 \subsubsection{Perturbierung}
 \label{subsubsec:Perturbierung}
 
 \begin{halfboxl}
-Wenn ein LP degeneriert ist, kann es zu Problemen kommen.
+Wenn ein LP degeneriert ist, kann es zu Problemen bei Simplex kommen.
 In einem Pivotschritt kann die Lösung auf dem selben Punkt bleiben, da in einem degenerierten LP mehrere Knoten in einem Punkt landen.
 Schlimmstenfalls kann es zu Zykeln in den Pivotschritten kommen.
-Eine Lösung ist die LP \emph{Perturbierung} eines LP's.
 
-Die Beweise für die Korrektheit stützen sich auf eine Idee.
-Da $\vec{\varepsilon}$ auf $b$ addiert wird, kann eine Basisvariable $x_{\delta(i)}$ als Polynom $p_{\delta, i}(\varepsilon)$ aufgefasst werden.
-Wenn man nun $\gamma$ als kleinste Nullstelle aller Polynome wählt, kann man garantieren, dass alle Nichtbasisvariablen größer null sind. Daraus folgt Teil 1.
+Um dieses Problem zu umgehen, \emph{peturbiert} man LPs.
+Dabei wird auf $b$ ein Vektor mit kleinen Zahlen $\varepsilon^i$ addiert.
 
-Aus dieser Beobachtung folgt auch, dass $p_{\delta, i}(0)$, also eine Basisvariable im nicht perturbierten LP, strikt positiv ist. Daraus folgt Teil 2.
+Insbesondere kann man garantieren, dass alle Nichtbasisvariablen größer null sind, wenn $\varepsilon$ als kleinste Nullstelle aller als Polynome $p_{\delta, i}(\varepsilon)$ aufgefassten veränderten Basisvariablen $x_{\delta(i)}$ wählt (Korrektheit 1).
 
+Darüber erhalten wir, dass $p_{\delta, i}(0)$ als Basisvariable im nicht perturbierten LP strikt positiv ist und ferner Korrektheit 2.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
-\begin{algo}{Pertubierung}
-\textbf{Eingabe:} Degeneriertes LP in Gleichungsform.
+\begin{algo}{Perturbierung}
+\textbf{Eingabe:} Degeneriertes LP in algebraischer Gleichungsform. \\
 \-\hspace{1em} Maximiere $c^T \cdot x$ unter $A \cdot x = b, x \geq 0$.
 
-\textbf{Ausgabe:} Nichtdegeneriertes LP $LP(\varepsilon)$.
+\textbf{Ausgabe:} Nicht degeneriertes LP $LP(\varepsilon)$.
 \tcblower
-Addiere $\vec{\varepsilon}$ zu $b$ mit: \\
-\-\hspace{1em} $\vec{\varepsilon} = (\varepsilon, \varepsilon^2, \dots, \varepsilon^n)^T$
+\begin{enumerate}
+    \item Wähle $\varepsilon$ klein (siehe Text).
+    \item Addiere $\vec{\varepsilon}$ auf $b$ mit $\vec{\varepsilon} = (\varepsilon, \varepsilon^2, \dots, \varepsilon^n)^T$.
+\end{enumerate}
 \end{algo}
 
 \begin{theo}{Korrektheit der Pertubierung}
@@ -1520,33 +1538,29 @@ Für ein $\gamma > 0$ gilt für alle $\varepsilon \in (0,\gamma)$:
 \end{theo}
 \end{halfboxr}
 
-Da nur $b$ in der Perturbierung verändert wird, ändert sich der Vektor der reduzierenden Kosten nicht.
-Somit ergibt der Test, ob eine Basislösung $x$ optimal ist, in $LP$ und $LP(\varepsilon)$ das selbe Resultat, wenn eine $x$ in beiden LP's eine Zulässige ist, was aus Teil 2 folgt.
-So folgt Teil 3 aus Teil 2.
+Da die Perturbierung nur $b$ verändert, bleibt der Vektor der reduzierenden Kosten gleich.
+Damit ist weiterhin eine optimale Basislösung in $LP(\varepsilon)$ auch optimal für $LP$ (Korrektheit 3).
 
-Man kann weiterhin zeigen, dass für ein beliebiges Polynom $p(s)$ mit rationalen Koeffizeinten $\beta_0 \ldots \delta_m$ mit $\beta_0 > $ und $\beta$ größer als alle Nenner und Zähler aller Koeffizienten, folgendes gilt:
-$|p(q)| > 0$ für $q\in(0,\frac{1}{2\beta^2})$
-
-Somit kann man für die Perturbierung $\varepsilon = \frac{1}{2\beta^2}$ wählen, um nicht jedes mal eine Nullstellensuche zu machen.
+Noch ein paar Worte zur Wahl von $\varepsilon$.
+Anstatt viele Nullstellen zu bestimmen, kann man $\varepsilon = \frac{1}{2\beta^2}$ wählen, wobei $\beta$ größer als Zähler und Nenner aller $\beta_i$ in $p(s) = \sum_{i=0}^m \beta_i \cdot s^i$ ist.
+Denn dann kann man zeigen, dass $\abs{p(q)} > 0$ für $q \in (0, \frac{1}{2\beta^2}) = (0, \varepsilon)$.
 
 \begin{halfboxl}
-Die Laufzeit ist abhängig von der Länge der Zahlendarstellungen. Bei der Perturbierung ist die Länge der Zahlendarstellung von $\varepsilon$ wichtig.
+Die Laufzeit der Perturbierung ist abhängig von der Länge der Zahlendarstellungen.
 
+Wird $\varepsilon$ wie oben gewählt, kann analog wie im Beweis zur Laufzeit eines Pivotschrittes bewiesen werden, dass die Länge der Zahlendarstellung von $\varepsilon$ polynomiell in der Eingabelänge ist.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Laufzeit mit Perturbierung}
-Die Laufzeit eines Pivotschrittes mit Perturbierung ist polynomiell zur Eingabenlänge.
+Die Laufzeit eines Pivotschrittes mit Perturbierung ist polynomiell in der Eingabelänge.
 \end{theo}
 \end{halfboxr}
 
-Bei der oben beschriebenen Wahl von $\varepsilon$ kann die Länge von $\varepsilon$ mit der Länge der Nenner und Zähler der Polynomkoeffizeinten abgeschätzt werden.
-Die Längenabschätzung der Polynomkoeffizienten kann aus dem Beweis der normalen Pivotschrittlaufzeit entnommen werden.
+Daraus folgt eine polynomielle Längenabschätzung von $\varepsilon$, und so auch $b_i + \varepsilon^i$ in Abhängigkeit von der Eingabelänge.
 
-Daraus folgt eine polynomielle Längenabschätzung von $\varepsilon$, und so auch $b_i + \varepsilon^i$ in Abhängigkeit von der Eingabenlänge.
-
-Die \emph{symbolischen Perturbierung} wird angewendet, weil die normale Perturbierung die Laufzeit deutlich vergrößert.
-Dabei wird im Simplexverfahren Schritt 4 b $\hat{b}_k$ durch $p_{\delta,k}(\varepsilon)$ ersetzt und aus der resultierenden Abbildung $i(\varepsilon)$ der Grenzwert für $\varepsilon \to 0$ als Koeffizeint für die Ausgangspivotspalte benutzt.
+Die \emph{symbolischen Perturbierung} ermöglicht eine Verbesserung der Laufzeit der Perturbierung.
+Dazu wird bei Simplex in Schritt 4b $\hat{b}_k$ durch $p_{\delta,k}(\varepsilon)$ ersetzt und aus der resultierenden Abbildung $i(\varepsilon)$ den Grenzwert für $\varepsilon \to 0$ als Koeffizient für die Ausgangspivotspalte benutzt.
 
 \subsection{Ellipsoid-Methode}
 
@@ -1587,8 +1601,8 @@ Mit den Veränderungen des initialen Ungleichungssystems in Schritt 1 und 2 kann
 \begin{halfboxl}
 Zu Teil 4: Durch Konstruktion ist der maximale Absolutwert von $G'$ $\alpha' = (\alpha \cdot m)^m$, welches in $\bigo(L^2)$ ist.
 
-Zu Teil 1: $<=$: Ist offensichtlich, da Ungleichungen weggenommen werden.
-$=>$: Es wurde für die Laufzeit für Simplex gezeigt, dass für eine Lösung $x$ eines lineares Gleichungssystems, hier $G$, mit maximalen Absolutwert $\alpha$  und $m$ Gleichungen gilt:
+Zu Teil 1: $\Leftarrow$: Ist offensichtlich, da Ungleichungen weggenommen werden.
+$\Rightarrow$: Es wurde für die Laufzeit für Simplex gezeigt, dass für eine Lösung $x$ eines lineares Gleichungssystems, hier $G$, mit maximalen Absolutwert $\alpha$  und $m$ Gleichungen gilt:
 $|x_i| \leq (\alpha \cdot m)^m$. So ist auch $x$ eine Lösung von $G'$.
 
 Zu Teil 2: Durch Konstruktion von $G'$ mit den neuen Ungleichungen gilt für eine Lösung $x$: $|x_i| \leq (\alpha \cdot m)^m$. So ist der Lösungraum ein in Ursprung zentrierter Hyperwürfel, der in eine Kugel mit Radius $r = \sqrt{n} \cdot (\alpha \cdot m)^m \in 2^{\bigo(L^2)}$ passt.
@@ -1623,7 +1637,7 @@ Der Spezialfall hat folgende Eigenschaften:
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Laufzeit der Ellipsoid-Methode}
-\begin{enumerate}
+\begin{enumerate}[leftmargin=*]
     \item Pro Schleifendurchlauf verringert sich das Volumen des Ellipsoiden mindestens um einen Faktor von $2^{\frac{-1}{2(n+1)}}$.
     \item Die Ellipsoid-Methode terminiert nach $\bigo(n^2 \cdot L^4)$ Schleifendurchläufen.
     \item Die Ellipsoid-Methode kann in polynomieller Zeit bestimmen, ob ein lineares Ungleichungssystem eine Lösung hat.
@@ -1633,9 +1647,9 @@ Der Spezialfall hat folgende Eigenschaften:
 
 Damit ergeben sich 3 Extrempunkte, $(0,1)$, $(0,-1)$ und $(-1,0)$, die auf dem Rand von $E'$ liegen müssen. Damit lässt sich $E'$ eindeutig bestimmen. Es lässt sich dann zeigen, dass $E \cap \hat{H} \subset E'$ gilt. Das Flächenverhältnis von $E$ und $E'$ kann nun errechnet werden.
 
-Der Zweite Teil kann gezeigt werden, indem man das durch $(\frac{u}{l})^n$ bestimmte Volumenverhältnis und die Volumenreduktion pro Schleifendurchlauf benutzt, um die Anzahl der Iteration abzuschätzen.
+Der zweite Teil kann gezeigt werden, indem man das durch $(\frac{u}{l})^n$ bestimmte Volumenverhältnis und die Volumenreduktion pro Schleifendurchlauf benutzt, um die Anzahl der Iteration abzuschätzen.
 
-Der dritte Teil folgt aus dem polynomiell langen, polynomiell oft zu druchlaufenen Schleifenkörper und der polynomiellen Länge der Transformation von $G$ zu $G'$.
+Der dritte Teil folgt aus dem polynomiell langen, polynomiell oft zu durchlaufenen Schleifenkörper und der polynomiellen Länge der Transformation von $G$ zu $G'$.
 
 \subsubsection{Polynomieller Algorithmus für LP}
 
@@ -1691,7 +1705,7 @@ $H$ ist die Menge der Nebenbedingungen.
 \textbf{Ausgabe:} Lösung $\opt (H)$ des LP's.
 \tcblower
 \begin{enumerate}
-    \item Falls $d=1$ oder $m=1$ gebe $opt(H)$ aus.
+    \item Falls $d=1$ oder $m=1$ gebe $\opt(H)$ aus.
     \item Wähle uniform ein $h \in H$ und berechne rekursiv $\opt (H \setminus \{ h \})$.
     \item Falls $\opt (H \setminus \{ h \})$ $h$ nicht verletzt, gebe $\opt (H) := \opt (H \setminus  \{ h \})$.
     \item Löse rekursiv ein LP, dessen Lösungspolyhedron dem Schnitt des Lösungpolyhedrons von $H$ und der Hyperebene von $h$ ist.
@@ -1916,7 +1930,7 @@ Beweisideen:
     \item Eine Boolsche Formel $\mathcal{F}$ in 3-KNF $\mathcal{F}(x_1,\ldots,x_n) = \bigwedge _{i=1}^m c_i$,
     \item bestehend aus Klauseln $\Forall i \in \underline{m}: c_i = (l_i^1 \lor l_i^2 \lor l_i^3)$,
     \item wiederum bestehend aus Literalen:
-    \[\Forall i \in \underline{m}, \quad \Forall j \in \underline{3}: \quad l_i^j = \begin{cases}
+    \[\Forall i \in \underline{m} \quad \Forall j \in \underline{3}: \quad l_i^j = \begin{cases}
     \neg x_p & \text{oder} \\
     x_p & \text{für ein } p \in \underline{n}
     \end{cases} \]
@@ -1965,13 +1979,13 @@ Das Problem wollen wir aber sinnvoll angehen und lösen. Die Idee dabei ist, ein
 \end{theo}
 \end{halfboxr}
 
-Angesichts der Schleifen ist die Laufzeit relativ schnell ersichtlich. Um eine Belegung zu testen bedarf es zusätzlich einer Laufzeit von $\mathcal{O}(3m)$.
+Eine Belegung zu testen benötigt Laufzeit $\mathcal{O}(3m)$. Angesichts der Schleifen ist die Laufzeit des Algorithmus von Schöning relativ schnell ersichtlich.
 
 Beweisideen der Fehlerwahrscheinlichkeit:
 
 \begin{itemize}
     \item Für eine passende Belegung $W^*$ definieren wir Belegungsklassen, die der Anzahl der differierenden Bits $j$ entsprechen.
-    \item In der Klasse $j$ zu landen hat eine Wahrscheinlichkeit von $p_j = \binom{n}{j}\cdot 2^{-n}$
+    \item In der Klasse $j$ zu landen hat eine Wahrscheinlichkeit von $p_j = \binom{n}{j}\cdot 2^{-n}$.
     \item Mit einer Mindestwahrscheinlichkeit von $\frac{1}{3}$ verbessern wir uns um eine Klasse. Umgekehrt ist die Verschlechterungswahrscheinlichkeit höchstens $\frac{2}{3}$.
     \item Die Wahrscheinlichkeit, um in $j + 2i \le 3n$ Schritten nach $W^*$ zu kommen ist
     $$q_{j,i}= \binom{j + 2i}{i} \cdot \frac{j}{j+2i}\cdot \bigg(\frac{1}{3}\bigg)^{j+i} \cdot \bigg(\frac{2}{3}\bigg)^{i}.$$
@@ -1981,7 +1995,6 @@ Beweisideen der Fehlerwahrscheinlichkeit:
     \item Die Fehlerwahrscheinlichkeit ist dann nach $t = \lceil 20 \cdot \sqrt{3\pi n} \big(\frac{4}{3}\big)^n \rceil$ lokalen Suchen:
     $$(1- \Tilde{p})^t \le e^{\Tilde{p}t}= e^{-10} \le 5 \cdot 10^{-5}.$$
 \end{itemize}
-
 
 \subsection{Vergleich}
 
