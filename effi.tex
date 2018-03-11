@@ -1294,7 +1294,7 @@ Wir müssen für den \hyperref[algo:ptasHelper]{Hilfsalgorithmus des PTAS} noch 
 \textbf{Ziel:}
 \begin{itemize}
     \item $\Forall i \in \Set{1,2, \ldots ,m}:$ $\sum\limits_{\mathclap{\substack{j = 1\\z(j)=i}}}^n w_j \le b$
-    \item[] Jeder Bin enthält höchstens $b$ Objekte.
+    \item[] Jeder Bin enthält Objekte mit Gesamtgewicht höchstens $b$.
 \end{itemize}
 \end{defi}
 
@@ -1441,7 +1441,7 @@ Somit liegt eine zulässige Basislösung auf $d$ Hyperebenen im originalen LP un
         \begin{enumerate}
             \item Falls $\Forall i \in \Set{1,\ldots,m} : \hat{a}_{i,j} \leq 0$, ist das LP unbeschränkt. Abbruch.
             \item Wähle $i = \argmin\limits_{1 \leq k \leq m} \Set{ \frac{\hat{b}_k}{\hat{a}_{k,j}} | \hat{a}_{k,j} > 0 }$.
-            \item Ersetze Spalte $A_{\delta(i)}$ durch Spalte $A_j$, d.h. definiere $\delta$ so um, dass $\delta(i) = j$ und $\delta(j') = \delta(i)$ ist.
+            \item Ersetze Spalte $A_{\delta(i)}$ durch Spalte $A_j$, d.h.\ definiere $\delta$ so um, dass $\delta(i) = j$ und $\delta(j') = \delta(i)$ ist.
             \item Berechne $r = c_{\overline{\delta}}^T - c_\delta^T \cdot \hat{A}$.
         \end{enumerate}
 \end{enumerate}
@@ -1510,7 +1510,11 @@ Schlimmstenfalls kann es zu Zykeln in den Pivotschritten kommen.
 Um dieses Problem zu umgehen, \emph{peturbiert} man LPs.
 Dabei wird auf $b$ ein Vektor mit kleinen Zahlen $\varepsilon^i$ addiert.
 
-Insbesondere kann man garantieren, dass alle Nichtbasisvariablen größer null sind, wenn $\varepsilon$ als kleinste Nullstelle aller als Polynome $p_{\delta, i}(\varepsilon)$ aufgefassten veränderten Basisvariablen $x_{\delta(i)}$ wählt (Korrektheit 1).
+Insbesondere kann man garantieren, dass alle Nichtbasisvariablen größer null sind, wenn man $\varepsilon$ kleiner $\gamma$ und $\gamma$ als kleinste aller Nullstellen aller als Polynome $p_{\delta, i}(\varepsilon)$ aufgefassten veränderten Basisvariablen $x_{\delta(i)}$ wählt (Korrektheit 1).
+
+\begin{tightcenter}
+$p_{\delta,i}(s) = \hat{b}_i + \sum_{j=1}^m a'_{i,j} \cdot s^i$
+\end{tightcenter}
 
 Darüber erhalten wir, dass $p_{\delta, i}(0)$ als Basisvariable im nicht perturbierten LP strikt positiv ist und ferner Korrektheit 2.
 \end{halfboxl}%
@@ -1559,7 +1563,7 @@ Die Laufzeit eines Pivotschrittes mit Perturbierung ist polynomiell in der Einga
 
 Daraus folgt eine polynomielle Längenabschätzung von $\varepsilon$, und so auch $b_i + \varepsilon^i$ in Abhängigkeit von der Eingabelänge.
 
-Die \emph{symbolischen Perturbierung} ermöglicht eine Verbesserung der Laufzeit der Perturbierung.
+Die \emph{symbolische Perturbierung} ermöglicht eine Verbesserung der Laufzeit der Perturbierung.
 Dazu wird bei Simplex in Schritt 4b $\hat{b}_k$ durch $p_{\delta,k}(\varepsilon)$ ersetzt und aus der resultierenden Abbildung $i(\varepsilon)$ den Grenzwert für $\varepsilon \to 0$ als Koeffizient für die Ausgangspivotspalte benutzt.
 
 \subsection{Ellipsoid-Methode}
