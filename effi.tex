@@ -1302,12 +1302,12 @@ Dieses Problem lösen wir mit Dynamischer Programmierung:
 Wir bestimmen die $k$-dimensionale Tabelle, die uns zu jeder möglichen Teilmenge der Jobs angibt, wie viele Bins gebraucht werden.
 
 Dazu bestimmen wir zunächst alle möglichen Multikombinationen von Gewichten, die auf eine Maschine passen. Sei dazu $n_j$ die Anzahl der Objekte mit Gewicht $j$.
-\[Q = \Set{(a_1, \ldots, a_n) \in \nat^k | \sum_{i=1}^k i \cdot a_i \le b} \setminus \Set{(0, \ldots, 0)}\]
+\[Q = \Set{(a_1, \ldots, a_k) \in \nat^k | \sum_{i=1}^k i \cdot a_i \le b} \setminus \Set{(0, \ldots, 0)}\]
 Dann haben wir die Tabelle
 \begin{align*}
     f : \underline{n_1} \times \ldots \times \underline{n_k} &\to \nat  \\
      (0,\ldots,0) &\mapsto 0    \\
-     (a_1, \ldots, a_k) &\mapsto 1 + \min_{\overline{q} \in Q} f(a_1 - q_i, \ldots, a_k - q_k).
+     (a_1, \ldots, a_k) &\mapsto 1 + \min_{\overline{q} \in Q} f(a_1 - q_1, \ldots, a_k - q_k).
 \end{align*}
 
 Diese können wir nun schrittweise berechnen. Dabei müssen höchstens $(n+1)^k$ Einträge berechnet werden, die Laufzeit der Berechnung jedes Eintrags ist in $\bigo(\abs{Q})$. Da jeder Eintrag $q \in Q$ an Stelle $i$ höchstens Wert $\floor{\frac{b}{i}}$ annehmen kann, ist $\abs{Q} \le \frac{(b+1)^k}{k!}$. Also ist die gesamte Laufzeit in $\bigo((n+1)^k \cdot (b+1)^k \cdot \frac{1}{k!})$.
@@ -1676,14 +1676,14 @@ Mit $n$ Variablen, $m$ Ungleichungen und Eingabelänge $L$.
     \item Initialisiere $S = \emptyset$ und $m' = 1$.
     \item Wiederhole $\forall i \in \underline{n}$:
     \begin{itemize}
-        \item Falls $\mathcal{A}(A \cdot x \geq b,A \cdot x \leq b, x \geq 0, c^T \cdot x \geq \tau \cdot K, x_{j \in S \cup \{ i \} }) \neq \emptyset$.
-        \item so setze $S = S \cup \{ i \}$, $m' = m' +0$, und $\overline{\delta}(m') = i$.
+        \item Falls $\mathcal{A}(A \cdot x \geq b,A \cdot x \leq b, x \geq 0, c^T \cdot x \geq \tau \cdot K, x_{j \in S \cup \{ i \} } \leq 0) \neq \emptyset$.
+        \item so setze $S = S \cup \{ i \}$, $m' = m' + 1$, und $\overline{\delta}(m') = i$.
     \end{itemize}
     \item Bestimme $\delta$ aus $\overline{\delta}$ dadurch $x_{\delta} = A_{\delta}^{-1} \cdot b$.
 \end{enumerate}
 \end{algo}
 
-Die Ellipsoid-Methode kann verwendet werden um ein LP zu lösen. Die Idee dahinter ist, dass für ein LP, $(c^T \cdot x \geq z, A \cdot x \leq b)$ eine gültige Eingabe für die Elipsiod-Methode ist. Somit kann $z$ mit einer Binärsuche maximiert werden.
+Die Ellipsoid-Methode kann verwendet werden um ein LP zu lösen. Die Idee dahinter ist, dass für ein LP, $(c^T \cdot x \geq z, A \cdot x \leq b)$ eine gültige Eingabe für die Ellipsoid-Methode ist. Somit kann $z$ mit einer Binärsuche maximiert werden.
 
 Dies geschieht in polynomiell vielen Schritten, wenn wir $z$, bis auf einen additiven Fehler $\delta \in \bigo(2^{-poly(L)})$, bestimmen.
 
@@ -1709,7 +1709,7 @@ $H$ ist die Menge der Nebenbedingungen.
 \textbf{Ausgabe:} Lösung $\opt (H)$ des LP's.
 \tcblower
 \begin{enumerate}
-    \item Falls $d=1$ oder $m=1$ gebe $\opt(H)$ aus.
+    \item Falls $d = 1$ oder $m = 1$ gebe $\opt(H)$ aus.
     \item Wähle uniform ein $h \in H$ und berechne rekursiv $\opt (H \setminus \{ h \})$.
     \item Falls $\opt (H \setminus \{ h \})$ $h$ nicht verletzt, gebe $\opt (H) := \opt (H \setminus  \{ h \})$.
     \item Löse rekursiv ein LP, dessen Lösungspolyhedron dem Schnitt des Lösungpolyhedrons von $H$ und der Hyperebene von $h$ ist.
@@ -1768,27 +1768,34 @@ Der Seidel-Algorithmus löst ein $d$-dimensionales LP mit $m$ Nebenbedingungen i
 
 \subsection{Minimaler Schnitt}
 
-Wir betrachten im Folgenden randomisierte Algorithmen zur Bestimmung minimaler Schnitte $C^*$, das heißt \[\Forall U \subset V : c(U) \ge c(C^*).\]
-Da wir einen \emph{minimalen} Schnitt suchen, gehen wir davon aus, dass dieser verhältnismäßig klein sein wird. Wir wählen also zufällig, mit nach Kosten gewichteter Wahrscheinlichkeit, Kanten aus und verschmelzen die entsprechenden Knoten.
-Dieser Vorgang heißt \emph{Kantenkontraktion}. Dabei wird eine Kante gewählt, dann einer der inzidenten Knoten gelöscht und leitet dessen Kanten auf den übergebliebenen Knoten um.
+Wir betrachten im Folgenden randomisierte Algorithmen zur Bestimmung minimaler Schnitte $C^*$, das heißt
+\[\Forall U \subset V : c(U) \ge c(C^*).\]
 
-\begin{defi}{Kantenkontraktion}
-Wollen wir in diesem Graph $G=(V,E,c)$ eine Kante $\Set{v,w}$ kontrahieren gehen wir folgendermaßen vor:
-\begin{itemize}
-    \item $V' = V \setminus \Set{w}$
-    \item $E' = E \cup \Set{\Set{x,v}|\Set{x,w} \in E \land x \neq v} \setminus \Set{e \in E | e = \Set{x,w}}$
-    \item \[
-    c'(e) =
-    \begin{cases}
-    c(e)                & \text{falls } v,w \not \in e \\
-    c(e)                & \text{falls } e = \Set{x,v} \land \Set{x,w} \not \in E \\
-    c(\Set{x,w})        & \text{falls } e \neq \Set{x,v} \land \Set{x,w} \in E \\
-    c(e) + c(\Set{x,w}) & \text{falls } e = \Set{x,v} \land \Set{x,w} \in E \\
-    \end{cases}
-\]
-\end{itemize}
-\end{defi}
+Da wir einen minimalen Schnitt suchen, gehen wir davon aus, dass dieser klein sein wird.
+Wir wählen also zufällig Kanten aus und \emph{kontrahieren} sie, d.h.\ verschmelzen die anliegenden Knoten.
+Aus den Eigenschaften der Kantenkontraktion folgt, dass inzidente Knoten einer zufällig gewählten Kante mit hoher Wahrscheinlichkeit beide im gleichen Teil des Schnittes liegen.
 
+\begin{algo}{Kantenkontraktion}
+\textbf{Eingabe:} Graph $G = (V, E, c)$ und Kante $\Set{v,w}$.
+
+\textbf{Ausgabe:} Graph $G'$ mit kontrahierter Kante.
+\tcblower
+\begin{enumerate}
+    \item Knoten entfernen: $V' = V \setminus \Set{w}$.
+    \item Kanten verschmelzen: $E' = E \cup \Set{\Set{x,v}|\Set{x,w} \in E \land x \neq v} \setminus \Set{\Set{x,w} \in E}$.
+    \item Gewichte setzen:
+    \[
+        c'(e) =
+            \begin{cases}
+            c(e)                & \text{falls } v,w \not \in e, \\
+            c(e)                & \text{falls } e = \Set{x,v} \land \Set{x,w} \not \in E, \\
+            c(\Set{x,w})        & \text{falls } e \neq \Set{x,v} \land \Set{x,w} \in E, \\
+            c(e) + c(\Set{x,w}) & \text{falls } e = \Set{x,v} \land \Set{x,w} \in E \\
+            \end{cases}
+    \]
+    \item $G' = (V', E', c')$.
+\end{enumerate}
+\end{algo}
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -1842,16 +1849,15 @@ Wollen wir in diesem Graph $G=(V,E,c)$ eine Kante $\Set{v,w}$ kontrahieren gehen
 \end{center}
 \end{halfboxr}
 
-
-
-
 \begin{halfboxl}
 \vspace{-\baselineskip}
-Der Algorithmus von Karger geht sehr einfach vor. Er erstellt für jeden Knoten eine Menge die ihn selbst enthält; werden zwei Knoten durch Kantenkontraktion fusioniert werden diese Mengen zusammengeführt, bis nur noch zwei Knoten vorhanden sind.
+Der \emph{Algorithmus von Karger} setzt die obige Idee einfach um.
+Er erstellt für jeden Knoten eine Menge die ihn selbst enthält.
+Zwei Knoten werden durch Kantenkontraktion fusioniert und zugehörige Mengen zusammengeführt, bis nur noch zwei Knotenmengen vorhanden sind: Ein Schnitt.
 
 Dann wird die Knotenmenge des einen Knoten ausgegeben.
 
-Da eine Kontraktion eine Laufzeit von $\mathcal{O}(n)$ hat, und in jeder Kontraktion einen Knoten abarbeitet, ergibt sich für den Algorithmus von Karger eine Laufzeit von $\mathcal{O}(n^2)$.
+Da eine Kontraktion eine Laufzeit von $\bigo(n)$ hat, und in jeder Kontraktion ein Knoten abgearbeitet wird, ergibt sich für den Algorithmus von Karger insgesamt eine Laufzeit von $\bigo(n^2)$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1861,11 +1867,13 @@ Da eine Kontraktion eine Laufzeit von $\mathcal{O}(n)$ hat, und in jeder Kontrak
 \textbf{Ausgabe:} Ein Schnitt $S(v)$.
 \tcblower
 \begin{enumerate}
-    \item Wir definieren $\Forall v S(v) := \Set{v}$ und $H := G$.
-    \item Solange $|V(H)| > 2$ wähle beliebige Kante $\Set{v,w} \in V(H)$.
+    \item Setze $\Forall v:~ S(v) := \Set{v}$ und $H := G$.
+    \item Solange $|V(H)| > 2$:
     \begin{enumerate}
-        \item Setze $S(v) = S(v) \cup S(w)$ und kontrahiere $\Set{v,w}$ in $H$.
-        \item Gebe $S(v)$ für eines der $v \in V(H)$ aus.
+        \item Wähle $\Set{v,w} \in V(H)$ zufällig.
+        \item Setze $S(v) = S(v) \cup S(w)$ und \\
+              kontrahiere $\Set{v,w}$ in $H$.
+        \item Gebe $S(v)$ für ein $v \in V(H)$ aus.
     \end{enumerate}
 \end{enumerate}
 \end{algo}
@@ -1876,21 +1884,21 @@ Da eine Kontraktion eine Laufzeit von $\mathcal{O}(n)$ hat, und in jeder Kontrak
 
 \mrhere{fastcut-ewkeit}
 
-Lassen wir diesen Algorithmus nun $t \cdot\binom{n}{2}$ Mal laufen (wobei wir $t \in \mathbb{N}$ frei wählen), so ist die Wahrscheinlichkeit den Min-Cut nicht zu finden $$\bigg( 1 - \binom{n}{2}^{-1} \bigg)^{t \cdot \binom{n}{2}} \le \bigg(\frac{1}{e}\bigg)^t.$$
-Heißt, wir können die Fehlerwahrscheinlichkeit beliebig klein machen und so unsere Laufzeit töten, die mittlerweile wegen dem $\binom{n}{2}$ schon $\mathcal{O}(n^4)$ beträgt; und mal ganz ehrlich, das ist keine Verbesserung gegenüber herkömmlichen Algorithmen.
+Lassen wir diesen Algorithmus nun $t \cdot\binom{n}{2}$ Mal laufen (wobei wir $t \in \mathbb{N}$ frei wählen), so ist die Wahrscheinlichkeit, den Min-Cut nicht zu finden:
+$$\bigg( 1 - \binom{n}{2}^{-1} \bigg)^{t \cdot \binom{n}{2}} \le \bigg(\frac{1}{e}\bigg)^t.$$
+
+Heißt, wir können die Fehlerwahrscheinlichkeit beliebig klein machen und so unsere Laufzeit töten, die mittlerweile wegen dem $\binom{n}{2}$ schon $\bigo(n^4)$ beträgt; und mal ganz ehrlich, das ist keine Verbesserung gegenüber herkömmlichen Algorithmen.
 
 Aber die Wahrscheinlichkeit, eine Kante des Min-Cuts wegzukontrahieren, ist am Anfang des Algorithmus
 relativ gering und steigt, sobald die Anzahl der Kanten sich zu sehr verringert. Die Idee wäre also den Algorithmus so zu verändern, dass wir am Anfang schnell Kanten kontrahieren und die letzten Schritte sicher machen.
 
-
 \begin{halfboxl}
-Das ist der Gedanke des Algorithmus von Karger und Stein, auch FastCut genannt. Dieser wird mit einem beliebigen Graph aufgerufen. Auf zwei Instanzen dieses Graphs werden rekursiv $t = \lceil 1 + \frac{n}{\sqrt{2}}\rceil$ Kanten kontraktiert, bis nur noch höchstens $c$ (oft mit $c = 6$) Kanten übrig sind. Von da an wird mit Brute-Force der Min-Cut bestimmt. Danach wird der kleinere Schnitt ausgegeben.
+Das ist der Gedanke des \emph{Algorithmus von Karger und Stein}, auch \emph{FastCut} genannt. Dieser wird mit einem beliebigen Graph aufgerufen.
+Auf zwei Instanzen dieses Graphen werden rekursiv $t = \lceil 1 + \frac{n}{\sqrt{2}}\rceil$ Kanten kontrahiert, bis nur noch höchstens $c$ (oft mit $c = 6$) Kanten übrig sind.
 
-Das verbessert maßgeblich unsere Laufzeit.
+Von da an wird mit Brute-Force der Min-Cut bestimmt. Danach wird der kleinere Schnitt ausgegeben.
 
-\begin{theo}{Laufzeit von Karger und Stein}
-Der FastCut Algorithmus hat eine Laufzeit von $\mathcal{O}(n^2\cdot \text{log }n)$
-\end{theo}
+Das verbessert maßgeblich unsere Laufzeit: FastCut läuft in $\bigo(n^2\cdot \log n)$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1900,31 +1908,37 @@ Der FastCut Algorithmus hat eine Laufzeit von $\mathcal{O}(n^2\cdot \text{log }n
 \textbf{Ausgabe:} Ein Schnitt $C_x$.
 \tcblower
 \begin{enumerate}
-    \item Gilt $|V(G)| \le 6$, bestimme $C_U$ mit Brute-Force.
-    \item Setze $H := H' := G$ und $t = \lceil 1+ \frac{n}{\sqrt{2}} \rceil$
-    \item Kontrahiere Kanten bis in $H$ und $H'$ jeweils nur noch $t$ Kanten sind.
-    \item Rufe FastCut rekursiv mit $C = \text{FastCut}(H)$ und $C'= \text{Fastcut}(H')$
+    \item Gilt $|V(G)| \le 6$, bestimme optimalen Schnitt $C_U$ mit Brute-Force.
+    \item Setze $H := H' := G$ und $t = \lceil 1+ \frac{n}{\sqrt{2}} \rceil$.
+    \item Kontrahiere zufällig Kanten, bis in $H$ und $H'$ jeweils nur noch $t$ Kanten sind.
+    \item Rufe FastCut rekursiv auf und setze \\
+          $C = \text{FastCut}(H)$, $C'= \text{FastCut}(H')$.
     \item Gebe $\text{min}(C,C')$ aus.
 \end{enumerate}
 \end{algo}
 \end{halfboxr}
+\vspace{-\baselineskip}
 
-Beweisideen:
+Beweisideen zur Laufzeit:
 \begin{itemize}
-    \item Es gilt $T(n) = 2 \cdot T(\lceil 1 + \frac{n}{\sqrt{2}}\rceil) + \mathcal{O}(n^2)$ für $n > 6$ und  $T(n) = \mathcal{O}(1)$ für $n \le 6$.
-    \item Wegen des konstanten Faktors $\frac{1}{\sqrt{2}}$ haben wir eine Rekursionstiefe von $D = \mathcal{O}(\text{log }n)$.
+    \item Es gilt $T(n) = 2 \cdot T(\lceil 1 + \frac{n}{\sqrt{2}}\rceil) + \bigo(n^2)$ für $n > 6$ und  $T(n) = \bigo(1)$ für $n \le 6$.
+    \item Wegen des konstanten Faktors $\frac{1}{\sqrt{2}}$ haben wir eine Rekursionstiefe von $D = \bigo(\log n)$.
     \item Wir definieren uns $n_I$ die Menge der Knoten auf Rekursionstiefe $I$.
     \item Auf Rekursionstiefe $I$ lösen wir $2^I$ Teilproblem der Größe $n_I \equiv \frac{n}{\sqrt{2}^I}$.
-    \item Dieses Teilproblem hat Laufzeit $\mathcal{O}(n_I^2)=\mathcal{O}(\frac{n^2}{2^I})$, auf einem Level also $2^I \cdot \mathcal{O}(\frac{n^2}{2^I}) = \mathcal{O}(n^2)$.
-    \item Das multipliziert man mit der Rekursionstiefe für eine Laufzeit von $\mathcal{O}(n^2 \cdot \text{log } n)$.
+    \item Dieses Teilproblem hat Laufzeit $\bigo(n_I^2)=\bigo(\frac{n^2}{2^I})$, auf einem Level also $2^I \cdot \bigo(\frac{n^2}{2^I}) = \bigo(n^2)$.
+    \item Das multipliziert man mit der Rekursionstiefe für eine Laufzeit von $\bigo(n^2 \cdot \log n)$.
 \end{itemize}
+\bigskip
 
 \begin{theo}{Zuverlässigkeit von FastCut}
-    FastCut berechnet den Min-Cut mit einer Wahrscheinlichkeit von $\Omega(\frac{1}{\text{log } n})$.
+    FastCut berechnet den Min-Cut mit einer Wahrscheinlichkeit von $\Omega(\frac{1}{\log n})$.
 \end{theo}
+
+FastCut liefert nicht sicher einen Min-Cut, aber wenn wir den Algorithmus $(\log n)$-mal ausführen, erhalten wir eine Erfolgswahrscheinlichkeit von $\Omega(1)$, d.h. eine konstante Wahrscheinlichkeit.
 
 \mrhere{fastcut}
 
+\newpage
 \subsection{3-SAT}
 
 \begin{defi}{3-SAT}
@@ -1971,7 +1985,7 @@ Das Problem wollen wir aber sinnvoll angehen und lösen. Die Idee dabei ist, ein
 \begin{halfboxl}
 \vspace{-\baselineskip}
 \begin{theo}{Laufzeit von Schöning}
-    Der Algorithmus von Schöning hat eine Laufzeit von $\mathcal{O}(m \cdot n^{3/2} \cdot \big(\frac{4}{3}\big)^n)$. Es können nur false negatives auftreten.
+    Der Algorithmus von Schöning hat eine Laufzeit von $\bigo(m \cdot n^{3/2} \cdot \big(\frac{4}{3}\big)^n)$. Es können nur false negatives auftreten.
 \end{theo}
 
 \end{halfboxl}%
@@ -1982,7 +1996,7 @@ Das Problem wollen wir aber sinnvoll angehen und lösen. Die Idee dabei ist, ein
 \end{theo}
 \end{halfboxr}
 
-Eine Belegung zu testen benötigt Laufzeit $\mathcal{O}(3m)$. Angesichts der Schleifen ist die Laufzeit des Algorithmus von Schöning relativ schnell ersichtlich.
+Eine Belegung zu testen benötigt Laufzeit $\bigo(3m)$. Angesichts der Schleifen ist die Laufzeit des Algorithmus von Schöning relativ schnell ersichtlich.
 
 Beweisideen der Fehlerwahrscheinlichkeit:
 
@@ -2006,7 +2020,7 @@ Randomisierte Algorithmen lassen sich in zwei Kategorien einteilen, nämlich ein
 \begin{halfboxl}
 \vspace{-\baselineskip}
 \begin{defi}{Las Vegas Algorithmus $\mathcal{A}$}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
     \item $\mathcal{A}$ liefert immer eine optimale Lösung.
     \item Die Laufzeit hängt von Zufallvariablen ab.
 \end{itemize}
@@ -2015,7 +2029,7 @@ Randomisierte Algorithmen lassen sich in zwei Kategorien einteilen, nämlich ein
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{defi}{Monte-Carlo Algorithmus $\mathcal{B}$}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
     \item $\mathcal{B}$ liefert eine Lösung, die nur eventuell optimal ist.
     \item Die Lösung hängt nicht unbedingt von Zufallsvariablen ab.
 \end{itemize}
