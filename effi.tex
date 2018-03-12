@@ -389,7 +389,7 @@ Genau wie das normale Flussproblem, aber zusätzlich:
 \end{defi}
 \end{halfboxr}
 \begin{halfboxl}
-Für den Algorithmus brachen wir den Begriff des \emph{Kreisflusses}:
+Für den Algorithmus brauchen wir den Begriff des \emph{Kreisflusses}:
 
 Ein Fluss $f'$ ist ein \emph{Kreisfluss} gdw.\\ $\Forall v \in V: f'_\text{in}(v) = f'_\text{out}(v)$.
 
@@ -519,7 +519,7 @@ Wir betrachten zunächst den Spezialfall, in dem der Min-Mean Kreis Wert $0$ hat
 
             Dann muss dieser Kantenzug schon minimale Kosten von Kantenzügen zu $v$ haben:
 
-            Ein kürzerer Kantenzug könnte entlang des Kreises zu einem Kantenzug zu $w$ erweitert werden. Da der Kreis Gewicht $0$ hat muss dieser Kantenzug auch günstiger als $P$ sein, was ein Widerspruch ist.
+            Ein kürzerer Kantenzug könnte entlang des Kreises zu einem Kantenzug zu $w$ erweitert werden. Da der Kreis Gewicht $0$ hat, muss dieser Kantenzug auch günstiger als $P$ sein, was ein Widerspruch ist.
 %           Wir zeigen $d_n(v) \le d_j(v)$ für ein $v$ und alle $0 \le j \le n-1$.
 %
 %           Sei $w$ Knoten auf einem Min-Mean Kreis $C$ und $k = \argmin_{j=0}^{n-1} d_j(w)$.
@@ -542,8 +542,9 @@ Wenn wir $l$ durch $l' : e \mapsto l(e) + t$ ersetzen, ändern sich sowohl obige
 Wir können also das allgemeine Problem auf den Spezialfall, dass der Min-Mean Kreis Wert $0$ hat, reduzieren.
 Jetzt nutzen wir eine Potentialfunktion, mit der alle Kanten des Min-Mean Kreises Wert $0$ haben:
 
-Wir ersetzen die Kostenfunktion $l$ durch $l' : (v,w) \mapsto l((v,w)) + d(v) - d(w)$ ($d(v)$ ist der Wert des günstigsten Kantenzuges zu $v$).
-Dabei ändert sich der Wert keines Kreises, da das Potential jedes Knotens je einmal aufaddiert und abgezogen wird. Da $d(w) \le d(v) + l(e)$ ist, ist $l'$ überall nicht-negativ. Da der Min-Mean Kreis Wert $0$ hat, müssen alle Kanten auf dem Kreis bereits Wert $0$ haben. Also können wir im Teilgraphen $(V,E')$ mit $E' = \Set{e \in E | l'(e) = 0}$ einen beliebigen Kreis suchen, um einen Min-Mean Kreis von $(V,E)$ bzgl.\ $l$ zu finden.
+Wir ersetzen die Kostenfunktion $l$ durch $l' : (v,w) \mapsto l((v,w)) + d(v) - d(w)$.
+$d(v)$ ist der Wert des günstigsten Kantenzuges zu $v$.
+Dabei ändert sich kein der Wert eines Kreises, da das Potential jedes Knotens je einmal aufaddiert und abgezogen wird. Da $d(w) \le d(v) + l(e)$ ist, ist $l'$ überall nicht-negativ. Da der Min-Mean Kreis Wert $0$ hat, müssen alle Kanten auf dem Kreis bereits Wert $0$ haben. Also können wir im Teilgraphen $(V,E')$ mit $E' = \Set{e \in E | l'(e) = 0}$ einen beliebigen Kreis suchen, um einen Min-Mean Kreis von $(V,E)$ bzgl.\ $l$ zu finden.
 \bigbreak
 
 \begin{algo}{Min-Mean-Cycle}
@@ -1023,9 +1024,9 @@ Für den Approximationsfaktor 2:
 Bei dem \emph{Zentrumsproblem} wird eine Knotenmenge $Z$ (Zentren) der Größe $k$ gesucht, sodass der längste Weg aller Knoten zu einem Zentrum minimal ist.
 
 \begin{defi}{Zentrumsproblem mit Knotenkosten}
-\textbf{Eingabe:} $G = (V,E)$, $k \in \nat$, $c : E \to \mathbb{Q}^+$, $w : V \to \mathbb{Q}^+$
+\textbf{Eingabe:} $G = (V,E)$, $k \in \nat$, $c : E \to \mathbb{Q}^+$, $w : V \to \mathbb{Q}^+$.
 
-\textbf{Ausgabe:} $Z \subset V$ mit $|Z| = k$
+\textbf{Ausgabe:} $Z \subset V$ mit $|Z| = k$.
 
 \textbf{Ziel:} Minimiere $\rad(Z)$. \\
 \-\hspace{3em} $\rad(Z) := \max\limits_{v \in V} w(v) \cdot \dist(v,Z)$
@@ -1081,13 +1082,14 @@ Somit wählt GreedyZentrum nicht mehr Knoten als der optimale Algorithmus aus.
 GreedyZentrum hat eine Laufzeit von $\bigo(n^2)$.
 
 Der Approximationsalgorithmus ruft nun GreedyZentrum aufsteigend für alle möglichen Werte für $R$ auf, bis GreedyZentrum ein $Z$ mit $|Z| \leq k$ ausgibt.
+Dies passiert $\bigo(n^2)$-mal.
 
-Der Aproximationsalgorithmus ruft GreedyZentrum $\bigo(n^2)$ auf. Dies ergibt eine Laufzeit von $\bigo(n^4)$.
+Insgesamt hat die 2-Approximation eine Laufzeit von $\bigo(n^4)$.
 
 \subsection{Set Cover}
 
 \begin{halfboxl}
-Das \emph{Set-Cover-Problem} kann auf das Vertex-Cover-Problem reduziert werden. Deshalb ist Set-Cover in $\mathrm{NPC}$. Set-Cover kann man sogar als Verallgemeinerung von Vertex-Cover auf Hypergraphen verstehen; das sind Graphen, in denen eine Kante zu beliebig vielen Knoten inzident sein kann.
+Das \emph{Set Cover-Problem} kann auf das Vertex-Cover-Problem reduziert werden. Deshalb ist Set Cover in $\mathrm{NPC}$. Set Cover kann man sogar als Verallgemeinerung von Vertex-Cover auf Hypergraphen verstehen; das sind Graphen, in denen eine Kante zu beliebig vielen Knoten inzident sein kann.
 Zur Approximation gibt es einen einfachen Greedy-Algorithmus:
 Dieser wählt greedy die Menge, die das beste (minimale) Verhältnis von Kosten zu neu überdeckten Elementen hat.
 
@@ -1096,7 +1098,7 @@ Dadurch kann ein Approximationsfaktor von $\HarmNum{n}$ (Harmonische Zahl) errei
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
-\begin{defi}{Set-Cover-Problem}
+\begin{defi}{Set Cover-Problem}
 \textbf{Eingabe:}
 \begin{itemize}
     \item Grundmenge $X$ mit $n = \abs{X}.$
@@ -1106,8 +1108,8 @@ Dadurch kann ein Approximationsfaktor von $\HarmNum{n}$ (Harmonische Zahl) errei
 
 \textbf{Ausgabe:}
 \begin{itemize}
-    \item $A \subset \Set{1, \ldots, m}$
-    \item $\bigcup_{i \in A} S_i = X$
+    \item $A \subset \Set{1, \ldots, m}$.
+    \item $\bigcup_{i \in A} S_i = X$.
 \end{itemize}
 
 \textbf{Ziel:} Minimiere $\mathrm{cost}(A) = \sum_{i \in A} c_i$.
@@ -1254,7 +1256,7 @@ Für das PTAS werden wir zunächst einen Algorithmus ansehen, der zusätzlich zu
     \item Führe binäre Suche nach $Z^\ast \in \Set{1\ldots S}$ durch:
     \begin{itemize}
         \item Führe \hyperref[algo:ptasHelper]{Hilfsalgorithmus} aus.
-        \item Falls \texttt{Makespan zu klein} bzw. \texttt{groß}, erhöhe untere Schranke bzw. verringere obere Schranke.
+        \item Falls \texttt{Makespan zu klein} bzw. \texttt{groß}, erhöhe untere bzw. verringere obere Schranke.
         \item Wiederholen, wenn Intervall nicht degeneriert ist.
     \end{itemize}
     \item Gebe zur letzten oberen Schranke berechnete Zuweisung zurück.
@@ -1719,12 +1721,12 @@ $H$ ist die Menge der Nebenbedingungen.
 Man kann ein zulässiges LP so verändern, dass es die Vorraussetzungen für den Algorithmus von Seidel erfüllt.
 
 \paragraph{Eindeutigkeit:}
-Der Zielfunktionsvektor eines Ungleichungssystems kann so virtuell perturbiert werden, dass erstens zwei unterschiedliche Lösungen mit gleichen altem Zielfunktionswert unterschiedliche neue Zielfunktionswerte besitzten, und zweitens eine Lösung im neuen System maximal ist, genau dann wenn sie ein Maximum im alten System ist.
+Der Zielfunktionsvektor eines Ungleichungssystems kann so virtuell perturbiert werden, dass erstens zwei unterschiedliche Lösungen mit gleichen altem Zielfunktionswert unterschiedliche neue Zielfunktionswerte besitzen, und zweitens eine Lösung im neuen System maximal ist genau dann wenn sie ein Maximum im alten System ist.
 So kann die Eindeutigkeit gewährleistet sein.
 
 \paragraph{Beschränktheit:}
 Um die Beschränktheit zu gewährleisten, fügen wir die Box-Bedingungen
-\[ -t \le x_i \le t\, \Forall i \in \underline{n}\]
+\[ -t \le x_i \le t \quad\Forall i \in \underline{n}\]
 hinzu.
 Man kann in Polynomialzeit dazu einen Wert $t$ berechnen, der die zulässigen Belegungen nicht einschränkt, außer das LP ist unbeschränkt. Alternativ kann man auch mit einer symbolischen Schranke rechnen. \\
 \mrhere{lp-seidel-box}
@@ -1740,13 +1742,14 @@ Also insgesamt $\bigo(1)$.
 
 Zu Schritt 2: Hier wird Seidel rekursiv aufgerufen mit der Laufzeit $T(d,m-1)$.
 
-Zu Schritt 3: Der Test, ob $h$ verletzt wird, kann in $\bigo(d)$ gelöst werden.
+Zu Schritt 3: Der Test, ob $h$ verletzt wird, kann in $\bigo(d)$ ausgeführt werden.
 \filbreak
-Zu Schritt 4: Da die optimale Lösung des LP's von $d$ Hyperebenen bestimmt wird kann die rekursiv berechnete Lösung nur $h$ verletzten, falls $h$ teil der $d$ Hyperebenen ist.
-Dies passiert mit einer Wahrscheinlichkeit von höchstens $\frac{d}{m}$. Somit wird Schritt 4 höchsten mit deser Wahrscheinlichkeit ausgeführt.
+Zu Schritt 4: Da die optimale Lösung des LP's von $d$ Hyperebenen bestimmt wird, kann die rekursiv berechnete Lösung nur $h$ verletzen, falls $h$ Teil der $d$ Hyperebenen ist.
+Dies passiert mit einer Wahrscheinlichkeit von höchstens $\frac{d}{m}$.
+Somit wird Schritt 4 höchstens mit deser Wahrscheinlichkeit ausgeführt.
 Zur Vorbereitung auf diesen Schritt wird $h$ als Gleichung aufgefasst und nach einer beliebigen Variable aufgelöst.
-Jedes Vorkommen dieser Variable, in allen Gleichungen und der Zielfunktion, wird durch diese umgeformte Gleichung von $h$ ersetzt.
-Die Boxbedingungen dieser Variable werden genau so behandelt und mit in $H$ aufgekommen.
+Jedes Vorkommnis dieser Variable, in allen Gleichungen und der Zielfunktion, wird durch diese umgeformte Gleichung von $h$ ersetzt.
+Die Box-Bedingungen dieser Variable werden genau so behandelt und mit in $H$ aufgenommen.
 Dies ergibt $m+2-1=m+1$ Gleichungen und $d-1$ Dimensionen und so eine Laufzeit von $\bigo(d-1,m+1)$.
 
 Die gesamte Laufzeit, nun ohne konstante Faktoren, ist $T(d,m) \leq d^2 + T(d,m-1) + \frac{d}{m} \cdot T(d-1,m+1)$ für $d > 1$ und $m > 1$ und $T(d,m) \leq d^2 + m$ für $d=1$ oder $m=1$.
@@ -2009,7 +2012,7 @@ Beweisideen der Fehlerwahrscheinlichkeit:
     \item Die Wahrscheinlichkeit, um in $j + 2i \le 3n$ Schritten nach $W^*$ zu kommen ist
     $$q_{j,i}= \binom{j + 2i}{i} \cdot \frac{j}{j+2i}\cdot \bigg(\frac{1}{3}\bigg)^{j+i} \cdot \bigg(\frac{2}{3}\bigg)^{i}.$$
     \item Es ergibt sich für das Erreichen von $W^*$ aus $j$, die Summe über alle $i$: $$q_j = \frac{1}{2\cdot \sqrt{3\pi j}}\cdot \bigg(\frac{1}{2}\bigg)^j.$$
-    \item Summieren wir über alle $j$ und runden das ganze schlau, erhalten wir für das Erreichen von $W^*$:
+    \item Summieren wir über alle $j$ und runden das Ganze schlau, erhalten wir für das Erreichen von $W^*$:
     $$\Tilde{p} = \frac{1}{2 \cdot \sqrt{3 \pi n}} \cdot \bigg(\frac{3}{4}\bigg)^n.$$
     \item Die Fehlerwahrscheinlichkeit ist dann nach $t = \lceil 20 \cdot \sqrt{3\pi n} \big(\frac{4}{3}\big)^n \rceil$ lokalen Suchen:
     $$(1- \Tilde{p})^t \le e^{\Tilde{p}t}= e^{-10} \le 5 \cdot 10^{-5}.$$
@@ -2017,7 +2020,7 @@ Beweisideen der Fehlerwahrscheinlichkeit:
 
 \subsection{Vergleich}
 
-Randomisierte Algorithmen lassen sich in zwei Kategorien einteilen, nämlich einerseits Las Vegas Algorithmen und andererseits Monte-Carlo Algorithmen.
+Randomisierte Algorithmen lassen sich in zwei Kategorien einteilen, nämlich einerseits \emph{Las Vegas Algorithmen} und andererseits \emph{Monte-Carlo Algorithmen}.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -2047,7 +2050,7 @@ Las Vegas und Monte-Carlo Algorithmen können aufeinander reduziert werden.
 Ideen (Las Vegas $\mathcal{A}$ $\to$ Monte-Carlo $\mathcal{B}$):
 \begin{itemize}
     \item Hat $\mathcal{A}$ erwartete Laufzeit $f(n)$, brechen wir nach $\alpha \cdot f(n), 0 < \alpha < 1$ ab.
-    \item Ergebnis ist eine Monte-Carlo Algorithmus $\mathcal{B}$ mit Fehlerwahrscheinlichkeit $\frac{1}{\alpha}$.
+    \item Ergebnis ist ein Monte-Carlo Algorithmus $\mathcal{B}$ mit Fehlerwahrscheinlichkeit $\frac{1}{\alpha}$.
 \end{itemize}
 
 Ideen (Monte-Carlo $\mathcal{B}$ $\to$ Las Vegas $\mathcal{A}$):
@@ -2059,7 +2062,7 @@ Ideen (Monte-Carlo $\mathcal{B}$ $\to$ Las Vegas $\mathcal{A}$):
 
 \newpage
 \section{Online-Algorithmen}
-Offline-Algorithmen bekommen die gesamte Eingabe und können darauf das Problem lösen. Online-Algorithmen bekommen die Eingabe in Stücken, wobei für jedes Stück sofort eine unwiederrufbare Entscheidung getroffen werden muss.
+\emph{Offline-Algorithmen} bekommen die gesamte Eingabe und können darauf das Problem lösen. \emph{Online-Algorithmen} bekommen die Eingabe in Stücken, wobei für jedes Stück sofort eine unwiderrufliche Entscheidung getroffen werden muss.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -2082,7 +2085,7 @@ Offline-Algorithmen bekommen die gesamte Eingabe und können darauf das Problem 
 
 \subsection{File-Allocation-Problem}
 \begin{halfboxl}
-Bei dem File-Allocation-Problem (FAP) gibt es mehrere Kopien einer Datei, die von mehreren Nutzern gelesen und beschrieben werden können. Die \emph{Migration} zwischen verschiedenen Speicherorten erzeugt {Kosten}. Für dieses Problem möchten wir einen guten Online-Algorithmus entwickeln.
+Bei dem \emph{File-Allocation-Problem} (FAP) gibt es mehrere Kopien einer Datei, die von mehreren Nutzern gelesen und beschrieben werden können. Die \emph{Migration} zwischen verschiedenen Speicherorten erzeugt {Kosten}. Für dieses Problem möchten wir einen guten Online-Algorithmus entwickeln.
 
 Dazu betrachten wir ein System mit zwei Rechnern $a,b$ mit dem folgende Konfigurationen möglich ist: Die Datei ist nur auf $a$: [a], nur auf $b$: [b] oder auf $a$ und $b$: [a,b].
 
@@ -2117,7 +2120,7 @@ Sei $v \in \{a,b\}$, dann entstehen Servicekosten von einer Einheit...
     \item beim Lesen: Anfrage $\rho_i=r(v)$ in Konfiguration $[u]$, mit $u \in \{a,b\} \setminus \{v\}$
     \item beim Schreiben: Anfrage $\rho_i=w(v)$ in Konfiguration $[a,b]$ oder $[u]$, mit $u \in \{a,b\} \setminus \{v\}$
 \end{itemize}
-Migrationskosten von $1$ enstehen, wenn die Konfiguration geändert wird, aber nicht beim Löschen. Etwa wenn die Datei von einem auf beide Leser kopiert wird.
+Migrationskosten von $1$ enstehen, wenn die Konfiguration geändert wird, etwa wenn die Datei von einem auf beide Leser kopiert wird, jedoch nicht beim Löschen.
 
 Wenn wir einen konstanten competitiven Faktor wollen, müssen wir intelligent migrieren:
 \begin{itemize}
@@ -2125,10 +2128,10 @@ Wenn wir einen konstanten competitiven Faktor wollen, müssen wir intelligent mi
     \item Von $[a]$ nach $[b]$ oder $[a,b]$, falls eine Anfrage $r(b)$ erfolgt.
     \item Von $[b]$ nach $[a]$ oder $[a,b]$, falls eine Anfrage $r(a)$ erfolgt.
 \end{itemize}
-Die Konfiguration $[a,b]$ ist scheinbar zu bevorzugen.
+Die Konfiguration $[a,b]$ ist offenbar zu bevorzugen.
 
 \begin{theo}{Obere und Untere Schranke}
-    \begin{enumerate}
+    \begin{enumerate}[leftmargin=*]
         \item Für das uniforme FAP auf zwei Knoten gibt es einen $3$-kompetitiven Online-Algorithmus.
         \item Für das uniforme FAP auf zwei Knoten gibt es keinen $c$-kompetitiven Online-Algorithmus mit $c < 3$.
     \end{enumerate}
@@ -2171,7 +2174,7 @@ Wir teilen die Anfragesequenz in disjunkte \emph{Phasen} maximaler Länge auf. D
 
 Wir führen eine \emph{Doppelphase} ein, die aus einer $[x]$-Phase und einer $[a,b]$-Phase besteht. Die Online-Sequenz besteht somit aus disjunkten aneinander gereihten Doppelphasen.
 
-Wir zeigen nun, dass eine Doppelphase Kosten $3$ hat. Am Anfang einer Doppelphase entstehen Servicekosten von $1$ durch den Schreibzugriff auf $x$. Alle folgenden Zugriffe in der $[x]$-Phase erzeugen keine Kosten. Erst der erste Zugriff in der $[a,b]$-Phase hat Servicekosten und Migrationskosten, also insgesamt Kosten von $2$. Alle weiteren Anfragen in dieser Phase verursachen keine Kosten. Insegsamt sind das Kosten von $3$ pro Doppelphase.
+Eine Doppelphase hat Kosten $3$. Am Anfang einer Doppelphase entstehen Servicekosten von $1$ durch den Schreibzugriff auf $x$. Alle folgenden Zugriffe in der $[x]$-Phase erzeugen keine Kosten. Erst der erste Zugriff in der $[a,b]$-Phase hat Servicekosten und Migrationskosten, also insgesamt Kosten von $2$. Alle weiteren Anfragen in dieser Phase verursachen keine Kosten. Insegsamt sind das Kosten von $3$ pro Doppelphase.
 
 Jetzt zeigen wir, dass jeder andere Algorithmus Kosten von mindestens $1$ in einer Doppelphase hat. Angenommen $A$ sei ein Algorithmus mit Kosten $0$ in einer Doppelphase. Dann muss die Konfiguration zu Beginn $[x]$ sein, da die Phasen mit einem Schreibzugriff beginnen und sonst schon Kosten entstehen würden. Weiterhin kann $A$ diese Konfiguration $[x]$ nicht verlassen, da sonst Migrationskosten entstehen. Da aber der Beginn einer $[a,b]$-Phase von dem anderen Knoten initiiert wird, müssen doch Kosten entstehen. Also hat $A$ mindestens Kosten $1$ pro Doppelphase.
 
@@ -2179,7 +2182,7 @@ Damit ist gezeigt, dass unser Online-Algorithmus $3$-competitive ist.
 
 \subsubsection{Untere Schranke}
 
-Wir zeigen nun, dass kein Algorithmus competitive-Faktor kleiner $3$ hat.
+Wir zeigen nun, dass kein Algorithmus einen competitive-Faktor kleiner $3$ hat.
 
 Dazu zeigen wir für einen beliebigen Algorithmus $A$, dass es eine Eingabe und $3$ andere Algorithmen gibt, die auf der Eingabe zusammen die selben Kosten wie $A$ verursachen.
 
@@ -2208,16 +2211,16 @@ Dazu gibt es verschieden \emph{deterministische} Strategien:
     \item \textit{LFU} (Last Frequently Used): Verdrängt die am seltensten nachgefragte Seite.
     \item \textit{FIFO} (First In First Out): Verdrängt die Seite, die sich am längsten im Cache befindet.
     \item \textit{LIFO} (Last In First Out): Verdrängt die Seite, die als letztes in den Cache geladen wurde.
-    \item \textit{RANDOM}: Verdrängt eine Uniform ausgewählte Seite.
+    \item \textit{RANDOM}: Verdrängt eine zufällig ausgewählte Seite.
     \item \textit{FWF} (Flush When Full): Leert den Cache vollständig, sobald eine Seite verdrängt werden muss.
     \item \textit{LFD} (Longest Forward Distance): Verdrängt die Seite, deren Zugriff am weitesten in der Zukunft liegt.
 \end{itemize}
 $\textit{LFD}$ ist das \emph{optimale} Verfahren, aber kein Online-Algorithmus.
 
-Um den \emph{competitiven} Faktor eines Paging Verfahrens zu bestimmen, müssen wir Seitenauslagerungen erkennen. Dazu führen wir ein Marking ein.
+Um den competitive-Faktor eines Paging Verfahrens zu bestimmen, müssen wir Seitenauslagerungen erkennen. Dazu führen wir ein Marking ein.
 
 \begin{halfboxl}
-    \textit{Marking:} Da jedes Verfahren bei $k+1$ verschiedenen Seitenzugriffen mindestens einen Fehler macht, teilen wir die Eingabesequenz in Phasen mit Zugriffen auf $k$ verschiedene Seiten, d.h.\ die nächste Phase startet beim Zugriff auf die $k+1$-te neue Seite.
+    \textit{Marking:} Da jedes Verfahren bei $k+1$ verschiedenen Seitenzugriffen mindestens einen Fehler macht, teilen wir die Eingabesequenz in Phasen mit Zugriffen auf $k$ verschiedene Seiten auf, d.h.\ die nächste Phase startet beim Zugriff auf die $k+1$-te neue Seite.
 
     In einer Phase wird jede Seite beim erstmaligen Zugriff \textit{markiert} und bleibt bis zum Ende der Phase markiert.
 
@@ -2277,7 +2280,7 @@ Damit sind auch $FWF$ und $LRU$ $k$-competitive.
 \begin{halfboxr}
     \vspace{-\baselineskip}
     \begin{proof}
-    Mit der Eingabesequenz \\$\rho=p_1^{m},p_2^{m},\dots,p_{k-1}^{m},(p_k,p_{k+1})^{m-1}$ werden nach $m \cdot (k-1)$ Zugriffen $2(m-1)$ viele Fehler erzeugt. Mittels $m$ kann man den Competitive-Faktor beliebig verschlechtern.
+    Mit der Eingabesequenz \\$\rho=p_1^{m},p_2^{m},\dots,p_{k-1}^{m},(p_k,p_{k+1})^{m-1}$ werden nach $m \cdot (k-1)$ Zugriffen $2(m-1)$ viele Fehler erzeugt. Mittels $m$ kann man den competitive-Faktor beliebig verschlechtern.
     \end{proof}
 \end{halfboxr}
 
@@ -2303,7 +2306,7 @@ Dabei wird der Zufallsanteil erst nach dem Wählen der Sequenz genutzt. Wir nenn
     Ein randomisierter Online-Algorithmus $A$ ist c-competitive gdw. ein $a$ existiert, so dass für jede durch einen oblivous Gegner bestimmte Anfragesequenz $\rho$ gilt: $$\mathbb{E}[C_A(\rho)] \leq c \cdot C^*(\rho)+a.$$
 \end{defi}
 
-Dazu gibt es einen einfachen randomisierten Online-Algorithmus.
+Dazu gibt es einen einfachen randomisierten Online-Algorithmus namens \emph{MARK}.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -2315,7 +2318,7 @@ Dazu gibt es einen einfachen randomisierten Online-Algorithmus.
         Für jeden Seitenfehler pro Phase:
         \begin{enumerate}
             \item Bestimme unmarkierte Seiten
-            \item Verdränge eine uniform gewählte unmarierte Seite
+            \item Verdränge eine uniform gewählte unmarkierte Seite
         \end{enumerate}
     \end{algo}
 \end{halfboxl}%
@@ -2324,11 +2327,10 @@ Dazu gibt es einen einfachen randomisierten Online-Algorithmus.
     \begin{theo}{Schranke $H_k$-competitive}
         Es gibt einen anderen Paging-Algorithmus, der $H_k$-competitive ist, aber keinen der besser als $H_k$-competitive ist.
     \end{theo}
+
+    In der Vorlesung wurde außerdem bewiesen, dass $MARK$ $(2 \cdot H_k)$-competitive ist.
+    Der Beweis wird hier aufgrund seiner Länge nicht erklärt.
 \end{halfboxr}
-
-In der Vorlesung wurde außerdem bewiesen, dass $MARK$ $(2 \cdot H_k)$-competitive ist.
-
-Der Beweis wird hier aufgrund seiner Länge nicht erklärt.
 
 \subsubsection{Asymmetrischer Online-Algorithmus}
 \begin{halfboxl}
@@ -2339,19 +2341,22 @@ Der Online-Algorithmus bekommt einen Cache der Größe $m \cdot k$, wenn der Off
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{defi}{$(m,c)$-competitive}
-    Ein Online-Algorithmus $A$ für das Paging-Problem ist $(m,c)-competitive$ gdw.
-    \begin{itemize}
+    Ein Online-Algorithmus $A$ für das Paging-Problem ist $(m,c)$-competitive gdw.
+    \begin{itemize}[leftmargin=*]
         \item $m$-mal so großer Cache wie Offline,
         \item es existiert ein $a$, sodass für jede Eingabesequenz $\rho$ gilt $C_A(\rho) \leq c \cdot C^*(\rho)+a$.
     \end{itemize}
 \end{defi}
 \end{halfboxr}
+\vspace{-\baselineskip}
 
 Wir beweisen nun, dass $Random$ $(2,2)$-competitive ist.
 
 Dazu werden wir eine Potentialfunktion $\phi$ nutzen und zeigen, dass stets
-\[\mathbb{E}[C] + 2\mathbb{E}[\phi] \le 2 C^\ast\]
-ist, wobei $E[C]$ die erwarteten Kosten von $Random$ und $C^\ast$ die Kosten der optimalen Offline-Strategie sind.
+\begin{tightcenter}
+$\mathbb{E}[C] + 2\mathbb{E}[\phi] \le 2 C^\ast$
+\end{tightcenter}
+ist, wobei $E[C]$ die erwarteten Kosten von $Random$ und $C^\ast$ die Kosten der optimalen Offline-Strategie $OPT$ sind.
 
 Wir definieren $\phi$ als die Anzahl der Seiten, die im Cache von $OPT$ sind, aber nicht im Cache von $Random$. Dann kann $\phi$ nicht negativ sein, also reicht die obige Invariante, um den competitive-Faktor zu zeigen.
 
@@ -2359,8 +2364,8 @@ Die Invariante zeigen wir nun Schrittweise (deswegen auch die Potentialfunktion)
 \begin{enumerate}
     \item Beide Strategien haben $p_t$ bereits im Cache. Dann bleiben $C$, $\phi$ und $C^\ast$ gleich.
     \item Keine Strategie hat $p_t$ schon im Cache. Dann erhöhen sich $C$ und $C^\ast$ beide um $1$, $\mathbb{E}[\phi]$ erhöht sich höchstens um $\frac{1}{2}$, da die Wahrscheinlichkeit, dass $Random$ eine Seite verdrängt, die $OPT$ im Cache hält, höchstens $\frac{1}{2}$ ist.
-    \item $Opt$ hat die Seite im Cache, aber $Random$ nicht. Dann bleibt $C^\ast$ gleich, $C$ erhöht sich um $1$ und $\mathbb{E}[\phi]$ verringert sich mindestens um $\frac{1}{2}$, da $Random$ sich um $p_t$ an $Opt$ angleicht und eine andere Seite, die $Opt$ im Cache hat, mit Wahrscheinlichkeit höchstens $\frac{1}{2}$ verdrängt.
-    \item $Random$ hat die Seite im Cache, aber $Opt$ nicht. Dann erhöht sich $C^\ast$ um $1$, $C$ bleibt gleich und $\mathbb{E}[\phi]$ kann sich höchstens verringern.
+    \item $OPT$ hat die Seite im Cache, aber $Random$ nicht. Dann bleibt $C^\ast$ gleich, $C$ erhöht sich um $1$ und $\mathbb{E}[\phi]$ verringert sich mindestens um $\frac{1}{2}$, da $Random$ sich um $p_t$ an $OPT$ angleicht und eine andere Seite, die $OPT$ im Cache hat, mit Wahrscheinlichkeit höchstens $\frac{1}{2}$ verdrängt.
+    \item $Random$ hat die Seite im Cache, aber $OPT$ nicht. Dann erhöht sich $C^\ast$ um $1$, $C$ bleibt gleich und $\mathbb{E}[\phi]$ kann sich höchstens verringern.
 \end{enumerate}
 Also wird die Invariante in allen Fällen beibehalten. Da sie zu Beginn gilt, muss sie also immer gelten.
 
