@@ -1768,11 +1768,10 @@ Der Seidel-Algorithmus löst ein $d$-dimensionales LP mit $m$ Nebenbedingungen i
 
 \subsection{Minimaler Schnitt}
 
-Wir betrachten im Folgenden randomisierte Algorithmen zur Bestimmung minimaler Schnitte $C^*$, das heißt
-\[\Forall U \subset V : c(U) \ge c(C^*).\]
+Wir betrachten im Folgenden randomisierte Algorithmen zur Bestimmung minimaler Schnitte $C^*$, das heißt $\Forall U \subset V : c(U) \ge c(C^*)$.
 
 Da wir einen minimalen Schnitt suchen, gehen wir davon aus, dass dieser klein sein wird.
-Wir wählen also zufällig Kanten aus und \emph{kontrahieren} sie, d.h.\ verschmelzen die anliegenden Knoten.
+Wir wählen also zufällig (entsprechend ihrer Gewichte) Kanten aus und \emph{kontrahieren} sie, d.h.\ verschmelzen die anliegenden Knoten.
 Aus den Eigenschaften der Kantenkontraktion folgt, dass inzidente Knoten einer zufällig gewählten Kante mit hoher Wahrscheinlichkeit beide im gleichen Teil des Schnittes liegen.
 
 \begin{algo}{Kantenkontraktion}
@@ -1870,7 +1869,8 @@ Da eine Kontraktion eine Laufzeit von $\bigo(n)$ hat, und in jeder Kontraktion e
     \item Setze $\Forall v:~ S(v) := \Set{v}$ und $H := G$.
     \item Solange $|V(H)| > 2$:
     \begin{enumerate}
-        \item Wähle $\Set{v,w} \in V(H)$ zufällig.
+        \item Wähle $\Set{v,w} \in V(H)$ zufällig, \\
+              mit Wahrscheinlichkeit $c(\Set{v,w})$.
         \item Setze $S(v) = S(v) \cup S(w)$ und \\
               kontrahiere $\Set{v,w}$ in $H$.
         \item Gebe $S(v)$ für ein $v \in V(H)$ aus.
@@ -1953,7 +1953,7 @@ FastCut liefert nicht sicher einen Min-Cut, aber wenn wir den Algorithmus $(\log
     \end{cases} \]
 \end{itemize}
 
-\textbf{Ausgabe:} Eine Belegung $W: \Set{x_1,\ldots,x_n} \to \Set{0,1}$
+\textbf{Ausgabe:} Eine Belegung $W: \Set{x_1,\ldots,x_n} \to \Set{0,1}$.
 
 \textbf{Ziel:} Finde eine erfüllende Belegung für $\mathcal{F}$.
 \end{defi}
@@ -1985,13 +1985,15 @@ Das Problem wollen wir aber sinnvoll angehen und lösen. Die Idee dabei ist, ein
 \begin{halfboxl}
 \vspace{-\baselineskip}
 \begin{theo}{Laufzeit von Schöning}
-    Der Algorithmus von Schöning hat eine Laufzeit von $\bigo(m \cdot n^{3/2} \cdot \big(\frac{4}{3}\big)^n)$. Es können nur false negatives auftreten.
+    Der Algorithmus von Schöning hat eine Laufzeit von $\bigo(m \cdot n^{3/2} \cdot \big(\frac{4}{3}\big)^n)$.
 \end{theo}
 
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Fehlerwahrscheinlichkeit von Schöning}
+    Es können nur false negatives auftreten.
+
     Falls $\mathcal{F}$ erfüllbar ist, ist die Fehlerwahrscheinlichkeit $5 \cdot 10^{-5}$.
 \end{theo}
 \end{halfboxr}
