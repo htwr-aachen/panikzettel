@@ -1372,7 +1372,7 @@ Zunächst einige Definitionen.
 Simplex arbeitet auf der Algebraischen Gleichungsform und bestimmt Basislösungen auf geordneten Spaltenauswahlen.
 
 \begin{halfboxl}
-Die \emph{Algebraische Gleichungsform} ist eine Umformung, bei der die Nebenbedingungen durch Einführung von \emph{Schlupfvariablen} in lineare Gleichungsform gebracht werden.
+Die \emph{Algebraische Gleichungsform} drückt die Nebenbedingungen durch Einführung von \emph{Schlupfvariablen} in linearer Gleichungsform aus.
 Damit können wir die Matrixkalkül-Theorie nutzen.
 
 Eine \emph{geordnete Auswahl} $\delta$ ist eine Abbildung
@@ -1382,7 +1382,7 @@ $\delta : \underline{m} \mapsto \underline{n}$ mit $\forall i \in \underline{m-1
 $\overline{\delta}$ ist die geordnete Auswahl der restlichen $d$ Elemente.
 Damit können Spalten aus $A$ ausgewählt und zu zwei neuen Matrizen $A_\delta$ und $A_{\overline{\delta}}$ gruppiert werden, analog für Elemente aus $x$ und $c$.
 
-Eine Aufspaltung der Nebenbedingungen:
+Damit aufgespaltenene Nebenbedingungen:
 \begin{tightcenter}
 $A \cdot x = A_{\delta} \cdot x_{\delta} + A_{\overline{\delta}} \cdot x_{\overline{\delta}} = b$.
 \end{tightcenter}
@@ -1593,7 +1593,7 @@ Mit $n$ Variablen, $m$ Ungleichungen und Eingabelänge $L$.
         \item Wähle eine Ungleichung aus, die $z$ nicht erfüllt.
         \item Setze $H$ als Hyperebene mit $z \in H$, welche parallel zur Hyperebene zur ausgewählten Ungleichung ist.
         \item Setze $\hat{H}$ als Halbraum von $H$ mit $z \in \hat{H}$.
-        \item Bestimme Ellipsoiden $E'$ mit kleinstem Volumen mit $E \cap \hat{H} \subset E'$.
+        \item Bestimme Ellipsoid $E'$ mit kleinstem Volumen und $E \cap \hat{H} \subset E'$.
         \item Setze $E = E'$.
     \end{enumerate}
     \item Gib \textbf{Nein} aus.
@@ -1606,7 +1606,7 @@ Mit den Veränderungen des initialen Ungleichungssystems in Schritt 1 und 2 kann
 Zu Teil 4: Durch Konstruktion ist der maximale Absolutwert von $G'$ $\alpha' = (\alpha \cdot m)^m$, welches in $\bigo(L^2)$ ist.
 
 Zu Teil 1: $\Leftarrow$: Ist offensichtlich, da Ungleichungen weggenommen werden.
-$\Rightarrow$: Es wurde für die Laufzeit für Simplex gezeigt, dass für eine Lösung $x$ eines lineares Gleichungssystems, hier $G$, mit maximalen Absolutwert $\alpha$  und $m$ Gleichungen gilt:
+$\Rightarrow$: Es wurde für die Laufzeit von Simplex gezeigt, dass für eine Lösung $x$ eines lineares Gleichungssystems, hier $G$, mit maximalen Absolutwert $\alpha$  und $m$ Gleichungen gilt:
 $|x_i| \leq (\alpha \cdot m)^m$. So ist auch $x$ eine Lösung von $G'$.
 
 Zu Teil 2: Durch Konstruktion von $G'$ mit den neuen Ungleichungen gilt für eine Lösung $x$: $|x_i| \leq (\alpha \cdot m)^m$. So ist der Lösungraum ein in Ursprung zentrierter Hyperwürfel, der in eine Kugel mit Radius $r = \sqrt{n} \cdot (\alpha \cdot m)^m \in 2^{\bigo(L^2)}$ passt.
@@ -1689,7 +1689,7 @@ Dies geschieht in polynomiell vielen Schritten, wenn wir $z$, bis auf einen addi
 
 Zum Glück lässt sich eine untere Schranke $\tau = (\alpha \cdot m)^{-2/(m+1)}$ für die Differenz der Zielfunktionswerte von zwei verschiedenen Lösungen bestimmen.
 
-Wenn wir $\tau$ als additiven Fehler wählen, können wir $z$ genau maximalisieren, indem wir per Binärsuche ein $K\in \mathbb{N}$ finden mit $\tau \cdot K \leq z^* < \tau \cdot (K+1)$.
+Wenn wir $\tau$ als additiven Fehler wählen, können wir $z$ genau maximieren, indem wir per Binärsuche ein $K\in \mathbb{N}$ finden mit $\tau \cdot K \leq z^* < \tau \cdot (K+1)$.
 
 Nun müssen wir nur noch herausfinden, wie $x^*$ aussieht. Wir wissen es ist eine Basislösung. Also wird jedes Element von $x$ auf $0$ fixiert und getestet ob sich das LP dann noch lösen lässt. Daraus könne wir dann die Basis bestimmen.
 
@@ -1773,7 +1773,7 @@ Da wir einen \emph{minimalen} Schnitt suchen, gehen wir davon aus, dass dieser v
 Dieser Vorgang heißt \emph{Kantenkontraktion}. Dabei wird eine Kante gewählt, dann einer der inzidenten Knoten gelöscht und leitet dessen Kanten auf den übergebliebenen Knoten um.
 
 \begin{defi}{Kantenkontraktion}
-Wollen wir in diesem Graph $G=(V,E,c)$ eine Kante $\Set{v,w}$ kontraktieren gehen wir folgendermaßen vor:
+Wollen wir in diesem Graph $G=(V,E,c)$ eine Kante $\Set{v,w}$ kontrahieren gehen wir folgendermaßen vor:
 \begin{itemize}
     \item $V' = V \setminus \Set{w}$
     \item $E' = E \cup \Set{\Set{x,v}|\Set{x,w} \in E \land x \neq v} \setminus \Set{e \in E | e = \Set{x,w}}$
@@ -1864,7 +1864,7 @@ Da eine Kontraktion eine Laufzeit von $\mathcal{O}(n)$ hat, und in jeder Kontrak
     \item Wir definieren $\Forall v S(v) := \Set{v}$ und $H := G$.
     \item Solange $|V(H)| > 2$ wähle beliebige Kante $\Set{v,w} \in V(H)$.
     \begin{enumerate}
-        \item Setze $S(v) = S(v) \cup S(w)$ und kontraktiere $\Set{v,w}$ in $H$.
+        \item Setze $S(v) = S(v) \cup S(w)$ und kontrahiere $\Set{v,w}$ in $H$.
         \item Gebe $S(v)$ für eines der $v \in V(H)$ aus.
     \end{enumerate}
 \end{enumerate}
@@ -1879,8 +1879,8 @@ Da eine Kontraktion eine Laufzeit von $\mathcal{O}(n)$ hat, und in jeder Kontrak
 Lassen wir diesen Algorithmus nun $t \cdot\binom{n}{2}$ Mal laufen (wobei wir $t \in \mathbb{N}$ frei wählen), so ist die Wahrscheinlichkeit den Min-Cut nicht zu finden $$\bigg( 1 - \binom{n}{2}^{-1} \bigg)^{t \cdot \binom{n}{2}} \le \bigg(\frac{1}{e}\bigg)^t.$$
 Heißt, wir können die Fehlerwahrscheinlichkeit beliebig klein machen und so unsere Laufzeit töten, die mittlerweile wegen dem $\binom{n}{2}$ schon $\mathcal{O}(n^4)$ beträgt; und mal ganz ehrlich, das ist keine Verbesserung gegenüber herkömmlichen Algorithmen.
 
-Aber die Wahrscheinlichkeit, eine Kante des Min-Cuts wegzukontraktieren, ist am Anfang des Algorithmus
-relativ gering und steigt, sobald die Anzahl der Kanten sich zu sehr verringert. Die Idee wäre also den Algorithmus so zu verändern, dass wir am Anfang schnell Kanten kontraktieren und die letzten Schritte sicher machen.
+Aber die Wahrscheinlichkeit, eine Kante des Min-Cuts wegzukontrahieren, ist am Anfang des Algorithmus
+relativ gering und steigt, sobald die Anzahl der Kanten sich zu sehr verringert. Die Idee wäre also den Algorithmus so zu verändern, dass wir am Anfang schnell Kanten kontrahieren und die letzten Schritte sicher machen.
 
 
 \begin{halfboxl}
@@ -1900,10 +1900,9 @@ Der FastCut Algorithmus hat eine Laufzeit von $\mathcal{O}(n^2\cdot \text{log }n
 \textbf{Ausgabe:} Ein Schnitt $C_x$.
 \tcblower
 \begin{enumerate}
-
     \item Gilt $|V(G)| \le 6$, bestimme $C_U$ mit Brute-Force.
     \item Setze $H := H' := G$ und $t = \lceil 1+ \frac{n}{\sqrt{2}} \rceil$
-    \item Kontraktiere Kanten bis in $H$ und $H'$ jeweils nur noch $t$ Kanten sind.
+    \item Kontrahiere Kanten bis in $H$ und $H'$ jeweils nur noch $t$ Kanten sind.
     \item Rufe FastCut rekursiv mit $C = \text{FastCut}(H)$ und $C'= \text{Fastcut}(H')$
     \item Gebe $\text{min}(C,C')$ aus.
 \end{enumerate}
