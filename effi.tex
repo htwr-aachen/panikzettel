@@ -1432,7 +1432,7 @@ Somit liegt eine zulässige Basislösung auf $d$ Hyperebenen im originalen LP un
             \item Erstelle neue Variablen $h_i$ für jede Gleichung.
             \item Ersetze $\sum_{j=1}^n a_{i,j} \cdot x_j = b_i$ durch $\sum_{j=1}^n a_{i,j} \cdot x_j + h_i = b_i$.
             \item Neue Zielfunktion: Minimiere $f(h) = \sum_{k=1}^m h_k$.
-            \item Starte mit der direkten Basislösung $x = 0$ und löse rekursiv.
+            \item Starte mit der direkten Basislösung $x = 0$ und löse mithilfe von Schritten 3 und 4.
             \item Falls $f(h) > 0$, dann gibt es gar keine Basislösung. Abbruch.
             \item Falls $f(h) = 0$, dann benutze Lösung und konstruiere das initiale $\delta$.
         \end{enumerate}
