@@ -744,7 +744,7 @@ Dann lassen sich mit Breitensuche und Tiefensuche alle kürzesten verbessernden 
             \item $E'' = \Set{ (w,v) \in W \times V | \Set{v,w} \in M }$
         \end{itemize}}
     \item Sei in $G''$ zusätzlich Quelle $s$ und Senke $t$, verbunden mit freien Knoten aus $V$ respektive $W$.
-    \item Suche alle Kanten $K$, die nicht auf einem kürzesten Pfad liegen (Breitensuche).
+    \item Suche alle Kanten $K$, die auf einem kürzesten Pfad liegen (Breitensuche).
     \item Finde alle $P_i$ durch Tiefensuche auf Kanten $K$.
 \end{enumerate}
 \end{algo}
@@ -1534,7 +1534,7 @@ Darüber erhalten wir, dass $p_{\delta, i}(0)$ als Basisvariable im nicht pertur
 \end{enumerate}
 \end{algo}
 
-\begin{theo}{Korrektheit der Pertubierung}
+\begin{theo}{Korrektheit der Perturbierung}
 Für ein $\gamma > 0$ gilt für alle $\varepsilon \in (0,\gamma)$:
 \begin{enumerate}
     \item Das LP $LP(\varepsilon)$ ist nicht degeneriert.
@@ -2079,7 +2079,7 @@ Ideen (Monte-Carlo $\mathcal{B}$ $\to$ Las Vegas $\mathcal{A}$):
 \begin{halfboxr}
 \vspace{-\baselineskip}
     \begin{defi}{c-competitive}
-        Sei $C_A(\rho)$ die Kosten der von $A$ berechneten Strategie auf der Eingabe $\rho$ und $C^*(p)$ die Kosten für die optimale Strategie. Dann ist $A$ $\textit{c-competitive}$ gdw. ein $a$ existiert, so dass für jede Eingabe $\rho$ gilt: $$C_A(\rho) \leq c \cdot C^*(\rho)+a.$$
+        Sei $C_A(\rho)$ die Kosten der von $A$ berechneten Strategie auf der Eingabe $\rho$ und $C^*(\rho)$ die Kosten für die optimale Strategie. Dann ist $A$ $\textit{c-competitive}$ gdw. ein $a$ existiert, so dass für jede Eingabe $\rho$ gilt: $$C_A(\rho) \leq c \cdot C^*(\rho)+a.$$
     \end{defi}
 \end{halfboxr}
 
@@ -2280,7 +2280,7 @@ Damit sind auch $FWF$ und $LRU$ $k$-competitive.
 \begin{halfboxr}
     \vspace{-\baselineskip}
     \begin{proof}
-    Mit der Eingabesequenz \\$\rho=p_1^{m},p_2^{m},\dots,p_{k-1}^{m},(p_k,p_{k+1})^{m-1}$ werden nach $m \cdot (k-1)$ Zugriffen $2(m-1)$ viele Fehler erzeugt. Mittels $m$ kann man den competitive-Faktor beliebig verschlechtern.
+    Mit der Eingabesequenz \\$\rho=\rho_1^{m},\rho_2^{m},\dots,\rho_{k-1}^{m},(\rho_k,\rho_{k+1})^{m-1}$ werden nach $m \cdot (k-1)$ Zugriffen $2(m-1)$ viele Fehler erzeugt. Mittels $m$ kann man den competitive-Faktor beliebig verschlechtern.
     \end{proof}
 \end{halfboxr}
 
@@ -2356,15 +2356,15 @@ Dazu werden wir eine Potentialfunktion $\phi$ nutzen und zeigen, dass stets
 \begin{tightcenter}
 $\mathbb{E}[C] + 2\mathbb{E}[\phi] \le 2 C^\ast$
 \end{tightcenter}
-ist, wobei $E[C]$ die erwarteten Kosten von $Random$ und $C^\ast$ die Kosten der optimalen Offline-Strategie $OPT$ sind.
+ist, wobei $\mathbb{E}[C]$ die erwarteten Kosten von $Random$ und $C^\ast$ die Kosten der optimalen Offline-Strategie $OPT$ sind.
 
 Wir definieren $\phi$ als die Anzahl der Seiten, die im Cache von $OPT$ sind, aber nicht im Cache von $Random$. Dann kann $\phi$ nicht negativ sein, also reicht die obige Invariante, um den competitive-Faktor zu zeigen.
 
-Die Invariante zeigen wir nun Schrittweise (deswegen auch die Potentialfunktion). Wir betrachten den Seitenzugriff auf eine Seite $p_t$ und unterscheiden viel Fälle:
+Die Invariante zeigen wir nun schrittweise (deswegen auch die Potentialfunktion). Wir betrachten den Seitenzugriff auf eine Seite $\rho_t$ und unterscheiden vier Fälle:
 \begin{enumerate}
-    \item Beide Strategien haben $p_t$ bereits im Cache. Dann bleiben $C$, $\phi$ und $C^\ast$ gleich.
-    \item Keine Strategie hat $p_t$ schon im Cache. Dann erhöhen sich $C$ und $C^\ast$ beide um $1$, $\mathbb{E}[\phi]$ erhöht sich höchstens um $\frac{1}{2}$, da die Wahrscheinlichkeit, dass $Random$ eine Seite verdrängt, die $OPT$ im Cache hält, höchstens $\frac{1}{2}$ ist.
-    \item $OPT$ hat die Seite im Cache, aber $Random$ nicht. Dann bleibt $C^\ast$ gleich, $C$ erhöht sich um $1$ und $\mathbb{E}[\phi]$ verringert sich mindestens um $\frac{1}{2}$, da $Random$ sich um $p_t$ an $OPT$ angleicht und eine andere Seite, die $OPT$ im Cache hat, mit Wahrscheinlichkeit höchstens $\frac{1}{2}$ verdrängt.
+    \item Beide Strategien haben $\rho_t$ bereits im Cache. Dann bleiben $C$, $\phi$ und $C^\ast$ gleich.
+    \item Keine Strategie hat $\rho_t$ schon im Cache. Dann erhöhen sich $C$ und $C^\ast$ beide um $1$, $\mathbb{E}[\phi]$ erhöht sich höchstens um $\frac{1}{2}$, da die Wahrscheinlichkeit, dass $Random$ eine Seite verdrängt, die $OPT$ im Cache hält, höchstens $\frac{1}{2}$ ist.
+    \item $OPT$ hat die Seite im Cache, aber $Random$ nicht. Dann bleibt $C^\ast$ gleich, $C$ erhöht sich um $1$ und $\mathbb{E}[\phi]$ verringert sich mindestens um $\frac{1}{2}$, da $Random$ sich um $\rho_t$ an $OPT$ angleicht und eine andere Seite, die $OPT$ im Cache hat, mit Wahrscheinlichkeit höchstens $\frac{1}{2}$ verdrängt.
     \item $Random$ hat die Seite im Cache, aber $OPT$ nicht. Dann erhöht sich $C^\ast$ um $1$, $C$ bleibt gleich und $\mathbb{E}[\phi]$ kann sich höchstens verringern.
 \end{enumerate}
 Also wird die Invariante in allen Fällen beibehalten. Da sie zu Beginn gilt, muss sie also immer gelten.
