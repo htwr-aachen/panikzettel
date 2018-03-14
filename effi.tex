@@ -80,7 +80,7 @@ Ein $s$-$t$-Pfad im Restnetzwerk ist immer ein \emph{vergrößernder Pfad}, d.h.
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{defi}{Restnetzwerk}
-Zu einem Netzwerk $ = (V, E, s, t, c)$:
+Zu einem Netzwerk $G = (V, E, s, t, c)$:
 
 Ein \emph{Restnetzwerk} $G_f$ zu einem Fluss $f$ hat Kanten $(v,w) \in V_G^2$ mit Gewicht $\textrm{rest}_f(v,w) > 0$.
 \footnotesize
@@ -164,7 +164,7 @@ Der \emph{Algorithmus von Edmonds-Karp} ist einfach Ford-Fulkerson mit BFS. Lauf
 \subsubsection{Algorithmus von Dinitz}
 
 \begin{defi}{Sperrfluss}
-In einem Niveaunetzwerk $G'_f = (V, E_f',s,t,c')$ und mit Fluss $f'$ auf $G'$:
+In einem Niveaunetzwerk $G'_f = (V, E_f',s,t,c')$ mit Fluss $f'$ auf $G'$:
 \begin{itemize}
     \item Eine Kante $e \in E_f'$ ist \emph{saturiert}, falls $f'(e) = rest_f(e)$.
     \item $f'$ heißt \emph{Sperrfluss}, falls jeder Weg von $s$ nach $t$ in $G_f'$ eine saturierte Kante hat.
