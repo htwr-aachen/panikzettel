@@ -5,6 +5,13 @@
 \ProvidesClass{panikzettel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Optional 'english' language option
+\newcommand{\InitPanikzettelLanguage}{\PassOptionsToPackage{english,ngerman}{babel}}
+\DeclareOption{english}{\renewcommand{\InitPanikzettelLanguage}{\PassOptionsToPackage{english}{babel}}}
+\ProcessOptions
+\InitPanikzettelLanguage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compact scrartcl format
 \LoadClass[a4paper,parskip=half-,DIV=15,fontsize=11pt]{scrartcl}
 
@@ -14,7 +21,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Typesetting
-\usepackage[english,ngerman]{babel}
+\usepackage{babel}
 \usepackage{microtype}
 \usepackage{parskip}
 \usepackage{microtype}
@@ -111,15 +118,19 @@
 %%%%%%%%%%%%%%%%
 % Context Blocks
 
+\usepackage{iflang}
+\newcommand{\PanikzettelAlgorithm}{\IfLanguageName{ngerman}{Algorithmus}{Algorithm}}
+\newcommand{\PanikzettelTheorem}{\IfLanguageName{ngerman}{Satz}{Theorem}}
+
 \tcbset{boxrule=0pt,toprule=1pt,parbox=false,on line}
 
 \newenvironment{algo}[1]{%
 \setlist{nosep,leftmargin=*}%
-\begin{tcolorbox}[colback=orange!5!white, colframe=orange!75!black, title={\sffamily Algorithmus: #1}]
+\begin{tcolorbox}[colback=orange!5!white, colframe=orange!75!black, title={\sffamily \PanikzettelAlgorithm: #1}]
 }{%
 \end{tcolorbox}}
 \newenvironment{theo}[1]{%
-\begin{tcolorbox}[colback=bluishgreen!5!white, colframe=bluishgreen!75!black, title={\sffamily Satz: #1}]
+\begin{tcolorbox}[colback=bluishgreen!5!white, colframe=bluishgreen!75!black, title={\sffamily \PanikzettelTheorem: #1}]
 }{%
 \end{tcolorbox}}
 \newenvironment{defi}[1]{%
