@@ -179,7 +179,7 @@ To compare the quality of admissible heuristics we introduce the effective branc
 
 \[N+1 = 1 + \left(b^\ast \right)^1  + \dots + \left(b^\ast\right)^d\]
 
-E.g.\ a tree of depth $d$ and branching factor $b^\ast$ would contain the same number of Nodes as the tree generated during the search.
+E.g.\ a tree of depth $d$ and branching factor $b^\ast$ would contain the same number of nodes as the tree generated during the search.
 
 \emph{Iterative Deepening $A^\ast$} is a variant of Iterative Deepening search that explores branches up to a given threshold for the value of $f(n)$. If this threshold is passed and no solution was found the threshold is set to the minimal value of $f(n)$ for all found nodes $n$ that exceeded the threshold.
 
@@ -245,12 +245,12 @@ Initially: \texttt{alphaBeta(initialState, $-\infty$, $\infty$)}.
             \item If at MAX level:
                 \begin{enumerate}
                     \item Set $\alpha$ to $\max(\alpha, \texttt{alphaBeta($s$, $\alpha$, $\beta$))}$.
-                    \item If $\alpha > \beta$, return $\beta$.
+                    \item If $\alpha \geq \beta$, return $\beta$.
                 \end{enumerate}
             \item If at MIN level:
                 \begin{enumerate}
                     \item Set $\beta$ to $\min(\beta, \texttt{alphaBeta($s$, $\alpha$, $\beta$))}$.
-                    \item If $\beta < \alpha$, return $\alpha$.
+                    \item If $\beta \leq \alpha$, return $\alpha$.
                 \end{enumerate}
         \end{itemize}
     \item Return $\alpha$ (MAX level) or $\beta$ (MIN level).
@@ -679,7 +679,7 @@ Put differently: Bayes Rule calculates the probability of a cause $B$ given an e
 
 $1/\operatorname{P}(A)$ is not an ``important'' term, so Bayes Rule is often written with $\alpha = 1/\operatorname{P}(A)$:
 \begin{tightcenter}
-$\operatorname{P}(B \mid A) = \alpha \cdot \operatorname{P}(X \mid Y) \cdot \operatorname{P}(Y)$.
+$\operatorname{P}(B \mid A) = \alpha \cdot \operatorname{P}(A \mid B) \cdot \operatorname{P}(B)$.
 \end{tightcenter}
 This is called \emph{normalisation}.
 
@@ -702,7 +702,7 @@ Each node is has edges to other nodes if there is a direct causal relationship b
 
 The probability associations for each node are called \emph{Conditional Probability Tables} (CPTs).
 
-The probabilities are correct if each node is conditionally independent of all its (recursive) predecessors given its (direct) parents.
+The network is a correct representation of a joint distribution if each node is conditionally independent of all its other (recursive) predecessors given its (direct) parents.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -718,6 +718,9 @@ A \emph{belief network}/\emph{Bayesian network} is a directed acyclic graph $G =
 \end{itemize}
 \end{defi}
 \end{halfboxr}
+
+To compute joint distributions, we can now simply use the network's independence relations.
+\[ \operatorname{P}(X_1 \land \ldots \land X_n) = \prod_{i=1}^n P(X_i \mid V_\mathrm{in}(X_i)) \]
 
 \begin{algo}{Constructing a Belief Network}
 \textbf{Input:} Random variables $X_1, \ldots, X_n$ with an ordering.
