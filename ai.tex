@@ -636,6 +636,7 @@ In this case the threat must be either \emph{promoted} (put the threat after the
 Since threat resolution and operator selection can fail, backtracking may be necessary.
 The POP algorithm is PSPACE-complete.
 
+\newpage
 \section{Uncertainty}
 \subsection{Probability Theory}
 $\operatorname{P}(A)$ is the probability that $A$ holds. $A$ is a proposition of propositional logic where we allow contructs like $X=n$ for random variables $X$ and $n$ taken from a finite domain. For example $P(\text{roll}=6) = \frac{1}{6}$ describing the probability to roll a 6 using a dice with random variable roll $6$ taken out of the domain $\langle 1,\dots,6\rangle$.
@@ -722,25 +723,6 @@ A \emph{belief network}/\emph{Bayesian network} is a directed acyclic graph $G =
 To compute joint distributions, we can now simply use the network's independence relations.
 \[ \operatorname{P}(X_1 \land \ldots \land X_n) = \prod_{i=1}^n P(X_i \mid V_\mathrm{in}(X_i)) \]
 
-\begin{algo}{Constructing a Belief Network}
-\textbf{Input:} Random variables $X_1, \ldots, X_n$ with an ordering.
-
-\textbf{Output:} CPTs for each variable $X_i$.
-\tcblower
-\begin{enumerate}
-    \item While there are still variables to consider do
-        \begin{enumerate}
-            \item Choose the least $X_i$ and create a node in the network.
-            \item Choose $V_\mathrm{in}(X_i)$/create incoming edges such that
-                \begin{tightcenter}
-                    $\operatorname{P}(X_i \mid X_{i-1}, \ldots, X_1) = \operatorname{P}(X_i \mid V_\mathrm{in}(X_i)).$
-                \end{tightcenter}
-            \item Create a CPT for $X_i$.
-        \end{enumerate}
-    \item Return CPTs.
-\end{enumerate}
-\end{algo}
-
 \subsection{d-Separation}
 \emph{d-Separation} (direction-dependent separation) allows computation of independence relationships in polynomial time.
 This is especially useful for belief network construction.
@@ -751,14 +733,73 @@ The algorithm is incomplete (does not necessarily find all independence relation
 \end{center}
 \medskip
 
-\begin{defi}{d-Separation}
-\textbf E d-separates \textbf X and \textbf Y if, on every undirected path from a node in \textbf X to a node in \textbf Y, there exists a node $Z$ such that:
-\begin{itemize}
-    \item $Z \in \textbf E$ and the path makes use of one edge leading into $Z$ and one leading away from $Z$ according to their original direction.
-    \item $Z\in\textbf E$ and both edges used point away from $Z$.
-    \item Neither $Z$ nor any of its successors are contained in $E$ and both edges lead into $Z$.
-\end{itemize}
-\end{defi}
+\begin{halfboxl}
+    \vspace{0em}
+    \begin{defi}{d-Separation}
+    \textbf E d-separates \textbf X and \textbf Y if, on every undirected path from a node in \textbf X to a node in \textbf Y, there exists a node $Z$ such that:
+    \begin{itemize}
+        \item $Z \in \textbf E$ and the path makes use of one edge leading into $Z$ and one leading away from $Z$ according to their original direction.
+        \item $Z\in\textbf E$ and both edges used point away from $Z$.
+        \item Neither $Z$ nor any of its successors are contained in $E$ and both edges lead into $Z$.
+    \end{itemize}
+    \end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{2.5em}
+    \begin{center}
+        \begin{tikzpicture}[shorten >=1pt,auto,node distance = 2cm, very thick,
+                    main node/.style={circle,draw,fill=white,font=\bfseries,inner sep=8pt},pos=0.25,scale=0.8, transform shape]
+
+          \path[fill=gray!20] (-1,-5) -- (-1,1) -- (1,1) -- (1,-5);
+          \path[fill=gray!20] (7,-5) -- (7,1) -- (9,1) -- (9,-5);
+          \path[fill=gray!20] (3,-3) -- (3,1) -- (5,1) -- (5,-3);
+
+          \draw (0,0.7)   node[] {\textbf{X}};
+          \draw (4,0.7)   node[] {\textbf{E}};
+          \draw (8,0.7)   node[] {\textbf{Y}};
+
+          \node[main node] (1) []{};
+          \node[main node] (2) [right of=1]{};
+          \node[main node] (3) [right of=2]{};
+          \node[main node] (4) [right of=3]{};
+          \node[main node] (5) [right of=4]{};
+
+          \node[main node] (6) [below of=1]{};
+          \node[main node] (7) [right of=6]{};
+          \node[main node] (8) [right of=7]{};
+          \node[main node] (9) [right of=8]{};
+          \node[main node] (10) [right of=9]{};
+
+          \node[main node] (11) [below of=6]{};
+          \node[main node] (12) [right of=11]{};
+          \node[main node] (13) [right of=12]{};
+          \node[main node] (14) [right of=13]{};
+          \node[main node] (15) [right of=14]{};
+
+          \node[main node] (16) [below left of=13]{};
+          \node[main node] (17) [below right of=13]{};
+
+          \path
+          (1) edge [] node [] {} (2)
+          (2) edge [->] node [] {} (3)
+          (3) edge [->] node [] {} (4)
+          (4) edge [] node [] {} (5)
+
+          (6) edge [] node [] {} (7)
+          (7) edge [<-] node [] {} (8)
+          (8) edge [->] node [] {} (9)
+          (9) edge [] node [] {} (10)
+
+          (11) edge [] node [] {} (12)
+          (12) edge [->] node [] {} (13)
+          (13) edge [<-] node [] {} (14)
+          (14) edge [] node [] {} (15)
+
+          (13) edge [->] node [] {} (16)
+          (13) edge [->] node [] {} (17);
+    \end{tikzpicture}
+    \end{center}
+\end{halfboxr}
 
 \section{Learning}
 \subsection{Kinds of Feedback during Learning}
