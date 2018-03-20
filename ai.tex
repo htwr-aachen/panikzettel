@@ -760,24 +760,26 @@ The algorithm is incomplete (does not necessarily find all independence relation
 
           \node[main node] (1) []{};
           \node[main node] (2) [right of=1]{};
-          \node[main node] (3) [right of=2]{};
+          \node[main node] (3) [right of=2,inner sep=4.9pt]{$Z$};
           \node[main node] (4) [right of=3]{};
           \node[main node] (5) [right of=4]{};
 
           \node[main node] (6) [below of=1]{};
           \node[main node] (7) [right of=6]{};
-          \node[main node] (8) [right of=7]{};
+          \node[main node] (8) [right of=7,inner sep=4.9pt]{$Z$};
           \node[main node] (9) [right of=8]{};
           \node[main node] (10) [right of=9]{};
 
           \node[main node] (11) [below of=6]{};
           \node[main node] (12) [right of=11]{};
-          \node[main node] (13) [right of=12]{};
+          \node[main node] (13) [right of=12,inner sep=4.9pt]{$Z$};
           \node[main node] (14) [right of=13]{};
           \node[main node] (15) [right of=14]{};
 
           \node[main node] (16) [below left of=13]{};
           \node[main node] (17) [below right of=13]{};
+
+
 
           \path
           (1) edge [] node [] {} (2)
@@ -797,7 +799,9 @@ The algorithm is incomplete (does not necessarily find all independence relation
 
           (13) edge [->] node [] {} (16)
           (13) edge [->] node [] {} (17);
-    \end{tikzpicture}
+
+
+        \end{tikzpicture}
     \end{center}
 \end{halfboxr}
 
@@ -809,45 +813,63 @@ In \emph{supervised learning}, the learner has access to input and correct outpu
 \emph{Reinforcement learning} only gives feedback in terms of rewards and punishment, but not correct answers.
 
 \emph{Unsupervised learning} happens without any feedback to the learner. The learner must learn on its own.
-
+\vspace{-0.5\baselineskip}
 \subsection{Decision Trees}
 
-\subsubsection{A Short Introduction to Information Theory}
-Let's assume we have a probabilistic experiment with outcomes $v_1,\ldots,v_n$ and their corresponding probabilities $\operatorname P(v_1),\dots,\operatorname P(v_n)$.
-Then the \emph{information content} or \emph{entropy} of this experiment can be calculated by the following formula:
-\[\operatorname I(\operatorname P(v_1),\dots,\operatorname P(v_n)) = - \sum\limits_{i=1}^n \operatorname{P} (v_i) \cdot \log_2 (\operatorname{P}(v_i)) \]
+\begin{halfboxl}
+We can measure the average amount of information produced by some stochastic source of data with probabilities using the metric \emph{(information) entropy}.
+High entropy means the source generates more information.
+For our purposes, low entropy also means the source can be predicted more easily.
 
-For example, if we flip a fair coin we have no information about its outcome.
-Therefore the entropy is maximal, e.g. $\operatorname I(\frac 12, \frac 12) = 1$.
-But if we have an unfair coin such that with a chance of 99\% the outcome of the flip is tail, we don't gain much information by flipping it, e.g. the entropy is $\operatorname I (\frac {99}{100},\frac 1 {100}) = 0.08$.
+Consider a fair coin flip with probabilities $\frac{1}{2}$ for both heads and tails.
+This source has entropy $\operatorname I(\frac{1}{2}, \frac{1}{2}) = 1$.
+However, a biased coin, e.g.\ one with probability $\frac{99}{100}$ has entropy $\operatorname I (\frac {99}{100},\frac 1 {100}) = 0.08$.
+\end{halfboxl}%
+\begin{halfboxr}
+\vspace{-\baselineskip}
+\begin{defi}{Information Entropy}
+Let $v_1,\ldots,v_n$ be the outcomes of a probabilistic experiment with probabilities $\operatorname P(v_1),\dots,\operatorname P(v_n)$.
+\begin{align*}
+\operatorname I(\operatorname P(v_1),&\dots,\operatorname P(v_n)) \\
+&:= -\sum\limits_{i=1}^n \operatorname{P} (v_i) \cdot \log_2 (\operatorname{P}(v_i))
+\end{align*}
 
-\subsubsection{Decision Tree-Learning}
-
-Our goal is to build a small decision tree from a bunch of examples with attributes.
-The decision tree should be small because of Occam's Razor: The simplest hypothesis which covers all examples is the most likely one.
-
-To build the tree, the deciding attribute must be chosen for each branch.
-We choose the attribute with the highest \emph{information gain}.
-
-\begin{defi}{Information Gain}
+{\footnotesize We define $\log_2 0 := 0$.}
+\end{defi}
+\end{halfboxr}
+\vspace{-0.5\baselineskip}
+\begin{defi}{Average Attribute Entropy}
 Let $a$ be an attribute with $n$ negative and $p$ positive examples.
 Further, let $p_i$ respectively $n_i$ be the number of positive respectively negative occurrences of attribute value $i$.
-
-\[\operatorname{Gain} (a) = \operatorname{I} \left (\frac{p}{p+n},~ \frac{n}{p+n} \right ) - \sum\limits_\text{value $i$} \left (\frac{p_i + n_i}{p+n} \cdot \operatorname{I} \left ( \frac{p_i}{p_i+n_i},~ \frac{n_i}{p_i+n_i} \right) \right )\]
+\[\operatorname{AI} (a) = - \sum\limits_\text{value $i$} \left (\frac{p_i + n_i}{p+n} \cdot \operatorname{I} \left ( \frac{p_i}{p_i+n_i},~ \frac{n_i}{p_i+n_i} \right) \right )\]
 \end{defi}
 
+\begin{halfboxl}
+\emph{Decision tree-learning} now builds decision trees by choosing attributes with the lowest average entropy until the attribute set only has \texttt{Yes} or \texttt{No} results.
+
+The key idea is that, to build a small decision tree, and assuming the the simplest hypothesis is the most likely, lowest average entropy is a metric of how good an attribute is at predicting the final decision.
+
+{\footnotesize (Most definitions of decision tree-learning use \emph{information gain} instead of average attribute entropy. Our definition simplifies the algorithm by omitting unnecessary constant terms.)}
+\end{halfboxl}%
+\begin{halfboxr}
+\vspace{-\baselineskip}
 \begin{algo}{Decision Tree-Learning}
 \textbf{Input}: A set of examples with attributes.
 
 \textbf{Output}: A decision tree.
 \tcblower
 \begin{enumerate}
-    \item Choose the attribute $a$ such that $\operatorname{Gain}(a)$ is the highest.
-    \item Create a node corresponding to the chosen attribute.
-    \item If the current attribute only has positive or negative examples, return a leaf with \texttt{Yes} or \texttt{No} accordingly.
-    \item Recursively generate subtrees for each value of the attribute with the remaining attributes.
+    \item Choose $a = \argmin_a \operatorname{AI}(a)$, the attribute with the lowest average entropy.
+    \item Create a node for $a$:
+        \begin{itemize}
+            \item If $a$ only has positive or negative examples, return a leaf with \texttt{Yes} or \texttt{No} accordingly.
+            \item Otherwise recursively build subtrees for each value with the remaining attributes.
+        \end{itemize}
 \end{enumerate}
 \end{algo}
+\end{halfboxr}
+
+
 
 \subsection{Neural Networks}
 
