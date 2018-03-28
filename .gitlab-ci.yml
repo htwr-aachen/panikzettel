@@ -19,3 +19,4 @@ compile_pdf:
       - effi.pdf
       - afi.pdf
       - ai.pdf
+      - cg.pdf
