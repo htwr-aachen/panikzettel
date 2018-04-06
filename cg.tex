@@ -19,7 +19,7 @@ This Panikzettel covers the lecture Basic Techniques in Computer Graphics, held 
 This Panikzettel is Open Source. We appreciate comments and suggestions at
 \\ \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
 
-The following diagram roughly outlines the rendering pipeline, according to which this Panikzettel is loosely structured.
+The following diagram roughly outlines the rendering pipeline, after which this Panikzettel is loosely structured.
 
 \begin{center}
 \begin{tikzpicture}{1}
@@ -32,7 +32,7 @@ The following diagram roughly outlines the rendering pipeline, according to whic
     \node [inner sep = 6pt] (b) at (6,-1.5) {Rasterisation};
     \node [inner sep = 4.5pt] (c) at (10,-1.5) {Texturing};
     \node [very thick] (z) at (14,-1.5) {Image};
-    \node [rectangle] (text) at (7,-3) {Rendering Pipeline};
+    \node [rectangle,draw=white] (text) at (7,-3) {Rendering Pipeline};
         \path [->,thick] (d) edge (a);
         \path [->,thick] (a) edge (e);
         \path [->,thick] (e) edge (b);
@@ -51,9 +51,9 @@ The following diagram roughly outlines the rendering pipeline, according to whic
 \begin{halfboxl}
 In general, we use two different forms to represent objects, the parametric and the implicit form.
 
-Simply speaking, we can say that a parametric function takes in some variables and gives out a point of the object it defines.
+Simply speaking, we can say that a \textit{parametric function} takes in some variables and gives out a point of the object it defines.
 
-Contrary to this, an implicit function takes a point in space as input and returns $0$ (hence \emph{kernel}) if it lies within the object and something else if it doesn't.
+Contrary to this, an \textit{implicit function} takes a point in space as input and returns $0$ (hence \emph{kernel}) if it lies within the object and something else if it doesn't.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -81,7 +81,7 @@ A parametric form $f: \mathbb{R} \to \mathbb{R}^2$, that returns points on the e
 \[
     f(\alpha) = \begin{pmatrix} c + cos(\alpha) \cdot r \\ c + sin(\alpha) \cdot r \end{pmatrix}
 \]
-With this formula, to get a point lying on the edge, one just needs to plug in an angle.
+To get a point lying on the edge with this formula, one just needs to plug in an angle.
 
 But what if one wants to check whether a \emph{given} point lies on the edge? One would have to check the point against all possible results of the above formula to be sure. For that case an implicit form works a lot better:
 \[
@@ -89,7 +89,7 @@ But what if one wants to check whether a \emph{given} point lies on the edge? On
 \]
 Now to check if a point $p \in \mathbb{R}^2$ lies on the edge of the circle it can be simply plugged into the above formula.
 
-It should now be clear, that which representation one should choose depends on the application.
+It is clear that the choice of a representation depends on the application.
 
 
 \section{Coordinate Systems}
@@ -97,7 +97,7 @@ It should now be clear, that which representation one should choose depends on t
 \subsection{Extended Coordinates}
 
 \begin{halfboxl}
-To distinguish points from vectors, we can extend the coordinates to include a fourth one. Points will have $1$ as their fourth coordinate while vectors will have $0$.
+To distinguish points from vectors, we can \textit{extend} the coordinates to include a fourth one. Points will have $1$ as their fourth coordinate while vectors will have $0$.
 
 These coordinates are mathematically reasonable as the addition of two vectors and substraction of two points yield vectors while the addition of a point and a vector yields another point. However, the addition of two points is ambiguous.
 \end{halfboxl}%
@@ -106,13 +106,13 @@ These coordinates are mathematically reasonable as the addition of two vectors a
 \begin{defi}{Extended Coordinates}
 Using extended coordinates, the point $p = (p_1, p_2, p_3)^T \in \mathbb{R}^3$ and vector \linebreak $v = (v_1, v_2, v_3)^T \in \mathbb{R}^3$ are noted as:
 
-$$p = \begin{pmatrix} p_1 \\ p_2 \\ p_3 \\ 1 \end{pmatrix}, v = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ 0 \end{pmatrix} \quad p, v \in \mathbb{R}^4$$
+$$p = \begin{pmatrix} p_1 \\ p_2 \\ p_3 \\ 1 \end{pmatrix}, \enskip v = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ 0 \end{pmatrix} \quad p, v \in \mathbb{R}^4$$
 \end{defi}
 \end{halfboxr}
 
 \subsection{Homogeneous Coordinates}
 \begin{halfboxl}
-Homogeneous coordinates allow \emph{storing} dividends in the fourth component of a point by multiplying them.
+\textit{Homogeneous coordinates} allow \emph{storing} dividends in the fourth component of a point by multiplying them.
 
 Thus, divisions accumulate and in a last step called \emph{de-homogenisation} the point is divided by that fourth component. As such, divisions can be treated as \emph{multiplications}, which allows concatenating projective matrices with other matrices as explained in the following.
 \end{halfboxl}%
@@ -136,7 +136,7 @@ Multiple mappings can be applied consecutively by multiplying them in the correc
 
 A scaling operation multiplies each axis by a given factor. Choosing a factor greater or smaller than $1$ results in stretching or shrinking respectively. A factor of exactly $1$ results in no change at all.
 
-It is obvious that except for factor $1$, lengths are not preserved, and that angles are only preserved if every axis is scaled by the same factor.
+It is obvious that lengths are (generally) not preserved, and that angles are only preserved if every axis is scaled by the same factor.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -150,7 +150,7 @@ $$S =\begin{pmatrix} \alpha & 0 & 0 & 0 \\ 0 & \beta & 0 & 0 \\ 0 & 0 & \gamma &
 
 \subsubsection*{Rotation}
 
-The rotation operation is used to rotate an object around an axis. In general, any axis can be used for rotation. Though, since this is rather complex, we mostly rotate around the 3 main axes, that is the $x$, $y$ and $z$-axes.
+The rotation operation is used to rotate an object around an axis. In general, any axis can be used for rotation. Though, since this is rather complex, we mostly rotate around the 3 main axes.
 
 \begin{defi}{Rotation}
 In $\mathbb{R}^3$ space we have three intuitive axes around which we can rotate, with rotation matrices \linebreak $R_x(\alpha), R_y(\alpha), R_z(\alpha) \in \mathbb{R}^4$ for an angle of $\alpha$ given as follows:
@@ -211,11 +211,11 @@ For the subject of projective mappings, we will be using homogeneous coordinates
 
 The standard projection is defined by placing the camera at the origin, with the viewing vector being $(0, 0, -1)^T$ and the image plane being $z = -1$.
 
-It appears obvious that projecting the point $(x, y, z, 1)^T$ using standard projection and then dehomogenizing will yield $$\big( \frac{x}{-z}, \frac{y}{-z}\big)^T.$$
+Projecting the point $(x, y, z, 1)^T$ using standard projection and then dehomogenizing will yield $$\big( \frac{x}{-z}, \frac{y}{-z}\big)^T.$$
 
 \subsubsection*{Arbitrary Camera or Image Plane}
 
-All of this being a bit boring, we can also select an arbitrary image plane, defined through $n =(n_x, n_y, n_z)^T$ and a focal distance $\delta$, while keeping our camera at the origin, but pointed at the image plane.
+All of this being a bit boring, we can also select an arbitrary image plane, defined through $n =(n_x, n_y, n_z)^T$ and a focal distance $\delta$, while keeping our camera at the origin but pointed at the image plane.
 
 \end{halfboxl}%
 \begin{halfboxr}
@@ -251,9 +251,7 @@ We can also do the opposite by picking an arbitrary camera position, keeping the
 All of these projections can be deduced mathematically, but we're not going to do this here.
 
 \begin{defi}{Arbitrary Camera Position}
-The corresponding projection matrix for an arbitrary camera position with a focal distance of $\delta$ and a position $n$ is given by:
-
-$$p_{acp} =
+The corresponding projection matrix for an arbitrary camera position with a focal distance of $\delta$ and a position $n$ is given by:$$p_{acp} =
 \begin{pmatrix}
 1-n_x^2 & -n_xn_y & -n_xn_z & 0 \\
 -n_xn_y & 1-n_y^2 & -n_yn_z & 0 \\
@@ -263,12 +261,12 @@ $$p_{acp} =
 \end{defi}
 
 \subsection{Vanishing Points}
-Due to perspective foreshortening, parallel lines can meet at a certain distant point, the \emph{vanishing point}. You can observe this in nature: Take for example \emph{train rails} that run parallel. When you look down the tracks you will notice that the two rails, although actually apart, meet at the horizon.
+Due to perspective foreshortening, parallel lines can meet at a certain distant point, the \emph{vanishing point}. You can observe this in nature: Take for example train rails that run parallel. When you look down the tracks you will notice that the two rails, although actually apart, meet at the horizon.
 %The same applies for lovers that walk down a road towards the sunset.
 
 To find a line's vanishing point on the image plane, we can simply intersect the line with the image plane, starting from the viewer's position. All other lines that are parallel to this line will, at infinity, appear at the same position. Also, lines that run parallel to the image plane do not have a vanishing point.
 
-Why is that? Let's have a look at a line in explicit representation: $L(\lambda) = (x, y, z)^T + \lambda \cdot (d_x, d_y, d_z)^T$. When applying the standard projection from earlier we get $$P_{std} (L(\lambda)) = \begin{pmatrix} \frac{x + \lambda d_x}{-z - \lambda d_z} & \frac{y + \lambda d_y}{-z  - \lambda d_z} \end{pmatrix}^T$$
+Why is that? Let's have a look at a line in explicit representation: $L(\lambda) = (x, y, z)^T + \lambda \cdot (d_x, d_y, d_z)^T$. When applying the standard projection from earlier we get $$P_{std} (L(\lambda)) = \begin{pmatrix} \frac{x + \lambda d_x}{-z - \lambda d_z} & \frac{y + \lambda d_y}{-z  - \lambda d_z} \end{pmatrix}^T.$$
 In case $d_z = 0$, which means that the line runs \emph{parallel to the image plane}, $\lim_{\lambda \to \infty} P_{std} (L(\lambda)) = \infty$, which we interpret as the lack of a vanishing point.
 
 However, when $d_z \neq 0$, then $\lim_{\lambda \to \infty} P_{std} (L(\lambda)) = \begin{pmatrix} \frac{d_x}{-d_z} & \frac{d_y}{-d_z}\end{pmatrix}$ is the vanishing point of that line. So apparently the position of the vanishing point of a line depends on its \emph{direction only}, not its position, thus all parallel lines share the same vanishing point.
@@ -318,7 +316,7 @@ The \emph{frustum transformation} is the second one. After having defined a view
 
 Such a viewing frustum can be thought of as a pyramid with its top at the camera, truncated by a near plane at the top and a far plane at the bottom, both orthogonal to the $z$-axis.
 
-It is further defined by the coordinates of its top, bottom, left and right edges on the near plane, or $t$, $b$, $l$ and $r$ respectively.
+It is defined by the coordinates of its top, bottom, left and right edges on the near plane, or $t$, $b$, $l$ and $r$ respectively.
 
 \end{halfboxl}%
 \begin{halfboxr}
@@ -431,9 +429,9 @@ $$M_{Frustum} = \begin{pmatrix}
 \subsubsection*{Viewport Transformation}
 
 \begin{halfboxl}
-To get the scene from the cube to our screen we apply a parallel projection whereby we simply neglect the $z$-coordinate. Our image now has coordinates $[-1, 1]^2$. But a screens aspect ratio is usually different to $1:1$, for example $16:9$, so to display the image we have to \emph{scale} it and \emph{add an offset} by applying the \emph{window-to-viewport} map.
+To get the scene from the cube to our screen we apply a parallel projection in which we simply neglect the $z$-coordinate. Our image now has coordinates $[-1, 1]^2$. But a screens aspect ratio is usually different from $1:1$, for example $16:9$, so to display the image we have to \emph{scale} it and \emph{add an offset} by applying the \emph{window-to-viewport} map.
 
-This gives us homogeneous coordinates which, after de-homogenisation, represent screen coordinates.
+After de-homogenisation, this gives us homogeneous coordinates which represent screen coordinates.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -455,11 +453,11 @@ $$M_{viewport} = \begin{pmatrix}
 \subsubsection*{Cohen-Sutherland Algorithm}
 
 \begin{halfboxl}
-The \emph{Cohen-Sutherland algorithm} uses \emph{outcodes}. An outcode, defined for a point, consists of 4 bits, one for each border of the bounding box, order like this: top, bottom, right, left (TBRL).
+The \emph{Cohen-Sutherland algorithm} uses \emph{outcodes}. An outcode, defined for a point, consists of 4 bits, one for each border of the bounding box, ordered like this: top, bottom, right, left (TBRL).
 
-If a point lies beyond a certain border line, the corresponding bit is activated, as shown in the diagram.
+If a point lies beyond a certain border line the corresponding bit is activated, as shown in the diagram.
 
-For a line segment, there are two points, through which we can test if it is fully contained or fully outside in the box.
+For a line segment there are two points through which we can test if it is fully contained or fully outside in the box.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -515,7 +513,7 @@ If neither is fulfilled, the line may or may not be partially contained in the b
 \begin{halfboxl}
 The \emph{Liang-Barsky algorithm} uses the parametric representation of a line segment between $p_0$ and $p_1$: $$L(\lambda) = (1 - \lambda)p_0 + \lambda p_1, \quad \lambda \in [0,1].$$
 
-For each boundary line, it calculates the parameter $\lambda'$ at which the line crosses it and updates the boundaries of the line. Then, if the point enters a boundary, we use $\lambda'$ to update $\lambda_0$, else we update $\lambda_1$.
+For each boundary line it calculates the parameter $\lambda'$ at which the line crosses it and updates the boundaries of the line. Then, if the point enters a boundary, we use $\lambda'$ to update $\lambda_0$, else we update $\lambda_1$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -555,9 +553,9 @@ For each boundary line, it calculates the parameter $\lambda'$ at which the line
 \end{center}
 \end{halfboxr}
 
-The entry test is done by calculating the direction $d = p_1 - p_0$, then calculating $n^Td$, $n$ being the boundary's normal. If it's negative, it's entering the boundary, else it's exiting it.
+The entry test is done by calculating the direction $d = p_1 - p_0$, then calculating $n^Td$, $n$ being the boundary's normal vector. If it's negative, it's entering the boundary, else it's exiting it.
 
-In the end, we obtain a parameter boundary $\lambda \in [\lambda_0,\lambda_1]$. If $\lambda_0 le \lambda_1$, the line intersects the box and we render the segment, else it doesn't and we don't.
+In the end, we obtain a parameter boundary $\lambda \in [\lambda_0,\lambda_1]$. If $\lambda_0 \le \lambda_1$, the line intersects the box and we render the segment, else we don't.
 
 \subsection{Polygon Clipping}
 
@@ -588,7 +586,7 @@ The Liang-Barsky algorithm for polygons is just an extension of the line version
 \begin{halfboxl}
 We recall the parametric and implicit representations of a line given by its endpoints $(x_0,y_0)^T$ and $(x_1,y_1)^T$.
 
-Further, we limit our lines to slopes in $[0,1]$, as all other slopes can thus easily be mirrored.
+Further, we limit our lines to slopes in $[0,1]$, as all other slopes can easily be mirrored.
 
 \end{halfboxl}%
 \begin{halfboxr}
@@ -607,7 +605,7 @@ Further, we limit our lines to slopes in $[0,1]$, as all other slopes can thus e
 
 \emph{Digital Differential Analysis} (DDA) calculates pixel coordinates by incremental addition and subsequent rounding of $y$.
 
-This is better than calculating $y$ by multiplication of $x$, but is still mathematically costly as we still have to round $y$.
+This is better than calculating $y$ by multiplication of $x$, but is still computationally costly as we still have to round $y$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -618,8 +616,8 @@ This is better than calculating $y$ by multiplication of $x$, but is still mathe
 \begin{enumerate}
     \item While $x \le x_1$:
     \item   \begin{enumerate}
-                \item $x := x + 1, \quad y := \lfloor y + m \rceil$
-                \item \text{setPixel}($x$, $y$)
+                \item $x := x + 1, \quad y := \lfloor y + m \rceil$.
+                \item \text{setPixel}($x$, $y$).
             \end{enumerate}
 \end{enumerate}
 \end{algo}
@@ -700,6 +698,8 @@ We do this by simply evaluating for the implicit representation $M$ $F(M) = F(x_
 
 But calculating $F(M)$ for each step is costly. So, we save the variable $d = F(M) = a + \frac{b}{2}$ and increment it with each step.
 
+\vspace{10pt}
+
 \begin{halfboxl}
 Then, if E is chosen we update as follows:
 \begin{align*}
@@ -725,7 +725,7 @@ In real life, we multiply everything by $2$ so that we can do our calculations u
 
 
 \begin{halfboxl}
-\emph{Scanline conversion} is pretty straightforward. After sorting our polygons by highest $y$-point, we traverse all scanlines (horizontal pixel lines) and check for intersection with these polygons.
+\emph{Scanline conversion} is pretty straightforward. After sorting our polygons by their highest value $y$-points, we traverse all scanlines (horizontal pixel lines) and check for intersection with these polygons.
 
 While doing this, we compute the fill inside the polygons by sorting the intersection points and filling the spans between odd and even intersections. But we have to cover some edge cases.
 \end{halfboxl}%
@@ -883,11 +883,11 @@ The algorithm to create such a triangulation uses three operations to achieve th
 \textbf{Output:} A Delaunay Triangulation of the point set.
 \tcblower
 \begin{enumerate}
-    \item Add three further points around the point cloud of $p_1,...,p_n$.
+    \item Add three further points around the point cloud of $p_1,...,p_n$ and create edges between them.
     \item For each point from the set: \begin{enumerate}
-        \item If it lies within a triangle, perform a 1-3 split.
-        \item If it lies within a tron the edge of two triangles, perform a 2-4 split.
-        \item Restore the Delaunay property with edge flips.
+        \item If it lies within a triangle, perform a 1-3 Split.
+        \item If it lies within a tron the edge of two triangles, perform a 2-4 Split.
+        \item Restore the Delaunay property with Edge Flips.
     \end{enumerate}
   \item Finally, delete the three points and corresponding edges and faces that were added in the first step.
 \end{enumerate}
@@ -1028,7 +1028,7 @@ The material property $\alpha$ is given by a diagonal matrix $\alpha \in \mathbb
 
 The light intensities $C$ are given by three dimensional colour vectors.
 
-On the right, we preemptively introduce the full formula used by the Phong model. We will then, in the following sections, analyse its components.
+On the right, we preemptively introduce the full formula used by the Phong model. In the following sections we will analyse its components.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1048,7 +1048,7 @@ It can be decomposed into \emph{ambient lighting}, \emph{diffuse lighting} and \
 \vspace{-\baselineskip}
 \subsubsection*{Ambient Lighting}
 
-Since usually, no scene is completely dark, ambient lighting, which is independent of light source or the viewers position, is determined only by surface materials and ambient light intensity.
+Since usually no scene is completely dark, \textit{ambient lighting} independent of light source or the viewers position is determined only by surface materials and ambient light intensity.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1059,13 +1059,12 @@ $$C_a = \alpha_a \cdot C_A$$
 \end{defi}
 \end{halfboxr}
 
-\begin{halfboxl}
-\vspace{-\baselineskip}
-
 \subsubsection*{Diffuse Lighting}
 
 
-Diffuse lighting models the reflection on matte or rough surfaces. It can also be formulated as the amount of light hitting a certain point from a certain light source.
+\begin{halfboxl}
+\vspace{-\baselineskip}
+\textit{Diffuse Lighting} models the reflection on matte or rough surfaces. It can also be formulated as the amount of light hitting a certain point from a certain light source.
 
 While dependent on the material, it is also dependent on the relative position of the light source to the surface.
 \end{halfboxl}%
@@ -1073,7 +1072,6 @@ While dependent on the material, it is also dependent on the relative position o
 \vspace{-\baselineskip}
 \begin{defi}{Diffuse Lighting}
 Given a light source emitting the light $C_l$, the diffuse lighting is given by:
-
 $$C_d(p,n,l) = \alpha_d \cdot C_l \cdot \frac{n^T \cdot (l-p)}{||l-p||}$$
 \end{defi}
 \end{halfboxr}
@@ -1081,7 +1079,7 @@ $$C_d(p,n,l) = \alpha_d \cdot C_l \cdot \frac{n^T \cdot (l-p)}{||l-p||}$$
 \subsubsection*{Specular Lighting}
 
 \begin{halfboxl}
-Specular lighting models the behaviour of light on a shiny surface, off which it is reflected with the same angle with which it hit it. The outgoing vector is given by $r$. Thus, it is of course dependent on the position of the light source, but also on the position of the viewer.
+\textit{Specular lighting} models the behaviour of light on a shiny surface, off which it is reflected with the same angle with which it hit it. The outgoing vector is given by $r$. Thus, it is of course dependent on the position of the light source, but also on the position of the viewer.
 
 We also need to take into account the \emph{shininess exponent} $s$, since there are varying degrees of shininess. The higher $s$ is, the shinier the surface, and thus the preciser the reflection is.
 
@@ -1097,10 +1095,10 @@ $$C_{sp} (p,n,v,l) = \alpha_{sp} \cdot C_l \cdot \bigg(\frac{r^T(v-p)}{||r||\cdo
 $$C_{sp}(p,n,v,l) \approx \alpha_{sp}  \cdot C_l \cdot \big(n^Th\big)^s$$ with $$h= \frac{v + l}{||v + l||}$$
 \end{defi}
 \end{halfboxr}
+\subsubsection*{Attenuation}
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
-\subsubsection*{Attenuation}
 
 
 The attenuating factor for a point, given a light source, is about the distance of the point from the light source; the greater the distance between them, the weaker the reflection should be.
@@ -1137,7 +1135,7 @@ $$\text{spot}(p,l) = \bigg(\frac{d^T(p-l)}{||p-l||}\bigg)^f$$
 \vspace{-\baselineskip}
 \subsubsection*{Depth Cueing}
 
-In outdoor scenes, we want to be able to model the blue-gray of far away objects. This is done through depth cueing, which, factoring in the distance to the viewer $b$, overlays the colour of an object with such a filter.
+In outdoor scenes we want to be able to model the blue-gray of far away objects. This is done through depth cueing. Factoring in the distance to the viewer $b$, it overlays the colour of an object with such a filter.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1188,20 +1186,21 @@ Shadows are caused by objects blocking light. What we effectively perform are vi
 
 A Shadow Volume is a cone-like volume to infinity, starting at the silhouette of an object, cast by a light source. A silhouette of an object can be easily found as it is built by the edges that separate front- and back-facing polygons w.r.t. the light source. The number of shadow volumes we need to compute is $\# occluder \cdot \# lights$.
 
-During visibility tests we raycast through each pixel of the final image into the scene onto an intersection point to find the closest polygon. We can extend this and check whether this point lies within a volume by simply counting all intersections of the ray with shadow volumes. For every volume we enter or leave, we increment or decrement the counter respectively. If the counter is non-zero as we reach the intersection point, it lies inside of (at least) one shadow volume.
+During visibility tests we raycast through each pixel of the final image into the scene onto an intersection point to find the closest polygon. We can extend this and check whether this point lies within a volume by simply counting all intersections of the ray with shadow volumes. For every volume entered or left by the ray, we increment or decrement the counter respectively. If the counter is non-zero as we reach the intersection point, it lies inside of (at least) one shadow volume.
 
-This method fails if the camera is positioned inside a shadow volume and is referred to as \emph{$z$-fail}. To overcome this issue, we add a back-cap to each volume and instead of tracking the ray intersections with volumes \emph{in front of} $p$, we count the intersections \emph{behind} $p$, with incrementation and decrementation switched.
+This method fails if the camera is positioned inside a shadow volume and is referred to as \emph{$z$-fail}. To avoid this issue, we add a back-cap to each volume and instead of tracking the ray intersections with volumes \emph{in front of} $p$, we count the intersections \emph{behind} $p$, with incrementation and decrementation switched.
 
 \subsubsection*{Shadow Maps}
 By rendering the scene as seen from the position of the light source and storing the contents of the resulting Z-Buffer, we get so called Shadow Maps that store the distances between the light source and occluders.
 
-To check whether a point $p$ lies inside of a shadow we simply project it onto our shadow map with the model-view and projection matrix used to create the shadow map. We can now compare the depth values: If the depth of $p$ is greater than the stored value on the shadow map, the point lies behind another object and the light has no effect on its colour.
+To check whether a point $p$ lies inside of a shadow, we simply project it onto our shadow map with the model-view and projection matrix used to create the shadow map. We can now compare the depth values: If the depth of $p$ is greater than the stored value on the shadow map, the point lies behind another object and the light has no effect on its colour.
 
 \subsubsection*{Perspective Shadow Maps}
 \label{subsubsec::perspectiveShadowMaps}
 
 \begin{halfboxl}
-The resolution of the shadow map is the resolution of the depth buffer. This means that many fragments get projected onto the same pixel of the shadow map. This effect is expressed in the following formula:
+The resolution of the shadow map is the resolution of the depth buffer. This means that many fragments get projected onto the same pixel of the shadow map.
+This effect is expressed by the formula on the right.
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1272,7 +1271,7 @@ Aliasing are a set of effects that occur during different steps of the rendering
 
 The optimal solution to texture aliasing is to integrate over the area of the texture that is projected onto the fragment. This solution is very complex and slow. For ray-tracing supersampling, taking the average colour of multiple points is optimal.
 
-For rasterisation, a good way is to use \emph{MIP-Maps} and \emph{trilinear filtering}. The texture is stored in multiple resolutions increasing the memory by 33\%. Each resolution is called a \emph{level}. The GPU calculates the optimal level for a given fragment, the farther the texture is away, the lower is the resolution.
+For rasterisation, a good way is to use \emph{MIP-Maps} and \emph{trilinear filtering}. The texture is stored in multiple resolutions, increasing the memory by 33\%. Each resolution is called a \emph{level}. The GPU calculates the optimal level for a given fragment, the farther the texture is away, the lower is the resolution.
 
 In the general case, the calculated level is between to existing levels and the projected position of the texture is between to texels. Therefore the colours of the two levels, and in each level between the tow texels in $u$ and $v$ direction, is interpolated. Resulting in trilinear interpolation.
 
@@ -1324,10 +1323,10 @@ Our meshes are $2$\emph{-manifolds}, meaning that they are surfaces with no extr
 
 Sometimes, our meshes are \emph{closed}, that is, there are no boundary edges.
 
-\subsection{Euler Formula}
+\subsection{Euler's Formula}
 
 \begin{halfboxl}
-The Euler Formula gives the relation between the number of vertices, faces, edges and the genus of an object has and is given by:
+Euler's Formula gives the relation between the number of vertices, faces, edges and the genus of an object has and is given by:
 
 $$V - E + F = 2 (1 - g)$$
 
@@ -1351,7 +1350,7 @@ Inserting this into the Euler Formula, we have $2V - F = c$. And since normally,
 Platonic solids are convex polyhedra with the properties that they are closed, that they have genus $0$, that all faces are regular $p$-gons and and that all vertices have valence $q$.
 
 \begin{halfboxl}
-We can derive all existing platonic solids by using the Euler formula and the above properties. This is done by assigning half edges to vertices $HE = 2E = qV$ and to faces $HE = 2E = pF$ respectively. We can transform these equations, insert the results into the Euler Formula and obtain$E$, $V$ and $F$ in function of $p$ and $q$.
+We can derive all existing platonic solids by using the Euler formula and the above properties. This is done by assigning half edges to vertices $HE = 2E = qV$ and to faces $HE = 2E = pF$ respectively. We can transform these equations, insert the results into the Euler Formula and obtain $E$, $V$ and $F$ in function of $p$ and $q$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1374,7 +1373,7 @@ A possibility would be to simply store any triangle by specifying its three vert
 
 \subsubsection*{Shared Vertex}
 
-We can reduce the redundance by saving a list of vertices and their coordinates on one hand and a list of triangles made of said vertices on the other. This is the principle of the \emph{shared vertex} technique.
+We can reduce the redundancy by saving a list of vertices and their coordinates on one hand and a list of triangles made of said vertices on the other. This is the principle of the \emph{shared vertex} technique.
 
 \end{halfboxl}
 \begin{halfboxr}
@@ -1382,7 +1381,7 @@ We can reduce the redundance by saving a list of vertices and their coordinates 
 
 \subsubsection*{Triangle Strips}
 
-This redundance can be further reduced if, instead of saving the topology separately, we implicitly saved it through ordering of the vertices. This construct is called a \emph{triangle strip}. In practice though, we require more than one of these strips to describe the topology.
+This redundance can be further reduced if instead of saving the topology separately, we implicitly saved it through ordering of the vertices. This construct is called a \emph{triangle strip}. In practice, we require more than one of these strips to describe the topology.
 
 \subsubsection*{Triangle Fans}
 
@@ -1414,7 +1413,7 @@ $$v=[^*e], \quad f=[^*e]$$
 \begin{halfboxl}
 \subsubsection*{Face Based Structures}
 
-This structure is problematic in that, trying to jump along the faces around one vertex, we need to check which face we came from to continue in the right direction. Further, we do not actually save the edges, thus they are not represented.
+This structure is impractical since in trying to jump along the faces around one vertex, we need to check which face we came from to continue in the right direction. Further, we do not actually save the edges, thus they are not represented.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1547,7 +1546,7 @@ This is due to the ghost vertex being used to store how many vertices are locate
 
 \section{Constructive Solid Geometry}
 
-In Constructive Solid Geometry (CSG), we will have the possibility of combining different objects through boolean operations. Thus, we will be describing these objects using implicit representations. In $\mathbb{R}^3$, a point $p$ will be contained in an object defined by $F: \mathbb{R}^3 \to \mathbb{R}$ if $F(p) \le 0$. Conversely, if it isn't, $F(p) > 0$ will hold.
+In Constructive Solid Geometry (CSG), we will have the possibility of combining different objects through boolean operations. Thus, we will be describing these objects using implicit representations. In $\mathbb{R}^3$, if a point $p$ is contained by an object defined by $F: \mathbb{R}^3 \to \mathbb{R}$ if $F(p) \le 0$. Conversely, if it isn't, $F(p) > 0$ will hold.
 
 We will consider primitives that can be given as matrix-vector products of the following form, that is, by quadratic polynomials.
 
@@ -1650,7 +1649,7 @@ $$Q' = (M^{-1})^T \cdot Q \cdot M^{-1}$$
 \begin{halfboxl}
 Given two objects $F_1$ and $F_2$ given by their implicit functions, all the points lying inside them are given by $$S_i = \Set{p \in \mathbb{R}^3 : F_i(p) \le 0}, i\in \Set{1,2}.$$
 
-With this we can, intuitively and formally, define the Boolean union, intersection and substraction operations.
+With this we can intuitively and formally define the Boolean union, intersection and substraction operations.
 
 The union requires the point to only be contained by one of the objects. So if the minimum of the two functions is negative (implying that at least one is), then the point lies within the union.
 
@@ -1681,13 +1680,13 @@ Finally, the subtraction requires that a point be contained by $F_1$ but not $F_
 
 \subsection{Culling}
 
-When rendering a scene, some objects might not be fully, or even at all visible for the camera. We want, obviously, to render only the objects that are actually visible. We call this problem \emph{visibility determination}, and there are different approaches to solving it.
+When rendering a scene, some objects might not be fully or even at all visible for the camera. We want to render only the objects that are actually visible. We call this problem \emph{visibility determination}, and there are different approaches to solving it.
 
 Culling is the process that allows us to avoid rendering certain faces that are not visible for the camera. We will be summarising a few of them, ordered by increasing order of computational cost.
 
 \subsubsection*{Backface Culling}
 
-The simplest of our techniques is backface culling. It is pretty intuitive in as it simply allows removing the polygons not facing the camera, and thus assuming that all meshes are closed. Further, there are situations in which som ploygons \emph{do} face the camera but still aren't visible.
+The simplest of our techniques is backface culling. It is pretty intuitive as it simply allows removing the polygons not facing the camera, and thus assuming that all meshes are closed. Further, there are situations in which som ploygons \emph{do} face the camera but still aren't visible.
 
 \subsubsection*{Hierarchical Frustum Culling}
 
@@ -1714,7 +1713,7 @@ The hierarchical part comes in by creating bounding boxes around bounding boxes.
 \subsubsection*{Quad/Octrees}
 
 \begin{halfboxl}
-Remember \emph{Binary Trees}, also called Bintrees? Well, Quadtrees are pretty similar on principle, except that you use them to split $2$ and $3$ dimensional space respectively.
+Remember \emph{Binary Trees}, also called Bintrees? Well, \textit{Quadtrees} and \textit{Octrees} are pretty similar in principle, except that you use them to split $2$ and $3$ dimensional space respectively.
 
 Take a square. You can divide it into four smaller, equally sized squares. Similarly, a cube can be divided into 8 equally sized cubes.
 
@@ -1801,9 +1800,9 @@ On the right you see a quadtree, but it should by now be pretty obvious what an 
 \begin{halfboxl}
 Now, we saw that quadtrees aren't very apt at splitting scenes into balanced subdivisions. That's why we are going to introduce \emph{KD trees}.
 
-These are not, contrary to quadtrees, independent of the scene, but they are capable of dividing it into more or less equal parts by splitting horizontally and vertically not at the centres, but where it actually makes sense.
+Contrary to quadtrees these are not independent of the scene, but they are capable of dividing it into more or less equal parts by splitting horizontally and vertically not at the centres, but rather where it actually makes sense.
 
-However, we still split horizontally, then vertically, the honrizontally and so on.
+However, we still split horizontally, then vertically, then horizontally and so on.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -1888,15 +1887,13 @@ However, we still split horizontally, then vertically, the honrizontally and so 
 
 \subsubsection*{Binary Space Partitioning}
 
-Binary Space Partitioning (BSP) is just a further generalisation of KD Trees, where we don't even split horizontally or vertically, but only how it best suits us to further balance our tree.
+\textit{Binary Space Partitioning} (BSP) is just a further generalisation of KD Trees where we don't even split horizontally or vertically, but only how it best suits us to further balance our tree.
 
-We will not illustrate this concept at this point because we're too lazy. However, as a reader, picture BSP as a diagram of a KD tree in which all lines, instead of being all nice and perpendicular to each other, are skewed and diagonal and do not satisfy your inner OCD at all.
+We will not illustrate this concept at this point because we're too lazy to create the corresponding diagram. However, as a reader, picture BSP as a diagram of a KD tree in which all lines, instead of being all nice and perpendicular to each other, are skewed and diagonal and do not satisfy your inner OCD at all.
 
 \section{Volumetric Rendering}
 
-\subsection{Volumetric Representations}
-
-Further to the previously introduced Implicit Functions, there are other ways of representing object volumes, which we will be introducing here.
+\subsection{Signed Distance Function}
 
 \begin{halfboxl}
 A \emph{Signed Distance Function} is a special case of an implicit function in that it also returns the \emph{sign} between a point and the object. It of course keeps the \emph{sign}, positive if outside, negative if inside. The name should now seem well chosen.
@@ -1934,7 +1931,7 @@ Thus, for a point located within such a cube, we can approximate its value funct
 
 Given a volumetric scene, we can use \emph{ray casting} to determine the colour of a pixel by casting a ray for each pixel and adding the colours and opacities of the different layers.
 
-For this, there are two approaches, front-to-back ray casting and back-to-front ray casting. In the following $c_i$ represents the colour of the $i$th layer, $\alpha_i$ its opacity and $\hat c_i = \alpha_i c_i$ its opacity-weighted colour with $i \in \Set{0,...,k}$. We assume that $c_i$ and $\alpha_i$ are values in $[0,1]$.
+For this, there are two approaches: Front-to-back ray casting and back-to-front ray casting. In the following $c_i$ represents the colour of the $i$th layer, $\alpha_i$ its opacity and $\hat c_i = \alpha_i c_i$ its opacity-weighted colour with $i \in \Set{0,...,k}$. We assume that $c_i$ and $\alpha_i$ are values in $[0,1]$.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -1968,9 +1965,9 @@ We will illustrate it using a simplified algorithm, that is, the marching \emph{
 
 As the function is a signed distance function, points with negative value lie within the polygon, while points with positive values lie outside. And the distance part allows us to compare the ratios between the points to approximate more precisely how the polygon is shaped.
 
-However, the dotted lines in our example are unclear, as both the displayed polygon shapes are valid interpretations. There are two common solutions to this issue. Either, we assume the sign of the centre of any square to be positive or negative, which we can always do, or we do a further measurement whenever there is more than one possibility, which depends on the use case.
+However, the dotted lines in our example are problematic, as both the displayed polygon shapes are valid interpretations. There are two common solutions to this issue. Either, we assume the sign of the centre of any square to be positive or negative, which we can always do, or we do a further measurement whenever there is more than one possibility, which depends on the use case.
 
-It is important to note that this method can be imprecise and prone to aliasing, as it may cut off, for example, entire triangles contained in a single square. There are many sampling methods to render this more precise.
+Note that this method can be imprecise and prone to aliasing, as it may cut off, for example, entire triangles contained in a single square. There are many sampling methods to make this more precise.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -2229,7 +2226,7 @@ It is important to note that this method can be imprecise and prone to aliasing,
 
 \section{Curves}
 
-In this chapter, unlike the lecture, we will not go into the formal aspects of the subject as this would exceed the scope of what we are trying to achieve. However, we highly recommend you check it out in the lecture, as it is important for a good understanding of the substance.
+In this chapter, unlike in the lecture, we will not go into the formal aspects of the subject as this would exceed the scope of what we are trying to achieve. However, we highly recommend you check it out in the lecture, as it is important for a good understanding of the substance.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -2363,6 +2360,6 @@ The A-Frame construction tells us that $[a_1,a_2] = [a_2,A_{\alpha}]$, that $[A_
 \end{center}
 \end{halfboxr}
 
-For these two concepts we want to invite you to, as an addition to the lecture, create a few examples and to complete them graphically on your own as to get an intuitive feel for them.
+As an addition to the lecture, we recommend you create a few examples of these concepts and complete them graphically on your own as to get an intuitive feel for them.
 
 \end{document}
