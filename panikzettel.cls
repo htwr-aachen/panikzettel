@@ -55,6 +55,13 @@
 \definecolor{vermillion}{RGB}{213,94,0}
 \definecolor{reddishpurple}{RGB}{204,121,167}
 
+% Show most recent revision number and date in date field
+\makeatletter
+\date{\filename@parse{\jobname}{\small\input{\filename@base.last-change}}}
+\makeatother
+
+\subject{\normalfont{}\texttt{\href{https://panikzettel.philworld.de}{panikzettel.philworld.de}}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Math & Symbols
 \usepackage{mathtools}

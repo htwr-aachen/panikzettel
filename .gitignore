@@ -1,4 +1,5 @@
 /*.sty
+*.last-change
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

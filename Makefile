@@ -18,7 +18,7 @@ bus.pdf: bus.tex
 maschinengestaltung_i.pdf: maschinengestaltung_i.tex
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make maschinengestaltung_i.tex
 
-numrech.pdf: numrech.tex panikzettel.cls
+numrech.pdf: numrech.tex panikzettel.cls numrech.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -use-make -pdf numrech.tex
 
 buk.pdf: buk.tex
@@ -39,17 +39,24 @@ dbis.pdf: dbis.tex
 	cp deps/BTrees.sty BTrees.sty
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf dbis.tex
 
-effi.pdf: effi.tex panikzettel.cls
+effi.pdf: effi.tex panikzettel.cls effi.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf effi.tex
 
-afi.pdf: afi.tex panikzettel.cls
+afi.pdf: afi.tex panikzettel.cls afi.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf afi.tex
 
-ai.pdf: ai.tex panikzettel.cls
+ai.pdf: ai.tex panikzettel.cls ai.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf ai.tex
 
-cg.pdf: cg.tex panikzettel.cls
+cg.pdf: cg.tex panikzettel.cls cg.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf cg.tex
 
+%.last-change: %.tex
+	echo -n "Version " > $@
+	git log --format=oneline -- $< | wc -l >> $@
+	echo "---" >> $@
+	git log --pretty=format:%ad --date=format:'%d.%m.%Y' -n 1 -- $< >> $@
+
 clean:
+	rm -f *.last-change
 	latexmk -CA
