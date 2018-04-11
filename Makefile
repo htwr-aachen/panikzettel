@@ -24,9 +24,9 @@ numrech.pdf: numrech.tex panikzettel.cls numrech.last-change
 buk.pdf: buk.tex
 	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf buk.tex
 
-swt.pdf: swt.tex
+swt.pdf: swt.tex panikzettel.cls swt.last-change
 	cp deps/tikz-uml.sty tikz-uml.sty
-	latexmk -pdflatex="lualatex -interaction=nonstopmode" -pdf swt.tex
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf swt.tex
 
 datkom.pdf: datkom.tex
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf datkom.tex

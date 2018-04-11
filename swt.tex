@@ -1,17 +1,5 @@
-\documentclass[a4paper,parskip=half*,DIV=7,fontsize=11pt]{scrartcl}
-\usepackage[T1]{fontenc}
-\usepackage[head=27.2pt]{geometry}
-\usepackage[english,ngerman]{babel}
-\usepackage[utf8]{luainputenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{mathtools}
-\usepackage{scrlayer-scrpage}
-\usepackage{braket}
-\usepackage{listings}
-\usepackage{lastpage}
-\usepackage{hyperref}
+\documentclass{panikzettel}
+
 \usepackage{adjustbox}
 \usepackage{tikz}
 \usepackage{forest}
@@ -21,33 +9,25 @@
 \usepackage{pifont}
 \newcommand{\cmark}{\text{\ding{51}}}
 \newcommand{\xmark}{\text{\ding{55}}}
+\usepackage{lastpage}
 
+\usepackage{listings}
 \lstset{
-    mathescape=true
+    mathescape=true,
+    basicstyle=\ttfamily
 }
 
 \newcommand{\defeq}{\vcentcolon =}
 \newcommand{\eqdef}{=\vcentcolon}
 
-\newcommand\blfootnote[1]{%
-  \begingroup
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \endgroup
-}
-
-\ihead{SWT Panikzettel}
 \title{SWT Panikzettel}
-\author{Philipp Schröer, Caspar Zecha, Luca Oeljeklaus,\\Christoph von Oy, ``der Dude''\blfootnote{Pseudonyme gehören anonymen Autoren, die anonym bleiben wollen.}}
-\cfoot{\thepage\ / \pageref{LastPage}}
-
-\lstset{basicstyle=\ttfamily}
+\author{Philipp Schröer, Caspar Zecha, Luca Oeljeklaus,\\Christoph von Oy, ``der Dude''}
 
 \begin{document}
 
 \maketitle
 
-\begin{abstract}
+\begin{abstract}%
 Dieser Panikzettel ist über die Vorlesung Softwaretechnik. Er basiert auf dem Foliensatz von Prof. Dr. Bernhard Rumpe aus dem Wintersemester 16/17.	\\
 Dieser Panikzettel ist Open Source. Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
 \end{abstract}
@@ -315,6 +295,61 @@ Wie man am Beispiel von \lstinline{AuctionOpen} sieht, können Zustände verscha
 
 Zusammengesetze Zustände können ihre eigenen Start- und Endpunkte sowie Transitionen haben, die von allen inneren Zuständen benutzt werden können.
 
+\subsection{Featurediagramme}
+
+\null
+\begin{forest}%
+for tree={parent anchor=south,
+         child anchor=north,
+         l+=1cm,
+         fill=white!30,
+         delay={content={\strut #1}},
+         draw,
+         },
+blackcircle/.style={tikz={\node[fill=black!60,inner sep=3pt,circle]at(.north){};}},
+whitecircle/.style={tikz={\node[draw,fill=white!30,inner sep=3pt,circle]at(.north){};}},
+%
+[Auto
+  [Radio,whitecircle
+     [Radioempfänger,blackcircle]
+  ]
+  [Gangschaltung,blackcircle
+    [Automatik,blackcircle]
+    [Manuell,blackcircle]
+  ]
+  [Felgen,blackcircle
+    [Dollar-Felgen,blackcircle]
+    [Geschmacklose Felgen,blackcircle]
+  ]
+]
+%
+\foreach \i/\j/\k in {!21/!2/!22}
+{
+\coordinate (A)at (\i.north);
+\coordinate (O)at (\j.south);
+\coordinate (B)at (\k.north);
+\path  (A)--(O)--(B)
+pic [fill=black!60, angle radius=4mm] {angle = A--O--B};
+}
+\foreach \i/\j/\k in {!31/!3/!32}
+{
+\coordinate (A)at (\i.north);
+\coordinate (O)at (\j.south);
+\coordinate (B)at (\k.north);
+\path  (A)--(O)--(B)
+pic [fill=white!30, angle radius=4mm,draw] {angle = A--O--B};
+}
+\end{forest}
+\par
+
+Legende:
+\begin{itemize}
+\item weißer Kreis = optional
+\item schwarzer Kreis = notwendig
+\item weißer Bogen = XOR (genau eins)
+\item schwarzer Bogen = OR (mindestens eins)
+\end{itemize}
+
 \subsection{Weitere Diagramme}
 
 Es gibt auch weitere Diagramme aus der Vorlesung, die möglicherweise relevant sein könnten:
@@ -556,13 +591,13 @@ Jahrhunderte alte Tradition zwingt uns an dieser Stelle, die klassische Autometa
 \umlclass[x=2]{Lautsprecher}{}{
   play(Song song)
 } % TODO: abstract
-\umlclass[y=-3]{Kopfhörer}{}{
+\umlclass[y=-3]{Kopfhoerer}{}{
   play(Song song)
 }
 \umlclass[x=4,y=-3]{PartyDecorator}{}{
   play(Song song)
 }
-\umlinherit{Kopfhörer}{Lautsprecher}
+\umlinherit{Kopfhoerer}{Lautsprecher}
 \umlinherit{PartyDecorator}{Lautsprecher}
 \umluniassoc[geometry=|-,mult=1]{PartyDecorator}{Lautsprecher}
 \end{tikzpicture}
@@ -570,7 +605,7 @@ Jahrhunderte alte Tradition zwingt uns an dieser Stelle, die klassische Autometa
 
 Das \emph{Decorator}-Muster erweitert bestehende Schnittstellen um weitere Funktionalität.
 
-In diesem Beispiel betrachten wir \lstinline{Lautsprecher} als abstrakte Komponente. Ein \lstinline{Kopfhörer} spielt einen Song, ist also eine konkrete Implementation. Der \lstinline{PartyDecorator} hingegen \emph{erweitert} lediglich die bestehenden \lstinline{Lautsprecher} so, dass etwa alle Tiefen verstärkt werden und nutzt dann die bestehende \lstinline{play}-Methode.
+In diesem Beispiel betrachten wir \lstinline{Lautsprecher} als abstrakte Komponente. Ein \lstinline{Kopfhoerer} spielt einen Song, ist also eine konkrete Implementation. Der \lstinline{PartyDecorator} hingegen \emph{erweitert} lediglich die bestehenden \lstinline{Lautsprecher} so, dass etwa alle Tiefen verstärkt werden und nutzt dann die bestehende \lstinline{play}-Methode.
 
 Auf den ersten Blick erinnert das Klassendiagramm auf der rechten Seite doch sehr an das Muster der Komposition (\ref{sec:komposition}). Der Unterschied liegt aber darin, nicht einfach mehrere Objekte zu tragen, sondern bestehende Schnittstellen zu erweitern. Vergleiche hierzu auch die Kardinalität der Assoziationen.
 
@@ -972,61 +1007,6 @@ Methoden und Klassen werden mit Markern markiert.
 \item \lstinline{@After} wird nach jedem Test ausgeführt
 \item \lstinline{@BeforeClass} wird vor dem erste Test ausgeführt
 \item \lstinline{@AfterClass} wird nach dem letzten Test ausgeführt
-\end{itemize}
-
-\section{Featurediagramme}
-
-\null
-\begin{forest}%
-for tree={parent anchor=south,
-         child anchor=north,
-         l+=1cm,
-         fill=white!30,
-         delay={content={\strut #1}},
-         draw,
-         },
-blackcircle/.style={tikz={\node[fill=black!60,inner sep=3pt,circle]at(.north){};}},
-whitecircle/.style={tikz={\node[draw,fill=white!30,inner sep=3pt,circle]at(.north){};}},
-%
-[Auto
-  [Radio,whitecircle
-     [Radioempfänger,blackcircle]
-  ]
-  [Gangschaltung,blackcircle
-    [Automatik,blackcircle]
-    [Manuell,blackcircle]
-  ]
-  [Felgen,blackcircle
-    [Dollar-Felgen,blackcircle]
-    [Geschmacklose Felgen,blackcircle]
-  ]
-]
-%
-\foreach \i/\j/\k in {!21/!2/!22}
-{
-\coordinate (A)at (\i.north);
-\coordinate (O)at (\j.south);
-\coordinate (B)at (\k.north);
-\path  (A)--(O)--(B)
-pic [fill=black!60, angle radius=4mm] {angle = A--O--B};
-}
-\foreach \i/\j/\k in {!31/!3/!32}
-{
-\coordinate (A)at (\i.north);
-\coordinate (O)at (\j.south);
-\coordinate (B)at (\k.north);
-\path  (A)--(O)--(B)
-pic [fill=white!30, angle radius=4mm,draw] {angle = A--O--B};
-}
-\end{forest}
-\par
-
-Legende:
-\begin{itemize}
-\item weißer Kreis = optional
-\item schwarzer Kreis = notwendig
-\item weißer Bogen = XOR (genau eins)
-\item schwarzer Bogen = OR (mindestens eins)
 \end{itemize}
 
 \section{Softwareentwicklung}
