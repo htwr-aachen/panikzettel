@@ -1,34 +1,10 @@
-\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
-\usepackage[utf8]{inputenc}
-\usepackage{mathtools}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{hanging}
-\usepackage{calc}
-\usepackage[pdftex]{hyperref}
-\usepackage{bookmark}
-\usepackage{tikz}
-\usetikzlibrary{positioning,arrows}
-\usepackage[ngerman]{babel}
-\usepackage{ifthen}
-\usepackage{xifthen}
-\usepackage{microtype}
-\usepackage{lmodern}
+\documentclass{panikzettel}
 
-\makeatletter
-\AtBeginDocument{
-  \hypersetup{
-    pdftitle = {\@title},
-    pdfauthor = {\@author}
-  }
-}
-\makeatother
+\usepackage{hanging}
+\usepackage{xifthen}
 
 \title{Lineare Algebra Panikzettel}
 \author{Mathis Müller, Philipp Schröer, Tobias Polock,\\ Jonathan du Mesnil de Rochemont, Caspar Zecha}
-\date{\today}
 
 % Formatting
 \relpenalty=9999
@@ -70,12 +46,6 @@
 \newcommand{\ortho}{\bot}
 \newcommand{\Intpol}{\mathrm{Intpol}}
 
-
-
-\DeclarePairedDelimiter\abs{\lvert}{\rvert} % Betrag
-\DeclarePairedDelimiter\norm{\lVert}{\rVert} % Norm
-\DeclarePairedDelimiter\set{\{}{\}} % Set
-
 \begin{document}
 
 \maketitle
@@ -91,6 +61,7 @@ Dieser Panikzettel kommt ursprünglich aus dem SS 2016 und wird im Laufe der Vor
 
 Dieses Projekt ist lizenziert unter \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC-BY-SA-4.0} und wird auf dem Git-Server der RWTH verwaltet: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}
 
+\newpage
 \section{Vektorräume und ihre Homomorphismen}
 
 $K$-Vektorraum $V$ hat die Operationen Addition  $V \times V \to V, (v,w) \mapsto v+w$, sowie die Skalarmultiplikation $K \times V \to V, (a,v) \mapsto a \cdot v  $, für den folgende Axiome mit $v, w, x \in V, a,b \in K$ gelten müssen:
