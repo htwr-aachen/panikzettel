@@ -1,40 +1,15 @@
-\documentclass[a4paper,parskip=half*,DIV=15,fontsize=11pt]{scrartcl}
-\usepackage[utf8]{inputenc}
-\usepackage{mathtools}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{enumitem}
-\usepackage[pdftex]{hyperref}
-\usepackage{bookmark}
-\usepackage[ngerman]{babel}
-\usepackage{braket}
-\usepackage{stmaryrd}
+\documentclass{panikzettel}
 \usepackage{bussproofs}
-\usepackage{microtype}
-\usepackage{lmodern}
-
-\usepackage{todonotes}
 
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 
-\makeatletter
-\AtBeginDocument{
-  \hypersetup{
-    pdftitle = {\@title},
-    pdfauthor = {\@author}
-  }
-}
-\makeatother
-
 \title{Mathematische Logik Panikzettel}
 \author{Philipp Schröer, Tobias Polock, Luca Oeljeklaus, Caspar Zecha}
-\date{\today}
 
 \newcommand{\AL}{\mathrm{AL}}
 \newcommand{\Kl}{\mathrm{K}}
 \newcommand{\Res}{\mathrm{Res}}
-\DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\interpret{\llbracket}{\rrbracket}
 \newcommand{\J}{\mathfrak{I}}
 \newcommand{\A}{\mathfrak{A}}
@@ -44,7 +19,7 @@
 \newcommand{\T}{\mathrm{T}}
 \newcommand{\dom}{\mathrm{dom}}
 \newcommand{\frei}{\mathrm{frei}}
-\newcommand{\Mod}{\mathrm{Mod}}
+\renewcommand{\Mod}{\mathrm{Mod}}
 \newcommand{\isoTo}{\overset{\sim}{\to}}
 \newcommand{\Th}{\mathrm{Th}}
 \newcommand{\proves}{\vdash}

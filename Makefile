@@ -31,7 +31,7 @@ swt.pdf: swt.tex panikzettel.cls swt.last-change
 datkom.pdf: datkom.tex
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf datkom.tex
 
-malo.pdf: malo.tex
+malo.pdf: malo.tex panikzettel.cls malo.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf malo.tex
 
 dbis.pdf: dbis.tex
