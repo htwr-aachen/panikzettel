@@ -20,3 +20,4 @@ compile_pdf:
       - afi.pdf
       - ai.pdf
       - cg.pdf
+      - bpi.pdf
