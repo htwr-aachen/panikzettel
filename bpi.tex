@@ -218,6 +218,7 @@ $\bullet$ a \emph{case},~ $\bullet$ an \emph{activity},~ $\bullet$ a \emph{times
 \emph{Lasagna processes} are relatively well-structured and good for process mining.
 \emph{Spaghetti processes} are less structured and not too good for process mining.
 
+\vspace{-0.5\baselineskip}
 \subsection{Petri-Nets}
 
 \begin{halfboxl}
@@ -255,6 +256,7 @@ Further we call a transition \emph{live} if from any reachable marking it is pos
 
 \emph{Data-aware} petri-nets use \emph{guards} at the transition nodes to limit the behaviour. Guards do not have to be deterministic.
 
+\vspace{-0.5\baselineskip}
 \subsection{Transition systems}
 
 A \emph{transition system} is a directed graph with \emph{states} and \emph{transitions}.
@@ -458,7 +460,7 @@ If the matrix on the right were the directly follows matrix of our log, this wou
     \[
         \abs{a \Rightarrow_L b} = \begin{cases}
             \frac{\abs{a >_L b} - \abs{b >_L a}}{\abs{a >_L b} + \abs{b >_L a} + 1} & \text{if } a \neq b \\
-            \frac{\abs{a >_L a}}{\abs{a >_L a}} & \mathrm{otherwise}
+            \frac{\abs{a >_L a}}{\abs{a >_L a} + 1} & \mathrm{otherwise}
         \end{cases}
     \]
 \end{halfboxl}%
