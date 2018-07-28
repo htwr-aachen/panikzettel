@@ -21,14 +21,6 @@
 \tikzstyle{end event} = [event,ultra thick,every event]
 \tikzstyle{intermediate event} = [event,double,every event]
 
-\usepackage{listings}
-\lstset{escapechar=\&,
-        stringstyle=\ttfamily,
-        keywordstyle=\bold,
-        emph={Action, Precond, Effect, Op},
-        emphstyle={\bfseries}
-    }
-
 \tikzset{
     place/.style = {circle,fill=none,draw=black,text=black},
     trans/.style = {rectangle,fill=none,draw=black,text=black},
@@ -357,8 +349,8 @@ We want to evaluate whether a process model is a correct reflection of the ``rea
 We use four criteria to evaluate a process model:
 \begin{itemize}
     \item \emph{Fitness:} The model is able to explain the observed behaviour.
-    \item \emph{Simplicity:} use as few as assumptions as possible.
-    \item \emph{Precision:} The models avoids underfitting.
+    \item \emph{Simplicity:} The model uses as few as assumptions as possible.
+    \item \emph{Precision:} The model avoids underfitting.
     \item \emph{Generalisation:} The model avoids overfitting.
 \end{itemize}
 
@@ -366,7 +358,7 @@ We can use several metrics for all four dimensions.
 
 Different modelling languages provide a different ``bias''. This bias impacts the search space. The $\alpha$-Algorithm for example will not discover a model where there are $k$ optional activities in between. Often the discovery process is guided by the representational bias.
 
-With this we can also see, that process discovery is difficult. Different aspects need to be considered carefully:
+Process discovery is difficult. Different aspects need to be considered carefully:
 \begin{itemize}
     \item No negative examples: A log does not show what can not happen.
     \item Search space with complex structure: Concurrency, loops and choices are very complicated.
@@ -472,7 +464,7 @@ If the matrix on the right were the directly follows matrix of our log, this wou
 \begin{halfboxl}
 A \emph{dependency graph} connects activities $a$ and $b$ where their directly follows count and dependency measure meet certain thresholds.
 
-Edges in the graph are labelled as \lstinline[mathescape]!$x$($y$)! (that's not multiplication!), where $x = |a >_L b|$ and $y = |a \Rightarrow_L b|$.
+Edges in the graph are labelled as \texttt{$x$($y$)} (that's not multiplication!), where $x = |a >_L b|$ and $y = |a \Rightarrow_L b|$.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -646,11 +638,11 @@ So our equations ensure that, for each activity $a$ at every position in a each 
     \vspace{0\baselineskip}
 
     The \emph{Inductive Miner} recursively \emph{cuts} logs into smaller \emph{sublogs}, based on patterns in their directly-follows graph.
+    These patterns are checked in a fixed order (see below).
     A \emph{cut} splits a log $L$ into pairwise disjoint sets $A_1, \ldots, A_n$.
 
-    The Inductive Miner outputs a \emph{process tree} which has six kinds of nodes.
-    We will use a textual representation of the process tree.
-    An example could look like this:
+    The Inductive Miner outputs a \emph{process tree}.
+    In its textual representation, an example looks like this:
     $\circlearrowleft(a, \times(b,c))$.
     An equivalent regular expression: $(a ~ (\varepsilon + b + c))^+$.
 \end{minipage}\hfill%
@@ -658,8 +650,8 @@ So our equations ensure that, for each activity $a$ at every position in a each 
     \vspace{0\baselineskip}
     \begin{defi}{\footnotesize{}Process tree operators}
         \begin{tabular}{rl}
-            \emph{sequential composition} & $\rightarrow$ \\
             \emph{exclusive choice} & $\times$ \\
+            \emph{sequential composition} & $\rightarrow$ \\
             \emph{parallel composition} & $\bigwedge$ \\
             \emph{redo loop} & $\circlearrowleft$ \\
             \emph{normal activity} & $a$ \\
@@ -670,20 +662,20 @@ So our equations ensure that, for each activity $a$ at every position in a each 
 
 \begin{halfboxl}
     \vspace{0\baselineskip}
-    \begin{defi}{Sequence Cut}
-        \begin{tightcenter}\large{}$(\rightarrow, A_1, \ldots, A_n)$\end{tightcenter}
-
-        All nodes from $A_i$ must have a path (not necessarily a direct connection) to all nodes in $A_j$, where $i < j$.
-    \end{defi}
-
-    \begin{defi}{Exclusive-choice Cut}
-        \begin{tightcenter}\large{}$(\times, A_1, \ldots, A_n)$\end{tightcenter}
+    \begin{defi}{1.\ Exclusive-choice Cut}
+        \begin{tightcenter}\large{}$\times(A_1, \ldots, A_n)$\end{tightcenter}
 
         Nodes from different partitions may not be connected (directly).
     \end{defi}
 
-    \begin{defi}{Parallel Cut}
-        \begin{tightcenter}\large{}$(\bigwedge, A_1, \ldots, A_n)$\end{tightcenter}
+    \begin{defi}{2.\ Sequence Cut}
+        \begin{tightcenter}\large{}$\rightarrow(A_1, \ldots, A_n)$\end{tightcenter}
+
+        All nodes from $A_i$ must have a path (not necessarily a direct connection) to all nodes in $A_j$, where $i < j$.
+    \end{defi}
+
+    \begin{defi}{3.\ Parallel Cut}
+        \begin{tightcenter}\large{}$\bigwedge(A_1, \ldots, A_n)$\end{tightcenter}
 
         All partitions must have at least one start and end node.
         All nodes from different partitions are directly connected.
@@ -691,8 +683,8 @@ So our equations ensure that, for each activity $a$ at every position in a each 
 \end{halfboxl}%
 \begin{halfboxr}
     \vspace{0\baselineskip}
-    \begin{defi}{Redo-loop Cut}
-        \begin{tightcenter}\large{}$(\circlearrowleft, A_1, \ldots, A_n)$\end{tightcenter}
+    \begin{defi}{4.\ Redo-loop Cut}
+        \begin{tightcenter}\large{}$\circlearrowleft(A_1, \ldots, A_n)$\end{tightcenter}
 
         The intuition is a redo-loop is like a \texttt{while}-loop, except one can abort at each step of the loop and start over.
         \begin{itemize}[leftmargin=*]
@@ -854,11 +846,9 @@ Formally, we calculate this value by executing our (WF-net $N$) model on a trace
     \item $r$: Number of remaining tokens (produced, but not consumed).
 \end{itemize}
 
+Note that the environment produces the first and consumes the last token.
 The fitness is then defined as:
-$
-    fitness(\sigma, N) = \frac{1}{2} \left( 1 - \frac{m}{c} \right) + \frac{1}{2} \left( 1 - \frac{r}{p} \right)
-$
-
+$fitness(\sigma, N) = \frac{1}{2} \left( 1 - \frac{m}{c} \right) + \frac{1}{2} \left( 1 - \frac{r}{p} \right)$.
 To compute the fitness for an entire log, simply track the respective sums of all four values for each trace in the log.
 
 Token replay imposes an important restriction on the fitness value: It is limited by the notation of the model (WF-nets).
