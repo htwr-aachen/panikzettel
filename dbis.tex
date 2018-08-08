@@ -137,7 +137,7 @@ Wir haben zwei Notationen für Kardinalitäten von Beziehungen:
 \section{Relationales Datenmodell}
 Im relationalen Datenmodell werden Objekte und Beziehungen zwischen Objekten als Relationen modelliert.
 
-Eine \textit{Relation} $R$ mit \textit{Grad} $k$ eine Teilmenge des kartesischen Produktes von $k$ Mengen (auch \textit{Wertebereich} oder \textit{Domain} genannt) $D_1, \ldots, D_k$. Dann ist $R \subseteq D_1 \times \ldots \times D_k.$
+Eine \textit{Relation} $R$ mit \textit{Grad} $k$ ist eine Teilmenge des kartesischen Produktes von $k$ Mengen (auch \textit{Wertebereich} oder \textit{Domain} genannt) $D_1, \ldots, D_k$. Dann ist $R \subseteq D_1 \times \ldots \times D_k.$
 
 Ein \textit{Relationenschema} $\mathcal{R}=(X, \Sigma_X)$ besteht aus einem Relationssymbol $R$, einer endlichen Menge $X$ von Attributen und einer Menge $\Sigma_X$ von intrarelationalen Abhängigkeiten über $X$.
 
@@ -188,15 +188,29 @@ Folgende Fälle muss man auch noch beachten:
       \item Telefonnummern[MatrikelNummer] $\subseteq$ Student[Matrikelnummer].
     \end{itemize}
   \item \textbf{Schwache Objekttypen}: Fremdschlüssel des starken Objekts als Attribut in der Relation des Schwachen und Interrelation zu diesem (wie beim mehrwertigen Attribut).
-  \item \textbf{Generalisierung/Spezialisierung}:
+  \item \textbf{Generalisierung/Spezialisierung}: (Betrachte untenstehendes ER-Diagramm)
     \begin{itemize}
-      \item Relationen für die Objekte formulieren.
-      \item Wenn Generalisierung total: keine Relation für die generalisierte Entity nötig.
+      \item Relationen für die Objekte formulieren, wobei jede Spezialisierung einen Fremdschlüssel auf die Generalisierung hat (in diesem Beispiel \underline{ID}).
+      \item Wenn die Beziehung total ist, erstellen wir keine Relation für die Generalisierung sondern nur: Feldspieler(\underline{ID}, Tore) und Torwart(\underline{ID}, Handschuhe).
+      \item Wenn die Spezialisierungen disjunkt ist, verdeutlichen wir das durch: Feldspieler[ID] $\cap$ Torwart[ID] $= \varnothing$.
   \end{itemize}
 \end{itemize}
-
+\begin{center}
+\scalebox{0.8}{
+\begin{tikzpicture}
+    \node[entity] (Obj1) {Fußballspieler};
+    \node[attribute, above = of Obj1] {\key{ID}} edge [link] (Obj1);
+    \node[isa, below = of Obj1] (isa) {isA} edge [link] (Obj1);
+    \node[above right = 0 and 0.2 of isa] {t};
+    \node[entity, below left = of isa] (u1) {Feldspieler} edge [<-, link] (isa);
+    \node[attribute, left = of u1] {Tore} edge [link] (u1);
+    \node[entity, below right = of isa] (u2) {Torwart} edge [<-, link] (isa);
+    \node[attribute, right = of u2] {Handschuhe} edge [link] (u2);
+\end{tikzpicture}
+}
+\end{center}
 \subsection{Relationale Algebra, Relationenkalkül, Tupelkalkül und Domänenkalkül}
-Anfragen an eine Datenbank müssen auf eine gewisse Weise formuliert werden. In konkreten Datenbankimplementierungen werden hierfür Anfragesprachen genutzt. Die Grundlage dafür sind die \textit{Relationale Algebra} und das \textit{Relationale Kalkül}, bei welchem man zwischen dem Tupel- und Bereichskalkül unterscheidet.
+Wie Anfragen an eine Datenbank formuliert werden ist klar festgelegt. In konkreten Datenbankimplementierungen werden hierfür Anfragesprachen genutzt. Die Grundlage dafür sind die \textit{Relationale Algebra} und das \textit{Relationale Kalkül}, bei welchem man zwischen dem Tupel- und Bereichskalkül unterscheidet.
 
 \subsubsection{Relationale Algebra}
 Die relationale Algebra arbeitet auf Relationen (also Mengen) und definiert verschiedene Operationen zur Manipulation der Relationen.
@@ -205,9 +219,9 @@ Es existieren folgende Basisoperationen:
 \begin{itemize}
 \item \textbf{Vereinigung}: $R \cup S = \{t \;|\; t \in R \lor t \in S\}$.
 \item \textbf{Differenz}: $R - S = \{t \;|\; t \in R \land t \notin S\}$.   \\
-Für Vereinigung und Differenz beide Relationen das selbe Schema besitzen.
+Für Vereinigung und Differenz muss $\Sch(R) = \Sch(S)$ gelten.
 \item \textbf{Kartesisches Produkt}: $R \times S = \{(a_1, \ldots, a_r, b_1, \ldots b_s) \;|\; (a_1, \ldots, a_r) \in R \land (b_1, \ldots, b_s) \in S\}$.
-\item \textbf{Selektion}: $\sigma_F(R) = \{t \in R \;|\; t \text{ erfüllt } F\}$.
+\item \textbf{Selektion}: $\sigma_F(R) = \{t \;|\; t \in R \land t \text{ erfüllt } F\}$.
 \item \textbf{Projektion}: $\pi_{A_{i_1}, \ldots, A_{i_m}}(R) = \{(a_{i_1}, \ldots, a_{i_m}) \;|\;(a_1, \ldots, a_k) \in R\}$, wobei $R$ den Grad $k$ hat und $i_1, \ldots i_m \in [1,k]$ gilt.
 \item \textbf{Umbenennung}: $\rho_S(R)$ von Relation $R$ in $S$.
 \item \textbf{Umbenennung}: $\rho_{A^\prime \leftarrow A}(R)$ von Attribut $A$ in $A^\prime$.
@@ -215,8 +229,8 @@ Für Vereinigung und Differenz beide Relationen das selbe Schema besitzen.
 
 Aus den Basisoperationen ableitbare Operationen:
 \begin{itemize}
-\item \textbf{Durchschnitt}: $R \cap S = \{t \in R \land t \in S\}$. Es muss $\Sch(R) = \Sch(S)$ gelten.
-\item \textbf{Quotient}: $R \div S = \Set{(a_1, \ldots, a_m)| \forall(b_1, \ldots, b_n) \in S: (a_1, \ldots, a_m, b_1, \ldots b_n) \in R}$. Hier muss offenbar $\Sch(S) \subseteq \Sch(R)$ und $S \neq \emptyset$ gelten.
+\item \textbf{Durchschnitt}: $R \cap S = \{t \;|\; t \in R \land t \in S\}$. Es muss $\Sch(R) = \Sch(S)$ gelten.
+\item \textbf{Quotient}: $R \div S = \Set{(a_1, \ldots, a_m)| \forall(b_1, \ldots, b_n) \in S: (a_1, \ldots, a_m, b_1, \ldots b_n) \in R}$. Hier muss offensichtlich $\Sch(S) \subseteq \Sch(R)$ und $S \neq \emptyset$ gelten.
 \item \textbf{Natural Join}: Sei $k$ die Anzahl der gemeinsamen Attribute von $R$ und $S$, $A_1, \ldots, A_m, B_1, \ldots, B_k$ die Attribute von $R$ und $B_1, \ldots, B_k, C_1, $. Außerdem muss $\Sch(R) \cap \Sch(S) \neq \emptyset$ sein. Dann ist $$R \bowtie S = \pi_{A_1, \ldots, A_m,B_1,\ldots,B_k,C_1,\ldots,C_n} (\sigma_{R.B_1 = S.B_1 \land \ldots \land R.B_k = S.B_k}(R \times S))$$ der Natural-Join zwischen $R$ und $S$.
 \item \textbf{Theta-Join}: $R \bowtie_\theta S = \sigma_\theta(R \times S) = \Set{t \cup s | s \in R \land t \in S \land t \cup s \text{ erfüllt } \theta}$. $t \cup s$ stellt das Tupel dar, welches alle Einträge von $s$ und $t$ in dieser Reihenfolge enthält.
 \item \textbf{Left-Outer-Join}: $R \lojoin S$. Hier werden auch die Tupel aus $R$ aufgenommen, die keinen Join-Partner in $S$ finden, indem sie um den Grad von $S$ an ``\sql{NULL}''-Einträgen am Ende erweitert werden.
@@ -226,10 +240,10 @@ Aus den Basisoperationen ableitbare Operationen:
 \item \textbf{Right-Semi-Join}: $R \rtimes S = \sigma_S(R \bowtie S)$.
 \end{itemize}
 
-Da man in der relationalen Algebra immer auch die Operationen angibt, welche zur Bearbeitung einer Anfrage notwendig sind, ist die eine \textit{prozedurale} (formale) Sprache. \emph{Wie} eine Operation erfüllt wird steht im Vordergrund.
+Da man in der relationalen Algebra immer auch die Operationen angibt, welche zur Bearbeitung einer Anfrage notwendig sind, ist sie eine \textit{prozedurale} (formale) Sprache. Sie beschreibt \emph{wie} eine Operation erfüllt wird.
 
 \subsubsection{Relationenkalkül}
-Dieser zur relationalen Algebra gleich mächtige Kalkül ist eine \textit{deklarative} (formale) Sprache. Ausdrücke beschreiben die Eigenschaften der Tupel des Ergebnisses. \emph{Was} eine zulässiges Tupel der Ergebnisrelation ist steht im Vordergrund.
+Dieser zur relationalen Algebra gleich mächtige Kalkül ist eine \textit{deklarative} (formale) Sprache. Ausdrücke beschreiben die Eigenschaften der Tupel des Ergebnisses. Er beschreibt \emph{was} ein zulässiges Tupel der Ergebnisrelation ist.
 
 Der Kalkül gliedert sich in das Tupel- und das Domänenkalkül. Diese unterscheiden sich lediglich in ihrer Darstellungsweise der Tupel. Im Tupelkakül stellen Variablen immer Tupel dar, während im Domänenkalkül Variablen stets Werte von Attributen verschiedener Domänen repräsentieren.
 
@@ -241,7 +255,10 @@ Als Kurzschreibweise hat sich der Tupelkonstruktor etabliert: $$\Set{[t.A_1, \ld
 
 Zur Auswertung müssen alle Tupelvariablen einer Formel $\varphi(t)$ durch konkrete Belegungen interpretiert werden. In der Ergebnisrelation landen dann alle Tupel $r$ mit dem durch die Tupelvariable festgelegten Schema, welche bei der Interpretation der Formel eine 'wahre' Aussage liefern. Für die also gilt $I(\varphi(r|t)) = \textbf{true}$, wobei alle Vorkommen von $t$ durch $r$ ersetzt werden und der Aussage dann durch $I$ ein Wahrheitswert zugewiesen wird.
 
-\textit{Bereichsvariablen} sind im Domänenkalkül das Pendant zu den Tupelvariablen. Ein Ausdruck mit $k$ Bereichsvariablen $x_1:D_1, \ldots x_k:D_k$ hat die Form $\Set{x_1, \ldots, x_k | \varphi(x_1, \ldots, x_k)}$. Außerdem findet hier der Tupelkonstruktor ebenfalls seine Verwendung.
+\textit{Bereichsvariablen} sind im Domänenkalkül das Pendant zu den Tupelvariablen. Ein Ausdruck mit $k$ Bereichsvariablen $x_1:D_1, \ldots x_k:D_k$ hat die Form $\Set{x_1, \ldots, x_k | \varphi(x_1, \ldots, x_k)}$. Außerdem findet hier der Tupelkonstruktor ebenfalls seine Verwendung. Beispiel: $$\Set{m | \exists n([m,n] \in Student \wedge \ldots) }.$$
+
+
+
 \section{SQL}
 
 \emph{SQL} ist eine relationale Datenbanksprache, die auf einer Mischung der relationalen Algebra und des relationalen Kalküls aufbaut. Wir behandeln hier zwei Teilsprachen von SQL, die \emph{Data Definition Language} (DDL) für das Schema und die \emph{Data Manipulation Language} (DML) für das Bearbeiten und Anfragen von Daten.
@@ -293,11 +310,14 @@ Nehmen wir an, dass wir folgendes Schema haben: $R(A, B, C, D), S(E, F, G)$ und 
   \item \textbf{Natural Join}: $R \bowtie U$ = \sql{SELECT * FROM R, U}.
 \end{itemize}
 
-Mit Funktionen kann man auch Mengen von Werten weiterverrechnen. Dazu gibt es etwa \sql{COUNT}, \sql{MIN}, \sql{MAX}, \sql{SUM} und \sql{AVG}.
+\sql{DISTINCT} löscht Duplikate.
+Mit Funktionen kann man auch Mengen von Werten weiterverrechnen. Dazu gibt es etwa \sql{COUNT}, \sql{MIN}, \sql{MAX}, \sql{SUM} und \sql{AVG}.\\
+z.B.: \sql{SELECT COUNT(DISTINCT Name) FROM Student}
 
 Mithilfe von \sql{GROUP BY} können Tupel zu Gruppen zusammengefasst werden. Man könnte eine Anfrage der Form \sql{SELECT .. FROM .. GROUP BY attr1, attr2 HAVING bedingung} schreiben.
 
-Mit \sql{ORDER BY attr1, attr2, ... [ASC|DESC]} bei einem \sql{SELECT} können dann die Tupel sortiert werden. Die Sortierungsrichtung ist optional.
+Mit \sql{ORDER BY attr1, attr2, ... [ASC|DESC]} bei einem \sql{SELECT} können dann die Tupel sortiert werden. Die Sortierungsrichtung ist optional.\\
+z.B.: \sql{SELECT Name FROM Student ORDER BY Matrikelnummer ASC}
 
 \textbf{Joins}
 
@@ -332,7 +352,9 @@ Analog andere Joins:\\
 \end{minipage}
 \end{minipageparskip}
 
-Analog zum \lstinline{SELECT} gibt es auch \lstinline{INSERT INTO}, \lstinline{DELETE FROM} und \lstinline{UPDATE ... SET}.
+Analog zum \lstinline{SELECT} gibt es auch \lstinline{INSERT INTO}, \lstinline{DELETE FROM} und \lstinline{UPDATE ... SET}.\\
+z.B.: \sql{INSERT INTO Konto(Kontostand, Name) VALUES (0, 'DouglasAdams')}\\
+und \sql{UPDATE Konto SET Kontostand = 42 WHERE Name = 'DouglasAdams'}
 
 \section{Relationale Entwurfstheorie}
 \subsection{Funktionale Abhängigkeiten}
@@ -340,7 +362,7 @@ Eine \emph{funktionale Abhängigkeit} (FD) $\alpha \to \beta$ in einer Relation 
 
 Formal sagt man, dass $\alpha \to \beta$ in $R$ gilt, wenn
 \[r.\alpha = r'.\alpha \implies r.\beta = r'.\beta\]
-für alle $r, r' \in R$.
+für alle möglichen Ausprägungen $r, r' \in R$.
 
 Ein Superschlüssel ist eine Menge $\kappa \subseteq X$, sodass $\kappa^+ = X$ ist. Ein Schlüsselkandidat ist ein (bzgl.\ $\subseteq$) minimaler Superschlüssel.
 
@@ -430,11 +452,17 @@ Statt der Hülle (mit vielen Redundanzen) verwendet man auch die \emph{kanonisch
 Um die kanonische Überdeckung zu erhalten, nutzt man den folgenden Algorithmus:
 \begin{enumerate}
 \item Linksreduktion: Entferne unnötige Elemente der linken Seiten.
+\begin{itemize}
+\item Für $\alpha \to \beta \in F$: Prüfe für alle $A \in \alpha$, ob gilt: $\beta \subseteq \text{AttrHülle}(F, \alpha \setminus A)$
+\end{itemize}
 \item Rechtsreduktion: Entferne unnötige Elemente der rechten Seiten.
+\begin{itemize}
+\item Für $\alpha \to \beta \in F$: Prüfe für alle $B \in \beta$, ob gilt: $B \in \text{AttrHülle}((F_c \setminus (\alpha \to \beta)) \cup (\alpha \to \beta \setminus B), \alpha)$
+\end{itemize}
 \item Entferne FDs der Form $\alpha \to \emptyset$.
 \item Fasse gleiche linke Seiten zusammen.
 \end{enumerate}
-
+\begin{minipage}{\textwidth}
 \textbf{Beispiel} Ausgehend von den FDs:
 \begin{align*}
 A &\to BE & A &\to D & F &\to A \\ AC &\to F & BC &\to E & C &\to A
@@ -478,11 +506,12 @@ Zum Schluss noch zusammenkürzen ergibt:
 A &\to BED \\F &\to A \\ C &\to F
 \end{align*}
 \end{minipage}
-
+\end{minipage}
 \subsection{Normalformen} \label{sec:normalformen}
 Zur Vermeidung von Redundanzen ist es wünschenswert, ein Relationenschema in eine verlustlose und wenn möglich abhängigkeitserhaltende Zerlegung zu bringen, die einer gewissen Form entspricht.
 
 \emph{Verlustlos} heißt, dass alle Informationen erhalten bleiben, d.h.\ dass der Natural Join der neuen Tabellen genau die alte Tabelle liefert.
+
 \emph{Abhängigkeitserhaltend} heißt, dass sich alle funktionalen Abhängigkeiten des alten Schemas aus den funktionalen Abhängigkeiten der neuen Schemata ergeben.
 
 Es gilt $1\NF \supseteq 2\NF \supseteq 3\NF \supseteq \BCNF (\supseteq 4\NF \supseteq 5\NF)$.
@@ -490,7 +519,7 @@ Es gilt $1\NF \supseteq 2\NF \supseteq 3\NF \supseteq \BCNF (\supseteq 4\NF \sup
 Das heißt, um z.B. ein Relationsschema in 2NF zu bringen müssen wir sie zuerst in 1NF bringen.
 \subsubsection{Erste Normalform (1NF)}
 
-Attribute von Relationen in $1\NF$ haben einen atomaren Wertebereich. D.h. sie sind selbst keine Mengen oder Tupel, etc.
+Attribute von Relationen in $1\NF$ haben einen atomaren Wertebereich. Das heißt sie sind selbst keine Mengen oder Tupel, etc.
 
 
 \begin{minipage}[t]{0.5\textwidth}
@@ -584,6 +613,8 @@ Um eine Relation in 3NF zu bringen, wendet man den Synthese-Algorithmus an. Um e
 \end{enumerate}
 
 \subsubsection{Boyce-Codd Normalform (BCNF)}
+\emph{Nicht notwendigerweise abhängigkeitserhaltend!} (\ref{sec:normalformen})
+
 Ein Relationsschema $(X, F)$ ist in BCNF wenn für alle nichttrivialen $\alpha \to \beta \in F^+$ $\alpha$ ein Superschlüssel ist.
 
 Um eine Relation in BCNF zu bringen, gibt es den Dekompositionsalgorithmus:
@@ -744,7 +775,7 @@ Um den Baum nach einem Element zu \textbf{durchsuchen}, wird beginnend in der Wu
 
 Zur Erfüllung einer \textbf{Bereichsanfrage} (min, max) wird der kleinste Wert, welcher größer oder gleich min ist, rekursiv gesucht. Dann wird eine in-order Traversierung bis zum größten Element, welches kleiner oder gleich max ist, durchgeführt.
 
-Beim \textbf{Einfügen} eines neuen Elements wird erst ein zum Objekt passender Knoten gesucht und dort eingefügt. Falls das Blatt deswegen überläuft, so wird der Knoten gesplittet. Komplexität: $\mathcal{O}(\log_mN)$
+Beim \textbf{Einfügen} eines neuen Elements wird erst ein zum Objekt passender Knoten gesucht und dort eingefügt. Falls das Blatt deswegen überläuft, so wird der Knoten gesplittet; hierbei wird das mittlere Objekt dem Vorgängerknoten hinzugefügt und die beiden Hälften in zwei neue Knoten aufgeteilt. Wenn der Vorgänger dadurch überläuft splitte rekursiv ggf. bis zur Wurzel. Komplexität: $\mathcal{O}(\log_mN)$
 
 \textbf{Löschen}:
 Erst einmal wird der Knoten gesucht, welcher den zu löschenden Schlüssel beinhaltet. Es treten drei Fälle auf.
@@ -807,7 +838,7 @@ Ein einzelner Lokalisierungsschritt hat die Struktur \lstinline{Achse::Test[Prä
 
 Mögliche Achsen sind: \lstinline{self}, \lstinline{attribute}, \lstinline{child} oder \lstinline{parent} oder \lstinline{ancestor}. Knotentests können unter anderem sein: \lstinline{node()} (immer wahr), \lstinline{*} (wahr für jeden Knoten der Achse), \lstinline{element(Name)}, \lstinline{attribute(Name)}.
 
-In Pfadausdrücken gibt es Abkürzungen wie \lstinline{.}, \lstinline{..}, \lstinline{/} am Anfang (für den Wurzelknoten), \lstinline{@} (Attribute), \lstinline{//} (alle Nachfahren und der Knoten selber) und \lstinline{[n]} für das n-te Element.
+In Pfadausdrücken gibt es Abkürzungen wie \lstinline{.} (aktueller Knoten), \lstinline{..} (Vaterknoten), \lstinline{/} am Anfang (für den Wurzelknoten), \lstinline{@} (Attribute), \lstinline{//} (alle Nachfahren und der Knoten selber) und \lstinline{[n]} für das n-te Element.
 
 Ein Beispiel: \lstinline{/Universität/Fakultäten/Fakultät[FakName="Informatik"]//Vorlesung/@Name} (das Name-Attribut aller Informatik-Vorlesungen).
 
@@ -908,7 +939,7 @@ die $\texttt{commit}$ bzw. $\texttt{abort}$ Pseudoaktionen von $t_i$, die eine T
 \end{itemize}
 
 Wir notieren nebenläufige Transaktionen und ihre Zugriffe mit Indizes:
-$$t_i = r_i(x)w_i(y) \textrm{ und } t_j=w_j(x)t_j(y)$$
+$$t_i = r_i(x)w_i(y) \textrm{ und } t_j=w_j(x)r_j(y)$$
 
 \subsection{Synchronisation}
 
