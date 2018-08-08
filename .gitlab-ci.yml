@@ -21,3 +21,4 @@ compile_pdf:
       - ai.pdf
       - cg.pdf
       - bpi.pdf
+      - aat.pdf
