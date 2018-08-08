@@ -472,7 +472,7 @@ Für den Laufzeitbeweis wird die Ausführung in Phasen aufgeteilt. Jede Phase en
 \begin{enumerate}
     \item Sei $f_i$ der Fluss am Anfang von Phase $i$.
     \item Phase $i$ endet, wenn Fluss $f_{i+1}$ mit $\mu(f_{i+1}) \leq (1-1/n) \cdot \mu(f_i)$ (nächste Phase) oder $\mu(f_{i+1}) \leq 0$ (Terminierung) gefunden ist.
-    \item Es gilt $\mu(f_i) \leq (1 - 1/n) \cdot \mu(f_{i-1}) \leq \frac{\mu(f_{i-1})}{e^{1/n}}$ (wegen $1-x \leq e^x$ für $x = 1/n$).
+    \item Es gilt $\mu(f_i) \leq (1 - 1/n) \cdot \mu(f_{i-1}) \leq \frac{\mu(f_{i-1})}{e^{1/n}}$ (wegen $1-x \leq e^{-x}$ für $x = 1/n$).
     \item Wegen Ganzzahligkeit der Kosten gilt $\mu(f_i) \geq 1/n$ für die vorletzte Phase $T - 1$.
     \item Wir erhalten $T - 1 \leq n \ln(nL)$.
 \end{enumerate}
