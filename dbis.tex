@@ -253,7 +253,7 @@ Ist das Schema $(A_1:D_1, \ldots, A_k:D_k)$ einer Tupelvariable $t$ nicht aus de
 
 Als Kurzschreibweise hat sich der Tupelkonstruktor etabliert: $$\Set{[t.A_1, \ldots, t.A_n] | \varphi(t)} = \Set{t \in (A_1:D_1, \ldots, A_k:D_k) | \varphi(t)}.$$
 
-Zur Auswertung müssen alle Tupelvariablen einer Formel $\varphi(t)$ durch konkrete Belegungen interpretiert werden. In der Ergebnisrelation landen dann alle Tupel $r$ mit dem durch die Tupelvariable festgelegten Schema, welche bei der Interpretation der Formel eine 'wahre' Aussage liefern. Für die also gilt $I(\varphi(r|t)) = \textbf{true}$, wobei alle vorkommen von $t$ durch $r$ ersetzt werden und der Aussage dann durch $I$ ein Wahrheitswert zugewiesen wird.
+Zur Auswertung müssen alle Tupelvariablen einer Formel $\varphi(t)$ durch konkrete Belegungen interpretiert werden. In der Ergebnisrelation landen dann alle Tupel $r$ mit dem durch die Tupelvariable festgelegten Schema, welche bei der Interpretation der Formel eine 'wahre' Aussage liefern. Für die also gilt $I(\varphi(r|t)) = \textbf{true}$, wobei alle Vorkommen von $t$ durch $r$ ersetzt werden und der Aussage dann durch $I$ ein Wahrheitswert zugewiesen wird.
 
 \textit{Bereichsvariablen} sind im Domänenkalkül das Pendant zu den Tupelvariablen. Ein Ausdruck mit $k$ Bereichsvariablen $x_1:D_1, \ldots x_k:D_k$ hat die Form $\Set{x_1, \ldots, x_k | \varphi(x_1, \ldots, x_k)}$. Außerdem findet hier der Tupelkonstruktor ebenfalls seine Verwendung. Beispiel: $$\Set{m | \exists n([m,n] \in Student \wedge \ldots) }.$$
 
@@ -311,7 +311,6 @@ Nehmen wir an, dass wir folgendes Schema haben: $R(A, B, C, D), S(E, F, G)$ und 
 \end{itemize}
 
 \sql{DISTINCT} löscht Duplikate.
-%...Mengen zu Werten... ?
 Mit Funktionen kann man auch Mengen von Werten weiterverrechnen. Dazu gibt es etwa \sql{COUNT}, \sql{MIN}, \sql{MAX}, \sql{SUM} und \sql{AVG}.\\
 z.B.: \sql{SELECT COUNT(DISTINCT Name) FROM Student}
 
@@ -366,7 +365,6 @@ Formal sagt man, dass $\alpha \to \beta$ in $R$ gilt, wenn
 für alle möglichen Ausprägungen $r, r' \in R$.
 
 Ein Superschlüssel ist eine Menge $\kappa \subseteq X$, sodass $\kappa^+ = X$ ist. Ein Schlüsselkandidat ist ein (bzgl.\ $\subseteq$) minimaler Superschlüssel.
-%, also entfernt man aus ihm ein weiteres Element, ist er kein Superschlüssel mehr.
 
 Man kann funktionale Abhängigkeiten auseinander ableiten. Man sagt: Eine funktionale Abhängigkeit $f$ folgt aus einer Menge funktionaler Abhängigkeiten $F$, geschrieben $F \models f$, wenn in jeder Relation, die alle Abhängigkeiten aus $F$ erfüllt, auch $f$ erfüllt ist. Um solche Implikationen syntaktisch zu prüfen, gibt es das Armstrong-Kalkül.
 \subsection{Armstrong-Kalkül}
