@@ -364,7 +364,7 @@ The $L^\ast$ algorithm asks these queries to build a minimal DFA for the target 
 It does so indirectly by inferring $\sim_L$-classes, which correspond to states in $\A_L$.
 
 The general idea is as follows:
-We have a set of \emph{representatives} $E \subseteq \Sigma^\ast$ for our equivalence classes and a set of words, called \emph{experiments} $E \subseteq \Sigma^\ast$.
+We have a set of \emph{representatives} $R \subseteq \Sigma^\ast$ for our equivalence classes and a set of words, called \emph{experiments} $E \subseteq \Sigma^\ast$.
 We've found a new representative $u \in R \cdot \Sigma$ if $u$ is \emph{escaping}: For all other representatives $v \in R$ there is an experiment $w \in E$, so that $uw \in L \Leftrightarrow vw \notin L$.
 One can think of $u$ and the $v$s as states in the automaton: If starting from state $u$ we get a different result reading $w$ than starting from all $v$s, $u$ must be a distinct state.
 
