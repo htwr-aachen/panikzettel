@@ -475,7 +475,7 @@ Eine Formel ist \emph{bereinigt}, wenn keine Variable sowohl frei als auch gebun
 
 Eine Formel ist in \emph{Pränex-Normalform} (PNF), wenn sie bereinigt ist und alle Quantoren nur zusammen am Anfang der Formel auftauchen. Jede FO-Formel lässt sich in PNF bringen.
 
-Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel in Skolem-Normalform erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und fügen für jede existenziell quantifizierte Variable $x$ ein neues Funktionssymbol $f$ in die Signatur ein. Vor dem Existenzquantor tritt $\forall x_1 \dots \forall x_k$ auf. Wir entfernen nun den Existenzquantor und ersetzen jedes Vorkommen von $x$ durch $f x_1,\dots,x_k$.
+Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel in Skolem-Normalform erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und fügen für jede existenziell quantifizierte Variable $x$ ein neues Funktionssymbol $f$ in die Signatur ein. Wenn vor dem Existenzquantor $x_1$ bis $x_k$ allquantifiziert auftreten, ersetzen wir jedes Vorkommen von $x$ durch $f x_1,\dots,x_k$ und entfernen den Existenzquantor.
 
 Eine Formel ist in \emph{relationaler Skolem-Normalform}, wenn sie relational ist und an ihrem Anfang zunächst nur Allquantoren stehen, danach Existenzquantoren und anschließend ein quantorenfreier Teil. Zu jeder Formel $\phi$ gibt es eine Formel $\psi$ in relationaler Skolem-Normalform, die über denselben Universen erfüllbar ist. Dazu bringen wir $\phi$ zunächst in die Skolem-Normalform und ersetzen jedes $n$-stellige Funktionssymbol durch ein $n+1$-stelliges Relationssymbol und quantifizieren die dabei entstehenden Variablen existentiell.
 
@@ -780,6 +780,54 @@ Bemerkung zur Anwendung: Wenn $\tau$ abzählbar ist, dann ist auch $\FO(\tau)$ a
 \begin{itemize}
 \item Jede Satzmenge, die beliebig große endliche Modelle hat, hat ein unendliches Modell.
 \item Jede Satzmenge $\Phi$, die ein unendliches Modell hat, hat für jede unendliche Kardinalzahl $\kappa \ge \abs{\Phi}$ ein Modell der Größe $\kappa$.
+\end{itemize}
+
+\subsection{Standardverfahren zur Axiomatisierbarkeit}
+
+Eine klassische Aufgabe in Übung und Klausur besteht darin, die (endliche) Axiomatisierbarkeit von gewissen Strukturklassen zu zeigen oder zu widerlegen.
+Die (endliche) Axiomatisierbarkeit einer Strukturklasse $\K$ lässt sich meist am einfachsten durch Angabe eines passenden Axiomensystems beweisen.
+
+Um zu zeigen, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisierbar ist, bieten sich oft einige Standardverfahren an, die hier kurz erläutert werden sollen:
+
+\subsubsection{Nicht axiomatisierbar}
+\begin{itemize}
+	\item Kompaktheitssatz: Finde zunächst ein unendliches Axiomensystem $\Psi$ für eine Strukturklasse $K^\prime$ mit $K\cap K^\prime = \emptyset$, so dass jede endliche Teilmenge von $\Psi$ ein Modell in $K$ besitzt. 
+	Wenn man nun annimmt, dass es ein Axiomensystem $\Phi$ für $\K$ gibt, muss $\Phi \cup \Psi$ unerfüllbar sein, mit KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \Phi \cup \Psi$.
+	Jedoch wurde $\Psi$ so gewählt, dass $\Phi_0$ erfüllbar ist, damit tritt ein Widerspruch auf und im Umkehrschluss muss gelten, dass kein passendes $\Phi$ existiert.
+	
+	Die Schwierigkeit ist hierbei die Wahl von $\Psi$. Oftmals bietet es sich an, $\Psi$ als Axiomensystem für die Klasse von unendlichen Strukturen oder für die Klasse von Graphen mit unendlichen Pfaden o. ä. zu wählen.
+	
+	Beispiel: Für $\K$ die Klasse der Graphen mit beliebig langen endlichen Pfaden, aber ohne unendlichen Pfad wähle $K^\prime$ als Klasse der Graphen mit unendlichem Pfad und konstruiere $\Psi$ entsprechend.
+	
+	\item Ehrenfeucht-Fra\"issé ($\tau$ abzählbar und relational): Finde zwei Strukturen $\A \in \K,\ \B \notin \K$ mit $\A \equiv \B$ und gebe eine Gewinnstrategie für die Duplikatorin für $G(\A,\B)$ an. Dann ist $\K$ nicht axiomatisierbar, da $\A$ und $\B$ nicht in $\FO$ unterschieden werden können.
+	
+	Die Schwierigkeit besteht hierbei in der passenden Wahl von $\A$ und $\B$, zudem ist das Aufschreiben der Strategie manchmal aufwändig.
+	
+	Beispiel: Für $\K$ die Klasse der abzählbaren Mengen wähle $\A = \mathbb{N}$ und $\B=\mathcal{P}(\mathbb{N})$.
+	
+	\item Aufsteigender Satz von Löwenheim-Skolem: Hier gibt es zwei Fälle.
+	\begin{itemize}
+		\item In $\K$ sind bel. große, aber nur endliche Strukturen. Wenn ein hypothetisches $\Phi$ $\K$ axiomatisiert, hat $\Phi$ nach LS$\uparrow$ ein unendliches Modell, dies widerspricht aber der Definition von $\Phi$.
+		
+		Klassisches Beispiel: Die Klasse aller endlichen Mengen.
+		\item $\K$ beinhaltet unendliche Strukturen, so dass für alle $\A \in \K$ und eine feste Menge $M$ $\lvert A \rvert < \lvert M \rvert$ gilt. 
+		Wenn ein hyp. $\Phi$ $\K$ axiomatisiert, gibt es nach LS$\uparrow$ ein Modell von $\Phi$ mit Mächtigkeit mindestens $M$, im Umkehrschluss gibt es kein passendes $\Phi$.
+		
+		Beispiel: Die Menge der abzählbaren Mengen.
+	\end{itemize}
+
+	\item Absteigender Satz von Löwenheim-Skolem: Wenn $\K$ nur überabzählbar große Strukturen enthält, ist $\K$ nach LS$\downarrow$ nicht axiomatisierbar. Hierfür muss $\tau$ abzählbar sein.
+\end{itemize}
+
+\subsubsection{Nicht endlich axiomatisierbar}
+
+\begin{itemize}
+	\item Kompaktheitssatz: Dazu benötigen wir ein unendliches Axiomensystem $\Phi$ für $\K$, wobei jede endliche Teilmenge von $\Phi$ kein Axiomensystem für $\K$ ist (bei entsprechenden Aufgaben soll oft zuerst die generelle Axiomatisierbarkeit überprüft werden, daher ist ein solches $\Phi$ oft schon vorhanden).
+	Nun nehmen wir an, dass ein Axiomensystem $\{\phi\}$ für $\K$ existiert, wobei dann $\{\lnot\phi\} \cup \Phi$ unerfüllbar ist.
+	Nach KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \{\lnot\phi\} \cup \Phi$. Um nun einen Widerspruch zu erzeugen, geben wir ein Modell von $\Phi_0$ an.
+	Die Argumentation ist dabei oft sehr ähnlich zum Kompaktheitssatzschema für generelle Nichtaxiomatisierbarkeit.
+	
+	Beispiel: Für $\K$ die Klasse der unendlichen Mengen wähle $\Phi = \Phi_\infty$.
 \end{itemize}
 
 \subsection{Unentscheidbarkeit der Prädikatenlogik}
