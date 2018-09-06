@@ -787,11 +787,11 @@ Bemerkung zur Anwendung: Wenn $\tau$ abzählbar ist, dann ist auch $\FO(\tau)$ a
 Eine klassische Aufgabe in Übung und Klausur besteht darin, die (endliche) Axiomatisierbarkeit von gewissen Strukturklassen zu zeigen oder zu widerlegen.
 Die (endliche) Axiomatisierbarkeit einer Strukturklasse $\K$ lässt sich meist am einfachsten durch Angabe eines passenden Axiomensystems beweisen.
 
-Wenn man zeigen will, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisierbar ist, bieten sich oft einige Standardverfahren an, die hier kurz erläutert werden sollen:
+Wenn man zeigen will, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisierbar ist, bieten sich oft einige Standardverfahren an, die hier kurz erläutert werden sollen.
 
 \subsubsection{Nicht axiomatisierbar}
-\begin{itemize}
-	\item Kompaktheitssatz: Finde zunächst ein unendliches Axiomensystem $\Psi$ für eine Strukturklasse $K^\prime$ mit $K\cap K^\prime = \emptyset$, so dass jede endliche Teilmenge von $\Psi$ ein Modell in $K$ besitzt. 
+	\paragraph{Kompaktheitssatz} Finde zunächst ein unendliches Axiomensystem $\Psi$ für eine Strukturklasse $K^\prime$ mit $K\cap K^\prime = \emptyset$, so dass jede endliche Teilmenge von $\Psi$ ein Modell in $K$ besitzt.
+	
 	Wenn man nun annimmt, dass es ein Axiomensystem $\Phi$ für $\K$ gibt, muss $\Phi \cup \Psi$ unerfüllbar sein, mit KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \Phi \cup \Psi$.
 	Jedoch wurde $\Psi$ so gewählt, dass $\Phi_0$ erfüllbar ist, damit tritt ein Widerspruch auf und im Umkehrschluss muss gelten, dass kein passendes $\Phi$ existiert.
 	
@@ -799,36 +799,37 @@ Wenn man zeigen will, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich ax
 	
 	Beispiel: Für $\K$ die Klasse der endlichen Mengen wähle $\Psi = \Phi_\infty$.
 	
-	\item Ehrenfeucht-Fra\"issé ($\tau$ abzählbar und relational): Finde zwei Strukturen $\A \in \K,\ \B \notin \K$ mit $\A \equiv \B$ und gebe eine Gewinnstrategie für die Duplikatorin für $G(\A,\B)$ an. Dann ist $\K$ nicht axiomatisierbar, da $\A$ und $\B$ nicht in $\FO$ unterschieden werden können.
+	\paragraph{Ehrenfeucht-Fra\"issé} Beachte zunächst, dass $\tau$ abzählbar und relational sein muss. Finde zwei Strukturen $\A \in \K,\ \B \notin \K$ mit $\A \equiv \B$ und gebe eine Gewinnstrategie für die Duplikatorin für $G(\A,\B)$ an. Dann ist $\K$ nicht axiomatisierbar, da $\A$ und $\B$ nicht in $\FO$ unterschieden werden können.
 	
 	Die Schwierigkeit besteht hierbei in der passenden Wahl von $\A$ und $\B$, zudem ist das Aufschreiben der Strategie manchmal aufwändig.
 	
 	Beispiel: Für $\K$ die Klasse der abzählbaren Mengen wähle $\A = \mathbb{N}$ und $\B=\mathcal{P}(\mathbb{N})$.
 	
-	\item Aufsteigender Satz von Löwenheim-Skolem: Hier gibt es zwei Fälle.
+	\paragraph{Aufsteigender Satz von Löwenheim-Skolem} Hier gibt es zwei Fälle:
 	\begin{itemize}
-		\item In $\K$ sind bel. große, aber nur endliche Strukturen. Wenn ein hypothetisches $\Phi$ $\K$ axiomatisiert, hat $\Phi$ nach LS$\uparrow$ ein unendliches Modell, dies widerspricht aber der Definition von $\Phi$.
+		\item In $\K$ sind bel. große, aber nur endliche Strukturen
+		Wenn ein hypothetisches $\Phi$ $\K$ axiomatisiert, hat $\Phi$ nach LS$\uparrow$ ein unendliches Modell, dies widerspricht aber der Definition von $\Phi$.
 		
 		Klassisches Beispiel: Die Klasse aller endlichen Mengen.
-		\item $\K$ beinhaltet unendliche Strukturen, so dass für alle $\A \in \K$ und eine feste Menge $M$ $\lvert A \rvert < \lvert M \rvert$ gilt. 
+		
+		\item $\K$ beinhaltet unendliche Strukturen, so dass für alle $\A \in \K$ und eine feste Menge $M$ $\lvert A \rvert < \lvert M \rvert$ gilt.
+		 
 		Wenn ein hyp. $\Phi$ $\K$ axiomatisiert, gibt es nach LS$\uparrow$ ein Modell von $\Phi$ mit Mächtigkeit mindestens $M$, im Umkehrschluss gibt es kein passendes $\Phi$.
 		
 		Beispiel: Die Menge der abzählbaren Mengen.
 	\end{itemize}
-
-	\item Absteigender Satz von Löwenheim-Skolem: Wenn $\K$ nur überabzählbar große Strukturen enthält, ist $\K$ nach LS$\downarrow$ nicht axiomatisierbar. Hierfür muss $\tau$ abzählbar sein.
-\end{itemize}
+	\paragraph{Absteigender Satz von Löwenheim-Skolem} Wenn $\K$ nur überabzählbar große Strukturen enthält, ist $\K$ nach LS$\downarrow$ nicht axiomatisierbar. Hierfür muss $\tau$ abzählbar sein.
 
 \subsubsection{Nicht endlich axiomatisierbar}
 
-\begin{itemize}
-	\item Kompaktheitssatz: Dazu benötigen wir ein unendliches Axiomensystem $\Phi$ für $\K$, wobei jede endliche Teilmenge von $\Phi$ kein Axiomensystem für $\K$ ist (bei entsprechenden Aufgaben soll oft zuerst die generelle Axiomatisierbarkeit überprüft werden, daher ist ein solches $\Phi$ oft schon vorhanden).
+	\paragraph{Kompaktheitssatz} Dazu benötigen wir ein unendliches Axiomensystem $\Phi$ für $\K$, wobei jede endliche Teilmenge von $\Phi$ kein Axiomensystem für $\K$ ist (bei entsprechenden Aufgaben soll oft zuerst die generelle Axiomatisierbarkeit überprüft werden, daher ist ein solches $\Phi$ oft schon vorhanden).
+	
 	Nun nehmen wir an, dass ein Axiomensystem $\{\phi\}$ für $\K$ existiert, wobei dann $\{\lnot\phi\} \cup \Phi$ unerfüllbar ist.
 	Nach KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \{\lnot\phi\} \cup \Phi$. Um nun einen Widerspruch zu erzeugen, geben wir ein Modell von $\Phi_0$ an.
+	
 	Die Argumentation ist dabei oft sehr ähnlich zum Kompaktheitssatzschema für generelle Nichtaxiomatisierbarkeit.
 	
 	Beispiel: Für $\K$ die Klasse der unendlichen Mengen wähle $\Phi = \Phi_\infty$.
-\end{itemize}
 
 \subsection{Unentscheidbarkeit der Prädikatenlogik}
 
