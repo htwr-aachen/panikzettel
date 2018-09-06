@@ -1,0 +1,750 @@
+\documentclass[english]{panikzettel}
+
+\title{Static Program Analysis Panikzettel}
+\author{Philipp Schröer}
+
+\usepackage{listings}
+
+\lstset{
+  mathescape=true
+}
+
+\newcommand{\Cmd}{\mathrm{Cmd}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Lab}{\mathrm{Lab}}
+\newcommand{\init}{\mathrm{init}}
+\newcommand{\final}{\mathrm{final}}
+\newcommand{\flow}{\mathrm{flow}}
+\newcommand{\AI}{\mathrm{AI}}
+\newcommand{\fix}{\mathrm{fix}}
+\newcommand{\Path}{\mathrm{Path}}
+\newcommand{\mop}{\mathrm{mop}}
+\newcommand{\Abstract}{\mathrm{Abs}}
+\newcommand{\val}{\mathrm{val}}
+\newcommand{\true}{\mathrm{true}}
+\newcommand{\false}{\mathrm{false}}
+\newcommand{\iflow}{\mathrm{iflow}}
+\newcommand{\VPath}{\mathrm{VPath}}
+\newcommand{\mvp}{\mathrm{mvp}}
+\DeclarePairedDelimiter\config{\langle}{\rangle}
+
+\usepackage{array}
+\newcolumntype{L}{>{$}l<{$}}
+\newcolumntype{C}{>{$}c<{$}}
+\newcolumntype{R}{>{$}r<{$}}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{Introduction}
+
+This Panikzettel is about the lecture Static Program Analysis by Prof.\ Noll held in the summer semester 2018.
+
+This Panikzettel is Open Source. We appreciate comments and suggestions at \\ \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+
+\section{Dataflow Analysis}
+
+\emph{Dataflow analysis} is a form of program analysis that is based on flows of information through the analyzed program.
+There are several ways to distinguish program analyses: Dependence on statement orders (\emph{flow-sensitivity}), the flow direction (\emph{forward}/\emph{backward}), the quantification of flows over paths (\emph{may}, i.e.\ union, or \emph{must}, i.e.\ intersection), and the scope w.r.t.\ procedures (\emph{interprocedural} vs.\ \emph{intraprocedural}).
+
+\subsection{The WHILE Language}
+
+We describe flows between labelled statements.
+We use WHILE programs as our example language.
+Here, dataflow information is associated with \texttt{skip} statements, assignments and tests in \texttt{if} and \texttt{while} statements.
+
+\begin{defi}{Labelled WHILE programs}
+\begin{lstlisting}
+a ::= $z$ | $x$ | $a_1$+$a_2$ | $a_1$-$a_2$ | $a_1$*$a_2$ $\in$ AExp
+b ::= $t$ | $a_1$=$a_2$ | $a_1$>$a_2$ | $\neg$ $b$ | $b_1$ $\land$ $b_2$ | $b_1$ $\lor$ $b_2$ $\in$ BExp
+c ::= [skip]$^l$ | [$x$ := $a$]$^l$ | $c_1$;$c_2$ |
+      if [$b$]$^l$ then $c_1$ else $c_2$ end |
+      while [$b$]$^l$ do $c$ end $\in$ Cmd
+\end{lstlisting}
+
+We assume all labels in $c \in \texttt{Cmd}$ are distinct, and denoted by $Lab_c$.
+
+Labelled fragments of $c$ are called \emph{blocks}, written as $Blk_c$.
+\end{defi}
+
+\subsection{Algebraic Foundations}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Partial Order}
+        A \emph{partial order} $(D, \sqsubseteq)$ has a domain $D$ and a relation ${\sqsubseteq} \subseteq D \times D$, where {\small{}$\Forall d_1, d_2, d_3 \in D$}:
+
+        \begin{tightcenter}
+            {\small{}\textsc{Reflexivity}} \\
+            $d_1 \sqsubseteq d_1$
+
+            {\small{}\textsc{Transitivty}} \\
+            $d_1 \sqsubseteq d_2 \land d_2 \sqsubseteq d_3 ~\Rightarrow~ d_1 \sqsubseteq s_3$
+
+            {\small{}\textsc{Antisymmetry}} \\
+            $d_1 \sqsubseteq d_2 \land d_2 \sqsubseteq d_1 ~\Rightarrow~ d_1 = d_2$
+        \end{tightcenter}
+    \end{defi}
+
+    To combine information in our dataflow systems, we use \emph{complete lattices}.
+    A complete lattice is a partial order with upper bounds for all subsets (also called \emph{supremum} or \emph{join}\footnote{from set theory, the union is what you get when you join sets}).
+    Equivalently, one can require lower bounds for all subsets (also called \emph{infimum} or \emph{meet}\footnote{from set theory, the intersection is where two sets meet}).
+    \vspace{\baselineskip} % for some spacing between the footnotes
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{(Least) Upper Bound,\\\hphantom{Definition: }(Greatest) Lower Bound}
+        Let $(D, \sqsubseteq)$ be a partial order with $S \subseteq D$.
+        \vspace{0.5\baselineskip}
+
+        \begin{enumerate}[leftmargin=*]
+            \item $d \in D$ is an \emph{upper bound} of $S$ ($S \sqsubseteq d$) if \\ $s \sqsubseteq d~\Forall s \in S$.
+            \item $d$ is a \emph{least upper bound of $S$} ($d = \bigsqcup S$) if\\ $d \sqsubseteq d'$ for every upper bound $d'$ of $S$.
+        \end{enumerate}
+        \vspace{0.5\baselineskip}
+
+        Analogous definitions for \emph{lower bound} and \emph{greatest lower bound}.
+    \end{defi}
+
+    \begin{defi}{Complete Lattice}
+        A \emph{complete lattice} is a
+        \begin{itemize}
+            \item partial order $(D, \sqsubseteq)$,
+            \item such that all $S \subseteq D$ have \\
+                  least upper bounds, {\small{}or equivalently,}\\ greatest lower bounds.
+        \end{itemize}
+
+        The least element is $\bot := \bigsqcup \emptyset$. \\
+        The greatest elemtent is $\top := \bigsqcap \emptyset$.
+    \end{defi}
+\end{halfboxr}
+\bigskip
+
+\begin{halfboxl}
+    The \emph{Ascending Chain Condition (ACC)} guarantees termination of the \hyperref[algo:fixpoint]{fixpoint algorithm} by limiting ascending chains to be finite.
+
+    For example, $(\nat, \leq)$ does not fulfill ACC because e.g.\ $1, 2, \ldots$ is an ascending chain that does not stabilise.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Ascending Chain Condition}
+        A partial order $(D, \sqsubseteq)$ satisfies \emph{ACC} if each ascending chain eventually stabilises:
+        \begin{tightcenter}
+            $\Exists n \in \nat: d_n = d_{n+1} = \ldots$.
+        \end{tightcenter}
+        \smallskip
+
+        \small{}
+        \emph{Chain}: A subset $S \subseteq D$ with
+        \begin{tightcenter}
+            $\Forall d_1, d_2 \in S$:\quad $d_1 \sqsubseteq d_2$ or $d_2 \sqsubseteq d_1$.
+        \end{tightcenter}
+        \emph{Ascending chain}: $d_i \sqsubseteq d_{i+1} \quad\Forall i \in \nat$.
+    \end{defi}
+\end{halfboxr}
+\medskip
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Monotonicity}
+        Let $(D, \sqsubseteq)$ and $(D', \sqsubseteq')$ be partial orders.
+        $\Phi : D \to D'$ is \emph{monotonic} if {\small{}$\Forall d_1, d_2 \in D$}:
+        \begin{tightcenter}
+            $d_1 \sqsubseteq d_2 \Rightarrow \Phi(d_1) \sqsubseteq' \Phi(d_2)$.
+        \end{tightcenter}
+    \end{defi}
+
+    \begin{defi}{Fixpoint}
+        $d$ is a \emph{fixpoint} of $\Phi : D \to D$ if $\Phi(d) = d$.
+    \end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Fixpoint Theorem by Kleene}
+        \label{theo:kleene}
+        Let $(D, \sqsubseteq)$ be a complete lattice satisfying ACC and $\Phi : D \to D$ monotonic. Then
+        \[
+            \fix(\Phi) := \bigsqcup \Set{ \Phi^k(\bot) | k \in \nat }
+        \]
+        is the \emph{least fixpoint} of $\Phi$ where
+        \begin{align*}
+            \Phi^0(d) &:= d \\
+            \Phi^{k+1}(d) &:= \Phi(\Phi^k(d))
+        \end{align*}
+    \end{theo}
+\end{halfboxr}
+
+\subsection{Dataflow System}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Initial and Final Labels}
+    \vspace{-1\baselineskip}
+    \begin{align*}
+        \init &: \Cmd \to \Lab \\
+        \final &: \Cmd \to 2^\Lab
+    \end{align*}
+    \end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Flow Relation}
+        \begin{tightcenter}
+            $\flow(c) \subseteq \Lab \times \Lab$
+            \medskip
+
+            \footnotesize{}
+            $\flow^R(c) := \Set{ (l', l) | (l, l') \in \flow(c) }$
+        \end{tightcenter}
+    \end{defi}
+\end{halfboxr}
+
+\begin{tightcenter}
+    \footnotesize{}
+    \begin{tabular}{c|C|C|C}
+        $c \in \Cmd$ & \init(c) & \final(c) & \flow(c) \\
+        \hline
+        \texttt{[skip]$^l$} & l & \Set{l} & \emptyset \\
+        \texttt{[$x$ := $a$]$^l$} & l & \Set{l} & \emptyset \\
+        \texttt{$c_1$;$c_2$} & \init(c_1) & \final(c_2) & \flow(c_1) \cup \flow(c_2) \cup \final(c_1) \times \Set{\init(c_2)} \\
+        \texttt{if [$b$]$^l$ then $c_1$ else $c_2$ end} & l & \final(c_1) \cup \final(c_2) & \flow(c_1) \cup \flow(c_2) \cup \Set{(l, \init(c_1)), (l, \init(c_2))} \\
+        \texttt{while [$b$]$^l$ do $c$ end} & l & \Set{l} & \flow(c) \cup \Set{(l, \init(c)} \cup \final(c) \times \Set{l}
+    \end{tabular}
+\end{tightcenter}
+
+A \emph{dataflow system} describes how program analysis data flows between statements in our labelled program.
+If we are doing a forward analysis, we choose $\Set{ \init(c) }$ as the \emph{extremal labels} to start the analysis with.
+Otherwise we start at all $\final(c)$.
+All extremal labels are assigned the \emph{extremal value} $\iota$.
+Then, using our transfer functions $\phi_l$ for each label $l \in \Lab$, we propagate and process information through the program.
+The edges for propagation are given by the \emph{flow relation} $F$, which is either $\flow(c)$ or $\flow^R(c)$.
+
+\begin{defi}{Dataflow System}
+A \emph{dataflow system} $S = (\Lab, E, F, (D, \sqsubseteq), \iota, \phi)$ consists of
+\begin{itemize}
+    \item a finite set of program \emph{labels} $\Lab$,
+    \item a set of extremal labels $E \subseteq \Lab$ (here: $\Set{\init(c)}$ or $\final(c)$),
+    \item a \emph{flow relation} $F \subseteq \Lab \times \Lab$ (here: $\flow(c)$ or $\flow^R(c)$),
+    \item a \emph{complete lattice} $(D, \sqsubseteq)$ satisfying ACC \\
+          (with LUB operator $\sqcup$ and least element $\bot$),
+    \item an \emph{extremal value} $\iota \in D$ (for the extremal labels),
+    \item a familiy of \emph{monotonic transfer functions} $\Set{ \phi_l | l \in \Lab }$ of type $\phi_l : D \to D$.
+\end{itemize}
+\end{defi}
+
+\begin{defi}{Dataflow Equation System}
+Given a dataflow system $S = (\Lab, E, F, (D, \sqsubseteq), \iota, \phi)$ and w.l.o.g.\ $\Lab = \Set{1, \ldots, n}$
+\begin{itemize}
+    \item $S$ determines the \emph{equation system} (where $l \in \Lab$)
+          \begin{tightcenter}
+            $\AI_l = \begin{cases}
+                \iota & \text{if } l \in E, \\
+                \bigsqcup \Set{ \phi_{l'}(\AI_{l'}) | (l, l') \in F } & \text{otherwise}
+            \end{cases}$
+          \end{tightcenter}
+    \item $(d_1, \ldots, d_n) \in D^n$ is called a \emph{solution} if
+          \begin{tightcenter}
+            $d_l = \begin{cases}
+                \iota & \text{if } l \in E, \\
+                \bigsqcup \Set{ \phi_{l'}(d_{l'}) | (l, l') \in F } & \text{otherwise}
+            \end{cases}$
+          \end{tightcenter}
+    \item $S$ determines the \emph{transformation}
+          \begin{tightcenter}$\Phi_S : D^n \to D^n : (d_1, \ldots, d_n) \to (d_1', \ldots, d_n')$\end{tightcenter}
+          where
+          \begin{tightcenter}
+            $d_l' = \begin{cases}
+                \iota & \text{if } l \in E, \\
+                \bigsqcup \Set{ \phi_{l'}(d_{l'}) | (l, l') \in F } & \text{otherwise}
+            \end{cases}$
+          \end{tightcenter}
+\end{itemize}
+\end{defi}
+
+Note that non-minimal solutions to dataflow equation systems are not always unique.
+
+\subsection{Fixpoint Iteration}
+\label{algo:fixpoint}
+
+One can prove that $(d_1, \ldots, d_n) \in D^n$ solves the equation system if and only if it is a fixpoint of $\Phi_S$.
+Basically it's because we have a complete lattice satisfying ACC and a monotonic transfer function.
+
+We can compute this (least) fixpoint by fixpoint iteration: $\fix(\Phi_S) = \bigsqcup \Set{ \Phi_S^k(\bot_{D^n}) | k \in \nat }$ (see \hyperref[theo:kleene]{Kleene's Fixpoint theorem}).
+It requires at most $m \cdot n$ steps, where $m$ is the height of the lattice.
+
+\label{algo:worklist}
+We can also compute the fixpoint more efficiently by using a \emph{worklist algorithm}.
+The algorithm keeps a list of control-flow edges to be processed.
+It iteratively removes an edge $(l, l')$ from the list and computes $\phi_l(\AI_l)$.
+If it detects that a fixpoint has not been reached ($\phi_l(\AI_l) \not\sqsubseteq \AI_{l'}$), then $\AI_{l'}$ is updated: $\AI_{l'} := \AI_{l'} \sqcup \phi_l(\AI_l)$, and all edges from $l'$, $(l', l'')$, are added to the worklist.
+
+\subsection{Meet Over All Paths (MOP)}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{MOP Solution}
+        \[
+            \mop(S) = (\mop(l_1), \ldots, \mop(l_n)) \in D^n
+        \]
+        where, for every $l \in \Lab$,
+        \[
+            \mop(l) = \bigsqcup \Set{ \phi_\pi(\iota) | \pi \in \Path(l) }.
+        \]
+    \end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Paths}
+        Given a dataflow system \\
+        $S = (\Lab, E, F, (D, \sqsubseteq), \iota, \phi)$, \\
+        the \emph{set of paths up to} $l \in \Lab$ is given by
+        \footnotesize
+        \[
+            \Path(l) = \Set{ [l_1, \ldots, l_{k-1}] |
+                    \begin{array}{l}
+                        k \geq 1,~ l_1 \in E, \\
+                        (l_i, l_{i+1}) \in F \\
+                        \forall~ 1 \leq i < k,~ l_k = l
+                    \end{array}
+                }
+        \]
+    \end{defi}
+\end{halfboxr}
+
+The other method to solve dataflow equation systems is \emph{Meet Over All Paths} (MOP).
+It is the ``reference solution'', but unfortunately it is undecidable to compute in the general case.
+
+The MOP solution for a block $B^l$ is given by the least upper bound over all paths leading to $l$.
+
+\subsection{Coincidence of MOP and Fixpoint Solution}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{theo}{The Coincidence}
+        If the dataflow system $S$ is distributive:
+
+        \begin{tightcenter}
+            $\mop(S) = \fix(\varphi_S)$
+        \end{tightcenter}
+    \end{theo}
+
+    If a dataflow system is distributive, the MOP solution and the fixpoint solution are equal.
+    This is nice, as we can guarantee the optimal result of MOP while still guaranteeing decidability, as well as decent performance.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Distributivity}
+        Let $(D, \sqsubseteq)$ and $(D', \sqsubseteq')$ be complete lattices. A function $F : D \to D'$ is called \emph{distributive}, if, for every $d_1, d_2 \in D$,
+        \medskip
+
+        \begin{tightcenter}
+            $F(d_1 \sqcup_D d_2) = F(d_1) \sqcup_{D'} F(d_2)$.
+        \end{tightcenter}
+        \medskip
+
+        A dataflow system is distributive if every $\varphi_l$ is distributive.
+    \end{defi}
+\end{halfboxr}
+
+\subsection{Dataflow Analysis with Non-ACC Domains}
+
+We can also do a dataflow analysis with domains that do not fulfill the Ascending Chain Condition.
+The trick to prevent nontermination is to use \emph{widening operators} which generate an imprecise result to ensure ACC again.
+
+\begin{defi}{Widening Operator}
+    Let $(D, \sqsubseteq)$ be a complete lattice. \\
+    A mapping $\nabla : D \times D \to D$ is called a \emph{widening operator} if
+    \smallskip
+
+    \begin{itemize}
+        \item $\Forall d_1, d_2 \in D$:\quad $d_1 \sqcup d_2 \sqsubseteq d_1 \nabla d_2$,
+        \item for all ascending chains $d_0 \sqsubseteq d_1 \sqsubseteq \ldots$, the ascending chain $d_0^\nabla \sqsubseteq d_1^\nabla \sqsubseteq \ldots$ eventually stabilises, where $d_0^\nabla = d_0$ and $d_{i+1}^\nabla = d_i^\nabla \nabla d_{i+1}$.
+    \end{itemize}
+\end{defi}
+
+We can modify the \hyperref[algo:worklist]{worklist algorithm} to use the widening operator.
+In the update step, we simply do $\AI_{l'} := \AI_{l'} \nabla \phi_l(\AI_l)$ instead of $\AI_{l'} := \AI_{l'} \sqcup \phi_l(\AI_l)$.
+Note that in contrast to $\sqcup$ the widening operator $\nabla$ does not require commutativity, associativity, monotonicity nor absorption ($d \nabla d = d$).
+On the other hand, only $\fix^\nabla(\Phi_S) \sqsupseteq \fix(\Phi_S)$ (soundness) is guaranteed.
+
+Widening may lead to very imprecise results, which can be improved by \emph{narrowing} again.
+Let $\fix^\nabla(\Phi_S)$ be the result of widening (e.g. using the algorithm above).
+Narrowing applies $\Phi_S$ $k$ times (for some $k$), so the end result is $\Phi_S^k(\fix^\nabla(\Phi_S))$.
+
+\subsection{Analysis Using Conditional Branches}
+
+Previously, our analyses did not use information from branches -- so for example code following a successful equality check $a = 3$ could not be analysed with this fact.
+In the lecture, we introduced an \lstinline!assert [fact]! statement that is inserted after each branch.
+Then it is possible to simply extend the transfer functions to work with \lstinline!assert! information.
+
+\section{Abstract Interpretation}
+
+\emph{Abstract interpretation} is a theory of sound approximation of program semantics.
+The execution is abstracted to work on abstract values (e.g.\ parity, intervals, or types!).
+
+\subsection{Galois Connections}
+
+\begin{halfboxl}
+    A \emph{Galois connection} is a pair of monotonic functions between lattices: The abstraction $\alpha$ and the concretisation $\gamma$.
+    $L$ is the domain of sets of concrete values and $M$ the one for abstract values.
+
+    The two conditions ensure that $\alpha$ is an over-approximation (1) and that concretisation followed by abstraction does not lose precision (2).
+
+    Galois connections have a few useful properties:
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Galois Connection}
+        Let $(L, \sqsubseteq_L)$,~ $(M, \sqsubseteq_M)$ be complete lattices. \\
+        A pair $(\alpha, \gamma)$ of monotonic functions
+        \begin{tightcenter}
+            $\alpha : L \to M$,\quad $\gamma : M \to L$
+        \end{tightcenter}
+        is called a \emph{Galois connection} if
+        \begin{enumerate}
+            \item $\forall~ l \in L:~ l \sqsubseteq_L \gamma(\alpha(l))$ and
+            \item $\forall~m \in M:~ \alpha(\gamma(m)) \sqsubseteq_M m$.
+        \end{enumerate}
+    \end{defi}
+\end{halfboxr}
+\vspace{-\baselineskip}
+
+\begin{itemize}
+    \item $\alpha(l) \sqsubseteq_M m \iff l \sqsubseteq_L \gamma(m)$.
+    \item $\gamma$ is uniquely determined by $\alpha$: $\gamma(m) = \bigsqcup \Set {l \in L | \alpha(l) \sqsubseteq_M m}$.
+    \item $\alpha$ is uniquely determined by $\gamma$: $\alpha(m) = \bigsqcap \Set {m \in M | l \sqsubseteq_L \gamma(m)}$.
+    \item $\alpha$ is completely distributive: $\forall~L' \subseteq L:~ \alpha(\bigsqcup L') = \bigsqcup \Set{ \alpha(l) | l \in L' }$.
+    \item $\gamma$ is completely multiplicative: $\forall~M' \subseteq M:~ \gamma(\bigsqcap M') = \bigsqcap \Set{ \gamma(m) | m \in M' }$.
+\end{itemize}
+
+\subsection{Safe Approximation of Functions}
+
+Given a Galois connection, we want to approximate functions directly and safely.
+E.g.\ when we are doing parity abstraction, we want to directly approximate $f = +$ in our approximation domain ($\Set{ 0, 1 }$) by some $f^\# = +^\#$.
+The intuition is that $f^\#$ should cover all concrete results of $f$.
+
+\begin{defi}{Safe Approximation}
+    Let $(\alpha, \gamma)$ be a Galois connection and let $f : L^n \to L$ and $f^\# : M^n \to M$ be functions of rank $n \in \nat$.
+    We call $f^\#$ a \emph{safe approximation} of $f$ if
+    \[
+        \alpha(f(\gamma(m_1), \ldots, \gamma(m_n))) \sqsubseteq_M f^\#(m_1, \ldots, m_n) \qquad \Forall m_1, \ldots, m_n \in M.
+    \]
+    Additionally, $f^\#$ is called \emph{most precise} if the reverse inclusion is also true:
+    \[
+        \alpha(f(\gamma(m_1), \ldots, \gamma(m_n))) = f^\#(m_1, \ldots, m_n) \qquad \Forall m_1, \ldots, m_n \in M.
+    \]
+\end{defi}
+
+Usually, $f$ and $f^\#$ are monotonic.
+Then, the following theorem allows us to simplify the safety proof:
+
+\begin{theo}{Safe Approximation with Monotonic $f$}
+    If $f : L^n \to L$ and $f^\# : M^n \to M$ are both monotonic, then $f^\#$ is a safe approximation of $f$ if
+    \[
+        \alpha(f(l_1,\ldots,l_n)) \sqsubseteq_M f^\#(\alpha(l_1),\ldots,\alpha(l_n)) \qquad \Forall l_1,\ldots,l_n \in L.
+    \]
+\end{theo}
+
+\subsection{Safe Approximation of Extraction Functions}
+
+\begin{halfboxl}
+    We define an \emph{extraction function} $\beta$ that determines a Galois connection $(\alpha, \gamma)$:
+    \begin{align*}
+        \alpha &: L \to M, &&l \mapsto \Set{ \beta(c) | c \in l }, \\
+        \gamma &: M \to L, &&m \mapsto \Set{ c \in C | \beta(c) \in m }.
+    \end{align*}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-.5\baselineskip}
+    \begin{defi}{Extraction Function}
+        If $L = 2^C$ and $M = 2^A$ with $\sqsubseteq_L = \sqsubseteq_M = \subseteq$, then $\beta : C \to A$ is an \emph{extraction function}.
+    \end{defi}
+\end{halfboxr}
+
+\begin{theo}{Most Precise Abstraction of an Extraction Function}
+    If $\beta : C \to A$ is an extraction function, the most precise abstraction of $f$ is
+    \[
+        f^\# : M^n \to M, (m_1,\ldots,m_n) \mapsto \Set{ \beta(f(c_1,\ldots,c_n)) | \Forall i \in \Set{1,\ldots,n}: c_i \in \beta^{-1}(m_i) }.
+    \]
+\end{theo}
+
+\subsection{Abstract Semantics (of WHILE)}
+
+A normal \emph{execution relation} for WHILE statements $\rightarrow ~\subseteq (\Cmd \times \Sigma) \times (\Cmd_\downarrow \times \Sigma)$ is a relation of \emph{configurations} $\config{c, \sigma}$.
+$\sigma \in \Sigma$ is the mapping of variable valuations $\sigma : \Var \to \mathbb{Z}$.
+$c$ is either a statement or, for $\Cmd_\downarrow$, also possibly the $\downarrow$ symbol which indicates execution termination.
+
+From this we get the \emph{concrete domain} $L := (2^\Sigma, \subseteq)$ and the \emph{concrete transition function} family with $c \in \Cmd$, $c' \in \Cmd \cup \Set{ \downarrow }$: $\mathrm{next}_{c,c'} : 2^\Sigma \to 2^\Sigma,~ S \mapsto \Set{ \sigma' \in \Sigma | \Exists \sigma \in S: \config{c,\sigma} \to \config{c',\sigma'} }$.
+
+For an \emph{abstract domain} $\Abstract$, the \emph{abstract semantics} is defined by the function family $\mathrm{next}^\#_{c,c'} : \Abstract \to \Abstract$ (as above) and where each $\mathrm{next}^\#_{c,c'}$ safely approximates $\mathrm{next}_{c,c'}$, i.e.\\
+$\alpha(\mathrm{next}_{c,c'}(\gamma(abs))) \sqsubseteq_{\Abstract} \mathrm{next}^\#_{c,c'}(abs)$.
+
+\begin{defi}{Abstract WHILE-Program State}
+Let $\beta : \nat \to A$ be an extraction function.
+    \begin{itemize}
+        \item An \emph{abstract program state} $\rho$ is an element of the set $\Set{ \rho | \rho : \Var \to A }$ called the \emph{abstract state space}.
+        \item The \emph{abstract domain} is denoted by $\Abstract := 2^{\Var \to A}$.
+        \item The \emph{abstraction function} $\alpha : 2^\Sigma \to \Abstract$ is given by $\alpha(S) := \Set{ \beta \circ \sigma | \sigma \in S }$.
+    \end{itemize}
+\end{defi}
+
+The abstract transition function for WHILE is defined via the \emph{abstract execution relation} (not in this Panikzettel): $\mathrm{next}^\#_{c,c'}(abs) := \bigcup \Set{ abs' \in \Abstract | \config{c, abs} \Rightarrow \config{c', abs'} }$.
+We have shown the abstract transition function's soundness: It is a safe approximation for the concrete transition function.
+
+\subsection{Counterexample-Guided Abstraction Refinement (CEGAR)}
+
+CEGAR addresses the problem of choosing the appropiate approximation for an analysis by refining abstractions until the property is satisifed or an error is found.
+The iterative refinement may not terminate.
+
+\subsubsection{Predicate Abstraction}
+
+\begin{defi}{Predicate Abstraction}
+    Let $\Var$ be a set of variables.
+    \begin{itemize}[leftmargin=*]
+        \item A \emph{predicate} is a Boolean expression $p \in \mathrm{BExp}$ over $\Var$.
+        \item A state $\sigma \in \Sigma$ \emph{satisfies} $p$ ($\sigma \models p$) if $\val_\sigma(p) = \true$.
+        \item $p$ \emph{implies} $q$ if $\sigma \models q$ whenever $\sigma \models p$.
+        \item $p$ and $q$ are \emph{equivalent} if $p \models q$ and $q \models p$.
+        \item $p$ and $q$ are \emph{independent} if $p \not\models q$ and $q \not\models p$.
+        \item Let $P = \Set{p_1, \ldots, p_n} \subset \mathrm{BExp}$ be a finite set of predicates. \\
+              Let $\neg P = \Set{\neg p_1, \ldots, \neg p_n}$.
+              An element of $P \cup \neg P$ is called a \emph{literal}.
+    \end{itemize}
+    \medskip
+
+    The \emph{predicate abstraction lattice} is defined by:
+    \[
+        \Abstract(P) := \left( \Set{ \bigwedge Q | Q \subseteq P \cup \neg P } \cup \Set{\false}, \models \right)
+    \]
+
+    We abbreviate $\true := \bigwedge \emptyset$, and $\false := \bigwedge \Set{p_i, \neg p_i, \ldots }$ if $P \neq \emptyset$.
+\end{defi}
+
+The predicate abstraction lattice $\Abstract(P)$ is a complete lattice with \\
+\begin{tabular}{CCCC}
+    \bot = \false, & \top = \true, & Q_1 \sqcap Q_2 = \overline{Q_1 \land Q_2}, & Q_1 \sqcup Q_2 = \overline{Q_1 \lor Q_2}.
+\end{tabular} \\
+$\overline{b} := \bigwedge \Set{ q \in P \cup \neg P | b \models q }$ is the strongest fomula that is implied by $b$.
+
+Handy rules only if predicates in $P$ are pairwise independent: \\
+\begin{tabular}{CC}
+    Q_1 \sqcap Q_2 ~(= \overline{Q_1 \land Q_2}) = \bigwedge(Q_1 \cup Q_2) & \qquad Q_1 \sqcup Q_2 ~(= \overline{Q_1 \lor Q_2}) = \bigwedge (Q_1 \cap Q_2)
+\end{tabular}
+\bigskip
+
+The \emph{Galois connection for predicate abstraction} is determined by
+\begin{align*}
+  \alpha : 2^\Sigma \to \Abstract(P) &\quad\quad& \gamma : \Abstract(P) \to 2^\Sigma \\
+  \alpha(S) := \bigsqcup \Set{ Q_\sigma | \sigma \in S } & & \gamma(Q) := \Set{ \sigma \in \Sigma | \sigma \models Q }
+\end{align*}
+where $Q_\sigma := \bigwedge \left( \Set{ p \in P | \sigma \models p } \cup \Set{ \neg p \in \neg P | \sigma \not\models p } \right)$.
+\bigskip
+
+In the lecture, the \emph{execution relation for predicate abstraction} was defined (not shown here).
+$\config{c, \false}$ represents an unreachable configuration (there is no $\sigma \in \Sigma$ s.t.\ $\sigma \models \false$).
+If $P = \emptyset$, then $\Abstract(P) = \Set{\true,~ \false}$.
+If additionally no $b \in \mathrm{BExp}_c$ is a tautology or a contradiction, then the abstract transition system with initial configuration $\config{c,\true}$ corresponds to the control flow graph of $c$.
+
+Also of note: Computing the strongest formula in $\Abstract(P)$ implied by $b$, $\overline{b}$, is not possible in general.
+
+\subsubsection{Counterexamples}
+
+\begin{defi}{Counterexample}
+    A \emph{counterexample} is a sequence of $k \geq 1$ abstract transitions of the form
+    \begin{tightcenter}$
+        \config{c_0, Q_0} \Rightarrow \config{c_1, Q_1} \Rightarrow \ldots \Rightarrow \config{c_k, Q_k}
+    $\end{tightcenter}
+    where $c_0, \ldots, c_k \in \Cmd$ (or $c_k = \downarrow$), $Q_0, \ldots, Q_k \in \Abstract(P)$ with $Q_0 = \true$ and $Q_k \not\equiv \false$.
+    \bigskip
+
+    A counterexample is \emph{real} (otherwise \emph{spurious}) if there are concrete states $\sigma_0, \ldots, \sigma_k \in \Sigma$ s.t.\
+    \begin{tightcenter}$
+        \Forall i \in \Set{1, \ldots, k}: \sigma_i \models Q_i \text{ and } \config{c_{i-1}, \sigma_{i-1}} \rightarrow \config{c_i, \sigma_i}
+    $\end{tightcenter}
+\end{defi}
+
+Assume now we have analyzed the program with some abstraction and found a counterexample for the property.
+The counterexample is a path to a location that does not satisfy the property.
+But we need to find out if the path is really possible (if the counterexample is spurious or not).
+
+If the counterexample is spurious, we can collect conditions (strongest postconditions) along the path showing that the end is unreachable.
+
+\begin{theo}{Elimination of Spurious Counterexamples}
+    If $\config{c_0,\true} \Rightarrow \ldots \Rightarrow \config{c_k,Q_k}$ is a spurious counterexample, there are Boolean expressions $b_0,\ldots,b_k$ with $b_0 \equiv \true$ and $b_k \equiv \false$ and
+    \begin{tightcenter}$
+        \Forall i \in \Set{1,\ldots,k}, \sigma,\sigma' \in \Sigma: \sigma \models b_{i-1} \land (\config{c_{i-1},\sigma} \to \config{c_i,\sigma'}) \Rightarrow \sigma' \models b_i    .
+    $\end{tightcenter}
+\end{theo}
+
+\subsubsection{Abstraction Refinement}
+
+With $b_0,\ldots,b_k$ from the previous theorem, we can \emph{refine} our abstraction so that the spurious counterexample cannot happen anymore.
+Specifically, we set $P' := P \cup \Set{p_1,\ldots,p_n}$ where $p_1,\ldots,p_n$ are the atomic conjuncts occurring in $b_1,\ldots,b_k$.
+
+\subsubsection{Using Craig Interpolants}
+
+\begin{halfboxl}
+    Craig interpolants help us to simplify predicates so that they only contain variables relevant for the current execution path.
+
+    We omit the algorithm for computing Craig Interpolants here.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Craig Interpolant}
+        Let $b_1,b_2 \in \mathrm{BExp}$ where $b_1 \models b_2$. \\
+        A \emph{Craig interpolant} of $b_1$ and $b_2$ is a formula $b_3 \in \mathrm{BExp}$ with $b_1 \models b_3$, $b_3 \models b_2$ and $\Var_{b_3} \subseteq \Var_{b_1} \cap \Var_{b_2}$.
+    \end{defi}
+\end{halfboxr}
+
+\section{Interprocedural Dataflow Analysis}
+
+Our dataflow analysis framework from before was only \emph{intraprocedural}, that is without support for user-defined functions.
+This section extends the framework to support \emph{interprocedural} analysis.
+The extension follows the \emph{functional} approach which summarizes function effects.
+Declarations are only allowed on the top level, and mutual recursion is supported.
+Function calls have one call-by-value and one call-by-result parameter.
+
+\begin{defi}{A Language With Procedures}
+    \textbf{Syntactic Categories}
+
+    \begin{tabular}{lll}
+        Category & Domain & Meta variable \\ \hline
+        Procedure identifiers & $Pid = \Set{P,Q,\ldots}$ & $P$  \\
+        Procedure declarations & $PDec$ & $p$ \\
+        Commands (statements) & $\Cmd$ & $c$
+    \end{tabular}
+    \tcblower
+    \textbf{Context-free grammar}
+    \begin{lstlisting}
+p :== proc[$P$(val $x$,res $y$)]$^{l_n}$ is $c$ [end]$^{l_x}$; p | $\varepsilon$ $\in PDec$
+c :== [skip]$^l$ | [$x$ := $a$]^l | $c_1$; $c_2$ | if [$b$]^l then $c_1$ else $c_2$ end |
+      while [$b$]$^l$ do $c$ end | [call $P$($a$, $x$)]$^{l_c}_{l_r}$ $\in \Cmd$
+    \end{lstlisting}
+
+    Note that calls are annotated with call ($l_c$) and return ($l_r$) locations.
+\end{defi}
+
+$\init$, $\final$ and $\flow$ relations are extended from WHILE as follows:
+\smallskip
+
+\begin{tightcenter}
+    \begin{tabular}{L|C|C}
+        & \texttt{proc[}P(\texttt{val } x, \texttt{res } y)\texttt{]}^{l_n} \texttt{ is } c \texttt{ [end]}^{l_x} & \texttt{[call }P(a,x)\texttt{]}^{l_c}_{l_r} \\ \hline
+        \init(\ldots) & l_n & l_c \\
+        \final(\ldots) & \Set{l_x} & \Set{l_r} \\
+        \flow(\ldots) & \Set{(l_n, \init(c)} \cup \flow(c) \cup \Set{(l,l_x) | l \in \final(c)} & \Set{(l_c;l_n), (l_x;l_r)}
+    \end{tabular}
+\end{tightcenter}
+\smallskip
+
+The \emph{interprocedural flow} of a program is defined by:
+\[
+    \iflow = \Set{ (l_c, l_n, l_x, l_r) |
+        \begin{array}{l}
+             p \text{ contains proc with } l_n \text{ and } l_r \text{ and} \\
+             c \text{ contains call with } l_r \text{ and } l_c
+        \end{array}
+    } \subseteq \Lab^4
+\]
+
+\newpage
+\subsection{Meet Over All Valid Paths (MVP)}
+
+Similar to the Meet Over all Paths (MOP) solution we define the \emph{Meet over all Valid Paths (MVP)} solution.
+
+\begin{defi}{Valid Path Fragments}
+    Given a dataflow system $S = (\Lab, E, F, (D, \sqsubseteq), \iota, \phi)$ and $l_1, l_2 \in \Lab$, the set of \emph{valid paths from $l_1$ to $l_2$} is generated by the nonterminal symbol $P[l_1,l_2]$ according to the following context-free grammar:
+    \vspace{-\baselineskip}
+    \begin{alignat*}{2}
+        P[l_1,l_2] &\rightarrow l_1 && \text{if } l_1 = l_2 \\
+        P[l_1,l_3] &\rightarrow l_1, P[l_2,l_3] && \text{if } (l_1,l_2) \in F \\
+        P[l_c,l] &\rightarrow l_c, P[l_n,l_x], P[l_r,l] \quad&& \text{if } (l_c, l_n, l_x, l_r) \in \iflow
+    \end{alignat*}
+\end{defi}
+
+\begin{defi}{Complete Valid Paths}
+Let $S$ be a dataflow system. For every $l \in \Lab$, the set of \emph{valid paths up to $l$} is given by
+\[
+    \VPath(l) = \Set{ [l_1,\ldots,l_{k-1}] | k \geq 1, l_1 \in E, l_k = l, [l_1,\ldots,l_k] \text{ valid path from $l_1$ to $l_k$} }
+\]
+
+For $\pi = [l_1,\ldots,l_{k-1}] \in \VPath(l)$, we define the \emph{transfer function} by
+\[
+    \phi_\pi = \phi_{k-1} \circ \ldots \circ \phi_{l_1} \circ \mathrm{id}_D
+\]
+\end{defi}
+
+\begin{defi}{MVP solution}
+    Let $S$ be a dataflow system where $\Lab = \Set{l_1,\ldots,l_n}$.
+    The \emph{MVP solution} for $S$ is determined by
+    \[
+        \mvp(S) = (\mvp(l_1),\ldots,\mvp(l_n)) \in D^n
+    \]
+    where, for every $l \in \Lab$,
+    \[
+        \mvp(l) = \bigsqcup \Set{ \phi_\pi(\iota) | \pi \in \VPath(l) }.
+    \]
+\end{defi}
+
+As an extension of MOP, MVP is undecidable as well.
+
+\newpage
+\subsection{Fixpoint Solution}
+
+The \emph{interprocedural fixpoint solution} extends its intraprocedural counterpart as well.
+The idea is to represent the combined effect of procedure executions by \emph{procedure summaries}.
+
+\begin{defi}{Interprocedural Dataflow Equation System}
+    \begin{itemize}[leftmargin=*]
+        \item
+            \emph{Dataflow equations} for each $l \in \Lab$:
+            \[
+                \AI_l = \begin{cases}
+                    \iota & \text{if } l \in E, \\
+                    \AI_{l_c} & \text{if } l = l_r \text{ for some } (l_c, l_n, l_x, l_r) \in  \iflow, \\
+                    \bigsqcup \Set{ \varphi_{l'}(\AI_{l'} | (l',l) \in F,~ (l'; l) \in F } & \text{otherwise}
+                \end{cases}
+            \]
+        \item
+            \emph{Node transfer functions} for each $l \in \Lab \setminus \Set{ l_x | (l_c, l_n, l_x, l_r) \in \iflow }$:
+            \[
+                \varphi_l(d) = \begin{cases}
+                    \mathrm{combine}(d, \Phi_{l_x}(\varphi_{l_c}(d)) & \text{if } l = l_r \text{ for some } (l_c, l_n, l_x, l_r) \in \iflow, \\
+                    \text{specific to analysis} & \text{otherwise}
+                \end{cases}
+            \]
+        \item
+            \emph{Procedure summary functions} for each $l \in \Lab$ in a procedure:
+            \[
+                \Phi_l(d) = \begin{cases}
+                    d & \text{if } l = l_n \text{ for some } (l_c, l_n, l_x, l_r) \in \iflow, \\
+                    \Phi_{l_c}(d) & \text{if } l = l_r \text{ for some } (l_c, l_n, l_x, l_r) \in \iflow, \\
+                    \bigsqcup \Set{ \varphi_{l'}(\Phi_{l'}(d)) | (l',l) \in F} & \text{otherwise}
+                \end{cases}
+            \]
+    \end{itemize}
+\end{defi}
+
+The above equation system is recursive in both $\AI_l$ (type $D$) and $\Phi_l$ (type $D \to D$).
+
+To solve this equation system, we can use the induced \emph{monotonic functional on the complete lattice}:
+
+\begin{center}
+    \begin{tabular}{CC}
+        \Psi_{\hat{S}} : \underbrace{D^n}_{\AI} \times \underbrace{(D \to D)^m}_\Phi \to D^n \times (D \to D)^m\qquad & (n = \abs{\Lab},~ m \leq n)
+    \end{tabular}
+\end{center}
+
+Now we can use fixpoint iteration:
+
+\begin{center}
+    \begin{tabular}{CC}
+        \fix(\Psi_{\hat{S}}) = \bigsqcup \Set{ \Psi_{\hat{S}}^k(\bot) | k \in \nat } \in D^n \times (D \to D)^m,\qquad & \bot = (\bot_D^n,~ [d \to \bot_D \mid d \in D]^m)
+    \end{tabular}
+\end{center}
+
+\end{document}
