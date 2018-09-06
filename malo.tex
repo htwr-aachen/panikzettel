@@ -176,14 +176,19 @@ Dazu ist eine \emph{Klausel} eine endliche Menge von Literalen. $\square$ ist di
 
 Die leere Klauselmenge $K = \emptyset$ ist erfüllbar. Wenn $\square \in \Kl$, dann ist $\Kl$ unerfüllbar.
 
-Eine \emph{Resolvente} von zwei Klauseln $C_1$ und $C_2$ ist eine Klausel $C$, genau wenn es ein Literal $Y$ gibt mit $Y \in C_1, \overline{Y} \in C_2$, sodass $C = (C_1 \setminus \{Y\}) \cup (C_2 \setminus \{\overline{Y}\})$ Dafür gibt es eine graphische Notation:\\
-\begin{center}
+\begin{minipage}[t]{0.6\textwidth}
+Eine \emph{Resolvente} von zwei Klauseln $C_1$ und $C_2$ ist eine Klausel $C$, genau wenn es ein Literal $Y$ gibt mit $Y \in C_1, \overline{Y} \in C_2$, sodass $C = (C_1 \setminus \{Y\}) \cup (C_2 \setminus \{\overline{Y}\})$ Dafür gibt es eine graphische Notation:
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.35\textwidth}
+\vspace{0\baselineskip}
+\begin{tightcenter}
 \begin{tikzpicture}[scale=0.6]
 \node (C) {$C$};
 \node [above left = of C] {$C_1$} edge (C);
 \node [above right = of C] {$C_2$} edge (C);
 \end{tikzpicture}
-\end{center}
+\end{tightcenter}
+\end{minipage}
 
 Das \emph{Resolutionslemma} sagt uns, dass für eine Klauselmenge $\Kl$ und $C_1, C_2 \in \Kl$ und $C$ Resolvente von $C_1$ und $C_2$ folgt, dass $\Kl$ und $K \cup \Set{C}$ äquivalent sind.
 
