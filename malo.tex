@@ -5,7 +5,7 @@
 \usetikzlibrary{positioning}
 
 \title{Mathematische Logik Panikzettel}
-\author{Philipp Schröer, Tobias Polock, Luca Oeljeklaus, Caspar Zecha}
+\author{Philipp Schröer, Tobias Polock, Luca Oeljeklaus, Caspar Zecha,\\Jonathan du Mesnil}
 
 \newcommand{\AL}{\mathrm{AL}}
 \newcommand{\Kl}{\mathrm{K}}
@@ -103,6 +103,8 @@ Ein \emph{Modell einer Formel} $\psi \in \AL$ ist eine Interpretation $\J$ mit $
 
 Ein \emph{Modell einer Formelmenge} $\Phi \subseteq \AL$ ist eine Interpretation $\J$ mit $\J \models \psi$ für alle $\psi \in \Phi$.
 
+Formeln $\phi$ und $\psi$ sind \emph{logisch äquivalent} ($\phi \equiv \psi$), falls sie unter jeder passenden Interpretation denselben Wahrheitswert haben.
+
 Koinzidenzlemma: Für eine Formel $\psi \in \AL$ und zwei zu $\psi$ passende Interpretationen $\J$ und $\J'$ mit $\J(X) = \J'(X)$ für alle Variablen $X \in \tau(\psi)$ ist $\interpret{\psi}^\J = \interpret{\psi}^{\J'}$.
 
 \subsection{Normalformen}
@@ -123,6 +125,18 @@ $\bigvee_{i=1}^n \bigwedge_{j=1}^{m_i} Y_{ij}$
 $\bigwedge_{i=1}^n \bigvee_{j=1}^{m_i} Y_{ij}$
 \end{center}
 \end{minipage}
+
+\subsection{Funktionale Vollständigkeit}
+Aus den Booleschen Konstanten und den Junktoren können Boolesche Funktionen konstruiert werden und umgekehrt. 
+Eine Menge von Booleschen Funktionen heißt \emph{funktional vollständig}, wenn sich jede Boolesche Funktion aus der Menge konstruieren lässt.
+
+Einige Beispiele:
+\begin{itemize}
+	\item $\{\land, \lnot\}$ und $\{\lor, \lnot\}$ sind funktional vollständig.
+	\item $\{\to,0\}$ ist funktional vollständig.
+	\item $\{\mid\}$ ist funktional vollständig, wobei $(\phi\mid\psi)\equiv\lnot(\phi \land \psi)$.
+	\item $\{\land,\lor,0,1\}$ ist nicht funktional vollständig, da die Negation nicht allgemein darstellbar ist.
+\end{itemize}
 
 \subsection{Horn-Formeln}
 
@@ -158,18 +172,23 @@ $\Phi \models \psi$ genau dann, wenn eine endliche Teilmenge $\Phi_0 \subseteq \
 
 Die Resolution ist ein syntaktisches Verfahren, um Unerfüllbarkeit von Formeln in KNF nachzuweisen.
 
-Dazu ist eine \emph{Klausel} eine endliche Menge von Literalen. $\square$ ist die leere Klausel. $\Kl(\psi)$ ist die \emph{Klauselmenge} einer Formel $\psi$. $\Kl(\psi)$ enthält für jede Disjunktion in $\psi$ eine Menge mit den darin vorkommenden Literalen.
+Dazu ist eine \emph{Klausel} eine endliche Menge von Literalen. $\square$ ist die leere Klausel. $\Kl(\psi)$ ist die \emph{Klauselmenge} einer Formel $\psi$ in KNF. $\Kl(\psi)$ enthält für jede Disjunktion in $\psi$ eine Menge mit den darin vorkommenden Literalen.
 
 Die leere Klauselmenge $K = \emptyset$ ist erfüllbar. Wenn $\square \in \Kl$, dann ist $\Kl$ unerfüllbar.
 
-Eine \emph{Resolvente} von zwei Klauseln $C_1$ und $C_2$ ist eine Klausel $C$, genau wenn es ein Literal $Y$ gibt mit $Y \in C_1, \overline{Y} \in C_2$, sodass $C = (C_1 \setminus \{Y\}) \cup (C_2 \setminus \{\overline{Y}\})$ Dafür gibt es eine graphische Notation:\\
-\begin{center}
+\begin{minipage}[t]{0.6\textwidth}
+Eine \emph{Resolvente} von zwei Klauseln $C_1$ und $C_2$ ist eine Klausel $C$, genau wenn es ein Literal $Y$ gibt mit $Y \in C_1, \overline{Y} \in C_2$, sodass $C = (C_1 \setminus \{Y\}) \cup (C_2 \setminus \{\overline{Y}\})$ Dafür gibt es eine graphische Notation:
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.35\textwidth}
+\vspace{0\baselineskip}
+\begin{tightcenter}
 \begin{tikzpicture}[scale=0.6]
 \node (C) {$C$};
 \node [above left = of C] {$C_1$} edge (C);
 \node [above right = of C] {$C_2$} edge (C);
 \end{tikzpicture}
-\end{center}
+\end{tightcenter}
+\end{minipage}
 
 Das \emph{Resolutionslemma} sagt uns, dass für eine Klauselmenge $\Kl$ und $C_1, C_2 \in \Kl$ und $C$ Resolvente von $C_1$ und $C_2$ folgt, dass $\Kl$ und $K \cup \Set{C}$ äquivalent sind.
 
@@ -192,7 +211,7 @@ Eine Sequenz ist \emph{gültig}, wenn jedes Modell von $\Gamma$ auch ein Modell 
 
 \emph{Axiome} vom Sequenzenkalkül sind alle Sequenzen der Form $\Gamma,\ \psi \Rightarrow \Delta,\ \psi$.
 
-%TODO Sequenz von/auf leere Menge+ableitbar Symbol |-
+Falls $\Gamma, \Delta$ disjunkte Mengen von Aussagenvariablen sind, ist $\Gamma \Rightarrow \Delta$ falsifizierbar. Eine Sequenz $\Gamma \Rightarrow \emptyset$ ist gültig genau dann wenn $\bigwedge\Gamma$ unerfüllbar ist. Eine Sequenz $\emptyset \Rightarrow \Delta$ ist gültig genau dann wenn $\bigvee\Delta$ allgemeingültig ist.
 
 Die \emph{Schlussregeln} sind, für $\Delta, \Gamma$ beliebige endliche Formelmengen und $\psi, \theta$ beliebige Formeln:
 
@@ -247,6 +266,8 @@ Die \emph{Schlussregeln} sind, für $\Delta, \Gamma$ beliebige endliche Formelme
 \end{minipage}
 \ \\
 
+Für Formelmengen $\Phi$ und Formeln $\psi$ heißt $\psi$ \emph{ableitbar} aus $\Phi$ ($\Phi \vdash \psi$), wenn ein endliches $\Gamma \subseteq \Phi$ existiert, so das $\Gamma \Rightarrow \psi$ im SK ableitbar ist. Wir schreiben $\vdash \psi$, falls $\emptyset \Rightarrow \psi$ im SK ableitbar ist.
+
 Der Sequenzenkalkül ist korrekt und vollständig.
 
 \section{Prädikatenlogik}
@@ -264,7 +285,7 @@ $\A$ ist $\emph{Substruktur}$ von $\B$, kurz $\A \subseteq \B$, bzw. $\B$ ist $\
     \item Für alle Funktionssymbole $f \in \tau$ gilt: $f^{\A}=f^{\B}|_A$
 \end{itemize}
 
-Ein $\emph{Redukt}$ ist eine Struktur, die durch Weglassen von Relationen und Funktionen in der Signatur entsteht.
+Ein $\emph{Redukt}$ ist eine Struktur, die durch Weglassen von Relationen und Funktionen in der Signatur entsteht. Umgekehrt erhalten wir eine \emph{Expansion} durch das Hinzufügen von Relationen und Funktionen.
 
 \subsection{Ein Zoo von Strukturen}
 
@@ -301,6 +322,8 @@ Zunächst definieren wir die Menge $\T(\tau)$ der \emph{$\tau$-Terme}:
     \item $f t_1 \ldots t_n \in \T(\tau)$ mit $t_1, \ldots, t_n \in \T(\tau)$ und $f$ ein $n$-stelliges Funktionssymbol aus $\tau$.
 \end{itemize}
 
+\emph{Grundterme} sind Terme ohne Variablen.
+
 Dann ist die Menge $\FO(\tau)$ der \emph{$\tau$-Formeln} der Prädikatenlogik induktiv definiert durch:
 
 \begin{minipage}[t]{0.2\textwidth}
@@ -334,9 +357,11 @@ mit $x \in \VAR$ und $\psi \in \FO(\tau)$
 \end{minipage}
 \ \\
 
-Formeln, die nur den Relationsausdrücke und solche mit dem Gleich enthalten, heißen \emph{atomar} oder \emph{Atom}. \emph{Literale} sind Atome und deren Negationen. Formeln ohne Quantoren heißen \emph{quantorenfrei}.
+Formeln, die nur Relationsausdrücke und solche mit dem Gleich enthalten, heißen \emph{atomar} oder \emph{Atom}. \emph{Literale} sind Atome und deren Negationen. Formeln ohne Quantoren heißen \emph{quantorenfrei}.
 
 Eine Variable $x$ kommt \emph{gebunden} in einer Formel $\psi$ vor, falls $\psi$ eine Unterformel $\exists x \psi'$ oder $\forall x \psi'$ enthält. Eine Variable, die nicht durch einen Quantor gebunden ist, kommt \emph{frei} vor. In einer Formel kann eine Variable gleichzeitig gebunden und frei vorkommen.
+
+Ein \emph{Satz} ist eine Formel, in der keine freien Variablen vorkommen.
 
 Der \emph{Quantorrenrang} einer Formel ist wie folgt definiert:
 \[\begin{array}{cc}
@@ -389,7 +414,7 @@ $\beta[x/a](y) :=  \begin{cases}
 
 Ein \emph{Modell} einer Formel $\psi$ ist eine Interpretation $\J = (\A, \beta)$, so dass $\frei(\psi) \subseteq \dom(\beta)$ und $\interpret{\psi}^\J = 1$. Wir schreiben: $(\A, \beta) \models \psi$ oder auch $\A \models \psi$. Ein \emph{Modell einer Formelmenge} $\Phi$ ist ein $\J$ so, dass $\J \models \varphi$ für alle $\varphi \in \Phi$.
 
-Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $\psi$ vorkommende Funktions- oder Relationssymbole das ``Ergebnis'' nicht ändern. Sei $\psi \in \FO(\sigma \cap \tau)$ und $(\A, \beta)$ eine $\sigma$-Interpretation und $(\A', \beta')$ eine $\tau$-Interpretation und es gelte zusätzlich:
+Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $\psi$ vorkommende Funktions- oder Relationssymbole das \glqq Ergebnis\grqq\ nicht ändern. Sei $\psi \in \FO(\sigma \cap \tau)$ und $(\A, \beta)$ eine $\sigma$-Interpretation und $(\A', \beta')$ eine $\tau$-Interpretation und es gelte zusätzlich:
 \begin{itemize}
     \item $\A \upharpoonright (\sigma \cap \tau) = \A' \upharpoonright (\sigma \cap \tau)$.
     \item $\frei(\psi) \subseteq \dom(\beta) \cap \dom(\beta')$ und $\beta(x) = \beta'(x)$ für alle $x \in \frei(\psi)$.
@@ -397,7 +422,7 @@ Das \emph{Koinzidenzlemma} beschreibt die Tatsache, dass nicht in einer Formel $
 
 Dann gilt $\A \models \psi[\beta]$ genau dann, wenn $\A' \models \psi[\beta']$.
 
-Die \emph{Modellklasse von $\Phi$}, kurz $\Mod(\Phi)$ besteht aus allen $\tau$-Strukturen $\A$ mit $\A \models \Phi$.
+Die \emph{Modellklasse} von $\Phi$, kurz $\Mod(\Phi)$ besteht aus allen $\tau$-Strukturen $\A$ mit $\A \models \Phi$.
 
 Eine Klasse $K$ von $\tau$-Strukturen ist \emph{axiomatisiert durch $\Phi$}, wenn $K = \Mod(\Phi)$. Dann ist $\Phi$ ein \emph{Axiomensystem} für $K$.
 
@@ -405,11 +430,18 @@ Die \emph{Semantische Folgerungsbeziehung:} Sei $\Phi \subseteq \FO(\tau), \psi 
 
 Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat, sonst \emph{unerfüllbar}. Eine Formel ist \emph{allgemeingültig} (kurz $\models \psi$) gdw.\ $\emptyset \models \psi$. Zwei Formeln sind \emph{logisch äquivalent} (kurz $\psi \equiv \varphi$), wenn $\psi \models \varphi$ und $\varphi \models \psi$.
 
-% TODO: Existenzieller/Universeller Abschluss?
+Für eine Formel $\psi$ mit freien Variablen $x_1,\dots,x_k$ ist $\exists x_1 \dots \exists x_k \psi$ der \emph{existentielle Abschluss} und $\forall x_1 \dots \forall x_k \psi$ der \emph{universelle Abschluss} von $\psi$
 
 \subsection{Normalformen}
 
-% TODO: Ersetzungslemma?
+Wir können $\FO$-Formeln in verschiedene \emph{Normalformen} überführen, wobei das Ersetzungslemma genutzt werden kann: Für Formeln $\psi, \psi^\prime, \phi, \phi^\prime$ gilt:
+
+\begin{itemize}
+	\item wenn $\psi \equiv \phi$, dann auch $\lnot \psi \equiv \lnot \phi$.
+	\item wenn $\psi \equiv \psi^\prime$ und $\phi \equiv \phi^\prime$, dann auch $(\psi \circ \phi) \equiv (\psi^\prime \circ \phi^\prime)$ für $\circ\in\{\land,\lor,\to\}$.
+	\item wenn $\psi \equiv \phi$, dann auch $\exists x \psi \equiv \exists x \phi$ und $\forall x \psi \equiv \forall x \phi$.
+	\item wenn $\vartheta$ eine Teilformel von $\psi$ ist und $\phi \equiv \vartheta$, ist $\psi \equiv \psi[\vartheta/\phi]$, wobei $\psi[\vartheta/\phi]$ die Formel ist, die man durch Ersetzen von $\vartheta$ durch $\phi$ in $\psi$ erhält.
+\end{itemize}
 
 \begin{minipage}{0.55\textwidth}
 Wir definieren \emph{reduzierte Formeln} als solche, in denen weder $\land,\ \rightarrow$ noch $\forall$ vorkommen. Die Reduzierung ist mit den drei Regeln rechts für alle FO-Formeln möglich.
@@ -449,9 +481,9 @@ Eine Formel ist \emph{bereinigt}, wenn keine Variable sowohl frei als auch gebun
 
 Eine Formel ist in \emph{Pränex-Normalform} (PNF), wenn sie bereinigt ist und alle Quantoren nur zusammen am Anfang der Formel auftauchen. Jede FO-Formel lässt sich in PNF bringen.
 
-Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel in Skolem-Normalform erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und ersetzen dann jede existenziell quantifizierte Variable durch ein neues Funktionssymbol (und entfernen jeden Existenzquantor).
+Eine Formel ist in \emph{Skolem-Normalform}, wenn an ihrem Anfang nur Allquantoren stehen und sie danach quantorenfrei ist. Zu jeder FO-Formel lässt sich eine erfüllbarkeitsäquivalente Formel in Skolem-Normalform erstellen. Dazu bringen wir die Formel zunächst in Pränex-Normalform und fügen für jede existenziell quantifizierte Variable $x$ ein neues Funktionssymbol $f$ in die Signatur ein. Wenn vor dem Existenzquantor $x_1$ bis $x_k$ allquantifiziert auftreten, ersetzen wir jedes Vorkommen von $x$ durch $f x_1,\dots,x_k$ und entfernen den Existenzquantor.
 
-% TODO: relationale Skolem-Normalform?
+Eine Formel ist in \emph{relationaler Skolem-Normalform}, wenn sie relational ist und an ihrem Anfang zunächst nur Allquantoren stehen, danach Existenzquantoren und anschließend ein quantorenfreier Teil. Zu jeder Formel $\phi$ gibt es eine Formel $\psi$ in relationaler Skolem-Normalform, die über denselben Universen erfüllbar ist. Dazu bringen wir $\phi$ zunächst in die Skolem-Normalform und ersetzen jedes $n$-stellige Funktionssymbol durch ein $n+1$-stelliges Relationssymbol und quantifizieren die dabei entstehenden Variablen existentiell.
 
 \subsection{Spieltheoretische Semantik}
 Ein \emph{Auswertungsspiel} (Model-Checking-Spiel) MC($\A$,$\psi$), mit FO-Satz $\psi$, bestenfalls in Negationsnormalform, und passender Struktur $\A$, ist ein Spiel zwischen der \emph{Verifiziererin} $V$ und dem \emph{Falsifizierer} $F$. Dieser Algorithmus ist zur Auswertung von prädikatenlogischen Formeln.
@@ -470,6 +502,7 @@ Ein Spiel beginnt bei der Position $\phi$. Sei $\varphi(\overline{a})$ die aktue
 Für jeden Satz $\psi \in \FO(\tau)$ und jede $\tau$-Struktur $\A$ gilt: $\A \models \psi$ genau dann, wenn die Verifiziererin eine Gewinnstrategie für das Spiel $MC(\A,\psi)$ von der Anfangsposition $\psi$ hat.
 
 \paragraph{Endliche Spiele} Allgemeine Spiele sind zwischen Spieler 0 und Spieler 1 auf einem Spielgraphen $\mathcal{G}=(V,V_0,E)$, mit Menge $V$ der \emph{Spielpositionen}, Teilmenge $V_0 \subseteq V$ der Positionen, an denen Spieler 0 am Zug ist, und der Menge $E \subseteq V \times V$ an möglichen Zügen.
+Analog sind $V_1 := V \setminus V_0$ die Positionen, an denen Spieler 1 am Zug ist.
 
 Für eine Position $v$ sei $vE:=\{w:(v,w)\in E\}$ die Menge der unmittelbaren Nachfolgerpositionen. Eine Position $v$ mit $vE=\emptyset$ ist eine Endpositionen. Wenn im Spiel eine Endposition erreicht wird, hat der Spieler verloren der am Zug ist, aber nicht ziehen kann. Die Menge der Endpositionen, in denen Spieler $\sigma \in \{0,1\}$ gewinnt, ist $T_{\sigma}:=\{v \in V_{1-\sigma}:vE=\emptyset\}$.
 
@@ -527,7 +560,7 @@ Es ist $\A \equiv \B$ genau dann wenn $\Th(\A) = \Th(\B)$ ist.
 
 \subsection{Ehrenfeucht-Fra\"issé-Spiele}
 
-Ein \emph{lokaler (oder partieller) Isomorphismus} von $\tau$-Struktur $\A$ zu $\tau$-Struktur $\B$ ist eine injektive Abbildung $p : D \to B$ mit $D \subseteq A$. Für alle $n \in \mathbb{N}$, alle $n$-stelligen Relationssymbole $R \in \tau$ und alle $a_1, \ldots, a_n \in D$ muss gelten:
+Sei $\tau$ eine relationale Signatur. Ein \emph{lokaler (oder partieller) Isomorphismus} von $\tau$-Struktur $\A$ zu $\tau$-Struktur $\B$ ist eine injektive Abbildung $p : D \to B$ mit $D \subseteq A$. Für alle $n \in \mathbb{N}$, alle $n$-stelligen Relationssymbole $R \in \tau$ und alle $a_1, \ldots, a_n \in D$ muss gelten:
 \[ (a_1, \ldots, a_n) \in R^\A \text{ gdw. } (p a_1, \ldots, p a_n) \in R^\B \]
 
 Das \emph{Ehrenfeucht-Fra\"issé-Spiel} $G_m(\A, \B)$ wird von zwei Spielern gespielt. Das \emph{Spielfeld} besteht aus Strukturen $\A$ und $\B$. Wir nehmen an, dass $A \cap B = \emptyset$. Wir nennen die Spieler den \emph{Herausforderer} (Spieler I) und die \emph{Duplikatorin} (Spieler II). Eine Partie besteht aus $m$ Zügen.
@@ -538,6 +571,8 @@ Das \emph{Ehrenfeucht-Fra\"issé-Spiel} $G_m(\A, \B)$ wird von zwei Spielern ges
 \end{itemize}
 
 Eine \emph{Gewinnstrategie} ist eine Funktion, die für jedes Teilspiel in jeder Position Züge nennt, die einen Gewinn garantieren, egal was der Gegner tut.
+
+$G(\A, \B)$ ist eine Abwandlung, bei der der Herausforderer zu Beginn das $m$ wählt, für das $G_m(\A, \B)$ gespielt wird.
 
 Der \emph{Satz von Ehrenfeucht-Fra\"issé} gibt uns die folgenden beiden Äquivalenzen:
 
@@ -690,7 +725,7 @@ Für jede Satzmenge $\Phi \subseteq \FO(\tau)$ und jeden Satz $\psi \in \FO(\tau
 
 \subsubsection{Herbrand-Strukturen}
 
-Eine $\tau$-Herbrand-Struktur ist eine Struktur mit Universum $\T(\tau)$, bei der die Funktionssymbole ``auf sich selbst'' abgebildet werden, d.h.\ in jeder Herbrand-Struktur $\He$ ist für jeden Term $t \in \T(\tau)$ $\interpret{t}^\He = t$.
+Eine $\tau$-Herbrand-Struktur ist eine Struktur mit der Menge aller $\tau$-Grundterme als Universum, bei der die Funktionssymbole \glqq auf sich selbst\grqq\ abgebildet werden, d.h.\ in jeder Herbrand-Struktur $\He$ ist für jeden Grundterm $\interpret{t}^\He = t$.
 
 Zu einer Menge atomarer Sätze $\Sigma \subseteq \FO(\tau)$ ist $\He(\Sigma)$ die Herbrandstruktur mit   \\
 $R^{\He(\Sigma)} = \{\overline{a} \;|\; R\overline{a} \in \Sigma\}$.
@@ -745,15 +780,66 @@ Für jede Formelmenge $\Phi \subseteq \FO(\tau)$ und Formel $\psi \in \FO(\tau)$
 \item[] Jede erfüllbare abzählbare Satzmenge hat ein abzählbares Modell.
 \end{itemize}
 
+Bemerkung zur Anwendung: Wenn $\tau$ abzählbar ist, dann ist auch $\FO(\tau)$ abzählbar, und also auch alle $\Phi\subseteq\FO(\tau)$.
+
 \emph{Aufsteigend:}
 \begin{itemize}
 \item Jede Satzmenge, die beliebig große endliche Modelle hat, hat ein unendliches Modell.
 \item Jede Satzmenge $\Phi$, die ein unendliches Modell hat, hat für jede unendliche Kardinalzahl $\kappa \ge \abs{\Phi}$ ein Modell der Größe $\kappa$.
 \end{itemize}
 
+\subsection{Standardverfahren zur Axiomatisierbarkeit}
+
+Eine klassische Aufgabe in Übung und Klausur besteht darin, die (endliche) Axiomatisierbarkeit von gewissen Strukturklassen zu zeigen oder zu widerlegen.
+Die (endliche) Axiomatisierbarkeit einer Strukturklasse $\K$ lässt sich meist am einfachsten durch Angabe eines passenden Axiomensystems beweisen.
+
+Wenn man zeigen will, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisierbar ist, bieten sich oft einige Standardverfahren an, die hier kurz erläutert werden sollen.
+
+\subsubsection{Nicht axiomatisierbar}
+	\paragraph{Kompaktheitssatz} Finde zunächst ein unendliches Axiomensystem $\Psi$ für eine Strukturklasse $K^\prime$ mit $K\cap K^\prime = \emptyset$, so dass jede endliche Teilmenge von $\Psi$ ein Modell in $K$ besitzt.
+	
+	Wenn man nun annimmt, dass es ein Axiomensystem $\Phi$ für $\K$ gibt, muss $\Phi \cup \Psi$ unerfüllbar sein, mit KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \Phi \cup \Psi$.
+	Jedoch wurde $\Psi$ so gewählt, dass $\Phi_0$ erfüllbar ist, damit tritt ein Widerspruch auf und im Umkehrschluss muss gelten, dass kein passendes $\Phi$ existiert.
+	
+	Die Schwierigkeit ist hierbei die Wahl von $\Psi$. Oftmals bietet es sich an, $\Psi$ als Axiomensystem für die Klasse von unendlichen Strukturen o. ä. zu wählen.
+	
+	Beispiel: Für $\K$ die Klasse der endlichen Mengen wähle $\Psi = \Phi_\infty$.
+	
+	\paragraph{Ehrenfeucht-Fra\"issé} Beachte zunächst, dass $\tau$ abzählbar und relational sein muss. Finde zwei Strukturen $\A \in \K,\ \B \notin \K$ mit $\A \equiv \B$ und gebe eine Gewinnstrategie für die Duplikatorin für $G(\A,\B)$ an. Dann ist $\K$ nicht axiomatisierbar, da $\A$ und $\B$ nicht in $\FO$ unterschieden werden können.
+	
+	Die Schwierigkeit besteht hierbei in der passenden Wahl von $\A$ und $\B$, zudem ist das Aufschreiben der Strategie manchmal aufwändig.
+	
+	Beispiel: Für $\K$ die Klasse der abzählbaren Mengen wähle $\A = \mathbb{N}$ und $\B=\mathcal{P}(\mathbb{N})$.
+	
+	\paragraph{Aufsteigender Satz von Löwenheim-Skolem} Hier gibt es zwei Fälle:
+	\begin{itemize}
+		\item In $\K$ sind bel. große, aber nur endliche Strukturen
+		Wenn ein hypothetisches $\Phi$ $\K$ axiomatisiert, hat $\Phi$ nach LS$\uparrow$ ein unendliches Modell, dies widerspricht aber der Definition von $\Phi$.
+		
+		Klassisches Beispiel: Die Klasse aller endlichen Mengen.
+		
+		\item $\K$ beinhaltet unendliche Strukturen, so dass für alle $\A \in \K$ und eine feste Menge $M$ $\lvert A \rvert < \lvert M \rvert$ gilt.
+		 
+		Wenn ein hyp. $\Phi$ $\K$ axiomatisiert, gibt es nach LS$\uparrow$ ein Modell von $\Phi$ mit Mächtigkeit mindestens $M$, im Umkehrschluss gibt es kein passendes $\Phi$.
+		
+		Beispiel: Die Menge der abzählbaren Mengen.
+	\end{itemize}
+	\paragraph{Absteigender Satz von Löwenheim-Skolem} Wenn $\K$ nur überabzählbar große Strukturen enthält, ist $\K$ nach LS$\downarrow$ nicht axiomatisierbar. Hierfür muss $\tau$ abzählbar sein.
+
+\subsubsection{Nicht endlich axiomatisierbar}
+
+	\paragraph{Kompaktheitssatz} Dazu benötigen wir ein unendliches Axiomensystem $\Phi$ für $\K$, wobei jede endliche Teilmenge von $\Phi$ kein Axiomensystem für $\K$ ist (bei entsprechenden Aufgaben soll oft zuerst die generelle Axiomatisierbarkeit überprüft werden, daher ist ein solches $\Phi$ oft schon vorhanden).
+	
+	Nun nehmen wir an, dass ein Axiomensystem $\{\phi\}$ für $\K$ existiert, wobei dann $\{\lnot\phi\} \cup \Phi$ unerfüllbar ist.
+	Nach KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \{\lnot\phi\} \cup \Phi$. Um nun einen Widerspruch zu erzeugen, geben wir ein Modell von $\Phi_0$ an.
+	
+	Die Argumentation ist dabei oft sehr ähnlich zum Kompaktheitssatzschema für generelle Nichtaxiomatisierbarkeit.
+	
+	Beispiel: Für $\K$ die Klasse der unendlichen Mengen wähle $\Phi = \Phi_\infty$.
+
 \subsection{Unentscheidbarkeit der Prädikatenlogik}
 
-Das Erfüllbarkeitsproblem (``hat eine Formel ein Modell'') und das Gültigkeitsproblem (``ist eine Formel eine Tautologie'') sind unentscheidbar.
+Das Erfüllbarkeitsproblem (\glqq hat eine Formel ein Modell\grqq) und das Gültigkeitsproblem (\glqq ist eine Formel eine Tautologie\grqq) sind unentscheidbar.
 
 Das Gültigkeitsproblem ist semi-entscheidbar.
 
@@ -784,7 +870,7 @@ mit $a \in A$ und $\psi \in \ML$
 \end{minipage}
 \ \\
 
-Falls $|A| = 1$ schreibt man statt $\langle a \rangle \psi$ und $[a] \psi$ $\Diamond \psi$ (``möglicherweise $\psi$'') und $\Box \psi$ (``notwendigerweise $\psi$'').
+Falls $|A| = 1$ schreibt man statt $\langle a \rangle \psi$ und $[a] \psi$ $\Diamond \psi$ (\glqq möglicherweise $\psi$\grqq) und $\Box \psi$ (\glqq notwendigerweise $\psi$\grqq).
 
 Ein \emph{Transitionssytem} oder eine \emph{Kripkestruktur} mit Aktionen aus $A$ und atomaren Eigenschaften $\Set{P_i : i \in I}$ ist eine Struktur $\K = (V,(E_a)_{a \in A},(P_i)_{i \in I})$ mit:
 
@@ -825,6 +911,7 @@ Jeder Formel $\psi$ und jedem Transitionssystem $\K$ kann man die \emph{Extensio
 Wir können $\ML$ als Fragment von $\FO$ auffassen: \\
 Zu jeder Formel $\psi \in \ML$ existiert eine Formel $\psi^\ast(x)$ in $\FO^2$, so dass für alle Transitionssysteme $\K$ und alle Zustände $v$ von $\K$ gilt:
 $\K,v \models \psi \text{ gdw.\ }\K \models \psi^\ast(v)$.
+$\FO^2$ ist dabei die Menge der relationalen $\FO$-Formeln mit nur zwei Variablen.
 
 \subsection{Bisimulation}
 
@@ -846,6 +933,8 @@ Auf beiden befindet sich jeweils ein Spielstein.
 \end{itemize}
 
 Für alle Kripkestrukturen $\K, \K'$ gilt: Wenn $\K, v \sim \K', v'$, dann ist $\K, v \sim_n \K', v'$ für alle $n$. Die Umkehrung gilt jedoch nicht: es gibt $\K, v$ und $\K', v'$, so dass $\K, v \sim_n \K', v'$ aber $\K, v \not\sim \K', v'$.
+
+Daraus ergibt sich ein Werkzeug, mit dem man zeigen kann, dass gewisse Eigenschaften nicht in der Modallogik definierbar sind: Wenn man zwei bisimilare Strukturen hat, von denen eine die gewünschte Eigenschaft hat und die andere nicht, ist die Eigenschaft nicht $\ML$-definierbar.
 
 Die \emph{Modaltiefe} $\mathrm{md}(\psi)$ ist definiert analog zum Quantorenrang.
 
@@ -887,12 +976,12 @@ Für endlich verzweigte Transitionssysteme können wir sogar sagen, dass $\K, u 
 
 Ein Baum mit Wurzel $v$ ist ein Transitionssystem, in dem es zu jedem Knoten $w \ne v$ genau einen Pfad von $v$ zu $w$ gibt.
 
-Zu jedem Transitionssystem $\K$ mit Knoten $v$ gibt es einen Baum $\K'$ mit Wurzel $v'$, sodass $\K, v \sim \K', v'$. Um diesen zu konstruieren, wird das Transitionssystem ``abgewickelt'':    \\
+Zu jedem Transitionssystem $\K$ mit Knoten $v$ gibt es einen Baum $\K'$ mit Wurzel $v'$, sodass $\K, v \sim \K', v'$. Um diesen zu konstruieren, wird das Transitionssystem \glqq abgewickelt\grqq:    \\
 Man erzeugt einen Baum mit Wurzel $w'$ für alle Nachfolger $w$ von $v$ in $\K$, fügt diese disjunkt zusammen und fügt die Wurzel $v'$ mit einer Kante entsprechenden Typs von $v'$ nach $w'$ ein.
 
 \subsection{Temporale Logiken}
 
-$\LTL$ (``linear temporal logic'') erweitert Aussagenlogische Formeln mit den Variablen $P_1,\ldots,P_n$ um die folgende Syntax:
+$\LTL$ (\glqq linear temporal logic\grqq) erweitert Aussagenlogische Formeln mit den Variablen $P_1,\ldots,P_n$ um die folgende Syntax:
 \begin{itemize}
 \item Wenn $\varphi \in \LTL$ ist auch $\X\varphi \in \LTL$.
 \item Wenn $\varphi, \psi \in \LTL$ ist auch $\varphi \until \psi \in \LTL$.
@@ -900,7 +989,7 @@ $\LTL$ (``linear temporal logic'') erweitert Aussagenlogische Formeln mit den Va
 
 Interpretationen von $\LTL$-Formeln sind (möglicherweise unendliche) Wörter $v_1v_2\ldots$ mit einer aktuellen Position $v_i$ und einem Wahrheitswert für jedes $P_j$ an jedem $v_k$. Der Wahrheitswert von booleschen Operatoren ist wie üblich. $P_i$ wird sein Wahrheitswert an der aktuellen Position zugeordnet. $\X\varphi$ ist erfüllt, wenn die aktuelle Position nicht die letzte ist und an der nächsten Position $\varphi$ gilt. $\varphi\until\psi$ gilt wenn es eine folgende Position gibt, an der $\psi$ gilt und an allen Positionen davor ab der aktuellen Position $\varphi$ gilt.
 
-$\CTL$ (``computation tree logic'') ist die Zusammenfassung von $\ML$ und $\LTL$: Sie erweitert Aussagenlogische Formeln in den Variablen $P_1,\ldots,P_n$ um die folgende Syntax:
+$\CTL$ (\glqq computation tree logic\grqq) ist die Zusammenfassung von $\ML$ und $\LTL$: Sie erweitert Aussagenlogische Formeln in den Variablen $P_1,\ldots,P_n$ um die folgende Syntax:
 \begin{itemize}
 \item Wenn $\varphi \in \CTL$ sind auch $\mathrm{E}\X\varphi$ und $\mathrm{A}\X\varphi$ in $\CTL$.
 \item Wenn $\varphi, \psi \in \CTL$ sind auch $\mathrm{E}(\varphi \until \psi)$ und $\mathrm{A}(\varphi\until\psi)$.
