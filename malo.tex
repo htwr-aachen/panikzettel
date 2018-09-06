@@ -355,7 +355,7 @@ Formeln, die nur Relationsausdrücke und solche mit dem Gleich enthalten, heiße
 
 Eine Variable $x$ kommt \emph{gebunden} in einer Formel $\psi$ vor, falls $\psi$ eine Unterformel $\exists x \psi'$ oder $\forall x \psi'$ enthält. Eine Variable, die nicht durch einen Quantor gebunden ist, kommt \emph{frei} vor. In einer Formel kann eine Variable gleichzeitig gebunden und frei vorkommen.
 
-Ein \emph{Satz} ist eine Formel, in der keine freien Variablen vorkommt.
+Ein \emph{Satz} ist eine Formel, in der keine freien Variablen vorkommen.
 
 Der \emph{Quantorrenrang} einer Formel ist wie folgt definiert:
 \[\begin{array}{cc}
@@ -787,7 +787,7 @@ Bemerkung zur Anwendung: Wenn $\tau$ abzählbar ist, dann ist auch $\FO(\tau)$ a
 Eine klassische Aufgabe in Übung und Klausur besteht darin, die (endliche) Axiomatisierbarkeit von gewissen Strukturklassen zu zeigen oder zu widerlegen.
 Die (endliche) Axiomatisierbarkeit einer Strukturklasse $\K$ lässt sich meist am einfachsten durch Angabe eines passenden Axiomensystems beweisen.
 
-Um zu zeigen, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisierbar ist, bieten sich oft einige Standardverfahren an, die hier kurz erläutert werden sollen:
+Wenn man zeigen will, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisierbar ist, bieten sich oft einige Standardverfahren an, die hier kurz erläutert werden sollen:
 
 \subsubsection{Nicht axiomatisierbar}
 \begin{itemize}
@@ -795,9 +795,9 @@ Um zu zeigen, dass eine Klasse $\K$ hingegen nicht bzw. nicht endlich axiomatisi
 	Wenn man nun annimmt, dass es ein Axiomensystem $\Phi$ für $\K$ gibt, muss $\Phi \cup \Psi$ unerfüllbar sein, mit KS gibt es dann ein endliches unerfüllbares $\Phi_0 \subseteq \Phi \cup \Psi$.
 	Jedoch wurde $\Psi$ so gewählt, dass $\Phi_0$ erfüllbar ist, damit tritt ein Widerspruch auf und im Umkehrschluss muss gelten, dass kein passendes $\Phi$ existiert.
 	
-	Die Schwierigkeit ist hierbei die Wahl von $\Psi$. Oftmals bietet es sich an, $\Psi$ als Axiomensystem für die Klasse von unendlichen Strukturen oder für die Klasse von Graphen mit unendlichen Pfaden o. ä. zu wählen.
+	Die Schwierigkeit ist hierbei die Wahl von $\Psi$. Oftmals bietet es sich an, $\Psi$ als Axiomensystem für die Klasse von unendlichen Strukturen o. ä. zu wählen.
 	
-	Beispiel: Für $\K$ die Klasse der Graphen mit beliebig langen endlichen Pfaden, aber ohne unendlichen Pfad wähle $K^\prime$ als Klasse der Graphen mit unendlichem Pfad und konstruiere $\Psi$ entsprechend.
+	Beispiel: Für $\K$ die Klasse der endlichen Mengen wähle $\Psi = \Psi_\infty$.
 	
 	\item Ehrenfeucht-Fra\"issé ($\tau$ abzählbar und relational): Finde zwei Strukturen $\A \in \K,\ \B \notin \K$ mit $\A \equiv \B$ und gebe eine Gewinnstrategie für die Duplikatorin für $G(\A,\B)$ an. Dann ist $\K$ nicht axiomatisierbar, da $\A$ und $\B$ nicht in $\FO$ unterschieden werden können.
 	
