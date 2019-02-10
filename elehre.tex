@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{lmodern,textcomp}
 \usepackage{amssymb}
 \usepackage{tikz}
 \usepackage{graphicx}
@@ -85,7 +86,7 @@ Transformation einer Normalverteilung\footnote{Auf weitere Verteilungen wie die 
 	\dfrac{x-x^-}{x^+-x^-} & \text{für } c = 0
 	\end{cases} && \text{mit } c := -2\text{ln}\left(\frac{1}{p}-1\right)
 \end{align*}
-$ p $ lässt sich dabei durch Erfragen in folgendem indifferent Spiel ermitteln:
+Um $ p $ zu ermitteln muss der Entscheider zwischen folgendem sicheren Betrag und dem nebenstehenden Spiel indifferent\footnote{Indifferent heißt in diesem Zusammenhang, dass sich der Entscheider nicht zwischen dem sicheren Betrag und dem Spiel entscheiden kann.} sein:
 \begin{figure}[h]
 	\centering
 	\begin{tikzpicture}
@@ -125,7 +126,7 @@ Sei $ a_{ij} $ die Ausprägung der Alternative $ a $ im $ i $-ten Zustand und $ 
 \begin{align*}
 	EU(a) := \sum_{i=1}^{n} p(s_i) \cdot (w_1u_1(a_{i1}) + \dots + w_mu_m(a_{im}))
 \end{align*}
-Gewichte wie bei \hyperref[sec:addUtility]{\nameref{sec:addUtility}}
+Gewichte wie bei \nameref{sec:addUtility}
 
 \subsection{Trade-Off Verfahren}
 Sind die Zielgewichte $ w_1, \dots, w_r $ mit $ r\in\mathbb{N} $ gesucht und $ r-1 $ indifferente Präferenzen angegeben, kann das Trade-Off Verfahren angewendet werden, um die Gewichte zu bestimmen. Hier werden die indifferenten Präferenzen gleichgesetzt und nach einem beliebigen Gewicht umgeformt:
@@ -138,16 +139,21 @@ Für $ r=2 $ ergibt sich zum Beispiel:
 \end{align*}
 Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewichte berechnen.
 
-\textit{Hinweis:} Falls das entstehende Gleichungssystem überbestimmt ist (d.h. es gibt mehr als $ r-1 $ indifferente Präferenzen), muss überprüft werden, ob eine gültige Lösung für alle Präferenzen besteht. Falls nicht, kann keine additive Nutzenfunktion verwendet werden.
+\textit{Hinweis:} Falls das entstehende Gleichungssystem über-bestimmt ist (d.h. es gibt mehr als $ r-1 $ indifferente Präferenzen), muss überprüft werden, ob eine gültige Lösung für alle Präferenzen besteht. Falls nicht, kann keine additive Nutzenfunktion verwendet werden.
 
 \subsection{Dominanz bei unvollständiger Information}
 \begin{itemize}
-	\item Falls $ \text{min} \left[p(s_1) \cdot (u(a) - u(b)) + \dots + p(s_n) \cdot (u(a) - u(b)) \right] \geq 0$ gilt, dominiert Alternative $ a $ Alternative $ b $. Dabei sind die Wahrscheinlichkeiten $ p(s_1), \dots, p(s_n) $ jeweils aus dem gegebenen Intervall zu wählen, wobei $ p(s_1) + \dots + p(s_n) = 1 $ gelten muss.
-	\item Falls nur die Rangfolge der Wahrscheinlichkeit gegeben ist, müssen folgende Punkte gelten, damit eine Dominanz vorliegt:
+	\item Bei gegebenen Intervallen $ p^-_i \leq p(s_i) \leq p^+_i $ für alle $ i\in\{1,\dots,n\} $:
+	
+	Falls $ \text{min} \left[p(s_1) \cdot (u(a) - u(b)) + \dots + p(s_n) \cdot (u(a) - u(b)) \right] \geq 0$ gilt, dominiert Alternative $ a $ Alternative $ b $. Dabei sind die Wahrscheinlichkeiten $ p(s_1), \dots, p(s_n) $ jeweils aus dem gegebenen Intervall zu wählen, wobei $ p(s_1) + \dots + p(s_n) = 1 $ gelten muss.
+	
+	\item Bei gegebener Rangfolge der Wahrscheinlichkeiten:
+	
+	Falls nur die Rangfolge der Wahrscheinlichkeit ($ p(s_1) \geq \dots \geq p(s_n) $) gegeben ist, müssen folgende Punkte gelten, damit eine Dominanz vorliegt:
 	\begin{enumerate}
-		\item Die Ausprägung im wahrscheinlichsten Zustand muss besser sein als die aller anderen.
-		\item Im Durchschnitt müssen die Ausprägungen am größten sein.
-		\item Bei Kumulierung nach absteigender Wahrscheinlichkeit muss die dominierende Alternative stets größer oder gleich alle anderen Alternativen sein.
+		\item Der Nutzen im wahrscheinlichsten Zustand muss besser sein, als der aller anderen Alternativen.
+		\item Im Durchschnitt muss der Nutzen der dominierenden Alternative am höchsten sein.
+		\item Bei Kumulierung der Nutzenwerte nach absteigender Wahrscheinlichkeit muss die dominierende Alternative im Vergleich zur dominierten Alternative stets besser oder gleich sein.
 	\end{enumerate}
 \end{itemize}
 
@@ -160,17 +166,17 @@ Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewich
 	\item \textit{Kontrast-Effekte:}\\
 	Informationen, die mit einer im Kontrast stehenden Information präsentiert werden, worden oft überhöht wahrgenommen.
 	\item \textit{Verfügbarkeitsheuristik:}\\
-	Informationen, die im Kopf am leichtesten verfügbar sind, bestimmen das Entscheidungs- und Schätzverhalten, d.h. je verfügbarer ein Ereignis ist, desto größer ist seine subjektive Wahrscheinlichkeit.
+	Informationen, die im Kopf am leichtesten verfügbar sind, bestimmen das Entscheidungs- und Schätzverhalten, d.h. je verfügbarer ein Ereignis ist, desto größer ist seine subjektive Wahrscheinlichkeit. Hat man zum Beispiel vor kurzem von einem Flugzeugunglück erfahren, so würde man die Wahrscheinlichkeit, selbst Opfer eines solchen Unglücks zu werden, überschätzen.
 	\item \textit{Mentale Kontenführung:}\\
-	Menschen neigen dazu, alle Projekte, an denen sie arbeiten, isoliert in einem zugehörigen ``Mental Account`` zu verbuchen, wobei gegenseitige Abhängigkeiten zwischen diesen vernachlässigt werden.
+	Menschen neigen dazu, alle Projekte, an denen sie arbeiten, isoliert in einem zugehörigen ``Mental Account`` zu verbuchen, wobei gegenseitige Abhängigkeiten zwischen diesen vernachlässigt werden. (Verlust von Konzertkarte im Wert von 100€ $ \neq $ Verlust von 100€ Bargeld)
 	\item \textit{Verankerungsheuristik:}\\
-	Personen werden bei Schätzungen von Wahrscheinlichkeiten von einem vorgegebenen Anker beeinflusst, wobei gegenseitige Anpassung unter Berücksichtigung weiterer Informationen zu gering ausfällt.
+	Personen werden bei Schätzungen von Wahrscheinlichkeiten von einem vorgegebenen Anker beeinflusst, wobei gegenseitige Anpassung unter Berücksichtigung weiterer Informationen zu gering ausfällt. (Siehe \nameref{sec:wskgf})
 	\item \textit{Repräsentativitätsheuristik:}\\
 	Neigung der Menschen, zu schnell in ein Schema-Denken zu verfalle und die Wahrscheinlichkeit von repräsentativen Ereignissen zu überschätzen.
 \end{itemize}
 
-\subsection{Wertefunktion}
-Die Wertefunktion spiegelt den subjektiven Wert wieder, welcher für einen Gewinn ($ x \geq 0 $) oder einen Verlust ($ x < 0 $) wahrgenommen wird.
+\subsection{Wertfunktion}
+Die Wertfunktion spiegelt den subjektiven Wert wieder, welcher für einen Gewinn ($ x \geq 0 $) oder einen Verlust ($ x < 0 $) wahrgenommen wird.
 \begin{align*}
 	v(x) := \begin{cases}
 	\sqrt{x} & \text{für } x\geq 0,\\
@@ -179,7 +185,7 @@ Die Wertefunktion spiegelt den subjektiven Wert wieder, welcher für einen Gewin
 \end{align*}
 Ein Commitment drückt sich in dem Parameter $ \lambda $ bei Verlusten aus (\textit{Verlustaversion}). Dieser lässt Verluste für $ \lambda > 1 $ noch ``schlimmer`` wirken.
 
-\subsection{Wahrscheinlichkeitsgewichtefunktion}
+\subsection{Wahrscheinlichkeitsgewichtefunktion} \label{sec:wskgf}
 Menschen überschätzen geringe Wahrscheinlichkeiten und überbewerten die absolute Sicherheit. Die allgemeine Wahrscheinlichkeitsgewichtefunktion ist durch $ \pi_{\delta,\gamma}(p) $ gegeben:
 \begin{align*}
 	\pi_{\delta,\gamma}(p) := \frac{\delta\cdot p^\gamma}{\delta\cdot p^\gamma + (1-p)^\gamma}
@@ -227,7 +233,7 @@ Wird das gegebene Spiel und das Sicherheitsäquivalent als indifferent angesehen
 \end{align*}
 Das Risikoverhalten ist das beobachtbare Verhalten in Risikosituationen. Es bildet das Resultat aus Höhenpräferenzen und Risikoeinstellung.
 
-\subsection{Discounted-Utility-Modell}
+\subsection{Discounted-Utility-Modell} \label{sec:du}
 Der heutige Wert eines zukünftigen Ereignisses wird durch Abdiskontierung seines späteren Nutzens auf den heutigen Zeitpunkt abgebildet:
 \begin{align*}
 	DU(a) :=& \sum_{t=0}^{T} \left(\frac{1}{1+i}\right)^t u_t(a_t) \\
@@ -238,15 +244,29 @@ Wobei
 	u_t(a_t) &= \text{Nutzen des Ergebnisses } a_t \text{ im Zeitpunkt } t\\
 	i &= \text{Diskontrate}
 \end{align*}
-\textit{Hinweis:} Zu beachten ist, dass alle Summanden wegfallen, die zu einem Zeitpunkt mit Nutzenfunktion $ u_t(a_t) = 0 $ gehören. D.h. bekommt man im \textit{12. Monat} einen Nutzen und in allen anderen Monaten nicht, fallen die Summanden mit $ t = 0, \dots, 11 $ weg. Es bleibt also nur noch $ DU(a) = \left(\frac{1}{1+i}\right)^{12} u_{12}(a_{12}) $.
+Das Discounted-Utility-Modell ist allerdings ein Modell was sich nur für präskriptive Zwecke eignet, da man hier exponentiell diskontiert (konstante Abnahme der Sensitivität). Dies ist allerdings in der deskriptiven Entscheidungstheorie unrealistisch, weshalb man das \nameref{sec:hdu} verwendet.
 
-\subsection{Hyperbolic-Discounted-Utility-Modell}
+\subsection{Hyper\-bolic-Discounted-Utility-Modell} \label{sec:hdu}
+Das Hyperbolic-Discounted-Utility-Modell bildet die Sensitivität der Menschen insofern besser ab, dass die Sensitivität zu Beginn stark fällt und dann abflacht.
 \begin{align*}
 	HDU(a) :=& \sum_{t=0}^{T} \delta^\text{hyp}(t)u_t(a_t)\\
 	=& \sum_{t=0}^{T} \left(\frac{1}{1+\alpha t}\right)^{\frac{\beta}{\alpha}} u_t(a_t)
 \end{align*}
 
-\newpage
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\draw[dotted,thin,step=0.5,gray] (0,0) grid (5,2);
+		\draw[->] (0,0) node[left,below] {0} -- (5,0) node[right] {Zeit};
+		\draw[->] (0,0) -- (0,2) node [left] {1};
+		\draw[domain=0:5,smooth,samples=200,variable=\x,thick,red] plot ({\x},{-(1/1+200*\x)^(30/200) + 3});
+		\draw[domain=0:5,smooth,variable=\x,thick,blue] plot ({\x},{-3/10*\x + 2});
+		\node[](du) at (3,1.4) {$ DU $};
+		\node[](hdu) at (1,0.5) {$ HDU $};
+	\end{tikzpicture}
+	\caption{Skizze zu \textcolor{blue}{\nameref{sec:du}} und \textcolor{red}{\nameref{sec:hdu}}}
+\end{figure}
+
 \section{Wege zu einem besseren Entscheiden}
 \subsection{Anwendungsfelder der Entscheidungslehre \cite{vonNitzsch:211553}}
 \begin{enumerate}
@@ -282,7 +302,7 @@ Sowohl für Individual- als auch für Gruppenentscheidungen sollten die folgende
 \end{enumerate}
 
 \subsection{Entscheidungsnavi}
-Die 8 Menüpunkte des Entscheidungsnavis sind (Stand: 03.02.2019):
+In der Vergangenheit wurden in der Klausur bereits öfters Fragen zum \href{https://entscheidungsnavi.de}{Entscheidungs\-navi} und dessen Struktur gestellt. Unter Anderem wurde dort häufig nach den 8 Menüpunkten des Entscheidungs\-navis (Stand: 03.02.2019) gefragt:
 \begin{enumerate}
 	\item Entscheidungsfrage
 	\item Ziele
@@ -292,7 +312,6 @@ Die 8 Menüpunkte des Entscheidungsnavis sind (Stand: 03.02.2019):
 	\item Nutzenfunktion
 	\item Zielgewichte
 	\item Auswertung
-	
 \end{enumerate}
 
 \newpage
