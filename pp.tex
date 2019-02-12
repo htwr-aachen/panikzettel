@@ -1,0 +1,1425 @@
+\documentclass[english]{panikzettel}
+
+\title{Probabilistic Programming Panikzettel}
+\author{Philipp Schröer, Caspar Zecha}
+
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\usepackage{bussproofs}
+\usepackage{listings}
+\lstset{mathescape=true}
+
+\usepackage{array}
+\newcolumntype{L}{>{$}l<{$}}
+\newcolumntype{C}{>{$}c<{$}}
+\newcolumntype{R}{>{$}r<{$}}
+
+\newcommand{\Dist}{\mathrm{Dist}}
+\newcommand{\Paths}{\mathrm{Paths}}
+\newcommand{\Cyl}{\mathrm{Cyl}}
+\renewcommand{\Pr}{\mathrm{Pr}}
+\newcommand{\Pre}{\mathrm{Pre}}
+\newcommand{\ER}{\mathrm{ER}}
+
+\DeclarePairedDelimiter\sem{\llbracket}{\rrbracket}
+\DeclarePairedDelimiter\ssem{[}{]}
+\DeclarePairedDelimiter{\angled}{\langle}{\rangle}
+
+\newcommand{\stmtSkip}{\texttt{skip}}
+\newcommand{\stmtDiverge}{\texttt{diverge}}
+\newcommand{\stmtAsgn}[2]{#1 := #2}
+\newcommand{\stmtObserve}[1]{\texttt{observe (}#1\texttt{)}}
+\newcommand{\stmtRasgn}[2]{#1 :\approx #2}
+\newcommand{\stmtSeq}[2]{#1;~ #2}
+\newcommand{\stmtIf}[3]{\texttt{if}~(#1)~\{ #2 \}~\texttt{else}~\{ #3 \}}
+\newcommand{\stmtNondet}[2]{#1~[]~#2}
+\newcommand{\stmtProb}[3]{#2 ~[#1]~ #3}
+\newcommand{\stmtWhile}[2]{\texttt{while}~(#1)~\{ #2 \}}
+
+\newcommand{\fix}{\mathrm{fix}~}
+\newcommand{\lfp}{\mathrm{lfp}~}
+\newcommand{\gfp}{\mathrm{gfp}~}
+
+\newcommand{\Vars}{\mathrm{Vars}}
+\newcommand{\lam}[1]{\lambda #1.~}
+
+\renewcommand{\wp}{\mathrm{wp}}
+\newcommand{\wlp}{\mathrm{wlp}}
+\newcommand{\cwp}{\mathrm{cwp}}
+\newcommand{\ert}{\mathrm{ert}}
+
+\newcommand{\rat}{\mathbb{Q}}
+\newcommand{\rel}{\mathbb{R}}
+\newcommand{\relg}{\rel_{\geq 0}}
+
+\newcommand{\down}{\downarrow}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+\section{Introduction}
+
+This Panikzettel is about the lecture Probabilistic Programming by Prof.\ Katoen held in the winter semester 2018/2019.
+
+This Panikzettel is Open Source. We appreciate comments and suggestions at \\ \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+
+\section{Markov Chains}
+
+\begin{halfboxl}
+    \emph{Markov chains} are essential in our definition of the semantics of the pGCL probabilistic programming language.
+    A Markov chain is a transition system with a state set, an initial state and a transition probability function between states.
+
+    So instead of a simple transition relation between states as in usual transition systems, transitions now additionally have a probability.
+    The probability of a transition from $\sigma_1$ to $\sigma_2$ is given by:
+    \[
+        \underbrace{\mathbf{P}(\sigma_1)}_{\Dist(\Sigma)}(\sigma_2) \subseteq [0,1]
+    \]
+
+    If $\Sigma$ is finite, we can also write $\mathbf{P}$ as a \emph{transition probability matrix}.
+    This matrix is a square, stochastic matrix, i.e.\ each row sums to one.
+
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Probability distribution}
+        A \emph{probability distribution} on a countable set $X$ is a function $\mu : X \to [0,1] \subseteq \rel$ such that $\sum_{x \in X} \mu(x) = 1$.
+
+        We call $\Set{ x | \mu(x) > 0 }$ the \emph{support set} of $\mu$.
+        Let $\Dist(X)$ denote the set of probability distributions on $X$.
+    \end{defi}
+
+    \begin{defi}{Markov chain}
+        A \emph{Markov chain} (MC) $D$ is a triple $(\Sigma, \sigma_l, \mathbf{P})$:
+        \begin{itemize}[leftmargin=*]
+            \item $\Sigma$ being a countable set of \emph{states},
+            \item $\sigma_I \in \Sigma$ the \emph{initial state},
+            \item $\mathbf{P} : \Sigma \to \Dist(\Sigma)$ the \emph{transition probability function}.
+        \end{itemize}
+    \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+    A program execution will be a \emph{path} through the Markov chain.
+    A path in a Markov chain is defined as a (possibly infinite) sequence of states where each single transition must have a probability larger than zero.
+
+    We define the \emph{cylinder set} of a finite path $\hat{\pi}$ as all infinite paths with prefix $\hat{\pi}$.
+
+    We can now define a \emph{probability distribution} on cylinder sets $\Pr$.
+    Given a path finite $\hat{\pi}$, $\Pr(\Cyl(\hat{\pi}))$ is defined as the probability of the transitions between the finite prefix path states.
+
+    Note that we define $\Pr$ only on cylinder sets, i.e.\ sets of infinite paths.
+    However, the product is finite and only requires probabilities of the finite path.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Paths}
+        $\pi = \sigma_0 \sigma_1 \ldots$ is a \emph{path} through MC $D$ where
+        \begin{tightcenter}$\mathbf{P}(\sigma_i, \sigma_{i+1}) > 0 \quad \Forall i \in \nat$\end{tightcenter}
+
+        Let $\Paths(D)$ denote the set of paths in $D$ starting in $\sigma_I$.
+    \end{defi}
+
+    \begin{defi}{Cylinder set}
+        Let $\hat{\pi} = \sigma_0 \sigma_1 \ldots \sigma_n$ be a finite path in MC $D$.
+        Then we define the \emph{cylinder set} $\Cyl(\hat{\pi})$:
+        \footnotesize{}
+        \[ \Cyl(\hat{\pi}) = \Set{ \pi \in \Paths(D) | \hat{\pi} \text{ is a prefix of } \pi } \]
+    \end{defi}
+
+    \begin{defi}{Cylinder probability}
+        $\Pr$ is the unique \emph{probability distribution on cylinder sets}.
+        ($\mathbf{P}(\sigma_0) = 1$ iff $\sigma_0 = \sigma_I$).
+        \[
+            \Pr(\Cyl(\sigma_0 \ldots \sigma_n)) = \prod_{0 \leq i < n} \mathbf{P}(\sigma_i, \sigma_{i+1})
+        \]
+    \end{defi}
+\end{halfboxr}
+
+\subsection{Reachability}
+
+\begin{halfboxl}
+    With the definition of the probability of a path, we now consider the more general problem of \emph{reachability}: What is the probability to reach a set of states $G \subseteq \Sigma$ in MC $D$?
+
+    In our definition of reachability, this asks for the probability of all infinite paths containing a state in $G$ anywhere.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Reachability}
+        Let MC $D$ with countable state space $\Sigma$ and $G \subseteq \Sigma$ the set of \emph{goal states}.
+        The event \emph{eventually reaching $G$} is defined by:
+        \small{}
+        \[ \diamond G = \Set{ \pi \in \Paths(D) | \Exists i \in \nat.~ \pi[i] \in G } \]
+    \end{defi}
+\end{halfboxr}
+
+If the Markov chain $D$ has a finite state space, we can calculate the reachability probability by solving a linear equation system.
+We write $D_\sigma$ to mean the MC $D$ with initial state $\sigma$ and
+\smallskip
+\begin{tightcenter}$
+    \Pr(\sigma \models \diamond G) = \Pr_\sigma(\diamond G) = \Pr(\Set{\pi \in \Paths(D_\sigma) | \pi \in \diamond G }).
+$\end{tightcenter}
+\medskip
+
+\begin{theo}{Finite reachability solution}
+    To solve $\Pr(\sigma \models \diamond G)$, define
+    \begin{itemize}
+        \item $\Sigma_? = \Pre^\ast(G) \setminus G$, the set of states that can reach $G$ by $> 0$ steps,
+        \item $A = ( \mathbf{P}(\sigma, \tau) )_{\sigma,~\tau \in \Sigma_?}$, the transition probabilities in $\Sigma_?$, and
+        \item $b = (b_\sigma)_{\sigma \in \Sigma_?}$, the probabilities to reach $G$ in exactly one step, i.e.\ $b_\sigma = \sum_{\gamma \in G} \mathbf{P}(\sigma, \gamma)$.
+    \end{itemize}
+
+    Then $x = (x_\gamma)_{\gamma \in \Sigma_?}$ with $x_\sigma = \Pr(\sigma \models \diamond G)$ is the unique solution of
+    \smallskip
+    \begin{tightcenter}$
+        x = A \cdot x + b \qquad \text{\footnotesize{}or, equivalently} \qquad (I - A) \cdot x = b.
+    $\end{tightcenter}
+\end{theo}
+
+\subsection{State Classification}
+
+\begin{halfboxl}
+    We will now classify states based on recurrence: Whether the MC is almost sure to return to a state (\emph{recurrent}) or not (\emph{transient}).
+
+    Note that the \emph{first visit probability} requires a \emph{first visit}, so only paths that contain $\tau$ exactly once at their end are considered.
+
+    The \emph{return probability} also requires a first return.
+    It can be calculated by summing up all first visit probabilities.
+
+    We now call a state $\sigma$ \emph{recurrent} if $f_\sigma = 1$ and \emph{transient} if $f_\sigma < 1$.
+    For a transient state $\sigma$, we say the MC \emph{almost surely} returns to $\sigma$.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{First visit probability}
+        Let states $\sigma, \tau \in \Sigma$.
+
+        We define $f^{(n)}_{\sigma,\tau}$ as the probability of a first visit to $\tau$ after exactly $n$ steps from $\sigma$.
+    \end{defi}
+
+    \begin{defi}{Return probability}
+        Let states $\sigma, \tau \in \Sigma$.
+
+        The \emph{return probability} $f_\sigma^{(n)}$ is defined as the probability of the first return to $\sigma$ (from $\sigma$) after exactly $n$ steps.
+        This is equivalent to:
+        \begin{tightcenter}\large{}$f_\sigma = \sum_{i=1}^\infty f_{\sigma,\sigma}^{(n)}$.\end{tightcenter}
+    \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+    For a recurrent state $\sigma$, we also define a \emph{mean recurrence time}: The expected number of steps between two successive visits to $\sigma$.
+
+    This gives rise to the terms \emph{null} and \emph{postive recurrent}.
+    It takes infinite on average to return to a null recurrent state, while positive recurrent states have a finite mean recurrence time.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Mean recurrence time}
+        The \emph{mean recurrence time} $m_\sigma$ of a recurrent state $\sigma$ is
+        \begin{tightcenter}$
+            m_\sigma = \sum_{n=1}^\infty n \cdot f_\sigma^{(n)}
+        $\end{tightcenter}
+
+        If $m_\sigma < \infty$, we call $m_\sigma$ \emph{positive recurrent}, otherwise \emph{null recurrent}.
+    \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+    If the MC is finite, then we have a few properties w.r.t.\ recurrence:
+    \begin{enumerate}
+        \item Every state in a finite MC is either positive recurrent or transient.
+        \item At least one state in a finite MC is positive recurrent.
+        \item A finite MC has no null recurrent states.
+    \end{enumerate}
+
+    To show these properties, we use Foster's theorem.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Foster's theorem}
+        A countable Markov chain is \emph{non-dissipative} if almost every infinte path eventually enters and remains in positive recurrent states.
+
+        If the following conditions hold, the MC is non-dissipative:
+        \begin{tightcenter}$
+            \sum_{j \geq 0} j \cdot \mathbf{P}(i,j) \leq i \qquad \Forall \text{states } i
+        $\end{tightcenter}
+    \end{theo}
+\end{halfboxr}
+
+\begin{halfboxl}
+    We can also classify Markov chains by periodicity.
+    The definition is a bit tricky, so read it carefully.
+
+    Further a state is \emph{ergodic} if it is positive and aperiodic.
+    An MC is ergodic if all its states are ergodic.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Periodic state}
+        A state $\sigma$ is \emph{periodic} if
+        \begin{tightcenter}\small{}$
+            f_\sigma^{(n)} > 0 \text{ implies } n = k \cdot d \text{ where period } d > 1.
+        $\end{tightcenter}
+        A state is \emph{aperiodic} otherwise.
+    \end{defi}
+\end{halfboxr}
+
+At this point we may notice that mutually reachable states must have the same types.
+More formally, if $\sigma$ and $\tau$ are two mutually reachable states, then being transient, null-recurrent, positive recurrent and $d$-periodic holds for $\tau$ if the respective property holds for $\sigma$.
+
+If a MC is \emph{irreducible}, that is all states are mutually reachable, we can use Markov's theorem.
+
+\begin{theo}{Markov's theorem}
+    A finite, irreducible MC $D$ is positive recurrent.
+
+    If $D$ is also aperiodic, then $D$ is ergodic and $\mathbf{P}^{\infty} = \lim_{n \to \infty} \mathbf{P}^n = \begin{pmatrix} v \\ \vdots \\ v \end{pmatrix}$ where $v = \begin{pmatrix} \frac{1}{m_1}, \ldots, \frac{1}{m_k} \end{pmatrix}$ and $k = \abs{\Sigma}$.
+\end{theo}
+
+The \emph{stationary distribution} of MC $D$ is a probability vector $x$ where $x = x \cdot \mathbf{P}$.
+\[
+    x_\sigma = \sum_{\tau \in \Sigma} x_\tau \cdot \mathbf{P}(\tau, \sigma) \quad \text{iff} \quad \underbrace{x_\sigma \cdot (1 - \mathbf{P}(\sigma, \sigma))}_\text{outflow of $\sigma$} = \underbrace{\sum_{\tau \neq \sigma} x_\tau \cdot \mathbf{P}(\tau, \sigma)}_\text{inflow of $\gamma$}
+\]
+An irreducible, positive recurrent MC has a unique stationary distribution satisfying $x_\sigma = \frac{1}{m_\sigma}$ for every state $\sigma$. If $\mathbf{P}$ is ergodic, then each row of $\mathbf{P}^\infty$ equals the limiting (stationary) distribution.
+
+\subsection{Rewards}
+
+\begin{halfboxl}
+    We can also attach \emph{rewards} to states of Markov chains.
+    The reward $r(\sigma)$ is the reward earned on leaving the state $\sigma$.
+    We can also calculate a \emph{cumulative reward for reachability}.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{MC with rewards}
+        A \emph{reward MC} is a pair $(M,r)$ with $D$ an MC with state space $\Sigma$ and a \emph{reward function} $r : \Sigma \to \rel$.
+    \end{defi}
+\end{halfboxr}
+
+\begin{defi}{Cumulative reward for reachability}
+    Let $\pi = \sigma_0 \ldots \sigma_n$ be a finite path in $(D, r)$ and $G \subseteq \Sigma$ a set of \emph{target states} with $\pi \in \diamond G$.
+    The \emph{cumulative reward} along $\pi$ until reaching $G$ is:
+    \begin{tightcenter}$
+        r_G(\pi) = r(\sigma_0) + \ldots + r(\sigma_{k-1}) \quad \text{where } \sigma_i \notin G \text{ for all } i < k \text{ and } \sigma_k \in G.
+    $\end{tightcenter}
+
+    If $\pi \notin \diamond G$, then $r_G(\pi) = 0$.
+\end{defi}
+
+\begin{defi}{Expected reward for reachability}
+    The \emph{expected reward} for reachability until reaching $G \subseteq \Sigma$ from $\sigma \in \Sigma$ is:
+    \[
+        \ER(\sigma, \diamond G) = \sum_{\pi \models \diamond G} \Pr(\hat{\pi}) \cdot r_G(\hat{\pi})
+    \]
+    where $\hat{\pi} = \sigma_0 \ldots \sigma_k$ is the shortest prefix of $\pi$ such that $\sigma_k \in G$ and $\sigma_0 = \sigma$.
+\end{defi}
+
+\begin{defi}{Conditional expected reward}
+    Let $\ER(\sigma, \diamond G | \neg \diamond F)=\frac{\ER(\sigma, \diamond G \cap \neg \diamond F)}{\Pr(\neg \diamond F)}$ be the \emph{conditional expected reward} until reaching $G$ under the condition that no states in $F \subseteq \Sigma$ are visited.
+\end{defi}
+
+\section{Probabilistic GCL (pGCL)}
+
+\begin{halfboxl}
+    Elementary ingredients for pGCL are
+    \begin{itemize}
+        \item Program variables $x \in \Vars$ whose values are fractional numbers,
+        \item Arithmetic expressions $E$ over the program variables,
+        \item Boolean expressions $G$ (guarding choice or loop) over the program variables,
+        \item \emph{Distribution expressions} $\mu : \Sigma \to \Dist(\rat)$,
+        \item \emph{Probability expressions} $p : \Sigma \to [0,1] \cap \rat$.
+    \end{itemize}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{pGCL syntax}
+        \footnotesize{}
+        \vspace{-\baselineskip}
+        \begin{align*}
+            \stmtSkip &&\text{empty statement}\\
+            \stmtDiverge &&\text{divergence} \\
+            \stmtAsgn{x}{E} &&\text{assignment} \\
+            \stmtRasgn{x}{\mu} &&\text{random assignment}\\
+            \stmtSeq{P1}{P2} &&\text{sequential composition} \\
+            \stmtIf{G}{P1}{P2}&&\text{choice} \\
+            \stmtProb{p}{P1}{P2}&&\text{probabilistic choice}\\
+            \stmtWhile{G}{P}&&\text{iteration}
+        \end{align*}
+    \end{defi}
+\end{halfboxr}
+
+For random assignment $\stmtRasgn{x}{\mu}$ we evaluate the distribution expression $\mu$ in the curent program state $s$.
+Then we sample from the resulting distribution $\mu(s)$ yielding value $v$ with probability $\mu(s)(v)$ and assign the value $v$ to $x$.
+
+To prove correctness of programs we use formal semantics.
+There are different kind of semantics.
+We use operational semantics of pGCL on Markov chains to model the execution behaviour of a program.
+
+\begin{defi}{pGCL operational semantics} \label{def:pgcl-semantics}
+    The behaviour of a pGCL program $P$ is modelled by the MC $\sem{P}$:
+    \begin{itemize}
+        \item States are of the form
+            \begin{itemize}
+                \item $\angled{Q,s}$ where $Q$ is the remaining program to be executed,
+                \item or $s = \lightning$ for violation of an obversation (\stmtObserve{G}),
+                \item or $\angled{sink}$ for successful program termination.
+            \end{itemize}
+        \item $s : \Vars \to \rat$ is a \emph{variable valuation}.
+        \item $\sigma_I = \angled{P,s}$ is the initial state where $s$ fulfills the initial conditions.
+        \item The transition relation $\rightarrow$ is the smallest relation satisfying the SOS rules below.
+    \end{itemize}
+    The \emph{output} of the program $P$ is the unique probability distribution given by $\lam{s} \Pr(s \models \diamond \angled{\downarrow, \cdot})$.
+
+
+    \[
+        \angled{\down,s} \rightarrow \angled{sink}
+        \qquad
+        \angled{sink} \rightarrow \angled{sink}
+    \]
+    \[
+        \angled{\stmtSkip,s} \rightarrow \angled{\down,s}
+        \qquad
+        \angled{\stmtDiverge,s} \rightarrow \angled{\stmtDiverge,s}
+    \]
+    \[
+        \angled{\stmtAsgn{x}{E},s} \rightarrow \angled{\down,s[x:=s(\sem{E})]}
+    \]
+    \begin{prooftree}
+        \AxiomC{$\mu(s)(v)=a>0$}
+        \UnaryInfC{$\angled{\stmtRasgn{x}{\mu},s} \xrightarrow{a} \angled{\down,s[x:=v]}$}
+    \end{prooftree}
+
+
+    \[
+        \angled{\stmtProb{p}{P}{Q},s} \xrightarrow{p} \angled{P,s}
+        \qquad
+        \angled{\stmtProb{p}{P}{Q},s} \xrightarrow{1-p} \angled{Q,s}
+    \]
+
+    \begin{prooftree}
+        \AxiomC{$\angled{P,s} \xrightarrow{a} \angled{P',s'}$}
+        \UnaryInfC{$\angled{\stmtSeq{P}{Q}, s} \xrightarrow{a} \angled{\stmtSeq{P'}{Q},s'}$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\angled{Q,s} \xrightarrow{a} \angled{Q',s'}$}
+        \UnaryInfC{$\angled{\stmtSeq{\downarrow}{Q}, s} \xrightarrow{a} \angled{Q',s'}$}
+    \end{prooftree}
+
+
+    \begin{prooftree}
+        \AxiomC{$s \models G$}
+        \UnaryInfC{$\angled{\stmtIf{G}{P}{Q}, s} \rightarrow \angled{P,s}$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$s \not\models G$}
+        \UnaryInfC{$\angled{\stmtIf{G}{P}{Q}, s} \rightarrow \angled{Q,s}$}
+    \end{prooftree}
+
+    \begin{prooftree}
+        \AxiomC{$s \models G$}
+        \UnaryInfC{$\angled{\stmtWhile{G}{P}, s} \rightarrow \angled{\stmtSeq{P}{\stmtWhile{G}{P}},s}$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$s \not\models G$}
+        \UnaryInfC{$\angled{\stmtWhile{G}{P}, s} \rightarrow \angled{\downarrow,s}$}
+    \end{prooftree}
+
+    \bigskip
+    \begin{center}
+        \footnotesize\sffamily
+        \dotfill \hyperref[sec:cpGCL]{\textbf{cpGCL} (section~\ref{sec:cpGCL})}\dotfill
+    \end{center}
+
+    \begin{prooftree}
+        \AxiomC{$s \models G$}
+        \UnaryInfC{$\angled{\stmtObserve{G},s} \rightarrow \angled{\down,s}$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$s \not\models G$}
+        \UnaryInfC{$\angled{\stmtObserve{G},s} \rightarrow \angled{\lightning}$}
+    \end{prooftree}
+
+    \begin{prooftree}
+        \AxiomC{$\angled{\lightning} \rightarrow \angled{sink}$}
+        \DisplayProof
+        \hskip 1.5em
+        \AxiomC{$\angled{P,s} \rightarrow \angled{\lightning}$}
+        \UnaryInfC{$\angled{\stmtSeq{P}{Q},s} \rightarrow \angled{\lightning}$}
+    \end{prooftree}
+\end{defi}
+
+pGCL as defined above does not feature recursion, but we define two additional statements to define functions, which we call \emph{processes}.
+We write $P = P_1$ to define a process $P$ that executes program $P_1$ and write $\texttt{call } P$ to call $P$.
+Introducing recursion does not increase expressive power.
+
+\iffalse
+\begin{defi}{Pushdown Markov Chain}
+    A pushdwn Markov chain $D$ is a tuple $(\Sigma, \sigma_i,\Gamma, \gamma_0, \Delta)$ where:
+    \begin{itemize}
+        \item $\Sigma$ is a countable set of (control) states
+        \item $\sigma_i \in \sigma$ is the initial (control) state
+        \item $\Gamma$ is a finite stack alphabet
+        \item $\gamma_0 \in \Gamma$ is the bottom-of-the-stack symbol
+        \item $\Delta: \Sigma \times \Gamma \to \Dist{\Sigma} \times (\Gamma \setminus \{\gamma_0\})$
+    \end{itemize}
+\end{defi}
+\fi
+
+\section{Domain Theory}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Partial order}
+        A \emph{partial order} $(D, \sqsubseteq)$ has a domain $D$ and a relation ${\sqsubseteq} \subseteq D \times D$, where {\small{}$\Forall d_1, d_2, d_3 \in D$}:
+
+        \small{}
+        \begin{tightcenter}
+            {\footnotesize{}\textsc{Reflexivity}} \\
+            $d_1 \sqsubseteq d_1$
+
+            {\footnotesize{}\textsc{Transitivty}} \\
+            $d_1 \sqsubseteq d_2 \land d_2 \sqsubseteq d_3 ~\Rightarrow~ d_1 \sqsubseteq s_3$
+
+            {\footnotesize{}\textsc{Antisymmetry}} \\
+            $d_1 \sqsubseteq d_2 \land d_2 \sqsubseteq d_1 ~\Rightarrow~ d_1 = d_2$
+        \end{tightcenter}
+    \end{defi}
+
+    In pGCL semantics, loops are defined as fixed points of functions.
+    We will need domain theory to prove existence of these fixed points and to approximate them.
+
+    A \emph{complete lattice} is a partial order with upper bounds for all subsets (also called \emph{supremum}).
+    Equivalently, one can require lower bounds for all subsets (also called \emph{infimum}).
+    \bigskip
+
+    A \emph{chain} $S \subseteq D$ comprises only ordered elements: {\footnotesize{}  $\Forall d_1, d_2 \in S$:\quad $d_1 \sqsubseteq d_2$ or $d_2 \sqsubseteq d_1$}.
+
+    If $F : D \to D'$ is a monotonic function between complete lattices and $S \subseteq D$ is a chain in $D$, then
+    \begin{tightcenter}
+        $F(S) := \Set{ F(d) | d \in S }$ is a chain in $D'$
+    \end{tightcenter}
+    and \quad $\bigsqcup F(S) \sqsubseteq_{D'} F(\bigsqcup S)$.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{(Least) Upper bound,\\\hphantom{Definition: }(Greatest) Lower bound}
+        Let $(D, \sqsubseteq)$ be a partial order with $S \subseteq D$.
+        \vspace{0.5\baselineskip}
+
+        \begin{enumerate}[leftmargin=*]
+            \item $d \in D$ is an \emph{upper bound} of $S$ ($S \sqsubseteq d$) if \\ $s \sqsubseteq d~\Forall s \in S$.
+            \item $d$ is a \emph{least upper bound of $S$} ($d = \bigsqcup S$) if\\ $d \sqsubseteq d'$ for every upper bound $d'$ of $S$.
+        \end{enumerate}
+        \vspace{0.5\baselineskip}
+
+        Analogous definitions for \emph{lower bound} and \emph{greatest lower bound}.
+    \end{defi}
+
+    \begin{defi}{Complete lattice}
+        A \emph{complete lattice} is a
+        \begin{itemize}
+            \item partial order $(D, \sqsubseteq)$,
+            \item such that all $S \subseteq D$ have \\
+                  least upper bounds, {\small{}or equivalently,}\\ greatest lower bounds.
+        \end{itemize}
+
+        The least element is $\bot := \bigsqcup \emptyset$. \\
+        The greatest element is $\top := \bigsqcap \emptyset$.
+    \end{defi}
+
+    \begin{defi}{Monotonicity}
+        Let $(D, \sqsubseteq)$ and $(D', \sqsubseteq')$ be partial orders.
+        $\Phi : D \to D'$ is \emph{monotonic} if {\small{}$\Forall d_1, d_2 \in D$}:
+        \begin{tightcenter}
+            $d_1 \sqsubseteq d_2 \Rightarrow \Phi(d_1) \sqsubseteq' \Phi(d_2)$.
+        \end{tightcenter}
+    \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+    A \emph{(Scott-)continuous} function is a generalisation of the continuity we know from analysis to complete lattices.
+    Every continous function is monotonic.
+
+    \begin{defi}{Fixed point}
+        $d$ is a \emph{fixed point} of $\Phi : D \to D$ if $\Phi(d) = d$.
+    \end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Scott continuity}
+        Let $(D, \sqsubseteq)$ and $(D', \sqsubseteq')$ be complete lattices and $F : D \to D'$ monotonic.
+        $F$ is called \emph{continuous} if, for every non-empty chain $S \subseteq D$,
+        \begin{tightcenter}
+            $F(\bigsqcup S) = \bigsqcup F(S)$.
+        \end{tightcenter}
+    \end{defi}
+\end{halfboxr}
+\medskip
+
+\begin{theo}{Kleene's fixpoint theorem}
+    Let $(D, \sqsubseteq)$ be a complete lattice and $\Phi : D \to D$ continuous. \\
+    Then $F$ has a \emph{least fixed point} $\lfp F$ and a greatest fixed point $\gfp F$:
+    \[
+        \lfp F := \sup_{n \in \nat} F^n(\bot) \quad \text{and} \quad
+        \gfp F := \inf_{n \in \nat} F^n(\top)
+    \]
+    where $F^0(d) = d$ and $F^{n+1}(d) = F(F^n(d))$.
+\end{theo}
+
+\section{Probabilistic Weakest Preconditions}
+
+We assume program variables $x \in \Vars$ are in $\rat$.
+We denote arithmetic expressions $E$ over program variables and boolean expressions over program variables $G$.
+
+Usually $\mu$ is a \emph{distribution expression} $\mu : \Sigma \to \Dist(\rat)$ and $p : \Sigma \to [0,1] \cap \rat$.
+
+The \emph{expected value} of a random variable $f : X \to \rel$ under distribution $\mu$ is defined by:
+\[
+    E_\mu(f) = \sum_{x \in X} f(x) \cdot \mu(x) = \int_X f~\mathrm{d}\mu
+\]
+Note that the expectation below is a random variable, and distinct from an expected value.
+
+\begin{defi}{Predicate}
+    A \emph{predicate} $F$ maps program states to Booleans, i.e.\ $F : \mathbb{S} \to \mathbb{B}$.
+
+    Let $\mathbb{P}$ denote the set of all predicates and $F \sqsubseteq G$ iff $F \Rightarrow G$.
+\end{defi}
+
+\begin{defi}{Expectation}
+    An \emph{expectation} $f$ maps program states to $\relg \cup \Set{\infty}$, i.e.\ $f : \mathbb{S} \to \relg \cup \Set{\infty}$.
+
+    Let $\mathbb{E}$ denote the set of all expectations and
+    \begin{tightcenter}
+        $f \sqsubseteq g$ \quad if and only if \quad $f(s) \leq g(s)$ for all $s \in \mathbb{S}$.
+    \end{tightcenter}
+    \bigskip
+
+    \begin{tightcenter}
+        \textsc{Operations}
+        \footnotesize{}
+        \[
+            \begin{array}{cccc}
+                (\lam{s} k)(k) = 0 & f[x := E](s) = \begin{cases} f(y) & \text{if } x \neq y \\ \sem{E}_s & \text{otherwise} \end{cases} & (c \cdot f)(s) = c \cdot f(s) & (f + g)(s) = f(s) + g(s)
+            \end{array}
+        \]
+    \end{tightcenter}
+\end{defi}
+
+$(\mathbb{E}, \sqsubseteq)$ is a complete lattice with the least element $\lam{s} 0 =: \mathbf{0}$.
+The supremum of a subset $S \subseteq \mathbb{E}$ is given by $\sup S = \sup_{f \in S} f$.
+
+We define \emph{predicate} and \emph{expectation transformers} as total functions between predicates $\mathbb{P}$ or expectations $\mathbb{E}$ respectively.
+
+\begin{minipage}[t]{0.52\textwidth}
+    \vspace{-\baselineskip}
+    \begin{defi}{Weakest pre-expectation}
+        For probabilistic program $P$ and $e, f \in \mathbb{E}$, the expectation transformer $\wp(P,\cdot) : \mathbb{E} \to \mathbb{E}$ is defined by $\wp(P,f) = e$ iff $e$ maps each initial state $s$ to the expected value of $f$ after executing $P$ on $s$.
+        \[
+            \wp(P,f) = \lam{s} \int_\mathbb{S} f~\mathrm{d}P_s
+        \]
+        where $P_s$ is the distribution over the final states (reached on termination of $P$) when executing $P$ on the initial state $s$.
+    \end{defi}
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.47\textwidth}
+    \vspace{-\baselineskip}
+    \begin{defi}{Weakest liberal pre-expectation}
+        The \emph{weakest liberal precondition} is the expected value of $f$ after executing $P$ on $s$ plus the probability that $P$ diverges on $s$.
+        \small{}
+        \[
+            \wlp(P,f) = \lam{s} \int_\mathbb{S} f~\mathrm{d}P_s + \left( 1 - \int_\mathbb{S} 1 \mathrm{d}P_s \right)
+        \]
+    \end{defi}
+
+    \centering
+    \begin{minipage}[t]{0.75\textwidth}
+        $\wlp(P, \cdot) : \mathbb{E}_{\leq 1} \to \mathbb{E}_{\leq 1}$ is defined on \emph{bounded expectations}, i.e.\
+        \begin{tightcenter}
+            $\mathbb{E}_{\leq 1} = \Set{ f \in \mathbb{E} | f \sqsubseteq \mathbf{1} }$.
+        \end{tightcenter}
+    \end{minipage}
+\end{minipage}
+
+\subsection{Expectation Transformer Semantics of pGCL}
+
+\begin{center}
+    \small{}
+    \renewcommand*{\arraystretch}{1.8}
+    \begin{tabular}{L|CC}
+        P & \wp(P,f) & \wlp(P,f) \\ \hline
+        \stmtSkip & \multicolumn{2}{C}{f} \\
+        \stmtDiverge & \multicolumn{2}{C}{0} \\
+        \stmtAsgn{x}{E} & \multicolumn{2}{C}{f[x := E]} \\
+        \stmtObserve{G} & \multicolumn{2}{C}{[G] \cdot f} \\
+        \stmtRasgn{x}{\mu} & \multicolumn{2}{C}{\lam{s} \int_\rat (\lam{v} f(s[x := v]))~\mathrm{d}\mu_s} \\
+        \stmtSeq{P_1}{P_2} & \wp(P_1, \wp(P_2, f)) & \wlp(P_1, \wlp(P_2, f)) \\
+        \stmtIf{G}{P_1}{P_2} & [G] \cdot \wp(P_1, f) + [\neg G] \cdot \wp(P_2, f) & [G] \cdot \wlp(P_1, f) + [\neg G] \cdot \wlp(P_2, f) \\
+        \stmtProb{p}{P_1}{P_2} & p \cdot \wp(P_1, f) + (1-p) \cdot \wp(P_2, f) & p \cdot \wlp(P_1, f) + (1-p) \cdot \wlp(P_2, f) \\
+        \stmtWhile{G}{P} & \lfp X.~ ([G] \cdot \wp(P,X) + [\neg G] \cdot f) & \gfp X.~ ([G] \cdot \wlp(P,X) + [\neg G] \cdot f)
+    \end{tabular}
+\end{center}
+\vspace{3\baselineskip}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{theo}{Properties of $\wp$}
+        \begin{itemize}[leftmargin=*]
+            \item \textsc{Continuity}: \\ \hspace*{1em}
+                $\wp(P, \cdot)$ is continuous on $(\mathbb{E}, \sqsubseteq)$.
+            \item \textsc{Monotonicity}: \\ \hspace*{1em}
+                $f \leq g$ implies $\wp(P,f) \leq \wp(P,g)$.
+            \item \textsc{Feasibility}: \\ \hspace*{1em}
+                $f \leq \mathbf{k}$ implies $\wp(P,f) \leq \mathbf{k}$.
+            \item \textsc{Linearity}: $\Forall r \in \relg$ \\ \hspace*{0.5em}
+                {\small{}$\wp(P, r \cdot f + g) = r \cdot \wp(P,f) + \wp(P,g)$}.
+            \item \textsc{Strictness}: \\ \hspace*{1em}
+                $\wp(P,\mathbf{0}) = \mathbf{0}$.
+        \end{itemize}
+    \end{theo}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Properties of $\wlp$}
+        \begin{itemize}[leftmargin=*]
+            \item \textsc{Continuity}: \\ \hspace*{1em}
+                $\wlp(P, \cdot)$ is continuous on $(\mathbb{E}_{\leq 1}, \sqsubseteq)$.
+            \item \textsc{Monotonicity}: \\ \hspace*{1em}
+                $f \leq g$ implies $\wlp(P,f) \leq \wlp(P,g)$.
+            \item \textsc{Superlinearity}: $\Forall r \in \relg$ \\ \hspace*{0.5em}
+                {\small{}$\wlp(P, r \cdot f + g) \leq r \cdot \wlp(P,f) + \wlp(P,g)$}.
+            \item \textsc{Duality}: \\ \hspace*{1em}
+                {\small{}$\wlp(P,f) = \wp(P,f) + (1-\wp(P,\mathbf{1}))$}
+            \item \textsc{Coincidence}: {\small{}for a.s.-terminating $P$} \\ \hspace*{1em}
+                $\wlp(P,f) = \wp(P,f)$
+            \item \textsc{Co-strictness}: \\ \hspace*{1em}
+                $\wlp(P,\mathbf{1}) = \mathbf{1}$.
+        \end{itemize}
+    \end{theo}
+\end{halfboxr}
+
+$\wp(P,\mathbf{1}) = $ termination probability of program $P$.
+
+Using Kleene's Fixpoint Theorem, we can calculate the fixed points for the loops. \\
+For $\lfp \Phi = \sup_{n \in \nat} \Phi^n(\bot)$ and for $\gfp \Psi = \inf_{n \in \nat} \Psi^n(\top)$.
+
+
+\section{Loops and Proof Rules} \label{sec:loops}
+
+Reasoning about loops is the hardest task in program verification.
+The weakest preconditions of loops are defined as fixed points and can be approximated iteratively.
+But recognizing patterns to yield a closed formula and finding its fixed point is undecidable.
+We try to capture the effect of a loop by using a \emph{loop invariant}.
+
+We summarise the results from this section in the table below.
+\begin{center}
+    \begin{tabular}{c|c|c}
+               & \textbf{lower bounds} & \textbf{upper bounds} \\ \hline
+        $\wp$  & $\wp$-$\omega$-subinvariant & $\wp$-superinvariant \\
+        $\wlp$ & $\wlp$-subinvariant & $\wlp$-$\omega$-superinvariant
+    \end{tabular}
+\end{center}
+
+\subsection{Predicate Invariants}
+
+\begin{halfboxl}
+    We start with non-probabilistic loop invariants.
+    A non-probabilistic loop invariant $I$ for a postcondition $F$ is a predicate that holds whenever the loop guard holds, that establishes the postcondition after termination, and also holds during execution of the loop body.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Loop invariant}
+        A predicate $I \in \mathbb{P}$ is a loop invariant if:
+        \begin{itemize}
+            \item $G \Rightarrow I$,
+            \item $\neg G \land I \Rightarrow F$, and
+            \item $G \land I \Rightarrow \wlp(P,I)$.
+        \end{itemize}
+    \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+    Why does this definition make sense?
+    The theorem on the right assures us that a predicate invariant is always a sound approximation of the loop.
+    We have shown this directly for probabilistic programs with (non-probabilistic) predicate invaraints.
+
+    $\Psi_{[F]}$ is the wlp-characteristic function of the probabilistic loop for postcondition $[F]$.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Invariants make sense}
+        For $I,F \in \mathbb{P}$ and probabilistic loop $\stmtWhile{G}{P}$ it holds:
+        \begin{align*}
+            \neg G \land I \Rightarrow F &\text{ and } G \land I \Rightarrow wlp(P,I) \\
+            &\text{\large{}iff} \\
+            [I] &\sqsubseteq \Psi_{[F]}([I])
+        \end{align*}
+    \end{theo}
+\end{halfboxr}
+\vspace{-\baselineskip}
+
+\subsection{Probabilistic Invariants}
+
+Invariants that are not predicates are a bit harder: We use super- and subinvariants.
+We need this distinction because only $\wp$-superinvariants are useful for upper bounds for $\wp$, and $\wlp$-subinvariants are useful for lower bounds for $\wlp$.
+The other bounds require the respective $\omega$-invariants.
+
+\begin{defi}{Probabilistic invariants}
+    Let $\Phi_f$ be the wp-characteristic function of $P'=\stmtWhile{G}{P}$ with respect to post-expectation $f \in \mathbb{E}$ and let $I \in \mathbb{E}$.
+    \begin{itemize}
+        \item $I$ is a \emph{wp-superinvariant} of $P'$ w.r.t.\ $f$ iff $\Phi_f(I) \leq I$.
+        \item $I$ is a \emph{wp-subinvariant} of $P'$ w.r.t.\ $f$ iff $I \leq \Phi_f(I)$.
+    \end{itemize}
+    Analogously defined for wlp with bounded expectations $\mathbb{E}_{\leq 1}$: Replace $\Phi_f$ by $\Psi_f$.
+\end{defi}
+
+\begin{halfboxl}
+    With Park's lemma, we can do (co-)induction to find bounds on weakest pre-expectations.
+    Induction gives us \textbf{upper bounds for wp}:
+    \[
+        \underbrace{\Phi_f(I) \leq I}_\text{\tiny{}wp-superinvariant} \text{ implies } \wp(\stmtWhile{G}{P},f) \leq I
+    \]
+    Co-induction gives us \textbf{lower bounds for wlp}:
+    \[
+        \underbrace{I \leq \Psi_f(I)}_\text{\tiny{}wlp-subinvariant} \text{ implies } I \leq \wlp(\stmtWhile{G}{P},f)
+    \]
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Park's lemma}
+        Let $(D,\sqsubseteq)$ be a complete lattice and $\Phi : D \to D$ continous. Then:
+        \begin{align*}
+            \Forall d \in D.~ \Phi(d) \sqsubseteq d &\quad\text{ implies }\quad \lfp \Phi \sqsubseteq d \\
+            \Forall d \in D.~ d \sqsubseteq \Phi(d) &\quad\text{ implies }\quad d \sqsubseteq \gfp \Phi
+        \end{align*}
+    \end{theo}
+    \centering
+    \begin{minipage}[t]{0.8\textwidth}
+        \footnotesize{}
+        Note that in general, versions of the equations above with $\sqsubseteq \lfp$ and $\gfp \sqsubseteq$ are not valid!
+    \end{minipage}
+\end{halfboxr}
+
+We can verify a loop invariant $I$ by pushing it through the characteristic function of the loop once, i.e.\ $\Phi(I)$.
+For induction, we then only need to verify that $\Phi(I) \sqsubseteq I$, and for co-induction $I \sqsubseteq \Phi(I)$.
+
+\subsection[omega-invariants]{$\omega$-invariants}
+
+$\omega$-invariants give us the missing two bounds we did not get from Park's lemma.
+\textbf{$\wp$-$\omega$-subinvariants give lower bounds for $\wp$, and $\wlp$-$\omega$-superinvariants give upper bounds for $\wlp$}.
+
+\begin{defi}{$\omega$-invariants}
+    Let $n \in \nat, f \in \mathbb{E}$ and $\Phi_f$ be the $\wp$-characteristic function of the loop $\stmtWhile{G}{P}$.
+
+    Monotonically increasing ($\sqsubseteq$) sequence $(I)_{n \in \nat}$ is a \emph{$\wp$-$\omega$-subinvariant} of the loop w.r.t.\ $f$ iff
+    \[
+        I_0 \leq \Phi_f(0) \text{ and } I_{n+1} \leq \Phi_f(I_n) \qquad\text{ for all } n \in \nat.
+    \]
+
+    \emph{$\wlp$-$\omega$-superinvariants} are defined similarly, where $(I)_{n \in \nat} \in \mathbb{E}_{\leq 1}^\nat$ is monotonically decreasing and $\Phi_f$ is replaced by $\Psi_f$.
+\end{defi}
+
+As before, we have two soundness statements for $\omega$-invariants.
+
+\begin{theo}{Bounds on loops using $\omega$-invariants}
+    \begin{enumerate}
+        \item Let $(I)_{n \in \nat}$ be a $\wp$-$\omega$-subinvariant of $\stmtWhile{G}{P}$ w.r.t. $f \in \mathbb{E}$. Then:
+        $$\sup_{n \in \nat} I_n \leq \wp(\stmtWhile{G}{P},f)$$
+        \item Let $(I)_{n \in \nat}$ be a $\wlp$-$\omega$-superinvariant of $\stmtWhile{G}{P}$ w.r.t. $f$. Then:
+        $$\wlp(\stmtWhile{G}{P},f) \leq \inf_{n \in \nat} I_n$$
+    \end{enumerate}
+\end{theo}
+
+To verify loops using $\omega$-invariants, the following procedure can be used:
+\begin{enumerate}
+    \item Find an appropriate $\omega$-invariant $(I)_{n \in \nat}$.
+    \item Check that $(I)_{n \in \nat}$ is indeed an $\omega$-invariant:
+    \begin{enumerate}
+        \item Push $I_n$ through the characteristic function
+        \item Check whether this took us above $I_{n+1}$ (for $\wp$) or below $I_{n+1}$ (for $\wlp$) in the partial order $\leq$.
+    \end{enumerate}
+    \item Find the supremum (for $\wp$) or the infimum (for $\wlp$) of $(I)_{n \in \nat}$ as a lower bound respective upper bound for $\wp$/$\wlp$.
+\end{enumerate}
+
+% TODO: proof rules for loops
+
+\iffalse
+\begin{defi}{Bayes' Rule}
+    The Bayes rule can be used to calculate the probability (\emph{posterior}) of an hypothesis $H$ given some observed evidence $e$:
+    $$P(H|e)=\frac{P(e|H) \cdot P(H)}{P(e)}$$
+    where
+    \begin{itemize}
+        \item $P(e|H)$ is the \emph{likelihood}, how probable is the evidence assuming our hypothesis is true,
+        \item $P(H)$ is the \emph{prior}, how probable was our hypothesis before observing the evidence, and
+        \item $P(e)$ is the \emph{marginal}, how probable is the new evidence under all possible hypothesis.
+    \end{itemize}
+\end{defi}
+\fi
+
+\section{Conditioning}
+\label{sec:cpGCL}
+
+We now add $\stmtObserve{G}$ statements.
+The idea is that only executions that satisfy all $\stmtObserve{G}$ during execution contribute to the resulting probability distribution.
+For this, we need new rules to the operational semantics to pGCL (already on \cpageref{def:pgcl-semantics}).
+
+\subsection{Conditional Expectations}
+
+Then we need normalisation: We want to divide by the probability of not satisfying the observe statements.
+We define $\cwp$: as a tuple $(f,g)$.
+The intuitive interpretation is that the resulting expected value is given by $f/g$.
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Conditional expectation}
+        A \emph{conditional expectation} is a pair $(f,g)$ with expectation $f \in \mathbb{E}$ and bounded expectation $g \in \mathbb{E}_{\leq 1}$.
+
+        Let $\mathbb{C}=\mathbb{E} \times \mathbb{E}_{\leq 1}$ denote the set of conditional expectations.
+        \[
+          (f,g) \unlhd (f',g') \text{ iff } f \leq f' \land g \geq g'
+        \]
+    \end{defi}
+
+    While we have explicit semantics for $\cwp$, it's simplest to just always use the \textsc{Decoupling} property and calculate $\wp$ and $\wlp$ separately.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Properties of $\cwp$}
+        Let $z,z'=(f,g),(f',g') \in \mathbb{C}$.
+        \bigskip
+        \begin{itemize}[leftmargin=*]
+            \item {\large{}\textsc{Decoupling}}: \\[0.5em]
+                $\cwp(P,(f,g)) = (\wp(P,f),\wlp(P,g))$.
+                \bigskip\footnotesize{}
+            \item \textsc{Continuity}: \\ \hspace*{1em}
+                $\cwp(P,z)$ is continuous on $(\mathbb{C}, \unlhd)$.
+            \item \textsc{Monotonicity}: \\ \hspace*{1em}
+                $z \unlhd z'$ implies $\cwp(P,z) \unlhd \cwp(P,z')$.
+
+            \item \textsc{Linearity}: $\Forall r \in \relg$ \\ \hspace*{0.5em}
+                {\tiny{}$\cwp(P,(r \cdot f + g,g')) = (r \cdot \wp(P,f) + \wp(P,g),\wlp(P,g'))$.}
+            \item \textsc{Strictness}: \\ \hspace*{1em}
+                $\cwp(P,(\mathbf{0},\mathbf{1})) = (\mathbf{0},g)$ where $g=\wlp(P,1)$.
+            \item \textsc{Feasibility}: {\tiny{} If $\Forall s \in \mathbb{S}.~ g(s) > 0 \Rightarrow f(s)/g(s)$ exists,} \\ \hspace*{1em}
+                {\small{}$\Forall s \in \mathbb{S}.~ g'(s) = 0 \text{ implies } f'(s) = 0$} \\ \hspace*{1.5em}
+                {\footnotesize{}where $\cwp(P, (f,g)) = (f',g')$.}
+        \end{itemize}
+    \end{theo}
+\end{halfboxr}
+
+\iffalse
+\begin{center}
+    \small{}
+    \renewcommand*{\arraystretch}{1.8}
+    \begin{tabular}{L|C}
+        P & \cwp(P,(f,g)) \\ \hline
+        \stmtSkip &  (f,g) \\
+        \stmtDiverge &  (0,1) \\
+        \stmtAsgn{x}{E} & (f,g)(\stmtAsgn{x}{E})=(f(\stmtAsgn{x}{E}),g(\stmtAsgn{x}{E})) \\
+        \stmtObserve{G} & [G]\cdot (f,g) \\
+        \stmtRasgn{x}{\mu} & (\lam{s} \int_\rat (\lam{v} f(s[x := v]))~\mathrm{d}\mu_s, ...g)\\
+        \stmtSeq{P_1}{P_2} & \cwp(P_1,\cwp(P_2,(f,g))) \\
+        \stmtIf{G}{P_1}{P_2} & [G] \cdot \cwp(P_1,(f,g)) + [\neg G] \cdot \cwp(P_2,(f,g)) \\
+        \stmtProb{p}{P_1}{P_2} & p \cdot \cwp(P_1,(f,g)) + (1-p) \cdot \cwp(P_2,(f,g)) \\
+        \stmtWhile{G}{P} & \lfp_{\unlhd}(X,Y). [\neg G] \cdot (f,g) + [G] \cdot \cwp(P,(X,Y))
+    \end{tabular}
+\end{center}
+\vspace{3\baselineskip}
+\fi
+
+\subsection{Program Transformations}
+
+It turns out $\stmtObserve{G}$ is entirely syntactic sugar: We can transform a program with $\stmtObserve{G}$ statements to one without while preserving semantics.
+
+\subsubsection{Rejection Sampling}
+
+The idea is to restart an infeasable run until all $\stmtObserve{G}$ statements are fulfilled.
+
+We introduce a \texttt{flag} variable to signal violation of an $\stmtObserve{G}$ and new variables $sx_i$ for every variable $x_i$ in the original program.
+The $sx_i$ variables are used to reset the variables $x_i$ in case an $\stmtObserve{G}$ is violated and we need to restart.
+Initially store the value of $x_1$ in $xs_1$ and reset $x_1$ to $xs_1$ in the beginning of every loop iteration.
+
+\begin{minipage}[t]{0.55\textwidth}
+    We modify the original program $prog$ to $mprog$:
+    \begin{align*}
+        \stmtObserve{G} &\rightsquigarrow flag:=!G \mid \mid flag \\
+        \stmtDiverge &\rightsquigarrow \stmtIf{!flag}{abort}{} \\
+        \stmtWhile{G}{prog} &\rightsquigarrow \stmtWhile{G \text{ \&\& } !flag}{prog}
+    \end{align*}
+\end{minipage}\hfill%
+\begin{minipage}[t]{0.4\textwidth}
+    \small{}
+    The result is something like:
+    \begin{lstlisting}
+    $sx_1$,... := $x_1$,...;
+    flag := true;
+    $\texttt{while}(flag)\{$
+        $flag:=false;$
+        $x_1$,... := $sx_1$,...;
+        mprog;
+    }
+    \end{lstlisting}
+\end{minipage}
+
+This transformation is correct: For a cpGCL program $P$ and $\hat{P}$ the result of the above transformation we have:
+\[
+    \cwp(P,(f,1))=\wp(\hat{P},f)
+\]
+
+\begin{halfboxl}
+    We can also go the other way: If a loop is \emph{iid}, then
+    $\cwp(\texttt{repeat } P \texttt{ until (}G\texttt{)}, (f,g))$
+    equals
+    $\cwp(\stmtSeq{P}{\stmtObserve{G}},(f,g))$.
+
+    \emph{iid} means that $G$ holds after $P$ independently of the expected value of $f$ after $P$.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{iid-loop}
+        A loop $\stmtWhile{G}{P}$ is \emph{iid} iff for any expectation $f$:
+        \small{}
+        \[
+            \wp(P, [G] \cdot \wp(P,f)) = \wp(P, [G]) \cdot \wp(P, f).
+        \]
+    \end{defi}
+\end{halfboxr}
+
+\vspace{-\baselineskip}
+
+\subsubsection{Hoisting}
+
+A second option to deal with $\texttt{observe}$-statements is to use \emph{hoisting}.
+It's a wee bit more complicated and the correctness theorem only holds for programs with at least one feasible run.
+Hoisting removes the \texttt{observe}-statements and transforms the probabilities accordingly.
+
+\begin{defi}{Hoisting}
+    \begin{align*}
+        T(\stmtSkip,f) &= (\stmtSkip,f)\\
+        T(\stmtDiverge,f) &= (\stmtDiverge,1)\\
+        T(\stmtAsgn{x}{E},f) &= (\stmtAsgn{x}{E},f[\stmtAsgn{x}{E}]) \\
+        T(\stmtObserve{G},f) &= (\stmtSkip,[G] \cdot f) \\
+        T(\stmtSeq{P_1}{P_2},f) &= (\stmtSeq{Q_1}{Q_2},h) \text{ where } (Q_2,g)=T(P_2,f) \text{ and } (Q_1,h)=T(P_1,g) \\
+        T(\stmtIf{G}{P_1}{P_2},f) &= (\stmtIf{G}{Q_1}{Q_2},[G] \cdot g + [\neg G] \cdot h) \\
+        &  \text{where } (Q_1,g)=T(P_1,f) \text{ and } (Q_2,h)=T(P_2,f)\\
+        T(\stmtProb{p}{P_1}{P_2},f) &= (\stmtProb{q}{Q_1}{Q_2},p \cdot g + (1-p) \cdot h) \text{ where } q=\frac{p \cdot g}{p \cdot g + (1-p) \cdot h},\\
+        & (Q_1,g)=T(P_1,f) \text{ and } (Q_2,h)=T(P_2,f) \\
+        T(\stmtWhile{G}{P},f) &= (\stmtWhile{G}{Q},g) \text{ where } g= \gfp H \\
+        & \text{ with } H(h)=[G] \cdot (\pi_2 \odot T)(P,h) + [\neg G] \cdot f \text{ and } (Q, \cdot)=T(P,g)\\
+    \end{align*}
+\end{defi}
+
+\begin{theo}{Correctness of hoisting}
+    For any cpGCL program $P$ with at least one feasible run and $f \in \mathbb{E}$:
+    $$\cwp(P,(f,1)) = \wp(Q,f) \text{  with  } T(P,1)=(Q,h).$$
+    The component $h$ represents the probability that $P$ satisfies all its \texttt{observe}-statements.
+\end{theo}
+
+\section{Arithmetical Hierarchy}
+In this section, we rank different undecidable decision problems.
+Although each of them is undecidable, some are still harder than others.
+The \emph{arithmetical hierarchy} classifies decision problems by the complexity of characterising formulas in first-order Peano arithmetic.
+
+\begin{defi}{Arithmetical hierarchy}
+    The \emph{arithmetical hierarchy} consists of three types of classes: $\Sigma_n,\Pi_n$ and $\Delta_n$ for each $n \in \nat$.
+
+    Classes $\Sigma_n$, where $R$ is a decidable relation:
+    $$\Sigma_n=\{A \mid A = \{ x \mid \exists y_1 \forall y_2 \exists y_3 ... \forall/\exists y_n : (x,y_1,...,y_n) \in R \} \}.$$
+
+
+    Classes $\Pi_n$, where $R$ is a decidable relation:
+    $$\Pi_n=\{A \mid A = \{ x \mid \forall y_1 \exists y_2 \forall y_3 ... \forall/\exists y_n : (x,y_1,...,y_n) \in R \} \}$$
+
+    Classes $\Delta_n$ are defined as $\Delta_n = \Sigma_n \cap \Pi_n$.
+\end{defi}
+
+\begin{theo}{Elementary properties of the arithmetical hierarchy}
+    \begin{itemize}[leftmargin=*]
+        \item $\Delta_1$ is the class of decidable problems.
+        \item Classes $\Sigma_n, \Pi_n$ and $\Delta_n$ are closed under conjunction and disjunction.
+        \item $\Delta_n$ is closed under negation.
+        \item The classes $\Sigma_n$ and $\Pi_n$ are complementary.
+        \item There is a strict relation between classes:
+            $\Sigma_n \subset \Delta_{n+1} \subset \Pi_{n+1}$ and $\Pi_n \subset \Delta_{n+1} \subset \Sigma_{n+1}$.
+        \item If problem $A$ is $\Sigma_n$-complete, then its complement is $\Pi_n$-complete, and vice versa.
+    \end{itemize}
+\end{theo}
+
+\begin{halfboxl}
+    As with polynomial complexities, we also have a notion of \emph{completeness} of a problem in a certain complexity class here.
+
+    By \emph{Davis' theorem}, we know that if problem $A$ is    $\Sigma_n$-complete, then $A \in \Sigma_n \setminus \Pi_n$, and vice versa.
+
+    Some simple examples for well-known decision problems follow.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Reducibility and completeness}
+        $A \subseteq X$ is \emph{reducible} to $B \subseteq X$ if there is a computable function $f : X \to X$ such that
+        \[
+            \Forall x \in X.~ x \in A \text{ iff } f(x) \in B.
+        \]
+        Decision problem $A$ is \emph{$\Gamma_n$-hard} iff every $B \in \Gamma_n$ can be reduced to $A$.
+
+        $A$ is \emph{$\Gamma_n$-complete} iff $A \in \Gamma_n$ and $A$ is $\Gamma_n$-hard.
+    \end{defi}
+\end{halfboxr}
+
+\paragraph{Halting problem} ($H \in \Sigma_1$, $\Sigma_1$-complete) \quad Program $P$, state $s$. $(P,s) \in H$ iff:
+\smallskip
+\begin{tightcenter}$
+    \exists k \in \nat, s' \in \mathbb{S}. P \text{ terminates on input } s \text{ in } k \text{ steps in state }s'.
+$\end{tightcenter}
+
+\paragraph{Universal halting problem} ($UH \in \Pi_2$, $\Pi_2$-complete) \quad Program $P$, state $s$. $P \in UH$ iff:
+\smallskip
+\begin{tightcenter}$
+    \forall s\in \mathbb{S}. (P,s) \in H.
+$\end{tightcenter}
+
+\paragraph{Co-finiteness problem} ($COF \in \Sigma_3$, $\Sigma_3$-complete) \quad Program $P$. $P \in COF$ iff:
+\smallskip
+\begin{tightcenter}$
+    \Set{ s \in \mathbb{S} | (P,s) \in H } \text{ is co-finite}
+$\end{tightcenter}
+where a subset $A$ of $X$ is \emph{co-finite} if $X \setminus A$ is finite.
+\bigskip
+
+\begin{halfboxl}
+    The important results are about the decision problems $LEXP$, $REXP$, $EXP$ and $FEXP$.
+
+    $LEXP$ is $\Sigma_1$-complete:
+    \begin{tightcenter}
+        $\exists y.\ q < \sum_{k=0}^y \wp^{=k} (P,f)(s)$
+    \end{tightcenter}
+    \medskip
+
+    $REXP$ is $\Sigma_2$-complete:
+    \begin{tightcenter}
+        $\exists \delta >0.\ \forall y: q-\delta > \sum_{k=0}^y \wp^{=k}(P,f)(s)$
+    \end{tightcenter}
+    \medskip
+
+    $EXP$ is $\Pi_2$-complete.
+    $FEXP$ is $\Sigma_2$-complete.
+
+    {\footnotesize{} Note the $\delta$ in $REXP$ which is (intentionally) missing in $LEXP$.}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{The decision problems $LEXP$, $REXP$, $EXP$ and $FEXP$}
+        Let $P$ be a pGCL program, $s \in \mathbb{S}$ a variable solution, $q \in \rat_{\geq 0}$ and $f: \mathbb{S} \to \rat_{\geq 0}$ a computable function. Then:
+        \begin{align*}
+            (P,s,f,q) \in LEXP &\text{ iff } q < \wp(P,f)(s) \\
+            (P,s,f,q) \in REXP &\text{ iff } q > \wp(P,f)(s) \\
+            (P,s,f,q) \in EXP &\text{ iff } q = \wp(P,f)(s) \\
+            (P,s,f) \in FEXP &\text{ iff } \wp(P,f)(s) < \infty
+        \end{align*}
+    \end{defi}
+\end{halfboxr}
+
+\section{Almost-Sure Termination}
+
+\begin{halfboxl}
+    With probabilistic programs, termination has a few different degrees:
+    \begin{itemize}[leftmargin=*]
+        \item \emph{Certain termination}: Literally every single program execution terminates.
+        \item \emph{Almost-sure termination}: Termination with probability one, but there may still be runs with infinite runtime.
+        \begin{itemize}
+            \item[+] \emph{Positive almost-sure termination}: Expected finite number of steps.
+            \item[+] \emph{Null almost-sure termination}: Expected infinite number of steps.
+        \end{itemize}
+    \end{itemize}
+
+    $AST$ and $UAST$ are both $\Pi_2$-complete.
+    $UPAST$ is $\Pi_3$-complete.
+    $PAST$ is $\Sigma_2$-complete:
+    \begin{tightcenter}
+        $\exists c.\ \forall l\ \ert^{\leq l} (P,s) < c$.
+    \end{tightcenter}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Decision problems $AST$ and $UAST$}
+        Let $P$ be a program, $s \in \mathbb{S}$ a valuation.
+        \begin{align*}
+            (P,s) \in AST &\text{ iff } \wp(P,1)(s)=1 \\
+            P \in UAST &\text{ iff } \forall s \in \mathbb{S}. (P,s) \in AST
+        \end{align*}
+    \end{defi}
+
+    \begin{defi}{Decision problems $PAST$ and $UPAST$}
+        Let $P$ be a program, $s \in \mathbb{S}$ a valuation.
+        \begin{align*}
+            (P,s) \in PAST &\text{ iff } \ert(P,s) < \infty \\
+            P \in UPAST &\text{ iff } \forall s \in \mathbb{S}. (P,s) \in PAST
+        \end{align*}
+    \end{defi}
+\end{halfboxr}
+
+\subsection{Proving Termination}
+
+\begin{halfboxl}
+    Our aim is to prove termination by using a \emph{variant function} (or \emph{ranking function}) for the state space of a program that is monotonically decreasing in every loop iteration.
+    The function deacreases with respect to a (strict) well-founded relation.
+
+    We know that every universally terminating (non-probabilistic) loop $\stmtWhile{G}{P}$ has a variant function.
+
+    Below are two theorems: The first is to prove positive almost-sure termination using a \emph{ranking super-invariant}.
+    The second theorem is for (positive/null) almost-sure termination and requires a variant $I$, a decrease probability function $p$ and a decrease function $d$.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Well-founded relation}
+        Let $(D,\sqsubset)$ be a strict partial order. The relation $\sqsubset$ is well-founded if there is no infinite sequence $d_1,d_2, d_3, ...$ with $d_i \in D$ such that $d_i \sqsubset d_{i+1}$ for all $i \in \nat$.
+    \end{defi}
+
+    \begin{defi}{Variant function}
+        A \emph{variant} function $V: \mathbb{S} \to \rel$ for GCL-loop $\stmtWhile{G}{P}$ is a function that satisfies for every $s \in \mathbb{S}$:
+        \begin{itemize}[leftmargin=*]
+            \item If $s \models G$, then the execution of $P$ on $s$ terminates in a state $t$ with:
+                $$V(t) \leq V(s) - \varepsilon \text{ for some fixed } \varepsilon > 0$$
+            \item If $V(s) \leq 0$, then $s \not\models G$.
+        \end{itemize}
+    \end{defi}
+\end{halfboxr}
+
+\begin{theo}{Proving positive almost-sure termination (PAST)}
+    Let $\stmtWhile{G}{P}$ be a loop where $P$ terminates universally certainly (P is loop-free), and let $I \in \mathbb{E}$ be a \emph{ranking super-invariant} of the loop w.r.t. expectation $0$, i.e., $I \leq \infty$ and for some constants $\varepsilon$ and $K$ with $0 < \varepsilon < K$ it holds:
+    \begin{enumerate}
+        \item $[\neg G] \cdot I \leq K$
+        \item $[G]\cdot K \leq [G] \cdot I + [\neg G]$
+        \item $\Phi(I) \leq [G] \cdot (I - \varepsilon)$
+    \end{enumerate}
+    Then: $\stmtWhile{G}{P}$ terminates universally positively almost-surely.
+\end{theo}
+
+\begin{theo}{Proof rule for almost-sure termination (AST)}
+    Let $I \in \mathbb{P}$, (variant) function $V: \mathbb{S} \to \relg$, (probability) function $p: \relg \to (0,1]$ be antitone, (decrease) function $d: \relg \to \relg$ be antitone. If:
+    \begin{enumerate}
+        \item $[I]$ is a $\wp$-subinvariant of $\stmtWhile{G}{P}$ w.r.t. $[I]$
+        \item $V=0$ indicates termination , i.e. $[\neg G]=[V=0]$
+        \item $V$ is a super-invariant of $\stmtWhile{G}{P}$ w.r.t $V$
+        \item $V$ satisfies the progress condition
+            $$p \circ (V \cdot [G] \cdot [I]) \leq \lam{s}\wp(P,[V \leq V(s) -d(V(s))])(s)$$
+    \end{enumerate}
+    Then: The loop $\stmtWhile{G}{P}$ terminates from any state $s$ satisfying the invariant $I$, i.e.,
+        $$[I] \leq \wp(\stmtWhile{G}{P},1)$$
+\end{theo}
+
+\section{Expected Runtimes}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Runtimes}
+        A runtime $t: \mathbb{S} \to \relg \cup \Set{ \infty } $.
+
+        Let $\mathbb{T}$ denote the set of all runtimes.
+    \end{defi}
+
+    In our time model we use a single time unit for $skip$, any assignment, evaluating a guard or probabilistic choice.
+    Sequential composition does not take any time.
+
+    For every pGCL program $P$ and input state $s$:
+    \[
+        \underbrace{\ert(P, \mathbf{0})(s) < \infty}_\text{\tiny{}positive a.s.-termination on $s$} \text{ implies } \underbrace{\wp(P,\mathbf{1})(s) = \mathbf{1}}_\text{\tiny{}a.s.-termination on $s$}
+    \]
+    And:
+    \[
+        \underbrace{\ert(P,\mathbf{0}) \leq \infty}_\text{\tiny{}universal positive a.s.-termination} \text{ implies } \underbrace{\wp(P,\mathbf{1}) = \mathbf{1}}_\text{\tiny{}universal a.s.-termination}
+    \]
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{theo}{Properties of $\cwp$}
+        \begin{itemize}[leftmargin=*]
+            \item \textsc{Continuity}: \\ \hspace*{1em}
+                $\ert(P,t)$ is continuous on $(\mathbb{T}, \leq)$.
+            \item \textsc{Monotonicity}: \\ \hspace*{1em}
+                $t \leq t'$ implies $\ert(P,t) \leq \ert(P,t')$.
+            \item \textsc{Constant propagation}: \\ \hspace*{1em}
+                $\ert(P,k+t)=k+\ert(P,t)$.
+            \item \textsc{Preservation of $\infty$}: \\ \hspace*{1em}
+                $\ert(P, \infty)=\infty$.
+            \item \textsc{Connection to wp}: \\ \hspace*{1em}
+                $\ert(P,t)=\ert(P,0)+\wp(P,t)$.
+            \item \textsc{Affinity}: \\
+                {\scriptsize{}$\ert(P, a \cdot t + t') = \ert(P,0)+ a \cdot \ert(P,t) + \ert(P,t') $.}
+        \end{itemize}
+    \end{theo}
+\end{halfboxr}
+
+\begin{center}
+    \small{}
+    \renewcommand*{\arraystretch}{1.8}
+    \begin{tabular}{L|C}
+        P & \ert(P,t) \\ \hline
+        \stmtSkip & 1+t \\
+        \stmtDiverge &  \infty \\
+        \stmtAsgn{x}{E} & 1+t[x:=E] \\
+        \stmtRasgn{x}{\mu} & 1+\lam{s} \int_\rat (\lam{v}t(s[x := v]))~\mathrm{d}\mu_s\\
+        \stmtSeq{P_1}{P_2} & \ert(P_1,\ert(P_2,t)) \\
+        \stmtIf{G}{P_1}{P_2} & 1+ [G] \cdot \ert(P_1,t + [\neg G] \cdot \ert(P_2,t) \\
+        \stmtProb{p}{P_1}{P_2} & 1+ p \cdot \ert(P_1,t) + (1-p) \cdot \ert(P_2,t) \\
+        \stmtWhile{G}{P} & \lfp X. (1+ [G] \cdot \ert(P,X) +[\neg G] \cdot t)
+    \end{tabular}
+\end{center}
+\vspace{2\baselineskip}
+
+We can also add rewards corresponding to the runtimes to the Markov chain for a program.
+State $\angled{\down,s}$ gets reward $t(s)$.
+State $\angled{\stmtDiverge,s}$ gets reward $\infty$.
+State $\angled{\stmtSeq{P_1}{P_2},s}$ gets reward $0$.
+All other states get reward $1$.
+Then: $\ert(P,0)(s) = ER^{\sem{P}}(s, \diamond sink)$.
+
+Using the $\cwp$-calculus, we were able to show that $PAST$ is not compositional, i.e.\ for programs $P_1$, $P_2$ that are positive a.s.-terminating, $\stmtSeq{P_1}{P_2}$ is not necessarily also positive a.s.-terminating.
+
+Similar to $\wp$-calculus, we can also define \emph{runtime-$\omega$-subinvariants} for lower bounds and \emph{runtime-superinvariants} for upper bounds (see \cref{sec:loops}).
+
+\section{Bayesian Networks}
+
+A more traditional approach to statistical inference are \emph{Bayesian networks}.
+A Bayesian network is a directed acyclic graph of nodes representing random variables.
+Edges represent causal relationships.
+Each random variable has an associated \emph{conditional probability table} that maps all values of a node's $k$ parents to a probability distribution.
+If there are no parents, then $\Theta_v : () \to \Dist(D) \equiv \Dist(D)$.
+
+\begin{defi}{Bayesian network}
+    A \emph{Bayesian network} (BN) is a tuple $B=(V,E,\Theta)$ where
+    \begin{itemize}
+        \item $(V,E)$ is a directed acyclic graph with
+            \begin{itemize}
+                \item finite $V$ in which each $v \in V$ represents a random variable with values from finite domain $D$, and
+                \item $(v,w) \in E$ represents the (causal) dependencies of $w$ on $v$.
+            \end{itemize}
+        \item For each vertex $v$ with $k$ parents, the function $\Theta_v: D^k \to \Dist(D)$ is the \emph{conditional probability table} of (the random variable represented by) vertex $v$.
+    \end{itemize}
+    $w \in V$ is a \emph{parent} of $v \in V$ whenever $(w,v) \in E$.
+\end{defi}
+
+The \emph{joint probability function} of a Bayesian network gives a semantics to the network: By simple recursive multiplication of probabilities, we can calculate any joint probability of variables in the network.
+
+\begin{defi}{Joint probability function of a BN}
+    Let $B=(V,E,\Theta)$ be a BN, and $W \subseteq V$ be a downward closed set of vertices where $w \in W$ has value $\underline{w} \in D$. The (unique) \emph{joint probability} function of BN $B$ in which the nodes in $W$ have values $\underline{W}$ equals:
+    $$\Pr(W=\underline{W})= \prod_{w \in W} \Pr(w = \underline{w} \mid parents(w)=\underline{parents(w)})=\prod_{w \in W} \Theta_w(\underline{parents(w)})(\underline{w}).$$
+    The \emph{conditional probability distribution} of $W \subseteq V$ given observations on a set $O \sqsubseteq V$ is given by $$\Pr(W= \underline{W} \mid O = \underline{O})=\frac{\Pr(W= \underline{W} \land O = \underline{O})}{\Pr(O= \underline{O})}.$$
+\end{defi}
+
+\subsection{Conditional Independence}
+
+Two independent events may become dependent given some observation.
+
+\begin{defi}{Conditional independence}
+    Let $X,Y,Z$ be (discrete) random variables. $X$ is \emph{conditionally independent} of $Y$ given $Z$, denoted $I(X,Z,Y)$, whenever:
+    $$\Pr(X \land Y \mid Z)=\Pr(X \mid Z) \cdot \Pr(Y \mid Z) \text{ or } \Pr(Z)=0.$$
+\end{defi}
+
+\begin{theo}{Graphoid axioms}
+    Conditional independence satisfies the following axioms for disjoint sets of random variables $W,X,Y,Z$:
+    \begin{enumerate}
+        \item Symmetry: $I(X,Z,Y)$ iff $I(Y,Z,X)$
+        \item Decomposition: $I(X,Z,Y \cup W)$ implies ($I(X,Z,Y)$ and $I(X,Z,W))$
+        \item Weak union: $I(X,Z,Y \cup W)$ implies $I(X,Z \cup Y,W)$
+        \item Contraction: ($I(X,Z,Y)$ and  $I(X,Z \cup Y,W)$) implies $I(X,Z,Y \cup W)$
+        \item Triviality: $I(X,Z,\emptyset)$
+    \end{enumerate}
+\end{theo}
+
+\begin{halfboxl}
+    \emph{D-separation}\footnote{see also our \href{https://panikzettel.philworld.de/ai.pdf}{Artifical Intelligence Panikzettel} for another take at d-separation.} is a sufficient condition for conditional independence.
+    Define all undirect paths in the DAG of the BN as a \emph{pipe} and every vertex on a path as a \emph{valve}.
+    Valves are either \emph{open} or \emph{closed}.
+    A pipe is \emph{blocked} if at least one valve on the path is closed.
+
+    A valve $v$ is closed for a variable set $Z$:
+    \begin{enumerate}
+        \item \emph{Sequential}: $v \in Z$ is a child of one neighbour and a parent of the other neighbour.
+        \item \emph{Divergent}: $v \in Z$ is a parent of both neighbours.
+        \item \emph{Convergent}: neither $v$ nor any of its directly reachable descendants are in $Z$.
+    \end{enumerate}
+
+    The algorithm on the right is a polynomial time check for d-seperation:
+    $dsep_G(X,Y,Z)$ iff $X$ and $Y$ are disconnected in $prune_{X,Y,Z}(G)$.
+
+    And since $dsep_G(X,Y,Z)$ implies $I(X,Y,Z)$, we can sometimes provide a guarantee that sets of nodes are conditionally independent in polynomial time.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{d-seperation}
+        Let $X,Y,Z$ be disjoint sets of vertices in the DAG $G$.
+        $X$ and $Y$ are \emph{d-seperated} by $Z$ in $G$, denoted $dsep_G(X,Z,Y)$, iff:
+
+        Every (undirected) path between a vertex in $X$ and a vertex in $Y$ is blocked by some vertex in $Z$.
+    \end{defi}
+
+    \begin{algo}{d-separation polynomial time}
+        \textbf{Input}: DAG $G$ and disjoint sets of vertices $X$, $Y$, $Z$.
+
+        \textbf{Output}: DAG $prune_{X,Y,Z}(G)$.
+        \tcblower
+        \begin{enumerate}
+            \item Repeat as long as possible: \\
+                  Eliminate any leaf vertex $v$ from $G$ with $v \notin X \cup Y \cup Z$.
+            \item Eliminate all edges emanating from  vertices in $Z$.
+            \item Return remaining graph.
+        \end{enumerate}
+    \end{algo}
+\end{halfboxr}
+
+The complexity of inference on a BN is measured in terms of the \emph{Markov blanket}, a degree of dependence in the BN.
+The less dependent the BN is the simpler is the probabilistic inference.
+
+\begin{defi}{Markov blanket}
+    The Markov blanket for a vertex $v$ in a BN is the set $\partial v$ of vertices composed of $v, v'$s parents, its children, and its children's other parents.
+
+    The average Markov blanket of BN $B$ is the average size of the Markov blanket of all its vertices, that is, $\frac{1}{|V|}\sum_{v \in V} |\partial v|$.
+\end{defi}
+
+Every set of vertices in a BN is conditionally independent of $v$ when conditioned on $\partial v$. Thus, for distinct vertices $v$ and $w$:
+$$\Pr(v \mid w \land \partial v) = \Pr(v \mid \partial v) \text{ which is equivalent to } I(\{v\},\{w\},Z).$$
+
+\subsection{Probabilistic Inference}
+
+\begin{halfboxl}
+    The decision problems TI and STI are PP-complete.
+
+    PP (\emph{Probabilistic Polynomial-Time}) is the class of decision problems solvable by a probabilistic Turing machine in polynomial time with an error probability $< \frac{1}{2}$.
+
+    We have shown PP-completeness by reducing MAJSAT, another PP-complete problem, to STI.
+    And since STI is a special case of TI, MAJSAT can also be reduced to STI.
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Probabilistic inference problems}
+        Let $B$ be a BN with set $V$ of vertices, the \emph{evidence} $E \subseteq V$ and the \emph{questions} $Q \subseteq V$.
+
+        The \emph{probabilistic inference problem} is to determine the conditional probability:
+        $$\Pr(Q=q \mid E=e)=\frac{\Pr(Q=q \land E=e)}{\Pr(E=e)}$$
+
+        Variants for probability $p \in \rat \cap [0,1)$:
+        \begin{itemize}
+            \item \emph{Threshold Inference} (TI): \\
+                   Is $\Pr(Q=q \mid E=e) > p$?
+            \item \emph{Simple TI} (STI): \\
+                  Is $\Pr(E=e) > p$?
+        \end{itemize}
+    \end{defi}
+\end{halfboxr}
+
+BNs correspond to ``simple'' probabilistic programs as there is no ``data-flow'' between loop iterations. Such programs are called iid. If $\stmtWhile{G}{P}$ is iid for expectation $f$, it holds for every state $s$:
+
+\[
+    \wp(\stmtWhile{G}{P},f)(s) = [G](s) + \frac{\wp(P, [\neg G] \cdot f)(s)}{1 - \wp(P,[G])(s)} + [\neg G](s) \cdot f(s)
+\]
+where we let $\frac{0}{0}=0$.
+
+We can also use our $\ert$-calculus to calculate the expected sample time for a BN.
+This is very helpful to prove that there is no way the Windows printer troubleshooter will ever return a good result.
+Similar to the $\wp$-rule for iid-loops above, we have for \textbf{a.s.-terminating iid loops}:
+\[
+    \ert(\stmtWhile{G}{P},t) = \mathbf{1} + \frac{\mathbf{1} + \ert(P, [\neg G] \cdot t)}{1 - \wp(P,[G])} + [\neg G](s) \cdot t.
+\]
+
+\end{document}
