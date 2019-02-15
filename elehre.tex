@@ -1,48 +1,25 @@
-\documentclass[12pt,a4paper]{scrartcl}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{lmodern,textcomp}
-\usepackage{amssymb}
+\documentclass{panikzettel}
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{cite}
-\usepackage[ngerman]{babel}
-\usepackage[ngerman,num]{isodate}
+\usepackage[official]{eurosym}
 
-%Def authors once
-\newcommand{\authors}{Daniel Sous}
-
-\usepackage[pdftitle={Entscheidungslehre - Panikzettel},
-			pdfauthor={\authors},
-			pdfsubject={In diesem Dokument befindet sich die inoffizielle Kurzzusammenfassung zur Vorlesung Entscheidungslehre - RWTH Aachen 2018/19.},
-			pdfkeywords={Zusammenfassung, Entscheidungslehre, Kurz, Kurzzusammenfassung}]{hyperref}
-\author{}
 \title{Entscheidungslehre}
-\subtitle{Panikzettel}
-\author{\authors}
-
-\monthyearsepgerman{}{}
-\daymonthsepgerman{}{}
-\date{\small Version 2 - \today}
-
+\author{Daniel Sous}
 
 \begin{document}
 \maketitle
 
-\begin{abstract}
-	\textit{Hinweis:} Dies ist ein kurzer Überblick über die wichtigsten Formel und Aussagen, die in der Vorlesung \textit{Entscheidungslehre} \cite{vonNitzsch:skript} vorgestellt wurden. Die Zusammenfassung konzentriert sich vor allem auf Formeln und Rechnungen im Teil B \& C. Da es sich um eine Kurzzusammenfassung (aka Panikzettel) handelt, wird auf ausführliche Erklärungen und Herleitungen verzichtet.
-\end{abstract}
+\tableofcontents
+
+\section{Einleitung}
+
+Dies ist ein kurzer Überblick über die wichtigsten Formel und Aussagen, die in der Vorlesung \textit{Entscheidungslehre} \cite{vonNitzsch:skript} vorgestellt wurden. Die Zusammenfassung konzentriert sich vor allem auf Formeln und Rechnungen im Teil B \& C. Da es sich um eine Kurzzusammenfassung (aka Panikzettel) handelt, wird auf ausführliche Erklärungen und Herleitungen verzichtet.
+
 Dieser Panikzettel ist Open Source.
 Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
 
-\vspace{1cm}
-\setcounter{tocdepth}{1}
-\tableofcontents
-
-\newpage
-
-\section{Einführung}
+\section{Grundlagen}
 
 \subsection{Bayes-Theorem}
 Mit dem Bayes-Theorem lassen sich bedingte Wahrscheinlichkeiten ``umdrehen``:\\
@@ -168,13 +145,14 @@ Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewich
 	\item \textit{Verfügbarkeitsheuristik:}\\
 	Informationen, die im Kopf am leichtesten verfügbar sind, bestimmen das Entscheidungs- und Schätzverhalten, d.h. je verfügbarer ein Ereignis ist, desto größer ist seine subjektive Wahrscheinlichkeit. Hat man zum Beispiel vor kurzem von einem Flugzeugunglück erfahren, so würde man die Wahrscheinlichkeit, selbst Opfer eines solchen Unglücks zu werden, überschätzen.
 	\item \textit{Mentale Kontenführung:}\\
-	Menschen neigen dazu, alle Projekte, an denen sie arbeiten, isoliert in einem zugehörigen ``Mental Account`` zu verbuchen, wobei gegenseitige Abhängigkeiten zwischen diesen vernachlässigt werden. (Verlust von Konzertkarte im Wert von 100€ $ \neq $ Verlust von 100€ Bargeld)
+	Menschen neigen dazu, alle Projekte, an denen sie arbeiten, isoliert in einem zugehörigen ``Mental Account`` zu verbuchen, wobei gegenseitige Abhängigkeiten zwischen diesen vernachlässigt werden. (Verlust von Konzertkarte im Wert von 100\euro{} $ \neq $ Verlust von 100\euro{} Bargeld)
 	\item \textit{Verankerungsheuristik:}\\
 	Personen werden bei Schätzungen von Wahrscheinlichkeiten von einem vorgegebenen Anker beeinflusst, wobei gegenseitige Anpassung unter Berücksichtigung weiterer Informationen zu gering ausfällt. (Siehe \nameref{sec:wskgf})
 	\item \textit{Repräsentativitätsheuristik:}\\
 	Neigung der Menschen, zu schnell in ein Schema-Denken zu verfalle und die Wahrscheinlichkeit von repräsentativen Ereignissen zu überschätzen.
 \end{itemize}
 
+\newpage
 \subsection{Wertfunktion}
 Die Wertfunktion spiegelt den subjektiven Wert wieder, welcher für einen Gewinn ($ x \geq 0 $) oder einen Verlust ($ x < 0 $) wahrgenommen wird.
 \begin{align*}
@@ -246,6 +224,7 @@ Wobei
 \end{align*}
 Das Discounted-Utility-Modell ist allerdings ein Modell was sich nur für präskriptive Zwecke eignet, da man hier exponentiell diskontiert (konstante Abnahme der Sensitivität). Dies ist allerdings in der deskriptiven Entscheidungstheorie unrealistisch, weshalb man das \nameref{sec:hdu} verwendet.
 
+\newpage
 \subsection{Hyper\-bolic-Discounted-Utility-Modell} \label{sec:hdu}
 Das Hyperbolic-Discounted-Utility-Modell bildet die Sensitivität der Menschen insofern besser ab, dass die Sensitivität zu Beginn stark fällt und dann abflacht.
 \begin{align*}
@@ -287,7 +266,7 @@ Um eine Entscheidung im Team treffen zu können, müssen zunächst die jeweilige
 
 	\item Ausmaß der instrumentellen Bedeutung des Stakeholders für die eigenen Ziele:
 
-	In diesem Aspekt geht es darum, wie viel Einfluss der jeweilige Stakeholder auf die Entscheidung hat. ``Könnte der Stakeholder das Projekt stoppen, wenn er sich nicht genug einbezogen fühlt?\grqq
+	Es geht es darum, wie viel Einfluss der jeweilige Stakeholder auf die Entscheidung hat. ``Könnte der Stakeholder das Projekt stoppen, wenn er sich nicht genug einbezogen fühlt?\grqq
 \end{itemize}
 Die Auswertung dieser beiden Aspekte kann nun in einem Netzdiagramm dargestellt werden.
 
@@ -314,7 +293,6 @@ In der Vergangenheit wurden in der Klausur bereits öfters Fragen zum \href{http
 	\item Auswertung
 \end{enumerate}
 
-\newpage
 % Generated by IEEEtran.bst, version: 1.14 (2015/08/26)
 \begin{thebibliography}{1}
 	\providecommand{\url}[1]{#1}
