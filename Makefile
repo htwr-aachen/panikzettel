@@ -1,4 +1,4 @@
-all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf datkom.pdf malo.pdf dbis.pdf effi.pdf afi.pdf ai.pdf cg.pdf bpi.pdf aat.pdf spa.pdf
+all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf datkom.pdf malo.pdf dbis.pdf effi.pdf afi.pdf ai.pdf cg.pdf bpi.pdf aat.pdf spa.pdf pp.pdf
 
 la.pdf: la.tex panikzettel.cls la.last-change
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
@@ -59,6 +59,9 @@ aat.pdf: aat.tex panikzettel.cls aat.last-change
 
 spa.pdf: spa.tex panikzettel.cls spa.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf spa.tex
+
+pp.pdf: pp.tex panikzettel.cls pp.last-change
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf pp.tex
 
 %.last-change: %.tex
 	echo -n "Version " > $@
