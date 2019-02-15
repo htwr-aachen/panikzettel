@@ -41,7 +41,7 @@ Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://g
 \tableofcontents
 
 \newpage
-	
+
 \section{Einführung}
 
 \subsection{Bayes-Theorem}
@@ -53,7 +53,7 @@ Mit
 \Leftrightarrow & P (A|B) \cdot P(B) & = & P(A \cap B)
 \end{array}
 \end{align*}
-und 
+und
 \begin{align*}
 \begin{array}{rrcll}
 & P(B | A) & =  & \dfrac{P(A \cap B)}{P(A)} & |\cdot P(A) \\
@@ -94,7 +94,7 @@ Um $ p $ zu ermitteln muss der Entscheider zwischen folgendem sicheren Betrag un
 		\node[](tilde) at (0,0) {$ \sim $};
 		\node[](x+) at (2,0.5) {$ x^+ $};
 		\node[](x-) at (2,-0.5) {$ x^- $};
-		
+
 		\path (0.5,0) edge node[auto,scale=0.7,inner sep=0,pos=0.6] {$ p $} (x+);
 		\path (0.5,0) edge node[auto,scale=0.7,inner sep=0,swap,pos=0.8] {$ 1-p $} (x-);
 	\end{tikzpicture}
@@ -144,11 +144,11 @@ Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewich
 \subsection{Dominanz bei unvollständiger Information}
 \begin{itemize}
 	\item Bei gegebenen Intervallen $ p^-_i \leq p(s_i) \leq p^+_i $ für alle $ i\in\{1,\dots,n\} $:
-	
+
 	Falls $ \text{min} \left[p(s_1) \cdot (u(a) - u(b)) + \dots + p(s_n) \cdot (u(a) - u(b)) \right] \geq 0$ gilt, dominiert Alternative $ a $ Alternative $ b $. Dabei sind die Wahrscheinlichkeiten $ p(s_1), \dots, p(s_n) $ jeweils aus dem gegebenen Intervall zu wählen, wobei $ p(s_1) + \dots + p(s_n) = 1 $ gelten muss.
-	
+
 	\item Bei gegebener Rangfolge der Wahrscheinlichkeiten:
-	
+
 	Falls nur die Rangfolge der Wahrscheinlichkeit ($ p(s_1) \geq \dots \geq p(s_n) $) gegeben ist, müssen folgende Punkte gelten, damit eine Dominanz vorliegt:
 	\begin{enumerate}
 		\item Der Nutzen im wahrscheinlichsten Zustand muss besser sein, als der aller anderen Alternativen.
@@ -282,11 +282,11 @@ Das Hyperbolic-Discounted-Utility-Modell bildet die Sensitivität der Menschen i
 Um eine Entscheidung im Team treffen zu können, müssen zunächst die jeweiligen Stakeholder (Personen die ein begründetes Interesse an dem Projekt haben) identifiziert und eingeordnet werden. Dabei muss zwischen den folgenden zwei Aspekten unterschieden werden:
 \begin{itemize}
 	\item Relative Gewichtung der Ziele des  Stakeholders im Verhältnis der eigenen:
-	
+
 	Hier sollte man sich die Frage stellen, ob derjenige Stakeholder die gleichen Ziele verfolgt und sich damit für das Projekt engagieren wird.
-	
+
 	\item Ausmaß der instrumentellen Bedeutung des Stakeholders für die eigenen Ziele:
-	
+
 	In diesem Aspekt geht es darum, wie viel Einfluss der jeweilige Stakeholder auf die Entscheidung hat. ``Könnte der Stakeholder das Projekt stoppen, wenn er sich nicht genug einbezogen fühlt?\grqq
 \end{itemize}
 Die Auswertung dieser beiden Aspekte kann nun in einem Netzdiagramm dargestellt werden.
@@ -337,14 +337,14 @@ In der Vergangenheit wurden in der Klausur bereits öfters Fragen zum \href{http
 			#2}}
 	\providecommand{\BIBdecl}{\relax}
 	\BIBdecl
-	
+
 	\bibitem{vonNitzsch:skript}
 	\BIBentryALTinterwordspacing
 	R.~von Nitzsch, \emph{{Entscheidungslehre : Wie Menschen entscheiden und wie
 			sie entscheiden sollten}}.\hskip 1em plus 0.5em minus 0.4em\relax Aachen:
 	Mainz, 2017. [Online]. Available: \url{http://d-nb.info/1060414678}
 	\BIBentrySTDinterwordspacing
-	
+
 	\bibitem{vonNitzsch:211553}
 	\BIBentryALTinterwordspacing
 	R.~von Nitzsch, S.~Schiffer, and P.~von Thunen, \emph{Übungen zur
@@ -353,7 +353,7 @@ In der Vergangenheit wurden in der Klausur bereits öfters Fragen zum \href{http
 		[{A}ufl.]}.\hskip 1em plus 0.5em minus 0.4em\relax Aachen: Mainz, 2017.
 	[Online]. Available: \url{http://publications.rwth-aachen.de/record/211553}
 	\BIBentrySTDinterwordspacing
-	
+
 \end{thebibliography}
-	
+
 \end{document}
