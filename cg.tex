@@ -1937,8 +1937,8 @@ For this, there are two approaches: Front-to-back ray casting and back-to-front 
 \begin{defi}{Front-to-Back}
 With $\hat C_0 = \hat c_0$ and $A_0 = \alpha_0$, we apply
 
-$$\hat C_i = \hat C_{i-1} + (1 - A_{i-1} \hat c_i)$$
-$$A_i = A_{i-1} + (1 - A_{i-1} \alpha_i)$$
+$$\hat C_i = \hat C_{i-1} + (1 - A_{i-1}) \hat c_i$$
+$$A_i = A_{i-1} + (1 - A_{i-1}) \alpha_i$$
 
 recursively until $i = k$ or until $A_i = 1$, that is, when we have reached total opacity.
 \end{defi}
@@ -1948,7 +1948,7 @@ recursively until $i = k$ or until $A_i = 1$, that is, when we have reached tota
 \begin{defi}{Back-to-Front}
 Let $\hat C_k = \hat c_k$. Then, with
 
-$$\hat C_i = \hat c_i \cdot (1 - \hat \alpha) \hat C_{i+1}$$
+$$\hat C_i = \hat c_i + (1 - \hat \alpha) \hat C_{i+1}$$
 
 the final opacity-weighted colour is $\hat C_0$.
 \end{defi}
