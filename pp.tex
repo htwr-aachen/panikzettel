@@ -652,7 +652,7 @@ We define \emph{predicate} and \emph{expectation transformers} as total function
         \stmtSkip & \multicolumn{2}{C}{f} \\
         \stmtDiverge & \multicolumn{2}{C}{0} \\
         \stmtAsgn{x}{E} & \multicolumn{2}{C}{f[x := E]} \\
-        \stmtObserve{G} & \multicolumn{2}{C}{[G] \cdot f} \\
+        {\color{gray}\stmtObserve{G}} & \multicolumn{2}{C}{\color{gray}[G] \cdot f} \\
         \stmtRasgn{x}{\mu} & \multicolumn{2}{C}{\lam{s} \int_\rat (\lam{v} f(s[x := v]))~\mathrm{d}\mu_s} \\
         \stmtSeq{P_1}{P_2} & \wp(P_1, \wp(P_2, f)) & \wlp(P_1, \wlp(P_2, f)) \\
         \stmtIf{G}{P_1}{P_2} & [G] \cdot \wp(P_1, f) + [\neg G] \cdot \wp(P_2, f) & [G] \cdot \wlp(P_1, f) + [\neg G] \cdot \wlp(P_2, f) \\
@@ -678,6 +678,10 @@ We define \emph{predicate} and \emph{expectation transformers} as total function
                 $\wp(P,\mathbf{0}) = \mathbf{0}$.
         \end{itemize}
     \end{theo}
+
+    \sffamily
+    {\color{red}Warning!} Not all properties hold for programs with $\stmtObserve{G}$. \\
+    {\small{}E.g.\ co-strictness: $\wlp(\stmtObserve{\texttt{false}},~\mathbf{1}) = \mathbf{0}$.}
 \end{halfboxl}%
 \begin{halfboxr}
     \vspace{-\baselineskip}
