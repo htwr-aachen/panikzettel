@@ -168,7 +168,7 @@ $\end{tightcenter}
 \begin{theo}{Finite reachability solution}
     To solve $\Pr(\sigma \models \diamond G)$, define
     \begin{itemize}
-        \item $\Sigma_? = \Pre^\ast(G) \setminus G$, the set of states that can reach $G$ by $> 0$ steps,
+        \item $\Sigma_? = \Pre^\ast(G) \setminus G$, the set of states that can reach $G$ in $> 0$ steps,
         \item $A = ( \mathbf{P}(\sigma, \tau) )_{\sigma,~\tau \in \Sigma_?}$, the transition probabilities in $\Sigma_?$, and
         \item $b = (b_\sigma)_{\sigma \in \Sigma_?}$, the probabilities to reach $G$ in exactly one step, i.e.\ $b_\sigma = \sum_{\gamma \in G} \mathbf{P}(\sigma, \gamma)$.
     \end{itemize}
@@ -364,7 +364,7 @@ We use operational semantics of pGCL on Markov chains to model the execution beh
         \item States are of the form
             \begin{itemize}
                 \item $\angled{Q,s}$ where $Q$ is the remaining program to be executed,
-                \item or $s = \lightning$ for violation of an obversation (\stmtObserve{G}),
+                \item or $s = \lightning$ for violation of an observation (\stmtObserve{G}),
                 \item or $\angled{sink}$ for successful program termination.
             \end{itemize}
         \item $s : \Vars \to \rat$ is a \emph{variable valuation}.
@@ -541,7 +541,7 @@ Introducing recursion does not increase expressive power.
 
 \begin{halfboxl}
     A \emph{(Scott-)continuous} function is a generalisation of the continuity we know from analysis to complete lattices.
-    Every continous function is monotonic.
+    Every continuous function is monotonic.
 
     \begin{defi}{Fixed point}
         $d$ is a \emph{fixed point} of $\Phi : D \to D$ if $\Phi(d) = d$.
@@ -792,7 +792,7 @@ The other bounds require the respective $\omega$-invariants.
 \begin{halfboxr}
     \vspace{-\baselineskip}
     \begin{theo}{Park's lemma}
-        Let $(D,\sqsubseteq)$ be a complete lattice and $\Phi : D \to D$ continous. Then:
+        Let $(D,\sqsubseteq)$ be a complete lattice and $\Phi : D \to D$ continuous. Then:
         \begin{align*}
             \Forall d \in D.~ \Phi(d) \sqsubseteq d &\quad\text{ implies }\quad \lfp \Phi \sqsubseteq d \\
             \Forall d \in D.~ d \sqsubseteq \Phi(d) &\quad\text{ implies }\quad d \sqsubseteq \gfp \Phi
