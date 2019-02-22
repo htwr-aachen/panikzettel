@@ -650,7 +650,7 @@ We define \emph{predicate} and \emph{expectation transformers} as total function
     \begin{tabular}{L|CC}
         P & \wp(P,f) & \wlp(P,f) \\ \hline
         \stmtSkip & \multicolumn{2}{C}{f} \\
-        \stmtDiverge & \multicolumn{2}{C}{0} \\
+        \stmtDiverge & 0 & 1\\
         \stmtAsgn{x}{E} & \multicolumn{2}{C}{f[x := E]} \\
         {\color{gray}\stmtObserve{G}} & \multicolumn{2}{C}{\color{gray}[G] \cdot f} \\
         \stmtRasgn{x}{\mu} & \multicolumn{2}{C}{\lam{s} \int_\rat (\lam{v} f(s[x := v]))~\mathrm{d}\mu_s} \\
