@@ -14,7 +14,7 @@
 
 \section{Einleitung}
 
-Dies ist ein kurzer Überblick über die wichtigsten Formel und Aussagen, die in der Vorlesung \textit{Entscheidungslehre} \cite{vonNitzsch:skript} vorgestellt wurden. Die Zusammenfassung konzentriert sich vor allem auf Formeln und Rechnungen im Teil B \& C. Da es sich um eine Kurzzusammenfassung (aka Panikzettel) handelt, wird auf ausführliche Erklärungen und Herleitungen verzichtet.
+Dies ist ein kurzer Überblick über die wichtigsten Formeln und Aussagen, die in der Vorlesung \textit{Entscheidungslehre} \cite{vonNitzsch:skript} vorgestellt wurden. Die Zusammenfassung konzentriert sich vor allem auf Formeln und Rechnungen aus den Teilen B \& C. Da es sich um eine Kurzzusammenfassung (aka Panikzettel) handelt, wird auf ausführliche Erklärungen und Herleitungen verzichtet.
 
 Dieser Panikzettel ist Open Source.
 Wir freuen uns über Anmerkungen und Verbesserungsvorschläge auf \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
@@ -63,7 +63,7 @@ Transformation einer Normalverteilung\footnote{Auf weitere Verteilungen wie die 
 	\dfrac{x-x^-}{x^+-x^-} & \text{für } c = 0
 	\end{cases} && \text{mit } c := -2\text{ln}\left(\frac{1}{p}-1\right)
 \end{align*}
-Um $ p $ zu ermitteln muss der Entscheider zwischen folgendem sicheren Betrag und dem nebenstehenden Spiel indifferent\footnote{Indifferent heißt in diesem Zusammenhang, dass sich der Entscheider nicht zwischen dem sicheren Betrag und dem Spiel entscheiden kann.} sein:
+Um $ p $ zu ermitteln muss der Entscheider zwischen folgendem sicheren Betrag und dem nebenstehenden Spiel indifferent\footnote{Indifferenz zwischen $A$ und $B$, notiert als $A\sim B$, heißt in diesem Zusammenhang, dass der Entscheider die Entscheidungsmöglichkeiten $A$ und $B$ als gleich gut bewertet.} sein:
 \begin{figure}[h]
 	\centering
 	\begin{tikzpicture}
@@ -82,11 +82,11 @@ c\left\lbrace \begin{array}{cl}
 >0 & \text{Risikoscheue}\\
 =0 & \text{Risikoneutralität}\\
 <0 & \text{Risikofreude}
-\end{array}\right. .
+\end{array}\right.
 \end{align*}
 
 \subsection{Erwartungsnutzenmodell}
-Eine Alternative $ a $ wird durch $ a := (p_1, a_1; \dots; p_n, a_n) $ definiert, wobei $ p_i $ für die Wahrscheinlichkeit und $ a_i $ für die Ausprägung im Zustand $ i\in\{1, \dots, n\} $. Für den Nutzen der Alternative $ a $ gilt nun
+Eine Alternative $ a $ wird durch $ a := (p_1, a_1; \dots; p_n, a_n) $ definiert, wobei $ p_i $ für die Wahrscheinlichkeit und $ a_i $ für die Ausprägung im Zustand $ i\in\{1, \dots, n\}$ steht. Für den Nutzen der Alternative $ a $ gilt nun
 \begin{align*}
 	EU(a) := \sum_{i=1}^{n} (p_i \cdot u(a_i))
 \end{align*}
@@ -114,9 +114,9 @@ Für $ r=2 $ ergibt sich zum Beispiel:
 \begin{align*}
 	w_1 = \frac{u_2(a_2) - u_2(b_2)}{u_1(b_1) - u_1(a_1)} w_2
 \end{align*}
-Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewichte berechnen.
+Da $ w_1 + \dots + w_r = 1 $ gilt, lassen sich nun die absoluten Werte der Gewichte berechnen.
 
-\textit{Hinweis:} Falls das entstehende Gleichungssystem über-bestimmt ist (d.h. es gibt mehr als $ r-1 $ indifferente Präferenzen), muss überprüft werden, ob eine gültige Lösung für alle Präferenzen besteht. Falls nicht, kann keine additive Nutzenfunktion verwendet werden.
+\textit{Hinweis:} Falls das entstehende Gleichungssystem überbestimmt ist (d.h. es gibt mehr als $ r-1 $ indifferente Präferenzen), muss überprüft werden, ob eine gültige Lösung für alle Präferenzen besteht. Falls nicht, kann keine additive Nutzenfunktion verwendet werden.
 
 \subsection{Dominanz bei unvollständiger Information}
 \begin{itemize}
@@ -126,11 +126,11 @@ Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewich
 
 	\item Bei gegebener Rangfolge der Wahrscheinlichkeiten:
 
-	Falls nur die Rangfolge der Wahrscheinlichkeit ($ p(s_1) \geq \dots \geq p(s_n) $) gegeben ist, müssen folgende Punkte gelten, damit eine Dominanz vorliegt:
+	Falls nur die Rangfolge der Wahrscheinlichkeiten ($ p(s_1) \geq \dots \geq p(s_n) $) gegeben ist, müssen folgende Punkte gelten, damit eine Dominanz vorliegt:
 	\begin{enumerate}
-		\item Der Nutzen im wahrscheinlichsten Zustand muss besser sein, als der aller anderen Alternativen.
+		\item Der Nutzen im wahrscheinlichsten Zustand muss höher sein als der aller anderen Alternativen.
 		\item Im Durchschnitt muss der Nutzen der dominierenden Alternative am höchsten sein.
-		\item Bei Kumulierung der Nutzenwerte nach absteigender Wahrscheinlichkeit muss die dominierende Alternative im Vergleich zur dominierten Alternative stets besser oder gleich sein.
+		\item Bei Kumulierung der Nutzenwerte nach absteigender Wahrscheinlichkeit muss die dominierende Alternative im Vergleich zur dominierten Alternative stets besser oder gleich gut sein.
 	\end{enumerate}
 \end{itemize}
 
@@ -141,18 +141,17 @@ Da gilt $ w_1 + \dots + w_r = 1 $ lassen sich nun die absoluten Werte der Gewich
 	\item \textit{Selektive Wahrnehmung:}\\
 	Menschen beschränken ihre Wahrnehmung derart, dass Erwartungen eintreffen und eigene Entscheidungen als ``richtig`` erscheinen.
 	\item \textit{Kontrast-Effekte:}\\
-	Informationen, die mit einer im Kontrast stehenden Information präsentiert werden, worden oft überhöht wahrgenommen.
+	Informationen, die mit einer im Kontrast stehenden Information präsentiert werden, werden oft überhöht wahrgenommen.
 	\item \textit{Verfügbarkeitsheuristik:}\\
 	Informationen, die im Kopf am leichtesten verfügbar sind, bestimmen das Entscheidungs- und Schätzverhalten, d.h. je verfügbarer ein Ereignis ist, desto größer ist seine subjektive Wahrscheinlichkeit. Hat man zum Beispiel vor kurzem von einem Flugzeugunglück erfahren, so würde man die Wahrscheinlichkeit, selbst Opfer eines solchen Unglücks zu werden, überschätzen.
 	\item \textit{Mentale Kontenführung:}\\
-	Menschen neigen dazu, alle Projekte, an denen sie arbeiten, isoliert in einem zugehörigen ``Mental Account`` zu verbuchen, wobei gegenseitige Abhängigkeiten zwischen diesen vernachlässigt werden. (Verlust von Konzertkarte im Wert von 100\euro{} $ \neq $ Verlust von 100\euro{} Bargeld)
+	Menschen neigen dazu, alle Projekte, an denen sie arbeiten, isoliert in einem zugehörigen ``Mental Account`` zu verbuchen, wobei gegenseitige Abhängigkeiten zwischen diesen vernachlässigt werden. So würde der Verlust einer Konzertkarte im Wert von 100\euro{} anders bewertet als der Verlust von 100\euro{} Bargeld, obwohl der objektive monetäre Verlust derselbe ist.
 	\item \textit{Verankerungsheuristik:}\\
 	Personen werden bei Schätzungen von Wahrscheinlichkeiten von einem vorgegebenen Anker beeinflusst, wobei gegenseitige Anpassung unter Berücksichtigung weiterer Informationen zu gering ausfällt. (Siehe \nameref{sec:wskgf})
 	\item \textit{Repräsentativitätsheuristik:}\\
-	Neigung der Menschen, zu schnell in ein Schema-Denken zu verfalle und die Wahrscheinlichkeit von repräsentativen Ereignissen zu überschätzen.
+	Neigung der Menschen, zu schnell in ein Schema-Denken zu verfallen und die Wahrscheinlichkeit von repräsentativen Ereignissen zu überschätzen.
 \end{itemize}
 
-\newpage
 \subsection{Wertfunktion}
 Die Wertfunktion spiegelt den subjektiven Wert wieder, welcher für einen Gewinn ($ x \geq 0 $) oder einen Verlust ($ x < 0 $) wahrgenommen wird.
 \begin{align*}
@@ -182,7 +181,7 @@ Menschen überschätzen geringe Wahrscheinlichkeiten und überbewerten die absol
 \end{figure}
 
 \subsection{Risikoeinstellung}
-Sei eine sichere Alternative $ A $ und ein Spiel $ B $ - mit der Wahrscheinlichkeit $ p_1 $ einen Betrag $ b_1 $ und $ p_2 $ einen Betrag $ b_2 $ zu gewinnen - gegeben. Des Weiteren sei eine Wertefunktion $ v(x) $ gegeben. Falls
+Sei eine sichere Alternative $ A $ und ein Spiel $ B $ - mit Wahrscheinlichkeit $ p_1 $ einen Betrag $ b_1 $ und mit Wahrscheinlichkeit $ p_2 $ einen Betrag $ b_2 $ zu gewinnen - gegeben. Des Weiteren sei eine Wertfunktion $ v(x) $ gegeben. Falls
 \begin{align*}
 	v(A) = p_1 \cdot v(b_1) + p_2 \cdot v(b_2)
 \end{align*}
@@ -197,7 +196,7 @@ A & \prec & B & \Rightarrow \text{risikofreudige Einstellung}\\
 \footnotetext{$ A \succ B $ steht dafür, dass Alternative $ A $ gegenüber Alternative $ B $ bevorzugt wird.}
 
 \subsection{Risikoverhalten}
-Um den Begriff des \textit{Risikoverhaltens} zu erläutern, muss zunächst der Begriff \textit{Risikoprämie} definiert werden. Dazu sei ein Spiel mit dem Erwartungswert $ EW $ und ein alternatives Sicherheitsäquivalent $ S\ddot{A} $ gegeben. Dann gilt für die Risikoprämie $ RP $
+Um den Begriff des \textit{Risikoverhaltens} zu erläutern, muss zunächst der Begriff \textit{Risikoprämie} definiert werden. Dazu sei ein Spiel mit dem Erwartungswert $ EW $ und ein alternatives Sicherheitsäquivalent $ S\ddot{A} $ gegeben. Dann ist die Risikoprämie $ RP $ definiert als
 \begin{align*}
 	RP := EW - S\ddot{A}.
 \end{align*}
@@ -224,7 +223,6 @@ Wobei
 \end{align*}
 Das Discounted-Utility-Modell ist allerdings ein Modell was sich nur für präskriptive Zwecke eignet, da man hier exponentiell diskontiert (konstante Abnahme der Sensitivität). Dies ist allerdings in der deskriptiven Entscheidungstheorie unrealistisch, weshalb man das \nameref{sec:hdu} verwendet.
 
-\newpage
 \subsection{Hyper\-bolic-Discounted-Utility-Modell} \label{sec:hdu}
 Das Hyperbolic-Discounted-Utility-Modell bildet die Sensitivität der Menschen insofern besser ab, dass die Sensitivität zu Beginn stark fällt und dann abflacht.
 \begin{align*}
@@ -246,12 +244,13 @@ Das Hyperbolic-Discounted-Utility-Modell bildet die Sensitivität der Menschen i
 	\caption{Skizze zu \textcolor{blue}{\nameref{sec:du}} und \textcolor{red}{\nameref{sec:hdu}}}
 \end{figure}
 
+\newpage
 \section{Wege zu einem besseren Entscheiden}
 \subsection{Anwendungsfelder der Entscheidungslehre \cite{vonNitzsch:211553}}
 \begin{enumerate}
 	\item Verbesserung der Entscheidungsqualität
 	\item Beeinflussung des Verhaltens Dritter zum eigenen Nutzen
-	\item Beeinflussung der Verhalten Dritter zu deren Nutzen oder zum Nutzen der Gesellschaft (Nudging)
+	\item Beeinflussung des Verhaltens Dritter zu deren Nutzen oder zum Nutzen der Gesellschaft (Nudging)
 	\item Beeinflussung des eigenen Verhaltens (Selbstlenkung)
 	\item Veränderung der Wahrnehmung zur Zufriedenheitssteigerung (Hedonic Framing)
 	\item Erlangen eines eigenen Profits aus der Verhaltensprognose anderer
@@ -260,13 +259,13 @@ Das Hyperbolic-Discounted-Utility-Modell bildet die Sensitivität der Menschen i
 \subsection{Entscheidungen im Team}
 Um eine Entscheidung im Team treffen zu können, müssen zunächst die jeweiligen Stakeholder (Personen die ein begründetes Interesse an dem Projekt haben) identifiziert und eingeordnet werden. Dabei muss zwischen den folgenden zwei Aspekten unterschieden werden:
 \begin{itemize}
-	\item Relative Gewichtung der Ziele des  Stakeholders im Verhältnis der eigenen:
+	\item Relative Gewichtung der Ziele des Stakeholders im Verhältnis zu eigenen:
 
 	Hier sollte man sich die Frage stellen, ob derjenige Stakeholder die gleichen Ziele verfolgt und sich damit für das Projekt engagieren wird.
 
 	\item Ausmaß der instrumentellen Bedeutung des Stakeholders für die eigenen Ziele:
 
-	Es geht es darum, wie viel Einfluss der jeweilige Stakeholder auf die Entscheidung hat. ``Könnte der Stakeholder das Projekt stoppen, wenn er sich nicht genug einbezogen fühlt?\grqq
+	Hier geht es darum, wie viel Einfluss der jeweilige Stakeholder auf die Entscheidung hat. ``Könnte der Stakeholder das Projekt stoppen, wenn er sich nicht einbezogen genug fühlt?\grqq
 \end{itemize}
 Die Auswertung dieser beiden Aspekte kann nun in einem Netzdiagramm dargestellt werden.
 
@@ -274,14 +273,16 @@ Die Auswertung dieser beiden Aspekte kann nun in einem Netzdiagramm dargestellt 
 Sowohl für Individual- als auch für Gruppenentscheidungen sollten die folgenden fünf Schritte für ein analytisches Vorgehen berücksichtigt werden:
 \begin{enumerate}
 	\item[(Z)] Festlegung des Zielkatalogs
-	\item[(A)] Alternativen suche
+	\item[(A)] Alternativensuche
 	\item[(EF)] Identifikation der unsicheren Einflussfaktoren
 	\item[(P)] Umwelt- und Wirkungsprognosen
 	\item[(B)] Analytische Bewertung
 \end{enumerate}
 
+\newpage
+
 \subsection{Entscheidungsnavi}
-In der Vergangenheit wurden in der Klausur bereits öfters Fragen zum \href{https://entscheidungsnavi.de}{Entscheidungs\-navi} und dessen Struktur gestellt. Unter Anderem wurde dort häufig nach den 8 Menüpunkten des Entscheidungs\-navis (Stand: 03.02.2019) gefragt:
+In der Vergangenheit wurden in der Klausur bereits öfters Fragen zum \href{https://entscheidungsnavi.de}{Entscheidungs\-navi} und dessen Struktur gestellt. Unter anderem wurde dort häufig nach den 8 Menüpunkten des Entscheidungs\-navis (Stand: 03.02.2019) gefragt:
 \begin{enumerate}
 	\item Entscheidungsfrage
 	\item Ziele
