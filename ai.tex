@@ -592,7 +592,7 @@ A plan that is both complete and consistent is called a \emph{solution}.
 
 The \emph{initial plan} consists only of the problem description, i.e.\ the \texttt{Start} and \texttt{Finish} states.
 
-\emph{Partially ordered plans} are a preorder on steps which means it defines a must-happen-before-relationship ($\succ$).
+\emph{Partially ordered plans} are a preorder on steps which means it defines a must-happen-before-relationship ($\prec$).
 \emph{Steps} are STRIPS operators with instantiated variables.
 This delays plan decisions as long as possible: We try not to commit to an order of two unrelated series of steps.
 Partially ordered plans can be \emph{linearised} to an actual order on steps.
@@ -606,21 +606,21 @@ Partially ordered plans can be \emph{linearised} to an actual order on steps.
 \smallskip
 
 \begin{enumerate}
-    \item Create the initial $plan$ with $\texttt{Start} \succ \texttt{Finish}$ and no causal links.
-    \item While $plan$ is not a solution (steps fulfil successors):
+    \item Create the initial $plan$ with $\texttt{Start} \prec \texttt{Finish}$ and no causal links.
+    \item While $plan$ is not a solution (steps fulfil precessors):
         \begin{enumerate}
             \item Select a \emph{subgoal}: A step $S_{need}$ with a precondition $c$ that has not been achieved.
             \item Choose an operator $S_{add}$ that has effect $c$. \\
                   \texttt{fail} if this is not possible.
                 \begin{enumerate}
                     \item Add a causal link $S_{add} \stackrel{c}{\to} S_{need}$.
-                    \item Add ordering constraint $S_{add} \succ S_{need}$.
-                    \item If $S_{add}$ is a new step in the plan, then also add $\texttt{Start} \succ S_{add} \succ \texttt{Finish}$.
+                    \item Add ordering constraint $S_{add} \prec S_{need}$.
+                    \item If $S_{add}$ is a new step in the plan, then also add $\texttt{Start} \prec S_{add} \prec \texttt{Finish}$.
                 \end{enumerate}
             \item Resolve threats. For each $S_{threat}$ that threatens $S_i \stackrel{c}{\to} S_j$ choose either:
                 \begin{itemize}[leftmargin=2em]
-                    \item \emph{Promotion}: Add $S_{threat} \succ S_i$.
-                    \item \emph{Demotion}: Add $S_j \succ S_{threat}$.
+                    \item \emph{Promotion}: Add $S_{threat} \prec S_i$.
+                    \item \emph{Demotion}: Add $S_j \prec S_{threat}$.
                 \end{itemize}
                 If the plan is not consistent, \texttt{fail}.
         \end{enumerate}
@@ -690,7 +690,7 @@ These assumptions take the form of ``if $C$ is given, then $A$ and $B$ are indep
 \begin{tightcenter}
 $\operatorname{P}(A \mid C \land B) = \operatorname{P}(A \mid C)$ and $\operatorname{P}(B \mid C \land A) = \operatorname{P}(B \mid C)$.
 \end{tightcenter}
-Then we can calculate conditional probabilities as follows:
+Then we can calculate the \emph{Bayesian update} as follows:
 \begin{tightcenter}
 $\operatorname{P}(X \mid Y \land Z) = \alpha \cdot \operatorname{P}(X) \cdot \operatorname{P}(Y \mid X) \cdot \operatorname{P}(Z \mid X)$
 \end{tightcenter}
@@ -737,9 +737,9 @@ The algorithm is incomplete (does not necessarily find all independence relation
     \begin{defi}{d-Separation}
     \textbf E d-separates \textbf X and \textbf Y if, on every undirected path from a node in \textbf X to a node in \textbf Y, there exists a node $Z$ such that:
     \begin{itemize}
-        \item $Z \in \textbf E$ and the path makes use of one edge leading into $Z$ and one leading away from $Z$ according to their original direction.
-        \item $Z\in\textbf E$ and both edges used point away from $Z$.
-        \item Neither $Z$ nor any of its successors are contained in $E$ and both edges lead into $Z$.
+        \item $Z \in \textbf E$ and the path makes use of one edge leading into $Z$ and one leading away from $Z$ according to their original direction, or
+        \item $Z\in\textbf E$ and both edges used point away from $Z$, or
+        \item neither $Z$ nor any of its successors are contained in $E$ and both edges lead into $Z$.
     \end{itemize}
     \end{defi}
 \end{halfboxl}%
