@@ -11,7 +11,7 @@
 \usepackage{nicefrac}
 
 \title{Introduction to Artificial Intelligence Panikzettel}
-\author{Philipp Schröer, Der Dude, Luca Oeljeklaus}
+\author{Philipp Schröer, Der Dude, Luca Oeljeklaus, Dan Tuong Le}
 
 \begin{document}
 
@@ -241,12 +241,12 @@ Initially: \texttt{alphaBeta(initialState, $-\infty$, $\infty$)}.
     \item If this is a cutoff state, return this node.
     \item For each successor $s$:
         \begin{itemize}
-            \item If at MAX level:
+            \item If $s$ is at MAX level:
                 \begin{enumerate}
                     \item Set $\alpha$ to $\max(\alpha, \texttt{alphaBeta($s$, $\alpha$, $\beta$))}$.
                     \item If $\alpha \geq \beta$, return $\beta$.
                 \end{enumerate}
-            \item If at MIN level:
+            \item If $s$ is at MIN level:
                 \begin{enumerate}
                     \item Set $\beta$ to $\min(\beta, \texttt{alphaBeta($s$, $\alpha$, $\beta$))}$.
                     \item If $\beta \leq \alpha$, return $\alpha$.
@@ -649,7 +649,7 @@ $\operatorname{P}(A)$ is the probability that $A$ holds. $A$ is a proposition of
 \medskip
 
 \begin{halfboxl}
-\emph{Conditional Probabilities} $\operatorname{P} (C\mid T)$ describe the probability the $C$ holds if $T$ holds.
+\emph{Conditional Probabilities} $\operatorname{P} (A\mid B)$ describe the probability the $A$ holds if $B$ holds. This condition B is also called the \emph{evidence} and often plays the role of background knowledge, similar to a propositional knowledge base.
 
 For example: \\
 $\operatorname{P} (\text{playingFootball} \mid \text{weather}=\text{sunny})$.
@@ -657,7 +657,7 @@ $\operatorname{P} (\text{playingFootball} \mid \text{weather}=\text{sunny})$.
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{defi}{Conditional Probability}
-\[\operatorname P (A\mid B) := \frac{\operatorname{P}(A\land B)}{\operatorname{P} (B)}\]
+\[\operatorname P (A \mid B) := \frac{\operatorname{P}(A\land B)}{\operatorname{P} (B)}\]
 \end{defi}
 \end{halfboxr}
 \medskip
@@ -685,14 +685,14 @@ This is called \emph{normalisation}.
 
 \subsection{Belief Networks}
 
-Belief networks use Bayes Rule with a conditional independence assumption for efficient calculation of conditional probabilities.
-These assumptions take the form of ``if $C$ is given, then $A$ and $B$ are independent of each other'':
+Belief networks use Bayes Rule with a conditional independence assumption for efficiently combining evidence consisting of many variables, i.e. calculating conditional probabilities with multiple conditions.
+These assumptions take the form of ``if $A$ is given, then $B$ and $C$ are independent of each other'':
 \begin{tightcenter}
-$\operatorname{P}(A \mid C \land B) = \operatorname{P}(A \mid C)$ and $\operatorname{P}(B \mid C \land A) = \operatorname{P}(B \mid C)$.
+$\operatorname{P}(C \mid A \land B) = \operatorname{P}(C \mid A)$ and $\operatorname{P}(B \mid A \land C) = \operatorname{P}(B \mid A)$.
 \end{tightcenter}
-Then we can calculate the \emph{Bayesian update} as follows:
+Together with Bayes Rule, we obtain the \emph{Bayesian update} as follows:
 \begin{tightcenter}
-$\operatorname{P}(X \mid Y \land Z) = \alpha \cdot \operatorname{P}(X) \cdot \operatorname{P}(Y \mid X) \cdot \operatorname{P}(Z \mid X)$
+$\operatorname{P}(A \mid B \land C) = \alpha \cdot \operatorname{P}(A) \cdot \operatorname{P}(B \mid A) \cdot \operatorname{P}(C \mid A)$
 \end{tightcenter}
 \bigskip
 
@@ -723,19 +723,14 @@ To compute joint distributions, we can now simply use the network's independence
 \[ \operatorname{P}(X_1 \land \ldots \land X_n) = \prod_{i=1}^n P(X_i \mid V_\mathrm{in}(X_i)) \]
 
 \subsection{d-Separation}
-\emph{d-Separation} (direction-dependent separation) allows computation of independence relationships in polynomial time.
-This is especially useful for belief network construction.
-The algorithm is incomplete (does not necessarily find all independence relationships), but is ``good enough'' for many applications.
-
+\emph{d-Separation} (direction-dependent separation) allows computation of independence relationships in polynomial time. This is useful for belief network construction. The algorithm is incomplete (does not necessarily find all independence relationships), but is ``good enough'' for many applications.
 \begin{center}
 \textbf E d-separates \textbf X from \textbf Y $\Rightarrow$ \textbf X is independent of \textbf Y given \textbf E.
 \end{center}
-\medskip
-
 \begin{halfboxl}
     \vspace{0em}
     \begin{defi}{d-Separation}
-    \textbf E d-separates \textbf X and \textbf Y if, on every undirected path from a node in \textbf X to a node in \textbf Y, there exists a node $Z$ such that:
+    \textbf E d-separates \textbf X and \textbf Y if, on every undirected path from a node in \textbf X to a node in \textbf Y, there exists a node $Z$ on this path such that one of the following holds:
     \begin{itemize}
         \item $Z \in \textbf E$ and the path makes use of one edge leading into $Z$ and one leading away from $Z$ according to their original direction, or
         \item $Z\in\textbf E$ and both edges used point away from $Z$, or
@@ -813,6 +808,59 @@ In \emph{supervised learning}, the learner has access to input and correct outpu
 
 \emph{Unsupervised learning} happens without any feedback to the learner. The learner must learn on its own.
 \vspace{-0.5\baselineskip}
+
+\subsection{Decision Lists}
+\emph{Decision lists (DL)} consist of a number of tests, which themselves consist of a conjunction of a bounded number of literals. If a test is successful, i.e. all the literals are satisfied, then the DL tells us which value to return. Otherwise, the next test is tried.
+
+\begin{algo}{Decision Lists}
+\textbf{Input}: A set of examples with attributes.
+
+\textbf{Output}: A decision list.
+\tcblower
+\begin{enumerate}
+    \item If the set is empty, return \texttt{No}.
+    \item Find a subset of the examples such that it contains either only positive or only negative examples. Then find a test $t$ such that our subset satisfies that test. If no such $t$ exists, return \texttt{failure}.
+    \item If the subset contains only positive examples, set outcome $o$ to \texttt{Yes}. Else, set $o$ to \texttt{No}.
+    \item Add test $t$ with outcome $c$ to our decision list. Repeat with remaining example set.
+\end{enumerate}
+\end{algo}
+
+\begin{halfboxl}
+\vspace{-\baselineskip}
+\begin{center}
+\begin{tikzpicture}
+\node[draw] (A) at (0,0) {$A(x)$};
+\node[draw] (B) at (3,0) {$B(x) \land C(x)$};
+\node[draw] (Y1) at (0,-1.5) {Yes};
+\node[draw] (Y2) at (3,-1.5) {Yes};
+\node[draw] (N) at (6,0) {No};
+\path[->] (A) edge[above] node {N} (B);
+\path[->] (A) edge[right] node {Y} (Y1);
+\path[->] (B) edge[above] node {N} (N);
+\path[->] (B) edge[right] node {Y} (Y2);
+\end{tikzpicture}
+\end{center}
+
+This decision list correspondents to the query
+\begin{center}
+    $A(x) \lor [B(x) \land C(x)]$.
+\end{center}
+
+\end{halfboxl}%
+\begin{halfboxr}
+\vspace{-\baselineskip}
+A pseudocode version of this query would look like this:
+\begin{lstlisting}
+function sampleQuery(x):
+    if (A(x)):
+        return Yes;
+    else if (B(x) and C(x)):
+        return Yes;
+    else:
+        return No;
+\end{lstlisting}
+\end{halfboxr}
+
 \subsection{Decision Trees}
 
 \begin{halfboxl}
@@ -837,18 +885,19 @@ Let $v_1,\ldots,v_n$ be the outcomes of a probabilistic experiment with probabil
 \end{defi}
 \end{halfboxr}
 \vspace{-0.5\baselineskip}
-\begin{defi}{Average Attribute Entropy}
+\begin{defi}{Information Gain}
 Let $a$ be an attribute with $n$ negative and $p$ positive examples.
 Further, let $p_i$ respectively $n_i$ be the number of positive respectively negative occurrences of attribute value $i$.
-\[\operatorname{AI} (a) = - \sum\limits_\text{value $i$} \left (\frac{p_i + n_i}{p+n} \cdot \operatorname{I} \left ( \frac{p_i}{p_i+n_i},~ \frac{n_i}{p_i+n_i} \right) \right )\]
+\[\operatorname{Gain} (a) = \operatorname{I}(\frac{p}{p+n}, \frac{n}{p+n}) - \operatorname{Remainder} (a),\]
+\[\operatorname{Remainder} (a) = \sum\limits_\text{value $i$} \left (\frac{p_i + n_i}{p+n} \cdot \operatorname{I} \left ( \frac{p_i}{p_i+n_i},~ \frac{n_i}{p_i+n_i} \right) \right ).\]
 \end{defi}
 
 \begin{halfboxl}
-\emph{Decision tree-learning} now builds decision trees by choosing attributes with the lowest average entropy until the attribute set only has \texttt{Yes} or \texttt{No} results.
+\emph{Decision tree-learning} now builds decision trees by choosing attributes with the highest information gain until the attribute set only has \texttt{Yes} or \texttt{No} results.
 
-The key idea is that, to build a small decision tree, and assuming the the simplest hypothesis is the most likely, lowest average entropy is a metric of how good an attribute is at predicting the final decision.
+The key idea is that, to build a small decision tree, and assuming the the simplest hypothesis is the most likely, high information gain is a metric of how good an attribute is at predicting the final decision.
 
-{\footnotesize (Most definitions of decision tree-learning use \emph{information gain} instead of average attribute entropy. Our definition simplifies the algorithm by omitting unnecessary constant terms.)}
+For the purpose of decision tree-learning, it suffices to calculate $\operatorname{Remainder}(a)$ for each attribute $a$, since the rest of the information gain term remains the same throughout an iteration.
 \end{halfboxl}%
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -858,7 +907,7 @@ The key idea is that, to build a small decision tree, and assuming the the simpl
 \textbf{Output}: A decision tree.
 \tcblower
 \begin{enumerate}
-    \item Choose $a = \argmin_a \operatorname{AI}(a)$, the attribute with the lowest average entropy.
+    \item Choose $a = \argmin_a \operatorname{Remainder}(a)$, i.e. the attribute with the smallest remainder (ergo highest information gain).
     \item Create a node for $a$:
         \begin{itemize}
             \item If $a$ only has positive or negative examples, return a leaf with \texttt{Yes} or \texttt{No} accordingly.
@@ -868,7 +917,7 @@ The key idea is that, to build a small decision tree, and assuming the the simpl
 \end{algo}
 \end{halfboxr}
 
-
+\newpage
 
 \subsection{Neural Networks}
 
