@@ -178,7 +178,7 @@ Mit einem \texttt{struct} lassen sich Datentypen abstrahieren. Beispiel:\\
 \begin{lstlisting}[language=C]
 struct Point {
 	int x; int y;
-}
+};
 \end{lstlisting}
 
 Auf die Member eines \texttt{struct} wird mittels des Punktoperator zugegriffen: \lstinline[language=C]{point.x = 5} oder falls \texttt{point} ein Zeiger auf ein \texttt{struct} ist, kann man sich mittels des \lstinline!->! Operators das Dereferenzieren sparen: \texttt{point-$>$x = 5}
