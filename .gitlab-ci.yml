@@ -25,3 +25,4 @@ compile_pdf:
       - spa.pdf
       - pp.pdf
       - elehre.pdf
+      - algds.pdf

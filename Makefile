@@ -66,6 +66,9 @@ pp.pdf: pp.tex panikzettel.cls pp.last-change
 elehre.pdf: elehre.tex panikzettel.cls elehre.last-change
 	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf elehre.tex
 
+algds.pdf: algds.tex panikzettel.cls algds.last-change
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf algds.tex
+
 %.last-change: %.tex
 	echo -n "Version " > $@
 	git log --format=oneline -- $< | wc -l >> $@
