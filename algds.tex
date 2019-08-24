@@ -1,12 +1,13 @@
-\documentclass{panikzettel}
+\documentclass[english]{panikzettel}
 
-\title{Algorithmic Foundations of Data Science  Panikzettel\textsuperscript{\footnotesize TM}}
+\title{Algorithmic Foundations of Data Science Panikzettel\textsuperscript{\footnotesize TM}}
 \author{Jan Fritz, Christoph von Oy}
-\date{ } %without a date \maketitle isn't working. Is a local bug in my LaTex distribution. This is a workaround
 
 \usepackage{amsthm}
 \usepackage{algorithm,algorithmicx,algpseudocode}
 \usetikzlibrary{arrows,automata}
+
+\setcounter{section}{-1} %if the introduction is chapter 0 all the other chapters have the same numbers as they're having in the slides
 
 \begin{document}
 
@@ -15,14 +16,7 @@
 \tableofcontents
 
 \section{Introduction}
-This is (without much surprise) the Panikzettel for Algorithmic Foundations of Data Science. It's 'kinda' long. We also don't really know how it happened. We were going through the slides and added everything that could - in some crazy scenario (lets say a very hard exam (which we hope doesn't happen)) - be important.
-
-We skipped all of the proofs because they can all be found in the lecture notes in Moodle. Also from previous exams we can tell that the focus in the exam is not on proofs. At least not on very long and complicated proofs.
-
-When it comes to theorems clearly not all of them are important. We also dropped the distinction between lemmas in theorems in this Panikzettel.\\
-Some of the theorems are very technical and it's unlikely that you need exactly them to pass the exam or even get a good grade in it. The most important theorems were the ones which were needed in the exercises (at least in 2019).
-
-Clearly not all in this Panikzettel is needed for an exam. But since the first exam in 2019 contained weird things like computing eigenvectors, which was not really the main focus of this lecture, we wanted to include everything.
+This is the Panikzettel for Algorithmic Foundations of Data Science. It's 'kinda' long. We also don't really know how it happened. We were going through the slides and added almost everything that could be important.
 
 This project is licensed under \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC-BY-SA-4.0} and can be found on the Git server of the RWTH: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
 
@@ -76,12 +70,12 @@ A learning problem is realizable if the target function is in the hypothesis spa
 %\end{itemize}
 
 \subsubsection{Occam's Razor}
-Occam's razor is a rule of thumb to decide which of multiple possible hypothesis should be chosen. Occam's Razor say one should choose the simplest hypothesis which is consistent with the data.
+Occam's razor is a rule of thumb to decide which of multiple possible hypothesis should be chosen. It says one should choose the simplest hypothesis which is consistent with the data.
 
 
 \subsection{Nearest Neighbor Learning}
 The idea here is to predict the value of a function at a point $x$ by looking at the known value of its neighbors. To avoid coincidences, it makes sense to look at several points close to $x$ and then take the majority or average values of these points.\\
-The underlying assumption is that item are close together if they have similar function values.
+The underlying assumption is that items are close together if they have similar function values.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -89,14 +83,17 @@ The underlying assumption is that item are close together if they have similar f
 A metric is a function from an instance space $\mathbb{X}$ to $\mathbb{R}$ such that for all $x,y,z\in\mathbb{X}$ the following tree properties apply:
 \begin{itemize}
 \item \textbf{Nonnegativity:}
+\vspace{-0.5\baselineskip}
 \[
 d(x,y)\geq 0 \text{ and } d(x,y)=0 \iff x=y
 \]
 \item \textbf{Symmetry:}
+\vspace{-0.5\baselineskip}
 \[
 d(x,y)=d(y,x)
 \]
 \item \textbf{Triangle Inequality:}
+\vspace{-0.5\baselineskip}
 \[
 d(x,z)\leq d(x,y)+d(y,z)
 \]
@@ -119,18 +116,18 @@ Let $\mathbb{X}$ be the instance space and $d$ a metric. Then $(\mathbb{X}, d)$ 
 
 
 \subsubsection{Description of the Problem for Nearest Neighbor Learning}
-The goal with Nearest Neighbor Learning is to learn an unknown function $f$ that associates a class $f(x)\in\mathbb{Y}$ with every data item $x\in \mathbb{X}$. Therefore, given labeled examples $(x_1,y_1),\ldots,(x_m,y_m)$ where each $x_i\in\mathbb{X}$ is a data item and $y_i=f(x)$ is the respective class the learning algorithm is supposed to produce a classifier that predicts the value $f(x)$ for a new data item $x$. One possible classifier is the $k$-nearest neighbor classifier.
+The goal of Nearest Neighbor Learning is to learn an unknown function $f$ that associates a class $f(x)\in\mathbb{Y}$ with every data item $x\in \mathbb{X}$. Therefore, given labeled examples $(x_1,y_1),\ldots,(x_m,y_m)$ where each $x_i\in\mathbb{X}$ is a data item and $y_i=f(x)$ is the respective class the learning algorithm is supposed to produce a classifier that predicts the value $f(x)$ for a new data item $x$. One possible classifier is the $k$-nearest neighbor classifier.
 
 \subsubsection{The k-Nearest Neighbor Classifier}
 This classifier finds for each $x\in\mathbb{X}$ the $k$ nearest neighbors of $x$. Then it checks which class appears most among the neighbors of $x$.
 
 \begin{algo}{k-Nearest Neighbor}
-\textbf{Input:} $k\in\mathbb{N}$ and $x\in \mathbb{X}$ where $\mathbb{X}$ is the instance space.
+\textbf{Input:} $k\in\mathbb{N}$ and $x\in \mathbb{X}$ where $\mathbb{X}=(\mathbb{X}, d)$ is the instance space.
 
 \textbf{Output:} The class that appears most among the neighbors of $x$.
 \tcblower
 \begin{enumerate}
-\item Find the $k$ nearest neighbors of the point $x$.
+\item Find the $k$ nearest neighbors (using $d$) of the point $x$.
 \item Count which class appears most among the neighbors of $x$ and return this class.
 \end{enumerate}
 \end{algo}
@@ -139,8 +136,8 @@ If there appears a tie between the numbers of classes among the neighbors of $x$
 
 The remaining question is how to choose the the number of neighbors $k$ that is taken into account. There is no definite answer to this question but there are a few rules of thumb that can be applied:
 \begin{itemize}
-\item If $k=1$ then the hypothesis (=classifier) is guaranteed to be consistent with the examples but it is likely to overfit.
-\item The larger $k$ is chosen the simpler the hypothesis gets but at some point the hypothesis will start to over-simplify. For example if we choose $k$ as high as the number of available points $x_i$.
+\item If $k=1$, then the hypothesis (=classifier) is guaranteed to be consistent with the examples but it is very likely to overfit.
+\item The larger $k$ is chosen, the simpler the hypothesis gets but at some point the hypothesis will start to over-simplify. For example if we choose $k$ as high as the number of available points $x_i$.
 \item The best value of $k$ depends on the application or can be learned by Machine Learning techniques too.
 \end{itemize}
 
@@ -148,10 +145,10 @@ The remaining question is how to choose the the number of neighbors $k$ that is 
 \subsection{Decision Trees}
 \label{syntax_dec_trees}
 A decision tree represents a finite-valued function on feature vectors.\\
-Decision trees are only defined for functions that have finite-valued features and finitely many output values. If there are numerical values they are partitioned into finitely many intervals.
+Decision trees are only defined for functions that have finite-valued features and finitely many output values. If there are numerical values, they are partitioned into finitely many intervals.
 
 \subsubsection{Syntax of Decision Trees}
-A decision tree is a rooted tree with labeled nodes and edges. It has the following properties:
+A decision tree is a tree with labeled nodes and edges. It has the following properties:
 \begin{itemize}
 \item Every internal node is labeled with a feature.
 \item Every edge is labeled by a value or range of values from the feature in the source node.
@@ -170,56 +167,56 @@ Lets assume we want to use a decision tree to find out on which occasions the au
 \end{itemize}
 
 
-We have the following data\footnote{Not based on real experience.}:\\
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-Example & Exam next day & Assignments done & Start lecture & Also hungry & Output \\
-\hline
-\hline
-$x_1$ & no & yes & 8:30 & yes & mo \\
-\hline
-$x_2$ & yes & no & 12:30 & yes & no \\
-\hline
-$x_3$ & no & no & 12:30 & yes & yes \\
-\hline
-$x_4$ & yes & yes & 10:30 & no & no \\
-\hline
-\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
-\end{tabular}
+%We have the following data\footnote{Not based on real experience.}:\\
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%Example & Exam next day & Assignments done & Start lecture & Also hungry & Output \\
+%\hline
+%\hline
+%$x_1$ & no & yes & 8:30 & yes & mo \\
+%\hline
+%$x_2$ & yes & no & 12:30 & yes & no \\
+%\hline
+%$x_3$ & no & no & 12:30 & yes & yes \\
+%\hline
+%$x_4$ & yes & yes & 10:30 & no & no \\
+%\hline
+%\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+%\end{tabular}
+%
+%From this a decision tree that looks like this can be created:
+%\begin{figure}
+%\centering
+%\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+%            scale = 0.75,transform shape]
+%  \tikzset{elliptic state/.style={draw,ellipse}}
+%
+% \node[state, draw=none,fill=none] (Ex) {$Exam$};
+%\node[state, draw=none,fill=none] (Done) [below left of=Ex] {$Done$};
+%  \node[state, draw=none,fill=none] (Start) [below left of=Done, xshift=-1.5cm] {$Start$};
+%  \node[state, draw=none,fill=none] (Hungry) [below right of=Done] {$Hungry$};
+%  \node[state, draw=none,fill=none] (Start 2) [below left of=Hungry] {$Start$};
+%  \node[state, draw=none,fill=none] (no1) [below right of=Ex] {$no$};
+%  \node[state, draw=none,fill=none] (no2) [below left of=Start] {$no$};
+%  \node[state, draw=none,fill=none] (yes2) [below right of=Start] {$yes$};
+%  \node[state, draw=none,fill=none] (no3) [below left of=Start 2] {$no$};
+%  \node[state, draw=none,fill=none] (yes3) [below right of=Start 2] {$yes$};
+%  \node[state, draw=none,fill=none] (no4) [below right of=Hungry] {$no$};
+%
+%  \path (Ex) edge              node {$yes$} (no1)
+%        (Ex) edge              node {$no$} (Done)
+%        (Done) edge            node {$yes$} (Start)
+%        (Done) edge            node {$no$} (Hungry)
+%        (Start) edge           node {$8:30$} (no2)
+%        (Start) edge           node {$other$} (yes2)
+%        (Hungry) edge          node {$yes$} (Start 2)
+%        (Hungry) edge          node {$no$} (no4)
+%        (Start 2) edge         node {$other$} (no3)
+%        (Start 2) edge         node {$12:30$} (yes3);
+%\end{tikzpicture}
+%\end{figure}
 
-From this a decision tree that looks like this can be created:
-\begin{figure}
-\centering
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
-            scale = 0.75,transform shape]
-  \tikzset{elliptic state/.style={draw,ellipse}}
-
-  \node[state, draw=none,fill=none] (Ex) {$Exam$};
-  \node[state, draw=none,fill=none] (Done) [below left of=Ex] {$Done$};
-  \node[state, draw=none,fill=none] (Start) [below left of=Done, xshift=-1.5cm] {$Start$};
-  \node[state, draw=none,fill=none] (Hungry) [below right of=Done] {$Hungry$};
-  \node[state, draw=none,fill=none] (Start 2) [below left of=Hungry] {$Start$};
-  \node[state, draw=none,fill=none] (no1) [below right of=Ex] {$no$};
-  \node[state, draw=none,fill=none] (no2) [below left of=Start] {$no$};
-  \node[state, draw=none,fill=none] (yes2) [below right of=Start] {$yes$};
-  \node[state, draw=none,fill=none] (no3) [below left of=Start 2] {$no$};
-  \node[state, draw=none,fill=none] (yes3) [below right of=Start 2] {$yes$};
-  \node[state, draw=none,fill=none] (no4) [below right of=Hungry] {$no$};
-
-  \path (Ex) edge              node {$yes$} (no1)
-        (Ex) edge              node {$no$} (Done)
-        (Done) edge            node {$yes$} (Start)
-        (Done) edge            node {$no$} (Hungry)
-        (Start) edge           node {$8:30$} (no2)
-        (Start) edge           node {$other$} (yes2)
-        (Hungry) edge          node {$yes$} (Start 2)
-        (Hungry) edge          node {$no$} (no4)
-        (Start 2) edge         node {$other$} (no3)
-        (Start 2) edge         node {$12:30$} (yes3);
-\end{tikzpicture}
-\end{figure}
-
-As seen, the function value for an input vector $x$ is the value at the leaf of the unique path in the tree whose edges are labeled by the feature values in $x$.
+%As seen, the function value for an input vector $x$ is the value at the leaf of the unique path in the tree whose edges are labeled by the feature values in $x$.
 
 The following algorithm is used to build decision trees:
 
@@ -252,7 +249,9 @@ Computing a smallest decision tree for a given set of examples is NP-complete.
 This can be proven by a reduction from Vertex Cover.
 
 \subsubsection{Representation of Boolean Formulas as Decision Trees}
+\begin{theo}{Boolean Formulas as Decision Trees}
 Let $\mathbb{B} \coloneqq \{0,1\}$ be the the Boolean domain and $f:\mathbb{B}^n\rightarrow \mathbb{B}$ be a Boolean function that can be represented by a decision tree of height $k$. Then $f$ can be represented by both a $k$-CNF\footnote{CNF = conjunctive normal form with clauses (= disjunctions of literals) of at most $k$ literals.} and a $k$-DNF\footnote{DNF = disjunctive normal form with terms (=conjunctions of literals) of at most $k$ literals.}.
+\end{theo}
 
 %\begin{proof}
 %For the $k$-DNF take a term for every path of the decision tree that leads to a true leaf.\\
@@ -262,14 +261,11 @@ Let $\mathbb{B} \coloneqq \{0,1\}$ be the the Boolean domain and $f:\mathbb{B}^n
 
 
 \subsection{The Perceptron}
-The perceptron algorithm is a linear classification algorithm. The goal is to lean an unknown target function \mbox{$f:\mathbb{R}^\ell \rightarrow \{1,-1\}$.}\\
-This means we have an input vector and want to decide if it belongs to one of two classes. For example we could have a vector of different numerical values that describe an animal. From these values we want to classify if it is a bird or a mammal.
-
-The input of the learning algorithm is a sequence of the form
+The perceptron algorithm is a linear classification algorithm. The goal is to learn an unknown target function \mbox{$f:\mathbb{R}^\ell \rightarrow \{1,-1\}$.} The input of the learning algorithm is a sequence of the form
 \[
 S=((x_1,y_1),\ldots (x_m,y_m))\in\mathbb{R}^\ell\times\{1,-1\}.
 \]
-The hypothesis space consists of linear separators, that is, functions $h:\mathbb{R}^\ell \rightarrow \mathbb{R}$ of the form
+The hypothesis space consists of linear separators, meaning, functions $h:\mathbb{R}^\ell \rightarrow \mathbb{R}$ of the form
 \[
 h(x)=\text{sgn}(\langle w,x\rangle -b)=
 \begin{cases}
@@ -278,9 +274,9 @@ h(x)=\text{sgn}(\langle w,x\rangle -b)=
 -1 & \text{if } \langle w,x\rangle-b < 0  \\
 \end{cases}
 \]
-for some a weight vector $w\in\mathbb{R}^\ell$ and a bias $b\in\mathbb{R}$.
+for some a weight vector $w\in\mathbb{R}^\ell$ and a bias $b\in\mathbb{R}$. (Note that $\langle a,b\rangle$ denotes the scalar product.)
 
-Formally a linear classification problem is not realizable, because the target function has the range $\{+1, -1\}$ and all hypotheses have the range $\{+1, 0, -1\}$ (therefore three instead of two classes). This can be solved by using a target function of the following form
+Formally a linear classification problem is not realizable (Reminder: A learning problem is realizable if the target function is in the hypothesis space.), because the target function has the range $\{+1, -1\}$ and all hypotheses have the range $\{+1, 0, -1\}$ (therefore three instead of two classes). This can be solved by using a target function of the following form
 \[
 f(x)=
 \begin{cases}
@@ -298,7 +294,7 @@ A hypothesis $h$ is consistent with the training sequence $S=((x_1,y_1),\ldots (
 \begin{defi}{Homogeneous linear separator}
 A homogeneous linear separator is a function of the form $x\mapsto \text{sgn}(\langle w,x\rangle)$.
 \end{defi}
-Therefore a homogeneous linear separator is a linear separator without the bias.
+Therefore a homogeneous linear separator is a linear separator without bias.
 
 %TODO Observation 1.9 and 1.9 on slide 1.43 are missing here
 
@@ -308,7 +304,9 @@ Suppose we have a training sequence $S=((x_1,y_1),\ldots (x_m,y_m))$ with $x_i=(
 \[
 x_i\mapsto\hat{x_i} \coloneqq \frac{x_i'}{\max_{1\leq j\leq m} \parallel x_j'\parallel}
 \]
-to the data points $x_i$ where $x_i'\coloneqq (x_{i1},\ldots,x_{i\ell},1)$. The normalized training sequence
+to the data points $x_i$ where $x_i'\coloneqq (x_{i1},\ldots,x_{i\ell},1)$.
+
+The normalized training sequence
 \[
 \hat{S}=((\widehat{x_1},y_1,\ldots,(\hat{x_m},y_m))
 \]
@@ -319,17 +317,15 @@ has the following properties that are often very useful to work with:
 \end{itemize}
 
 \subsubsection{Algorithm for the Perceptron}
-The following algorithm is the practical implementation of described concept.
-
 \begin{halfboxl}
 \vspace{-\baselineskip}
 \begin{algo}{Perceptron Algorithm}
 {
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Objective:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
   \begin{algorithmic}[1]
   \Require Normalized training sequence $S$.
-  \Ensure Compute weight vector $w$ such that the hypothesis $x\mapsto \text{sgn}(\langle w,x\rangle)$ is consistent with $S$.
+  \Ensure Weight vector $w$ such that the hypothesis $x\mapsto \text{sgn}(\langle w,x\rangle)$ is consistent with $S$.
   \State $w \leftarrow 0$
   \Repeat
   \For{ all $(x,y)\in S$}
@@ -345,11 +341,13 @@ The following algorithm is the practical implementation of described concept.
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Runtime of the perceptron algorithm}
-Let $S$ be a normalized sequence of examples such that there is a homogeneous linear separator consistent with $S$ of margin $\gamma$. Then the perceptron algorithm applied to $S$ finds a linear separator after at most $\frac{1}{\gamma^2}$ updates of $w$.
+Let $S$ be a normalized sequence of examples such that there is a homogeneous linear separator consistent with $S$ of margin $\gamma$.\\
+Then the perceptron algorithm applied to $S$ finds a linear separator after at most $\frac{1}{\gamma^2}$ updates of $w$.
 \end{theo}
 
 \begin{defi}{Margin of a linear separator}
-Let $h:x\mapsto \text{sgn}(\langle w,x\rangle)$ be a linear separator consistent with a sequence $S$ of examples. The margin of $h$ with respect to $S$ is
+Let $h:x\mapsto \text{sgn}(\langle w,x\rangle)$ be a linear separator consistent with a sequence $S$ of examples.\\
+The margin of $h$ with respect to $S$ is
 \[
 \min_{(x,y)\in S} |\langle w,x\rangle|
 \]
@@ -371,8 +369,8 @@ The perceptron algorithm always finds linear separators if they exist and does t
 %A setting like this is called deep learning when the weight vectors $w^{(v)}$ and the biases $b^{(v)}$ of the nodes can be changed. The standard algorithm carrying out this process is known as backpropagation with stochastic gradient descent.
 
 \subsection{k-Means Clustering}
-The goal of k-means clustering is to put a collection of data points into $k$ clusters. In the context of the lecture $k$ is fixed in advance. Clustering is an example of an unsupervised learning problem.\\
-Formally the problem is defined as follows.
+The goal of k-means clustering is to put a collection of data points into $k$ clusters. In the context of the lecture $k$ is fixed in advance. Clustering is an unsupervised learning problem.\\
+%Formally the problem is defined as follows.
 
 \begin{defi}{Centroid Clustering Problem}
 Instance: Data points $x_1,..., x_n\in\mathbb{R}^\ell, \ k\in\mathbb{N}$ \\
@@ -398,19 +396,13 @@ This problem can solved by using the $k$-means algorithm.
   	\State $j\leftarrow argmin_j \parallel x_i - z^j \parallel$ \Comment{If there is a tie choose the smallest $j$}
   	\State add $x_i$ to $C^j$
   \EndFor
-  $z^j\leftarrow \frac{\sum_{x\in C^j}x}{|C^j|}$ for all $j\in [1,k]$
+  \State $z^j\leftarrow \frac{\sum_{x\in C^j}x}{|C^j|}$ for all $j\in [1,k]$
   \Until{$C^1, ..., C^k$ no longer change}
   \end{algorithmic}
 }
 \end{algo}
 
 \subsubsection{Properties and Complexity}
-\begin{theo}{Runtime of the k-means algorithm}
-The k-Means algorithm always halts in a finite number of steps.
-\end{theo}
-This number of steps can be exponential in the number $n$ of input points but in practice the algorithm usually converges quickly.
-
-The k-Means algorithm does not necessarily compute an optimal solution for the Centroid Clustering problem. The found clustering can depend on the chosen initial centroids.
 
 \begin{theo}{Complexity of Centroid Clustering}
 The following properties apply for the complexity of centroid clustering:
@@ -419,6 +411,14 @@ The following properties apply for the complexity of centroid clustering:
 \item If both $k$ and $\ell$ are fixed, the problem can be solved in polynomial time.
 \end{enumerate}
 \end{theo}
+
+\begin{theo}{Runtime of the k-means algorithm}
+The k-Means algorithm always halts in a finite number of steps. This number of steps can be exponential in the number $n$ of input points but in practice the algorithm usually converges quickly.
+\end{theo}
+
+The k-Means algorithm does not necessarily compute an optimal solution for the Centroid Clustering problem. The found clustering can depend on the chosen initial centroids.
+
+
 
 \section{Information and Compression}
 \subsection{Entropy}
@@ -432,25 +432,31 @@ a single event in a probability space in such a way that it only depends on the 
 \item The joint information content of two independent events is the sum of their individual information contents. In detail, if $A$ and $B$ are independent events then the information content of $A\cap B$ is equal to the sum of the information content of $A$ and the information content of $B$.
 \end{itemize}
 
-The following Theorem is rather technical but leads to the concept of information content below.
+%This one is only used in a proof and not really needed in the Panikzettel
 
-\begin{theo}{Existence of a Bias}
-Let $f:(0,1]\rightarrow \mathbb{R}$ be a function satisfying the following conditions:
-\begin{enumerate}[label=(\roman*)]
-\item $f(1)=0$
-\item If $0 < x < y \leq 1$ then $f(x)>f(y)$
-\item $f(xy)=f(x)+f(y)$ for all $x,y\in (0,1]$
-\end{enumerate}
-Then there is a $b>1$ such that $f(x)=\log_b \frac{1}{x}$ for all $x\in (0,1]$.
-\end{theo}
+%\begin{theo}{Existence of a Bias}
+%Let $f:(0,1]\rightarrow \mathbb{R}$ be a %function satisfying the following conditions:
+%\begin{enumerate}[label=(\roman*)]
+%\item $f(1)=0$
+%\item If $0 < x < y \leq 1$ then $f(x)>f(y)$
+%\item $f(xy)=f(x)+f(y)$ for all $x,y\in (0,1]$
+%\end{enumerate}
+%Then there is a $b>1$ such that $f(x)=\log_b %\frac{1}{x}$ for all $x\in (0,1]$.
+%\end{theo}
 
 
-The only way to assign an information content $I(A)$ to events $A$ of a finite probability space $(\Omega, \mathcal{P})$ such that all our requirements are satisfied is by letting $I(A)=\log_b \frac{1}{\mathcal{P}(A)}$ for some basis $b > 1$.
+We assign an information content $I(A)$ to events $A$ of a finite probability space $(\Omega, \mathcal{P})$ such that all our requirements are satisfied by letting $I(A)=\log_b \frac{1}{\mathcal{P}(A)}$ for some basis $b > 1$.
 
-It is natural to choose 2 as the basis of the logarithm, so that we can measure the information content in bits. Thus the definition of the information content of an event $A$ is
+It is natural to choose 2 as the basis of the logarithm, so that we can measure the information content in bits.
+
+\begin{defi}{Information Content}
+The \emph{information content} of an event $A$ is
 \[
 I(A)=\log_2 \left(\frac{1}{\mathcal{P}(A)}\right).
 \]
+\end{defi}
+
+
 
 \subsubsection{Entropy}
 The entropy is the expected information value of an event $\omega$. Therefore it is a measure for the average information we can obtain by observing outcomes of probability distribution $\mathcal{P}$.
@@ -460,7 +466,7 @@ The entropy is the expected information value of an event $\omega$. Therefore it
 \begin{defi}{Entropy of a Probability Distribution}
 The entropy of a probability distribution $\mathcal{P}$ on a finite sample space $\Omega$ is defined as
 \[
-H(\mathcal{P})\coloneqq \sum_{\omega\in\Omega}\mathcal{P}(\{\omega \})\cdot \log\frac{1}{\mathcal{P}(\{\omega \})}.
+H(\mathcal{P})\coloneqq \sum_{\omega\in\Omega}\mathcal{P}(\{\omega \})\cdot \log_2\frac{1}{\mathcal{P}(\{\omega \})}.
 \]
 To avoid the case where the denominator is 0 we define $0\cdot \log (\frac{1}{0})=0$. Alternatively sum only over the event with $\mathcal{P}(\omega)>0$.
 \end{defi}
@@ -469,48 +475,55 @@ To avoid the case where the denominator is 0 we define $0\cdot \log (\frac{1}{0}
 \vspace{-\baselineskip}
 \begin{defi}{Entropy of a Random Variable}
 The entropy of a random variable $X$ with finite range is defined as
+{\small{}
 \[
-H(X)\coloneqq \sum_{x\in range(X)}Pr(X=x)\cdot\log \frac{1}{Pr(X=x)}
-\]
+H(X)\coloneqq \sum_{x\in range(X)}Pr(X=x)\cdot\log_2 \frac{1}{Pr(X=x)}
+\]}
 \end{defi}
 \end{halfboxr}
 
-It is also possible to view entropy as a measure of disarray. This means a low entropy means that after drawing a high number of samples from a distribution we will not see much variation. In the edge case of zero entropy drawing will always return the the same element from the sample space. On the other hand, high entropy means that after drawing a high number of samples we see many different elements in an arbitrary order.
+As an intuition, it is also possible to view entropy as a measure of disarray. This means a low entropy means that after drawing a high number of samples from a distribution we will not see much variation. In the edge case of zero entropy drawing will always return the the same element from the sample space. On the other hand, high entropy means that after drawing a high number of samples we see many different elements in an arbitrary order.
 
 %This is also called chaos\footnote{\href{https://warhammer40k.fandom.com/wiki/Khorne}{Blood for the Blood Good! Skull for the Skull Throne!}} because of the physicists interpretation of entropy.
-
-%TODO An example could be nice. This is very technical
 
 \subsubsection{Entropy for Decision Tree Learning}
 \label{entropy_decision_trees}
 We need a measurement for the information content of a feature in order to choose the next node in decision tree learning. Thus we use the concept of entropy to find the feature that discriminates best.
 
-In the decision tree setting we have a set $S$ of labeled examples $(x,y)$, where $x$ is the feature vector over $\mathcal{A}$ and $y\in\mathbb{Y}$ is the target value. With other words words we have something like the table in the example in section \ref{syntax_dec_trees}.\\
-Then we let $\mathcal{P}$ be the probability distribution  on $\mathbb{Y}$ be defined  as
-\[
-P(\{y \})\coloneqq \frac{|\{(x,y')\in S \mid y'=y \}|}{|S|}.
-\]
-Therefore $P(\{y \})$ is the probability that an example chosen uniformly at random from $S$ has the target value $y$.
-
-Further, let $S_{A=x}$ be the set which consists of all examples in $S$ with the $\mathcal{A}$-value $x$. Then we can define the probability $\mathcal{P}_{A=x}(\{y\})$ that an example chosen uniformly and random from $S_{A=x}$ has the target value $y$ as
-\[
-P(\{y \})\coloneqq \frac{|\{(x,y')\in S_{A=x} \mid y'=y \}|}{|S_{A=x}|}.
-\]
+%Then we let $\mathcal{P}$ be the probability distribution  on $\mathbb{Y}$ be defined  as
+%\[
+%P(\{y \})\coloneqq \frac{|\{(x,y')\in S \mid y'=y \}|}{|S|}.
+%\]
+%Therefore $P(\{y \})$ is the probability that an example chosen uniformly at random from $S$ has the target value $y$.
+%
+%Further, let $S_{A=x}$ be the set which consists of all examples in $S$ with the $\mathcal{A}$-value $x$. Then we can define %the probability $\mathcal{P}_{A=x}(\{y\})$ that an example chosen uniformly and random from $S_{A=x}$ has the target value $y$ %as
+%\[
+%P(\{y \})\coloneqq \frac{|\{(x,y')\in S_{A=x} \mid y'=y \}|}{|S_{A=x}|}.
+%\]
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
+    In the decision tree setting we have a set $S$ of labeled examples $(x,y)$, where $x$ is the feature vector over $\mathcal{A}$ and $y\in\mathbb{Y}$ is the target value. \\
 	With this we can describe the information gain of a feature $A$ as the difference between the entropies of $\mathcal{P}$ and $\mathcal{P}_{A=x}$ weighted by the relative size of $S_{A=x}$.
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{defi}{Information Gain}
+	Let $H(\mathcal{P})$ be the entropy of the probability distribution and $\mathbb{D}_A$ is the set of all possibles values of the feature $A$. The \emph{information gain} of feature $A$ is then
 	\[
 	G(S,A)\coloneqq H(\mathcal{P}) -\sum_{x\in\mathbb{D}_A}\frac{|S_{A=x}|}{|S|}\cdot H(\mathcal{P}_{A=x}).
 	\]
 	\end{defi}
 \end{halfboxr}
 
-Very many words but after all it is only the very formal explanation on how to find the attribute $A$ that has the highest information content. As mentioned in section \ref{syntax_dec_trees} it is a good strategy to choose the attribute $A$ that maximizes the entropy $G(S,A)$ when building a decision tree.
+%Very many words but after all it is only the very formal explanation on how to find the attribute $A$ that has the highest information content. As mentioned in section \ref{syntax_dec_trees} it is a good strategy to choose the attribute $A$ that maximizes the entropy $G(S,A)$ when building a decision tree.
+
+Step by step:
+\begin{enumerate}
+    \item Compute the total entropy $H(\mathcal{H})$.
+    \item Compute all $H(\mathcal{P}_{A=x})$ where the different $x$ are the different values of the respective feature $A$.
+    \item Compute information gain and choose feature with the highest gain.
+\end{enumerate}
 
 \subsection{Compression}
 In the previous section we established that entropy is the average information of a sample $\omega$ from a probability distribution $\mathcal{P}$. This can be interpreted in two ways.
@@ -519,22 +532,20 @@ In the previous section we established that entropy is the average information o
 \item Suppose we have a string consisting of independently sampled symbols from a probability distribution. Then the information content of the distribution should measure how well we can compress this string.
 \end{enumerate}
 
-If we speak about compression we want to compress strings over a finite source alphabet $\Sigma$ with $|\Sigma|\geq 2$. We encode the compressed string as a binary string. Therefore the target alphabet is $\{0,1\}$.
+Compression means we want to compress strings over a finite source alphabet $\Sigma$ with $|\Sigma|\geq 2$. We encode the compressed string as a binary string. Therefore the target alphabet is $\{0,1\}$.
 
 \begin{defi}{Compression Scheme}
-A compression scheme over $\Sigma$ is a pair $\Gamma=(com_\Gamma, dec_\Gamma)$ where $com_\Gamma: \Sigma^* \rightarrow \{0,1\}^*$ is a compression mapping and $dec_\Gamma:\{0,1\}^*\to \Sigma^*$ is a decompression mapping.
+A compression scheme over $\Sigma$ is a pair $\Gamma=(com_\Gamma, dec_\Gamma)$ where $com_\Gamma: \Sigma^* \rightarrow \{0,1\}^*$ is a compression mapping and $dec_\Gamma:\{0,1\}^*\to \Sigma^*$ is a decompression mapping. (In the lecture the index $\Gamma$ is often omitted).\\
+A lossless compression means that $dec(com(x))=x$ for all $x\in\Sigma^*$.\\
 \end{defi}
 
-In the lecture the index $\Gamma$ is often omitted\footnote{ Maybe we will do that too in this Panikzettel. Depends on our motivation to write formally correct.}.
-
-The goal when developing compression schemes is to find a lossless scheme. Lossless means that $dec(com(x))=x$ for all $x\in\Sigma^*$.\\
-A good compression rate is also a favorable thing for a compression scheme.
+The goal when developing compression schemes is to find a scheme with a low loss and a good compression rate.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
-	Intuitively, the compression rate of a scheme $\Gamma$ is the maximum rates of $\Gamma$ on all string in $\Sigma^*$. But since this maximum does not necessarily exists, we define the compression rate for each string of length $n$ separately. Thus the compression rate $\Gamma$ can also be described as on the right.
+	Intuitively, the compression rate of a scheme $\Gamma$ is the maximum compression rate of $\Gamma$ on all strings in $\Sigma^*$. But since this maximum does not necessarily exist, we define the compression rate for each string of length $n$ separately. Thus the compression rate $\Gamma$ is described as on the right.
 	It makes sense to take the size of the source alphabet $\Sigma$ into account. The source alphabet can be very large and has to be encoded as a binary string. This requires $\lceil\log |\Sigma|\rceil$ bits per symbol.\\
-	Thus we can say that a compression scheme $\Gamma$ actually achieves compression when
+	Thus we say that a compression scheme $\Gamma$ actually achieves compression when
 	\[
 	com(x)<|x| \cdot \lceil \log |\Sigma| \rceil \ \forall x
 	\]
@@ -546,17 +557,19 @@ A good compression rate is also a favorable thing for a compression scheme.
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{defi}{Compression Rate}
-	The compression rate of a scheme $\Gamma$ on a string $x$ is
+	Compression rate of scheme $\Gamma$ on string $x$:
+	\vspace{-0.5\baselineskip}
 	\[
 	\frac{|com_\Gamma(x)|}{|x|}.
 	\]
-	\end{defi}
-	\begin{defi}{Compression Rate as a Function}
-	The compression rate of $\Gamma$ is the function $\rho_\Gamma:\mathbb{N}\to \mathbb{R}$ is defined as
+
+	As a function, the compression rate of $\Gamma$ is $\rho_\Gamma:\mathbb{N}\to \mathbb{R}$ defined as
+	\vspace{-0.5\baselineskip}
 	\[
 	\rho_\Gamma(n)\coloneqq \max_{x\in\Gamma^n}\frac{|com(x)|}{|x|}.
 	\]
 	\end{defi}
+
 	\begin{theo}{Existence of Lossless Compression}
 	Let $n\in\mathbb{N}$. There is no lossless compression scheme $\Gamma$ such that $\rho_\Gamma(n)<\log |\Sigma|$.
 	\end{theo}
@@ -565,7 +578,7 @@ A good compression rate is also a favorable thing for a compression scheme.
 It is easy to see why there can not be a lossless compression. We assumed we use the most efficient code. Therefore it is impossible to use less bits to display the same information. As a consequence compression schemes are always a trade-off between actual compression and losslessness. %yes the spelling is correct
 
 \subsubsection{Generating the Input Strings}
-This part is kinda obvious but we will give the formal definition here to avoid confusion later on. Depending on the panic level the reader could skip this subsection.
+% This part is kinda obvious but we will give the formal definition here to avoid confusion later on. Depending on the panic level the reader could skip this subsection.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
@@ -582,8 +595,8 @@ This part is kinda obvious but we will give the formal definition here to avoid 
 	\end{defi}
 \end{halfboxr}
 
-\subsection{Compression Strategies}
-As mentioned above there is not perfect compression because it is always a trade-off between loss and actual compression. But there are a few concept which are considered as good trade-offs. To describe them we need the concept of loss rates.
+\subsection{Compression by Focusing on Common Strings}
+As mentioned above there is no perfect compression because it is always a trade-off between loss and actual compression. One such trade-off is the following concept.
 
 \begin{defi}{Loss Rate}
 Let $\Gamma$ be a compression scheme over $\Sigma$. The loss rate of $\Gamma$ is the probability that a compressed string is decomposed correctly. This is only defined for strings of length $n$:
@@ -592,9 +605,8 @@ Let $\Gamma$ be a compression scheme over $\Sigma$. The loss rate of $\Gamma$ is
 \]
 \end{defi}
 
-\subsubsection{Lossy Compression}
-In practical applications there are often string in $\Sigma^n$ that occur significantly more often. These string are the set $S$. The idea for the lossy compression is to focus on only these common strings $S$, ignore the remaining strings $\Sigma^n \setminus S$ and write them off as losses. Therefore, all strings that are not in $S$ are compressed to the same target value.\\
-The strings in $S$ are losslessly compressed into binary strings of length $\{0,1 \}^{\lceil\log |S| \rceil}$.
+In practical applications there are often strings in $\Sigma^n$ that occur significantly more often. These string are the set $S$. The idea for the lossy compression is to focus on only these common strings $S$, ignore the remaining strings $\Sigma^n \setminus S$ and write them off as losses. Therefore, all strings that are not in $S$ are compressed to the same target value.\\
+The strings in $S$ (thus the common and important ones) are losslessly compressed into binary strings of length $\{0,1 \}^{\lceil\log |S| \rceil}$.
 
 It is possible to define a compression scheme $\Gamma_\epsilon=(com_\epsilon, dec_\epsilon)$ with an upper limit $\epsilon>0$ for the loss rate during compression. To achieve this we define a compression scheme in the following way:
 \begin{enumerate}
@@ -611,7 +623,7 @@ and the restriction of $com_\epsilon$ to $S_\epsilon$ is injective.
 \item Define the decompression mapping $dec_\epsilon$ in such a way that for all $x\in S_\epsilon(n)$ we have $dec_\epsilon(com_\epsilon(x))=x$
 \end{enumerate}
 
-If the compression scheme was created by this steps the following properties for the loss rate and the compression rate.\\
+If the compression scheme was created by these steps the following properties for the loss rate and the compression rate.\\
 For the loss rate we have
 \[
 \lambda_\epsilon(n)\leq \epsilon \ \forall n\in\mathbb{N}
@@ -623,11 +635,11 @@ and for the compression rate we have
 
 %TODO lemma 2.17 from slide 2.41 is not included yet
 
-\subsubsection{Shannon’s Source Coding Theorem}
+\subsection{Shannon’s Source Coding Theorem}
 Shannon’s Source Coding Theorem determines the limits of compression. It does not give a practical compression scheme.
 
 \begin{theo}{Shannon’s Source Coding Theorem}
-\begin{enumerate}
+\begin{enumerate}[leftmargin=*]
 \item For every $\epsilon>0$ there is a compression scheme $\Gamma_\epsilon$ over $\Sigma$ such that $\lambda_{\Gamma_\epsilon, \mathcal{P}}(n)\leq \epsilon$ for all $n$ and $\lim_{n\to \infty}\rho_{\Gamma_\epsilon}(n)=H(\mathcal{P})$.
 \item There is no compression scheme $\Gamma$ such that for some $\alpha,\beta>0$ it holds that $\lambda_{\Gamma, \mathcal{P}}(n)\leq 1-\alpha$ and $\rho_\Gamma(n)\leq H(\mathcal{P})-\beta$ for infinitely many $n\in \mathbb{N}$.
 \end{enumerate}
@@ -636,21 +648,19 @@ Shannon’s Source Coding Theorem determines the limits of compression. It does 
 
 \section{Statistical Learning Theory}
 \subsection{PAC Learning Framework}
-This section introduces the formal idea of generalization of hypothesis.
-
-%TODO slide 3.9
+This section introduces the formal idea of generalization of hypotheses.
 
 \begin{defi}{Formal framework for PAC}
-\begin{itemize}
-	\item \emph{Instance space} $\mathbb{X}$
-	\item \emph{Data generating probability distribution} $\mathcal{D}$ on $\mathbb{X}$
-	\item \emph{Target function} $f^\star : \mathbb{X} \rightarrow \set{0,1}$
-	\item \emph{Training sequence} $T = ((x_1, y_1), \ldots, (x_m, y_m)) \in (\mathbb{X} \times \set{0,1})^m$
-	\item \emph{Hypothesis} $h: \mathbb{X} \rightarrow \set{0,1}$
+\begin{itemize}[leftmargin=*]
+	\item \emph{Instance space} $\mathbb{X}$,
+	\item \emph{Data generating probability distribution} $\mathcal{D}$ on $\mathbb{X}$,
+	\item \emph{Target function} $f^\star : \mathbb{X} \rightarrow \set{0,1}$,
+	\item \emph{Training sequence} $T = ((x_1, y_1), \ldots, (x_m, y_m)) \in (\mathbb{X} \times \set{0,1})^m$,
+	\item \emph{Hypothesis} $h: \mathbb{X} \rightarrow \set{0,1}$.
 \end{itemize}
 \end{defi}
 
-If the instances $x_1, \ldots, x_m$ of a training sequence are drawn independently from $\mathcal{D}$ we write $T ~ \mathcal{D}^m$.
+If the instances $x_1, \ldots, x_m$ of a training sequence are drawn independently from $\mathcal{D}$ we write $T \sim \mathcal{D}^m$.
 
 A learning algorithm gets a training sequence $T$ and produces a hypothesis $h_T$, that tries to be close to the target function.
 
@@ -669,7 +679,7 @@ A learning algorithm gets a training sequence $T$ and produces a hypothesis $h_T
 	\begin{defi}{Generalization error}
 	The generalization error of a hypothesis $h$ is
 	$$
-	\text{err}_\mathcal{D}(h) = \Pr_{x ~ \mathcal{D}}(h(x) \neq f^\star(x))
+	\text{err}_\mathcal{D}(h) = \Pr_{x \in \mathcal{D}}(h(x) \neq f^\star(x))
 	$$
 	\end{defi}
 \end{halfboxr}
@@ -703,18 +713,19 @@ h_T = \argmin_{h \in \mathcal{H}} (\text{err}_T(h) + \rho(\text{cost}(h)))
 $$
 \end{defi}
 
-\subsection{Sample Size Bounds}
+\subsection{Sample Size Bounds for Finite Hypothesis Classes}
 The problem is that a learning algorithm can only see the training error but should minimize the generalization error.
+So we want to construct situations in which the training error is close to the generalization error.
 
-So we want to construct situations in which the training error is close to the generalization error. When we then use a ERM Algorithm, minimizing the training error, we automatically minimize the generalization error, resulting in an PAC algorithm.
-
-It turns out that with sufficiently large sample sizes we can proof that with a low training error, the generalization error is also small.
+When we then use a ERM Algorithm, minimizing the training error, we automatically minimize the generalization error, resulting in an PAC algorithm.
+It turns out that with sufficiently large sample sizes we can prove that with a low training error, the generalization error is also small.
 
 %TODO slide 3.17
 We start with a bound for a realizable learning algorithm.
 
 \begin{theo}{Simple Sample Size Bound}
-Let $\mathcal{H}$ be finite, $\varepsilon, \delta > 0$ and
+%Note is here to avoid confusing because the notation is reversed between German and English
+Note $\ln(x)=\log_e(x)$. Let $\mathcal{H}$ be finite, $\varepsilon, \delta > 0$ and
 $$
 m \geq \frac{1}{\varepsilon} \ln (\frac{|\mathcal{H}|}{\delta})
 $$
@@ -758,7 +769,7 @@ $$
 The previous results are only applicable to finite hypothesis classes. We now analyze two ways to generalize to infinite classes. The first looks a the complexity of a single hypothesis, the second at the complexity of the hypothesis class.
 
 \subsubsection{Description Schemes}
-This generalization to infinite classes uses Occam's Razor, i.e. choosing the simplest consisting hypothesis. We now have to define what simplicity means in regards to hypothesis.
+This generalization to infinite classes uses Occam's Razor, meaning choosing the simplest consisting hypothesis. We now have to define what simplicity means in regards to hypothesis.
 
 \begin{defi}{Description Scheme}
 \begin{itemize}
@@ -768,10 +779,10 @@ This generalization to infinite classes uses Occam's Razor, i.e. choosing the si
 \end{itemize}
 \end{defi}
 
-\begin{theo}
+\begin{theo}{Sample Size Bounds for Infinite Hypothesis Classes}
 Let $n \in \mathbb{N}, \varepsilon, \delta > 0$ and
 $$
-m \geq \frac{1}{\varepsilon}(n \ln |\Sigma| + \ln(\frac{2}{\delta})
+m \geq \frac{1}{\varepsilon}\left( n \ln |\Sigma| + \ln(\frac{2}{\delta}) \right)
 $$
 Then for any data generation distribution $\mathcal{D}$,
 $$
@@ -789,8 +800,8 @@ The second generalization to infinite hypothesis classes is a combinatorial meas
 	\begin{defi}{VC Dimension}
 	\begin{itemize}
 		\item Let $\mathcal{H}$ be a hypothesis class.
-		\item A subset $Y \subset \mathbb{X}$ is shattered by $\mathcal{H}$ if every function $g: Y \rightarrow \set{0,1}$ is the restriction of a function in $\mathcal{H}$ to $Y$.
-		\item The VC-dimension $\text{VC}(\mathcal{H})$ is the size of the largest set shattered by $\mathcal{H}$ or $\infty$ is arbitrarily large sets are shattered.
+		\item A subset $Y \subseteq \mathbb{X}$ is shattered by $\mathcal{H}$ if every function $g: Y \rightarrow \set{0,1}$ is the restriction of a function in $\mathcal{H}$ to $Y$.
+		\item The VC-dimension $\text{VC}(\mathcal{H})$ is the size of the largest set shattered by $\mathcal{H}$ or $\infty$ if arbitrarily large sets are shattered.
 	\end{itemize}
 	\end{defi}
 \end{halfboxl}
@@ -804,85 +815,98 @@ The second generalization to infinite hypothesis classes is a combinatorial meas
 	$$
 	for a suitable constant $c$.
 	Then for any data generation distribution $\mathcal{D}$,
+	{\small{}
 	$$
-	\Pr_{T ~ \mathcal{D}^m}(\forall h \in \mathcal{H}: |\text{err}_T(h) - \text{err}_\mathcal{D}(h)| \leq \varepsilon) > 1 - \delta
-	$$
+	\Pr_{T ~ \mathcal{D}^m}(\forall h \in \mathcal{H}: |\text{err}_T(h) - \text{err}_\mathcal{D}(h)| \leq \varepsilon) > 1 - \delta.
+	$$}
 	\end{theo}
 \end{halfboxr}
 
+Most exercises for VC dimension proofs consists of the same three parts.
+\begin{enumerate}
+    \item Claim $VC(\mathcal{H})=d$. There is no formal concept to determine a correct $d$. It can be a bit of guessing and checking.
+    \item Show $VC(\mathcal{H})\geq d$ by showing there is a set of size $d$ that can be scattered by $\mathcal{H}$. In detail this means show there is a set of $d$ elements from $\mathbb{X}$ which are labeled with 0 or 1. Then show for all configurations of 1 and 0 of this set that it can be scattered by $\mathcal{H}$.
+    \item Show $VC(\mathcal{H})\leq d$ by showing all sets of size $d+1$ can not be scattered by $\mathcal{H}$.
+\end{enumerate}
+
+Another explanation with examples can also be found \href{https://towardsdatascience.com/measuring-the-power-of-a-classifier-c765a7446c1c}{here}.
+
 
 \section{Multiplicative Weight Updates}
-This section contains different Multiplicative Weight Update Algorithms. First for boolean events and then generalized version for multiple events.
+This section contains different Multiplicative Weight Update (MWU) Algorithms. First for boolean events and then a generalized version for multiple events.
 %We then take a look at applying those algorithms to boost learning algorithms and bandit learning algorithms.
 
 \subsection{MWU Algorithms}
+\subsubsection{Deterministic MWU Algorithm}
 First we introduce notation for the boolean algorithm.
 
-\begin{defi}{WM Notation}
+\begin{defi}{Weight Majority Notation}
 We have $n$ experts numbered $1, \ldots, n$ and define for every $t \geq 1$:
 \begin{itemize}
-	\item $p^{(t)} \in \set{0,1}$: price movement on day $t$ ($0$ for down, $1$ for up)
-	\item $a_i^{(t)} \in \set{0,1}$ for $i \in [n]$: advice of expert $i$ on day $t$ ($0$ for don't by, $1$ buy)
-	\item $l_i^{(t)} = \sum_{s_i}^t |a_i^{(s)} - p^{(s)}|$ for $i \in [n]$: cumulated loss of expert $i$ after $t$ days
-	\item $d^{(t)} \in \set{0,1}$: our decision on day $t$ ($0$ for don't buy, $1$ for by)
-	\item $l^{(t)} = \sum_{s=1}^t |d^{(s)} - p^{(s)}|$: our cumulated loss after $t$ days
-	\item $w_i^{(t)}$ for $i \in [n]$. The weight assigned by the algorithm to every expert
+	\item $p^{(t)} \in \set{0,1}$: Price movement on day $t$ ($0$ for down, $1$ for up),
+	\item $a_i^{(t)} \in \set{0,1} \forall i \in [n]$: Advice of expert $i$ on day $t$ ($0$ for don't by, $1$ buy),
+	\item $l_i^{(t)} = \sum_{s_i}^t |a_i^{(s)} - p^{(s)}| \forall i \in [n]$: Cumulated loss of expert $i$ after $t$ days,
+	\item $d^{(t)} \in \set{0,1}$: Our decision on day $t$ ($0$ for don't buy, $1$ for buy),
+	\item $l^{(t)} = \sum_{s=1}^t |d^{(s)} - p^{(s)}|$: Our cumulated loss after $t$ days,
+	\item $w_i^{(t)} \forall i \in [n]$: The weight assigned by the algorithm to every expert.
 \end{itemize}
 \end{defi}
 
 \begin{algo}{Weighted Majority Algorithm}
 For some constant $0 < \alpha \leq 0.5$, we initially assign weights:
-$w_i^{(1)} = 1$ for all $i \in [n]$
-We then for every $t \geq 1$ decide based on the previous weights and update the weights based on the loss:
+$w_i^{(1)} = 1 \forall i \in [n]$.
+We then, for every $t \geq 1$, compute our decision based on the previous weights and update the weights based on the loss:
 $$
 d^{(t)} =
 \begin{cases}
 1 & \text{if} \sum_{\substack{i \in [n] \\ a_i^{(t)} = 1}} w_i^{(t)} \geq \sum_{\substack{i \in [n] \\ a_i^{(t)} = 0}} w_i^{(t)} \\
 0 & \text{otherwise}
-\end{cases} \\
+\end{cases}
+\hspace{1em}
 w_i^{(t + 1)} =
 \begin{cases}
-w_i^{(t)} & \text{if} a_i^{(t)} = p^{(t)} \\
+w_i^{(t)} & \text{if } a_i^{(t)} = p^{(t)} \\
 (1 - \alpha) w_i^{(t)} & \text{otherwise}
 \end{cases} \\
 $$
 \end{algo}
 
 \begin{theo}{Weighted Majority Algorithm Analysis}
-For ever $t \geq 1$ and every $i \in [n]$
+For ever $t \geq 1$ and every $i \in [n]$,
 $$
-l^{(t)} \leq \frac{2 \ln n}{\alpha} + 2(1 + \alpha)l_i^{(t)}
+l^{(t)} \leq \frac{2 \ln n}{\alpha} + 2(1 + \alpha)l_i^{(t)}.
 $$
 \end{theo}
 
-This analysis guarantees that our losses are less than a bit more then twice the losses of the best expert.
+This theorem guarantees that our cumulated loss is bounded from above by twice the cumulated loss of the best expert.
 
-Now we take a look at a generalization to multiple events:
+\subsubsection{Randomized MWU Algorithm}
+This is a generalization to multiple events.
 
-\begin{defi}{MWU Notation}
+\begin{defi}{Multiplicative Weight Update Notation}
 \begin{itemize}
-	\item $I$: set of $n$ experts, usually $I = [n]$
-	\item $J$: set of possible events
-	\item $L \in \mathbb{R}^{I \times J}$: Loss matrix where $L_{ij}$ describes the loss of following expert $i$ when event $j$ happens, usually normalized
+	\item $I$: Set of $n$ experts, usually $I = [n]$,
+	\item $J$: Set of possible events,
+	\item $L \in \mathbb{R}^{I \times J}$: Loss matrix where $L_{ij}$ describes the loss of following expert $i$ when event $j$ happens, usually normalized.
 \end{itemize}
 We define for every $t \geq 1$:
 \begin{itemize}
-	\item $j^{(t)} \in J$: events that happens at time $t$
-	\item $w_i^{(t)}$ for $i \in I$ The weight assigned by the algorithm to every expert
+	\item $j^{(t)} \in J$: Events that happens at time $t$,
+	\item $w_i^{(t)} \forall i \in I$ The weight assigned by the algorithm to expert $i$,
 	\item A probability distribution $\mathcal{D}^{(i)}$ on $I$ defined as
 $$
-\mathcal{D}^{(t)}(\set{i}) = p_i^{(t)} = \frac{w_i^{(t)}}{\sum_{i^\prime \in I} w_{i^\prime}^{(t)}}
+\mathcal{D}^{(t)}(\set{i}) = p_i^{(t)} = \frac{w_i^{(t)}}{\sum_{i^\prime \in I} w_{i^\prime}^{(t)}},
 $$
-	\item $L^{(t)} = \sum_{i \in I} p_i^{(t)} L{ij^{(t)}}$: our expected loss when choosing the expert according to the probability distribution
+	\item $L^{(t)} = \sum_{i \in I} p_i^{(t)} L_{ij^{(t)}}$: Our expected loss when choosing the expert according to the probability distribution.
 \end{itemize}
 \end{defi}
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
-\begin{algo}{Multiplicative Weight Update Algorithm}
+\begin{algo}{Multiplicative Weight Update Algorithm (= Randomized MWU)}
 For some constant $0 < \alpha < 1$, we initially assign weights:
-$w_i^{(1)} = 1$ for all $i \in I$
-We then for every $t \geq 1$ update the weights based on the loss:
+$w_i^{(1)} = 1$ for all $i \in I$.
+We then, for every $t \geq 1$, update the weights based on the loss:
 $$
 w_i^{(t + 1)} =  (1 - \alpha)^{L_{ij^{(t)}}} w_i^{(t)}
 $$
@@ -891,18 +915,18 @@ $$
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Multiplicative Weight Update Algorithm Analysis}
-For ever $t \geq 1$ and every $i \in I$
+For ever $t \geq 1$ and every $i \in I$,
 $$
-\sum_{s = 1}^t L^{(s)} \leq \frac{\ln n}{\alpha} + (1 + \alpha) \sum_{s = 1}^t L_{ij^{(s)}}
+\sum_{s = 1}^t L^{(s)} \leq \frac{\ln n}{\alpha} + (1 + \alpha) \sum_{s = 1}^t L_{ij^{(s)}}.
 $$
 \end{theo}
-This analysis guarantees that we have an upper bound on the expected loss independent of the happening events.
+This theorem guarantees that we have an upper bound on the expected loss over all time-steps independent of the happening events.
 \end{halfboxr}
 
 %TODO slide 4.11
 
 \subsection{Boosting Weak Learning Algorithms}
-This section will present some techniques to improve the performance of classification algorithms.
+This section will present some techniques to improve the performance of classification algorithms using Multiplicative Weight Updates.
 
 \begin{defi}{Strong Learner}
 A learning algorithm that produces a hypothesis $h_T$ on input $T$ is PAC learning algorithm or a strong learner if for all $\epsilon,\delta>0$ there is an $m=m(\epsilon,\delta)$ such that for every probability distribution $\mathcal{D}$ on $\mathbb{X}$
@@ -1003,9 +1027,9 @@ err_T(h)<\epsilon.
 \end{halfboxr}
 
 \subsubsection{Run-time of the Boosting Algorithm}
-The running time of the boosting algorithm is largely depending on on the calls to the weak learner $\mathcal{L}$. If $\mathcal{L}$ has a short running time then the boosting algorithm has a short running time too.
+The running time of the boosting algorithm largely depends on on the calls to the weak learner $\mathcal{L}$. If $\mathcal{L}$ has a short running time, then the boosting algorithm has a short running time too.
 
-For the number of rounds, if we want that the final hypothesis classifies all examples correctly need $\epsilon\approx\frac{1}{n}$ steps. Therefore the MWU algorithm is run for $\mathcal{O}(\log n)$ rounds.
+For the number of rounds: If we want that the final hypothesis classifies all examples correctly, we need $\epsilon\approx\frac{1}{n}$ steps. Therefore the MWU algorithm is executed $\mathcal{O}(\log n)$ rounds.
 
 \subsection{Bandit Learning}
 The bandit learning problem is a reinforcement learning problem. In it we have a set of $n$ slot machines also called \href{https://en.wikipedia.org/wiki/Slot_machine}{one-armed bandits}. All the of machines have a different internal setting. Therefore some of them give a higher reward (= more money) in average then others.\\
@@ -1042,7 +1066,7 @@ A strategy or algorithm $A$ picks an action $a^{(t)}$ on each round $t$ only dep
 \end{defi}
 \end{halfboxr}
 
-The choice in such a strategy can be random. Therefore, $a^{(t)}$ is drawn accordingly to some probability distribution $\mathcal{D}^{(t)}$ on $[1,n]$.
+The choice in such a strategy can be random. Then, $a^{(t)}$ is drawn according to some probability distribution $\mathcal{D}^{(t)}$ on $[1,n]$.
 
 \begin{defi}{Reward and Regret of a Strategy}
 The expected reward of a strategy $A$ at time $t$ is
@@ -1109,25 +1133,26 @@ r(Exp3)\leq 2.63 \cdot \sqrt{q_{\max}^{(t)}\cdot n \cdot \ln(n)}.
 
 \section{High Dimensional Data}
 \subsection{The Strange Geometry of High-Dimensional Spaces}
-This section is mainly to illustrate how weird high dimensional spaces can be. (Was also in exercises so still worth reading.)
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{Volume of High Dimensional-Objects}
 	Let $X\subseteq \mathbb{R}^\ell$. Then $vol(X)$ is the volume of $X$.\\
-	The volume is only defined for measurable sets. Therefore there are some sets whose volume is not defined.
+	The volume is only defined for measurable sets.
 	\end{defi}
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{theo}{Properties of High-Dimensional Objects}
-	\begin{itemize}
+	\begin{itemize}[leftmargin=*]
 	\item Let $X\subseteq \mathbb{R}^\ell$, let $c\in\mathbb{R}$ and let $cX\coloneqq \{cx\mid x\in X \}$. Then
+	\vspace{-0.5\baselineskip}
 	\[
 	vol(cX)=c^\ell vol(X).
 	\]
 	Note that $x$ is a vector.
 	\item Let $X\subseteq \mathbb{R}^\ell$ such that $vol(X)>0$ and let $0\leq \epsilon\leq 1$. Then
+	\vspace{-0.5\baselineskip}
 	\[
 	\frac{vol((1-\epsilon)X)}{vol(X)}\leq e^{-\epsilon\ell}.
 	\]
@@ -1216,7 +1241,7 @@ This means the $\ell$-dimensional spherical Gaussian distribution with mean $\mu
 \subsubsection{The Gaussian Annulus Theorem}
 In a typical one-dimensional Gaussian distribution most of the probability mass is near the mean. This is not the case for high-dimensional spherical Gaussians because their probability mass is concentrated in a annulus (or 'hill') of radius $\sigma^2 \sqrt{\ell}$ around the mean. The following theorem is a inequality to estimate this.
 
-\begin{theo}
+\begin{theo}{} % TODO
 Let $b\leq \sqrt{\ell}$ and let $x\in\mathbb{R}^\ell$ be drawn from an $\ell$-dimensional spherical Gaussian distribution with mean $\mu=0$ and variance $\sigma^2=1$. Then
 \[
 Pr(\sqrt{\ell}-b < \parallel x\parallel < \sqrt{\ell}+b)\geq 1-3e^{-cb^2}
@@ -1230,7 +1255,7 @@ The reduction mapping is used to map the high-dimensional data to a lower dimens
 \begin{halfboxl}
 \vspace{-\baselineskip}
 \begin{defi}{Reduction Mapping}
-Let $k,\ell\in\mathbb{R}$ with $k\leq\ell$. The vectors $u_1,...,u_k\in\mathbb{R}^\ell$ are drawn independently from the $\ell$-dimensional spherical Gaussian distribution with mean 0 and variance 1 in each direction. Then we define the Matrix $U$ (with $u^T$ is $u$ transposed) as:
+Let $k,\ell\in\mathbb{R}$ with $k\leq\ell$. The vectors $u_1,...,u_k\in\mathbb{R}^\ell$ are drawn independently from the $\ell$-dimensional spherical Gaussian distribution with mean 0 and variance 1 in each direction. Then we define the matrix $U$ as:
 \[
 U\coloneqq \frac{1}{\sqrt{k}}
 \begin{pmatrix}
@@ -1247,7 +1272,8 @@ Then the mapping $x\mapsto Ux$ is the random projection that is used for the dim
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{theo}{Random Projection Theorem}
-Let $k,\ell\in\mathbb{R}$ with $k\leq\ell$. For all $x\in\mathbb{R}^\ell$ and all $\epsilon>0$ we have
+Let $k,\ell\in\mathbb{R}$ with $k\leq\ell$. \\
+For all $x\in\mathbb{R}^\ell$ and all $\epsilon>0$ we have
 \[
 Pr\left(\mid \parallel Ux \parallel - \parallel x\parallel \mid > \epsilon \parallel x \parallel\right) \leq 3e^{-c\epsilon^2k}
 \]
@@ -1271,7 +1297,7 @@ Let $0<\epsilon<1$ and $ k,\ell,n\in\mathbb{N}$ such that $k\geq \frac{3}{c\epsi
 Pr\left( \forall x,y\in X : (1-\epsilon) ||x-y||\leq ||Ux-Uy|| \leq (1+\epsilon) ||x-y|| \right)\geq 1-\frac{3}{2n}.
 \]
 \end{theo}
-This Lemma is thus the probability that the distance between two points from a set of points $X$ is still below a certain difference after the dimension reduction.
+This Lemma describes the probability that the distance between two points from a set of points $X$ is still below a certain difference after the dimension reduction.
 
 
 \subsection{Eigenvalues and Eigenvectors}
@@ -1283,7 +1309,7 @@ Reminder: A matrix $A\in\mathbb{C}^{n\times n}$ is diagonisable if there are is 
 \begin{theo}{Relation Between Diagonisable Matrices and Eigenvectors}
 Let $A\in\mathbb{C}^{n\times n}$.
 \begin{enumerate}
-\item If $U^{-1}AU=\Lambda$ where $\Lambda=diag(\lambda_1,...,\lambda_n)$ then $\lambda_1,...,\lambda_n$ is the spectrum (=set of eigenvalues) of A. Moreover the columns $u_1,...,u_n$ are the eigenvectors of $A$ associated with $\lambda_1,...,\lambda_n$.
+\item If $U^{-1}AU=\Lambda$ where $\Lambda=diag(\lambda_1,...,\lambda_n)$ then $\lambda_1,...,\lambda_n$ is the spectrum (= set of eigenvalues) of A. Moreover the columns $u_1,...,u_n$ are the eigenvectors of $A$ associated with $\lambda_1,...,\lambda_n$.
 \item If the preconditions a to d are met then $U^{-1}AU=\Lambda$.
 \begin{enumerate}
 \item $\lambda_1,...,\lambda_n$ are the eigenvalues of $A$
@@ -1307,7 +1333,7 @@ The matrix $A$ is irreducible if $G_A$ is strongly connected (= every vertex is 
 \end{defi}
 
 \begin{theo}{Perron-Frobenius}
-Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducible with spectral radius (=maximal absolute value of an eigenvalue) $\rho=\rho(A)$. Then
+Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducible with spectral radius (= maximal absolute value of an eigenvalue) $\rho=\rho(A)$. Then
 \begin{enumerate}
 \item $\rho$ is an eigenvalue of $A$ of algebraic multiplicity 1.
 \item For all eigenvalues $\lambda\neq \rho$ of $A$ it holds that $\rho > |\lambda|$. (Definition of spectral radius.)
@@ -1319,36 +1345,39 @@ Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducib
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{Permutation of a Matrix}
-	Let $A\in\mathbb{R}^{n\times n}$. For a permutation $\pi$ of $[1,n]$ we let $A^\pi$ be the matrix with entries $A_{ij}^\pi\coloneqq A_{\pi^{-1}(i)\pi^{-1}(j)}$. In normal words this is the matrix we get if we simultaneously permuting rows and columns in $A$.
+	Let $A\in\mathbb{R}^{n\times n}$. For a permutation $\pi$ of $[1,n]$ we let $A^\pi$ be the matrix with entries $A_{ij}^\pi\coloneqq A_{\pi^{-1}(i)\pi^{-1}(j)}$.
 	\end{defi}
+
 	\begin{theo}{Reducibility of Non-Negative Matrices}
 	Let $I$ be the identity matrix. For every non-negative matrix $A\in\mathbb{R}^{n\times n}$ the following properties are equivalent.
-	\begin{enumerate}
+	\begin{itemize}
 	\item $A$ is irreducible.
 	\item $A$ is not reducible.
 	\item $(A+I)^{n-1}$ has only positive entries.
-	\end{enumerate}
+	\end{itemize}
 	\end{theo}
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{defi}{Reducible Matrix}
 	Let $A\in\mathbb{R}^{n\times n}$. $A$ is reducible if there is a $k\in[1,n-1]$ and
-	\begin{enumerate}
+	\begin{itemize}
 	\item a matrix $B\in\mathbb{R}^{k\times k}$,
 	\item a matrix $B\in\mathbb{R}^{k\times (n-k)}$,
 	\item a matrix $C\in\mathbb{R}^{(n-k)\times (n-k)}$ and
 	\item a permutation $\pi$ of $[1,n]$ such that
+	\vspace{-0.5\baselineskip}
 	\[
 	A^\pi=
 	\begin{pmatrix}
 	B & C\\
 	0 & D\\
-	\end{pmatrix}
+	\end{pmatrix}.
 	\]
-	\end{enumerate}
+	\end{itemize}
 	\end{defi}
-	\begin{theo}{Limit Theorem for Non-negative Matrices}
+
+	\begin{theo}{Limit Theorem for Non-Negative Matrices}
 	Let $n\geq 2$, let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducible with spectral radius $\rho$ and let $u,v$ the the Perron vectors of $A$. Then
 	\[
 	\lim_{k\to\infty}\frac{1}{k}\sum_{i=1}^k \frac{A^i}{\rho^i}=\frac{1}{\langle u,v \rangle} u\cdot v^T.
@@ -1362,19 +1391,23 @@ Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducib
 \begin{halfboxl}
 \vspace{-\baselineskip}
   The power iteration algorithm is used to approximate an eigenvector of a matrix. It can only be used if the following two following assumptions are met.\\
-  Let $A\in\mathbb{C}^{n\times n}$ be a matrix with spectrum $\lambda_1,...\lambda_n$ where $|\lambda_1|\geq |\lambda_2|\geq ... \geq |\lambda_n|$ and let $\Lambda = diag(\lambda_1,...,\lambda_n)$.\\
-  Assumptions:
+  Let $A\in\mathbb{C}^{n\times n}$ be a matrix with spectrum $\lambda_1,...\lambda_n$ where $|\lambda_1|\geq |\lambda_2|\geq ... \geq |\lambda_n|$ and let $\Lambda = diag(\lambda_1,...,\lambda_n)$. We assume:
   \begin{enumerate}
   \item $\lambda_1\in\mathbb{R}_{\geq 0}$ and $\lambda_1\geq |\lambda_2|$.
   \item $A$ is diagonisable.
   \end{enumerate}
+
+	The rate of convergence for the sequence $(v_k)_{k\geq 0}$ is determined by
+	\[
+	\frac{|\lambda_2|}{\lambda_1}=\min_{i\geq 2}\frac{|\lambda_i|}{\lambda_1}.
+	\]
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
 \begin{algo}{Power Iteration Algorithm}
 {
-\renewcommand{\algorithmicrequire}{\textbf{Input:}}
-\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}%
+\renewcommand{\algorithmicensure}{\textbf{Output:}}%
   \begin{algorithmic}[1]
   \Require Matrix $A\in\mathbb{C}^{n\times n}$, vector $x\in\mathbb{C}$
   \Ensure Vector $v\in\mathbb{C}^n$
@@ -1390,37 +1423,30 @@ Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducib
 \end{algo}
 \end{halfboxr}
 
-The rate of convergence for the sequence $(v_k)_{k\geq 0}$ is determined by
-\[
-\frac{|\lambda_2|}{\lambda_1}=\min_{i\geq 2}\frac{|\lambda_i|}{\lambda_1}.
-\]
 %TODO some of the theory is missing here
 
 
 
 \subsection{Principal Component Analysis}
-\subsubsection{Focusing on the Important Features}
-Let $a_1,...,a_n\in\mathbb{R}^\ell$ be a set of date points. (Each entry of one of this data points is a feature.) Such sets of data points are represented by a data matrix $A\in\mathbb{R}^{n\times \ell}$ whose rows are $a_1^T,...,a_n^T$.\\
-To reduce the size of this matrix the idea is to select the most important features. To do this the data must be normalized.
+Let $a_1,...,a_n \in \mathbb{R}^\ell$ be a \emph{set of data points}. (Each entry of one of this data points is a feature.) Such sets of data points are represented by a \emph{data matrix} $A \in \mathbb{R}^{n\times \ell}$ whose rows are $a_1^T,...,a_n^T$.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
-	\begin{defi}{Centred Data Sequences and Matrices}
-	A set of data points $a_1,...,a_n\in\mathbb{R}^\ell$ or their corresponding data matrix is called centred if its mean is zero. Formally:
+	\begin{defi}{Centred Data Matrix}
+	A data matrix $A \in \mathbb{R}^{n\times \ell}$ is called centred if its mean is zero:
 	\[
-	0=\frac{1}{n}\sum_{i=1}^n a_i
+	\frac{1}{n}\sum_{i=1}^n a_i=0
 	\]
 	\end{defi}
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
-	Each data sequence can be transformed into a centred data sequence by replacing each data point $a_i$ by
+	Each data matrix can be centered by replacing each data point $a_i$ by
 	\[
-	  a_i' \coloneqq a_i-\mu
+	  a_i' \coloneqq a_i - \sum_{i=1}^n a_i=0
 	\]
-	where $\mu$ is the mean.
 \end{halfboxr}
-
+\iffalse
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{Variance of a Data Sequence}
@@ -1438,14 +1464,15 @@ To reduce the size of this matrix the idea is to select the most important featu
 	\sum_{i=1}^n \parallel a_i\parallel^2 = \sum_{j=1}^\ell \parallel a^j \parallel^2.
 	\]
 \end{halfboxr}
+\fi
 
 \subsubsection{PCA-Transformation}
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{PCA-Transformation}
-	Let $A\in\mathbb{R}^{n\times \ell}$ with rows $a_1^T,...,a_n^T$. A PCA-transformation of $A$ is an orthogonal matrix $U\in\mathbb{R}^{\ell\times\ell}$ with columns $u_1,...,u_\ell$ all satisfying
+	Let $A \in \mathbb{R}^{n \times \ell}$ be a data matrix. with rows $a_1^T,...,a_n^T$. A PCA-transformation of $A$ is an orthogonal matrix $U \in \mathbb{R}^{\ell \times \ell}$ with columns $u_1,...,u_\ell$ satisfying
 	\[
-	u_j = \argmax_{x\in\mathbb{R}^\ell, ||x||=1, x\perp u_1,..,u_{j-1}} \sum_{i=1}^n \langle a_i,x\rangle^2.
+	u_j = \argmax_{\substack{x\in\mathbb{R}^\ell \\ ||x||=1 \\ x\perp u_1,..,u_{j-1}}} \sum_{i=1}^n \langle a_i,x\rangle^2.
 	\]
 	\end{defi}
 \end{halfboxl}
@@ -1460,8 +1487,9 @@ To reduce the size of this matrix the idea is to select the most important featu
 Let $1\leq k\leq \ell$ and $A\in\mathbb{R}^{n\times\ell}$ be the centred data matrix with rows $a_1^T,...,a_n^T$.\\
 A best-fit $k$-dimensional subspace for the data is a $k$-dimensional linear subspace $\mathbb{X} \subseteq \mathbb{R}^l$ such that the projection of $a_1,...,a_n$ into $\mathbb{X}$ has maximum variance.
 \end{defi}
+
 \begin{halfboxl}
-\vspace{-\baselineskip}
+	\vspace{-\baselineskip}
 	Or, a best-fit $k$-dimensional subspace is a subspace $\mathbb{X} = span(x_1,...,x_k)$ where $x_1,...,x_k$ is an orthonormal system maximizing
 	\[
 	\sum_{i=1}^n\sum_{j=1}^k \langle a_i, x_j\rangle^2.
@@ -1469,7 +1497,7 @@ A best-fit $k$-dimensional subspace for the data is a $k$-dimensional linear sub
 	This is used to find best-fit subspaces for dimension reduction because the projection of data into its best-fit subspace is an optimal approximation to the original data.
 \end{halfboxl}
 \begin{halfboxr}
-\vspace{-\baselineskip}
+	\vspace{-\baselineskip}
 	\begin{theo}{PCA and Best-Fit Subspaces}
 	Let $A\in\mathbb{R}^{n\times \ell}$ and let $U$ be its PCA-transformation. Then for every $k\in [1,\ell]$
 	\[
@@ -1485,7 +1513,8 @@ A best-fit $k$-dimensional subspace for the data is a $k$-dimensional linear sub
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{Covariance Matrix}
-	Let $A\in\mathbb{R}^{n\times \ell}$ be a data matrix. The covariance matrix of $A$ is
+	Let $A\in\mathbb{R}^{n\times \ell}$ be a data matrix. \\
+	The covariance matrix of $A$ is:
 	\[
 	C\coloneqq A^TA\in\mathbb{R}^{\ell\times\ell}.
 	\]
@@ -1564,7 +1593,7 @@ The idea is to choose a partition $C^1,..., C^k$ that minimizes
 \[
 \text{balcut}(C^1,..., C^k)\coloneqq \sum_{p=1}^k \frac{1}{|C^p|}\cdot \sum_{i\in C^p, j\notin C^p} S_{i,j}.
 \]
-The problem here is that this function is computationally hard.
+The problem is that this function is computationally hard.
 
 \subsubsection{The Laplacian and Connection with Cuts}
 %TODO this is only used in a proof
@@ -1578,12 +1607,13 @@ The problem here is that this function is computationally hard.
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{The Laplacian}
-	Let $S$ be a similarity matrix. The Laplacian $L$ of $S$ is the matrix
+	Let $S$ be a similarity matrix. \\
+	The Laplacian $L$ of $S$ is the matrix
 	\[
 	L=D-S\in \mathbb{R}^{n\times n}
 	\]
 	where $D$ is the diagonal matrix with entries $D_{i,i}=\sum_{i=1}^n S_{i,j}$.\\
-	The Laplacian is always positive semi-definite.
+	The Laplacian is always s.p.d.
 	\end{defi}
 \end{halfboxl}
 \begin{halfboxr}
@@ -1668,25 +1698,28 @@ The problem here is that this function is computationally hard.
 
 \section{Markov Chains}
 \subsection{Fundamental Definitions}
-Think of a Markov chain as an abstract object. We use Transition Matrices and Graphs to describe Markov chains.\\
-Or very informally but easier to understand a Markov chain is an automaton where the probability of taking an outgoing edge is noted as the label of the outgoing edge.
+A Markov chain can be thought of as an automaton where transitions additionally have probabilities associated with them.
+Markov chains can be described by transition matrices (if finite), or as graphs.
+In this section, $\mathcal{Q}$ is a Markov chain with state space $[n]$ for some $n \in \mathbb{N}$, with transition Matrix $Q$ and graph $G_Q$.
 
-In this section $\mathcal{Q}$ is a Markov chain with state space $[n]$ for some $n \in \mathbb{N}$, with transition Matrix $Q$ and graph $G_Q$.
-
+\begin{halfboxl}
+\vspace{-\baselineskip}
 \begin{defi}{Transition Matrix}
-The transition Matrix of a Markov chain $\mathcal{Q}$ is defined as $Q \in \mathbb{R}^{n \times n}$, where $q_{ij}$ is the probability of $\mathcal{Q}$ going from state $i$ to state $j$.
+The transition matrix of a Markov chain $\mathcal{Q}$ is defined by matrix $Q \in \mathbb{R}^{n \times n}$, where $q_{ij}$ is the probability of $\mathcal{Q}$ going from state $i$ to state $j$.
 \end{defi}
-
+\end{halfboxl}
+\begin{halfboxr}
+\vspace{-\baselineskip}
 \begin{defi}{Graph of a Markov Chain}
-The graph of a Markov chain $\mathcal{Q}$ is $G_Q = ([n], \set{(i,j)| q_{ij} > 0})$.
-
+The graph of a Markov chain $\mathcal{Q}$ is $$G_Q = ([n], \set{(i,j)| q_{ij} > 0}).$$
 $\mathcal{Q}$ is (strongly) connected if $G_Q$ is (strongly) connected.
 \end{defi}
+\end{halfboxr}
 
 We use probability vectors to describe the behavior of a Markov chain executing a random walk.
 
 \begin{defi}{Probability Vector}
-A row vector $\textbf{p} = (p_1, \ldots, p_n) \in \mathbb{R}^{1 \times n}$ is a probability vector if it is non-negative and $\sum_{i = 1}^n p_i = 1$
+A row vector $\textbf{p} = (p_1, \ldots, p_n) \in \mathbb{R}^{1 \times n}$ is a probability vector if it is non-negative and $\sum_{i = 1}^n p_i = 1$.
 \end{defi}
 
 \begin{defi}{Probability distributions over Markov chains}
@@ -1721,7 +1754,7 @@ $$
 $$
 \end{theo}
 
-We can convert every Markov chain into a ergodic one by using the following theorem.
+We can convert every Markov chain into an ergodic one by using the following theorem.
 
 \begin{theo}{Ergodic Converstion}
 Let $I$ be the $(n\times n)$ identity matrix and let $\mathcal{Q}$ be a connected Markov chain and $0 < \alpha < 1$. A Markov chain with transition matrix
@@ -1732,49 +1765,49 @@ has the same stationary distribution as $\mathcal{Q}$ and is ergodic.
 \end{theo}
 
 \subsection{Markov Chain Monte Carlo Method}
-We want to sample from a probability space $(\mathbb{U}, \mathcal{P})$, but we only know $\mathcal{P}$ up to a constant $Z$ as $\mathcal{D} = Z \mathcal{P}$.
+We want to sample from a probability space $(\mathbb{U}, \mathcal{P})$, but we only know $\mathcal{P}$ up to a constant $Z$ as $\mathcal{D} = Z \cdot \mathcal{P}$.
 
 The idea is to design a Markov chain over $\mathbb{U}$ with stationary distribution $\mathcal{P}$. This can be done by either Metropolis-Hastings or Gibbs sampling.
 
-\begin{algo}{Metropolis-Hastings Sampling (1)}
-\textbf{Input:} Probability Space $(\mathbb{U}, Z \cdot \mathcal{D})$
+\begin{defi}{Metropolis-Hastings Sampling}
+Let $(\mathbb{U}, Z \cdot \mathcal{D})$ be a probability space with $\mathcal{G}$ a connected undirected graph with maximum degree $\Delta$ and $V(\mathcal{G}) = \mathbb{U}$.
 
-\textbf{Output:} Metropolis-Hastings Markov Chain $\mathcal{Q}$
-\tcblower
-We define a connected undirected graph $\mathcal{G}$ of maximum degree $\Delta$ with $V(\mathcal{G}) = \mathbb{U}$
-
-We define the transition matrix of $\mathcal{Q}$:
+Then is $\mathcal{Q}$ the Metropolis-Hasings Markov Chain if it has transition matrix:
 $$
 q_{uv} =
 \begin{cases}
-\frac{1}{\Delta} & \text{if } uv \in E(\mathcal{G}) \text{and} \mathcal{D}(v) \geq \mathcal{D}(u) \\
-\frac{1}{\Delta} \cdot \frac{\mathcal{D}(v)}{\mathcal{D}(u)} & \text{if } uv \in E(\mathcal{G}) \text{and} \mathcal{D}(v) < \mathcal{D}(u) \\
+\frac{1}{\Delta} & \text{if } uv \in E(\mathcal{G}) \text{ and } \mathcal{D}(v) \geq \mathcal{D}(u) \\
+\frac{1}{\Delta} \cdot \frac{\mathcal{D}(v)}{\mathcal{D}(u)} & \text{if } uv \in E(\mathcal{G}) \text{  and} \mathcal{D}(v) < \mathcal{D}(u) \\
 1 - \sum_{v^\prime \in N(u)} q_{uv^\prime} & \text{if } u = v \\
 0 & \text{otherwise}
 \end{cases}
 $$
-\end{algo}
+\end{defi}
 
-It is not common practice to construct the whole Markov chain but choose one element from $\mathbb{U}$ and use an easy algorithm, which emulates the Markov chain, to go to a next element.
+It is not common practice to construct the whole Markov chain. Instead an element from $\mathbb{U}$ is chosen randomly and the Markov chain is emulated.
 
-\begin{algo}{Metropolis-Hastings Sampling (2)}
-\textbf{Input:} $u \in \mathbb{U}$
+\begin{algo}{Metropolis-Hastings Sampling}
+\textbf{Input:} Probability space $(\mathbb{U}, Z \cdot \mathcal{D})$, connected undirected graph $\mathcal{G}$ with maximum degree $\Delta$ and $V(\mathcal{G}) = \mathbb{U}$
 
-\textbf{Output:} $v \in \mathbb{U}$
+\textbf{Output:} $v \in \mathbb{U}$ sampled from $(\mathbb{U}, Z \cdot \mathcal{D})$
 \tcblower
 \begin{algorithmic}[1]
-\State $b \leftarrow \begin{cases}1 & \text{with prability } \frac{|N(u)|}{\Delta} \\ 0 & \text{otherwise} \end{cases}$
-\If{$b=1$}
-  \State choose a neighbour $v^\prime \in N(u)$ in $\mathcal{G}$ uniformly at random
-  \If{$\mathcal{D}(v^\prime) \geq \mathcal{D}(u)$}
-    \State $v \leftarrow v^\prime$
+\State choose $u \in \mathbb{U}$ at random
+\For{$n$ times}
+  \State $b \leftarrow \begin{cases}1 & \text{with prability } \frac{|N(u)|}{\Delta} \\ 0 & \text{otherwise} \end{cases}$
+  \If{$b=1$}
+    \State choose a neighbour $v^\prime \in N(u)$ in $\mathcal{G}$ uniformly at random
+    \If{$\mathcal{D}(v^\prime) \geq \mathcal{D}(u)$}
+      \State $v \leftarrow v^\prime$
+    \Else
+      \State $v \leftarrow \begin{cases}1 & \text{with probability } \mathcal{D}(v^\prime) / \mathcal{D}(u) \\ u & \text{with probability } 1 - \mathcal{D}(v^\prime) / \mathcal{D}(u) \end{cases}$
+    \EndIf
   \Else
-    \State $v \leftarrow \begin{cases}1 & \text{with probability } \mathcal{D}(v^\prime) / \mathcal{D}(u) \\ u & \text{with probability } 1 - \mathcal{D}(v^\prime) / \mathcal{D}(u) \end{cases}$
+    \State $v \leftarrow u$
   \EndIf
-\Else
-  \State $v \leftarrow u$
-\EndIf
-\State \Return{$v$}
+  \State $u \leftarrow v$
+\EndFor
+\State \Return{$u$}
 \end{algorithmic}
 \end{algo}
 
@@ -1782,12 +1815,10 @@ It is not common practice to construct the whole Markov chain but choose one ele
 The stationary distribution of the Metropolis-Hastings Markov Chain is $\mathcal{P}$.
 \end{theo}
 
-\begin{algo}{Gibbs Sampling (1)}
-\textbf{Input:} Probability Space $(\mathbb{U} = \mathbb{D}^l, Z \cdot \mathcal{D})$ with $\mathbb{D}$ finite.
+\begin{defi}{Gibbs Sampling}
+Let $(\mathbb{U} = \mathbb{D}^l, Z \cdot \mathcal{D})$ be a probability space with $\mathbb{D}$ finite.
 
-\textbf{Output:} Gibbs Markov Chain $\mathcal{Q}$
-\tcblower
-We define the transition matrix of $\mathcal{Q}$
+Then is $\mathcal{Q}$ the Gibbs Markov Chain if it has transition matrix:
 $$
 q_{uv} =
 \begin{cases}
@@ -1796,15 +1827,18 @@ q_{uv} =
 0 & \text{otherwise}
 \end{cases}
 $$
-\end{algo}
+\end{defi}
 
-It is not common practice to construct the whole Markov chain but choose one element from $\mathbb{U}$ and use an easy algorithm, which emulates the Markov chain, to go to a next element.
+It is not common practice to construct the whole Markov chain. Instead an element from $\mathbb{U}$ is choosen randomly and the Markov chain is emulated.
 
-\begin{algo}{Gibbs Sampling (2)}
-\textbf{Input:} $u \in \mathbb{U}$
+\begin{algo}{Gibbs Sampling}
+\textbf{Input:} Probability Space $(\mathbb{U} = \mathbb{D}^l, Z \cdot \mathcal{D})$ with $\mathbb{D}$ finite.
 
-\textbf{Output:} $v \in \mathbb{U}$
+\textbf{Output:} Gibbs Markov Chain $\mathcal{Q}$
 \tcblower
+\begin{enumerate}
+\item Choose $u \in \mathbb{U}$ at random
+\item Repeate $n$ times:
 \begin{enumerate}
     \item Choose $i \in [l]$ uniformly at random
     \item Compute $Z_{u,i} = \sum_{v \in \mathbb{D}} \mathcal{D}(u_1, \ldots, u_{i-1}, v, u_{i+1}, \ldots, u_l)$
@@ -1813,6 +1847,7 @@ $$
 \frac{\mathcal{D}(u_1, \ldots, u_{i-1}, v, u_{i+1}, \ldots, u_l)}{Z_{u,i}}
 $$
     \item Return $v = (u_1, \ldots, u_{i-1}, v_i, u_{i+1}, \ldots, u_l)$
+\end{enumerate}
 \end{enumerate}
 \end{algo}
 
@@ -1855,7 +1890,7 @@ If we take a random walk on the web graph, the pages we visit more often are mor
 Both ideas are equivalent. Formally, they both amount to the following the simplified page rank. Simplified page rank describes that the importance of a web page is measured by its probability in the stationary distribution of the Markov chain associated with the web graph.
 
 \subsubsection{Web Graph as Markov Chain}
-The web graph $G_{\text{web})}$ is defined as follows. The web pages are numbered $1,...,n$. Let $V(G_{\text{web}}))\coloneqq [n]$ and $E(G_i)\coloneqq \{(i,j) \mid \text{page } i \text{ has link to page } j\}$.\\
+The web graph $G_{\text{web}}$ is defined as follows. The web pages are numbered $1,...,n$. Let $V(G_{\text{web}}))\coloneqq [n]$ and $E(G_i)\coloneqq \{(i,j) \mid \text{page } i \text{ has link to page } j\}$.\\
 The in-degree and out-degree are the number of incoming edges or respective the number of outgoing edges.\\
 Let $Q_{\text{web}}$ be the Markov chain of the random walk on $G_{\text{web}}$ where each edge has the same weight. The transition matrix is then $Q_{\text{web}}=q_{ij}\in\mathbb{R}^{n\times n}$  with
 \[
@@ -1876,13 +1911,13 @@ After this update the weights $w_j$ are proportional to the incoming edges of th
 \[
 w_j=\sum_{i\in [1,n], (i,j)\in E(G_{web}}\frac{1}{deg^{+}_i}.
 \]
-This update is then repeated multiple times which results in a sequence $w_0,w_1,...$ of weight vectors. If the sequence converges the limit w is exactly what we want.A weight vector where for each page the weight of a page is proportional to the sum of the weights times inverse out-degree of the incoming edges. 
+This update is then repeated multiple times which results in a sequence $w_0,w_1,...$ of weight vectors. If the sequence converges the limit w is exactly what we want.A weight vector where for each page the weight of a page is proportional to the sum of the weights times inverse out-degree of the incoming edges.
 
 Note that the the sequence $w_0,w_1,...$ is exactly the sequence $p_0,p_1$ of probability distributions og the Markov Chain $Q_{web}$ when it is started with the initial distribution $p_0=w_0=(\frac{1}{n},...,\frac{1}{n})$.\\
 There are two cases that can occur in this scenario:
 \begin{enumerate}
 \item The Markov chain $Q_{web}$ is ergodic. Then this sequence converges to the stationary distribution $\pi$.
-\item Te Markov chain $Q_{web}$ is not ergodic. Then the web graph is not connected. In this case a technique called random restarts is used. Random restarts are quite simple. At any point with a small probability the chain jumps to an arbitrary vertex instead of following an edge. Formally the transition matrix $Q_{web}^*=(q_{i,j}^*)$ for this is defined as:
+\item The Markov chain $Q_{web}$ is not ergodic. Then the web graph is not connected. In this case a technique called random restarts is used. Random restarts are quite simple. At any point with a small probability the chain jumps to an arbitrary vertex instead of following an edge. Formally the transition matrix $Q_{web}^*=(q_{i,j}^*)$ for this is defined as:
 \[
 q_{i,j}^*\coloneqq
 \begin{cases}
@@ -1928,7 +1963,7 @@ The fundamental operations of relational algebra can easily be implemented as Ma
 Note, the projection is computed in the \textsc{Map}-phase.
 
 \begin{algo}{Intersection}
-\textbf{Input:} Relation $\mathcal{R}$ and $\mathcal{S}$ with the same Attributes
+\textbf{Input:} Relation $\mathcal{R}$ and $\mathcal{S}$ with the same attributes
 
 \textbf{Output:} $\mathcal{Q} = \mathcal{R} \cap \mathcal{S}$
 \tcblower
@@ -1938,7 +1973,7 @@ Note, the projection is computed in the \textsc{Map}-phase.
 \end{algo}
 
 \begin{algo}{Join}
-\textbf{Input:} Relation $\mathcal{R}$ with schema $R(A,B)$ and Relation $\mathcal{S}$ with schema $S(B,C)$
+\textbf{Input:} Relation $\mathcal{R}$ with schema $R(A,B)$ and relation $\mathcal{S}$ with schema $S(B,C)$
 
 \textbf{Output:} $\mathcal{Q} = \mathcal{R} \bowtie \mathcal{S}$
 \tcblower
@@ -1958,9 +1993,9 @@ Note, the projection is computed in the \textsc{Map}-phase.
 \end{algo}
 
 \subsection{Matrix Multiplication}
-First we take a look at Matrix Vector multiplication
-
-The first variant is done, when the vector fits into main memory.
+First we take a look at matrix-vector multiplication.
+The first variant is used when vector $v$ fits into main memory.
+The second variant is used when $v$ exceeds main memory.
 
 \begin{algo}{Vector-Matrix Multiplication (1)}
 \textbf{Input:} $v \in \mathbb{R}^n$ $A \in \mathbb{R}^{m \times n}$ stored as:
@@ -1976,8 +2011,7 @@ The first variant is done, when the vector fits into main memory.
 \textsc{Reduce}: On input $(i, \textsf{values})$ emit $(i,\sum_{v \in \textsf{values}} v)$.
 \end{algo}
 
-The second variant is done, when the vector does not fit into main memory. $[n]$ is partitioned. $v$ is then analog partitioned into a segments and $A$ analog into vertical stripes.
-
+The second variant for larger than main memory vectors $v$ works with a partition of $[n]$, which is used to partition $v$ into segments and $A$ into vertical stripes.
 Each $\textsc{Map}$ worker should only get key-value pairs that are in the same stripe, so it can keep the same segment of $v$ loaded.
 
 \begin{algo}{Vector-Matrix Multiplication (2)}
@@ -1994,7 +2028,7 @@ Each $\textsc{Map}$ worker should only get key-value pairs that are in the same 
 \textsc{Reduce}: On input $(i, \textsf{values})$ emit $(i,\sum_{v \in \textsf{values}} v)$.
 \end{algo}
 
-We now take a look at Matrix multiplication.
+We now take a look at matrix multiplication with a two-round and a one-round variant.
 
 \begin{algo}{Two Round Matrix Multiplication}
 \textbf{Input:} $A \in \mathbb{R}^{\ell \times m}, B \in \mathbb{R}^{m \times n}$ stored as:
@@ -2036,12 +2070,12 @@ The one round algorithm is a clever way to compute the joint in one Map phase an
 
 \subsection{Analysis of Map-Reduce Algorithms}
 \begin{defi}{Cost Measures}
-\begin{itemize}
+\begin{itemize}[leftmargin=*]
 	\item \textbf{Wall-clock time:} Total time for the MR-process to finish.
 	\item \textbf{Number of rounds:} Number of MR-rounds in the process.
 	\item \textbf{Communication cost:} Sum of input sizes to all phases.
 	\item \textbf{Replication rate:} Number of key-value pairs produced by all map tasks divided by the input size of the task.
-	\item \textbf{Maxim load:} Maximum input length over all reducers of reducer tasks.
+	\item \textbf{Maximum load:} Maximum input length over all reducers of reducer tasks.
 \end{itemize}
 \end{defi}
 
@@ -2066,7 +2100,8 @@ But the measure only works for algorithms that balance the load "reasonable". A 
 
 \subsubsection{Analysis of Matrix Multiplication}
 %We analyze the communication cost and maximum load (see section \ref{afods:ana_map_reduce}) of our two matrix multiplication algorithms. The input are matrices $A=(a_{ij})\in \mathbb{R}^{\ell\times m}$ and $B=(b_{jk})\in \mathbb{R}^{m\times n}$.\\
-We assume the non-zero entries of the two matrices are randomly distributed. in detail the assumption are:
+We assume the non-zero entries of the two matrices are randomly distributed.
+Formally:
 \begin{itemize}
 \item $P(a_{ij}\neq 0)=p$ independently for all $i,j$.
 \item $P(b_{jk}\neq 0)=q$ independently for all $j,k$.
@@ -2083,7 +2118,7 @@ The analysis for the two round:
 The analysis for the average case:
 \begin{itemize}[leftmargin=*]
 	\item The expected communication cost is $plm + qmn + (p+q)lmn$.
-	\item The Maximum load is $pm + qm$, with high probability below $(1 + \varepsilon)(pm + qm)$.
+	\item The maximum load is $pm + qm$, with high probability below $(1 + \varepsilon)(pm + qm)$.
 \end{itemize}
 \end{theo}
 
@@ -2108,13 +2143,13 @@ The analysis for the worst case:
 \begin{itemize}[leftmargin=*]
     \item The replication rate is $s$.
 	\item The communication cost is $2n^2 + 2sn^2 = \bigo{sn^2}$.
-	\item Each reducer gets all entries of $n/s$ rows and $n/s$ columns. Thus the Maximum load is $\frac{2n^2}{s}$.
+	\item Each reducer gets all entries of $n/s$ rows and $n/s$ columns. Thus the maximum load is $\frac{2n^2}{s}$.
 \end{itemize}
 The analysis for the average case:
 \begin{itemize}[leftmargin=*]
     \item The replication rate is $s$.
 	\item The communication cost is $(p + q)n^2 + s(p + q)n^2 = \bigo{s(p + q)n^2}$.
-	\item Each reducer gets all non-zero entries of $n/s$ rows and $n/s$ columns. Thus the Maximum load is $\frac{/p + q)n^2}{s}$.
+	\item Each reducer gets all non-zero entries of $n/s$ rows and $n/s$ columns. Thus the maximum load is $\frac{/p + q)n^2}{s}$.
 \end{itemize}
 \end{theo}
 
@@ -2153,7 +2188,8 @@ This section is about finding the maximal size of the result $\mathcal{Q}$ of a 
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{defi}{Edge Cover of a Schema}
-	Let $Q$ be the schema of $\mathcal{Q}$. An edge cover is a subset $\{R_{i_1},...,R_{i_r} \}$ of $\{R_1,...,R_\ell \}$ such that all attributes of $Q$ are covered. Formally:
+	Let $Q$ be the schema of $\mathcal{Q}$. An edge cover is a subset $\{R_{i_1},...,R_{i_r} \}$ of $\{R_1,...,R_\ell \}$ such that all attributes of $Q$ are covered. \\
+	Formally:
 	\[
 	\{A_1,...,A_k \} \subseteq \bigcup_{i\in\{i_1,...,i_r \}} \{A_{i1},...,A_{ik} \}
 	\]
@@ -2163,6 +2199,7 @@ This section is about finding the maximal size of the result $\mathcal{Q}$ of a 
 \vspace{-\baselineskip}
 \begin{theo}{Maximum Size of an Edge Cover}
 If $\{R_{i_1},...,R_{i_r} \}$ is an edge cover of a schema $Q$ then its maximal size is
+\vspace{-0.5\baselineskip}
 \[
 |\mathcal{Q}| \leq \prod_{j=1}^r m_{i_j}.
 \]
@@ -2177,7 +2214,7 @@ To optimize joins it makes sense to choose an edge cover that minimizes $\prod_{
 \textbf{Input:} $(R_i, (a_1, \ldots, a_{k_i}))$ \\
 \textbf{Output:} $(\overline{p}, \textsf{values})$
 \tcblower
-On imput $(R_i, (a_1, \ldots, a_{k_i}))$, emit
+On input $(R_i, (a_1, \ldots, a_{k_i}))$, emit
 \[
 ((p_1,...,p_k),(R_i,(a_1,...,a_{k_i})))
 \]
@@ -2218,14 +2255,16 @@ The algorithm has the following parameters:
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	The idea of the algorithm is to divide each attribute into shares.
-	The hash functions determine, for every attribute, in which share it lands.
+	The hash functions determine a share for each attribute.
 	Each reducer is assigned to one element of the Cartesian product of the shares of all attributes.
 
 	For each input relation, a mapper emits copies of a given input tuple to all reducers that are responsible for the given tuple.
 
-	Each reducers computes join of the tuples it has received. The map reduce system then automatically computes the union of all those joins.
-	A vital parameter of the algorithm is the number of shares for each attribute. They should be chosen in such a way, that the expected load is minimized.
-	The resulting minimization problem, based on the sizes of the input relations $m_j$, is hard, because we are looking for integer solutions, but good non-integer solutions can usually be rounded to reasonable good integer solutions.
+	Each reducer computes the join of the tuples it has received. The map reduce system then automatically computes the union of all those joins.
+	A vital parameter of the algorithm is the number of shares for each attribute. They should be chosen in such that the expected load is minimized.
+
+	The resulting minimization problem, based on the sizes of the input relations $m_j$, is hard, because we are looking for integer solutions.
+	But good non-integer solutions can usually be rounded to reasonable good integer solutions.
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
@@ -2280,10 +2319,10 @@ Let $i\in[\ell]$ and $J\subseteq Idx(i)$. The frequency of an $(A_j\mid j\in J)$
 
 
 \section{Streaming Algorithms}
-Sometimes the amount of date is too much to store it or there is no need to store the data after processing. Therefore, the goal is to design efficient (sublinear space, online, real-time) algorithms for data analysis tasks.\\
+Sometimes the amount of data is too much to store it or there is no need to store the data after processing. Therefore, the goal is to design efficient (sublinear space, online, real-time) algorithms for data analysis tasks.
 
 The formal model for this setting is defined as follows. The data items are from an universe $\mathbb{U}$ with $N\coloneqq |\mathbb{U}|$. Sometimes the assumption $\mathbb{U}=\{0,\ldots, N-1 \}$ is made. The input stream is $a_1,...,a_n$ where $a_i\in \mathbb{U}$.\\
-The length $n$ of the data stream is now known to the algorithm in advance. $n$ may appear as a parameter in the analysis of the algorithm. The most interesting thing is the space usage of the algorithm:
+The length $n$ of the data stream is now known to the algorithm in advance. The most interesting property is the space usage of the algorithm:
 \[
 \texttt{polylog}(n+N)=\underset{k\geq 1}{\bigcup} \log (n+N)^k
 \]
@@ -2291,7 +2330,7 @@ where the assumption $n+N\geq 2$ is made to avoid edge cases.
 
 \subsection{Sampling from Streams}
 \subsubsection{Simple Sampling Uniformly from a Stream}
-The task is to pick elements $a_i$ uniformly at random from the elements of the stream. This is trivial if $n$ is known in advance. But if $n$ is unknown the following algorithm is used.
+The task is to pick elements $a_i$ uniformly at random from the elements of the stream. This is trivial if $n$ is known in advance. But if $n$ is unknown, the following algorithm is used.
 
 \begin{algo}{Simple Sampling Algorithm}
 {
@@ -2309,13 +2348,8 @@ The task is to pick elements $a_i$ uniformly at random from the elements of the 
 }
 \end{algo}
 
-The index of the element returned by the algorithm on the input $a_1,...,a_n$ is $i$ with probability $\frac{1}{i}$. Thus this algorithm returns $a\in\mathbb{U}$ with a probability of
-\[
-\frac{|\{i \mid a_i=a \}|}{n}
-\]
-
 \subsubsection{Reservoir Sampling}
-As before let $n$ be the length of the stream. The task is to pick a fixed number of elements from a stream. Formally we want to pick elements $a_{i_1},...,a_{i_k}$ for $\{i_1,...,i_k\}$ uniformly at random from the stream.\\
+As before let $n$ be the length of the stream. The task is to pick a fixed number $k$ of elements from a stream. Formally we want to pick elements $a_{i_1},...,a_{i_k}$ for $\{i_1,...,i_k\}$ uniformly at random from the stream.
 Note that there are $\binom{n}{k}$ possible reservoirs.
 
 \begin{algo}{Simple Sampling Algorithm}
@@ -2347,14 +2381,13 @@ Note that there are $\binom{n}{k}$ possible reservoirs.
 %\begin{theo}
 %The set of indices of the elements returned by the algorithm on input $a_1,...,a_n$ and $k\leq n$ is $\{i_1,...,i_k \}\in \binom{[n]}{k}$ with probability $\frac{1}{\binom{n}{k}}$.
 %\end{theo}
-The space requirement of the algorithm is
-\[
-\mathcal{O}(\log n + k\cdot \log N)
-\]
+The space complexity of the algorithm is $\mathcal{O}(\log n + k\cdot \log N)$.
 
 \subsection{Hash Functions}
-A hash function $h$ on a universe $\mathbb{U}$ is simply a function from $\mathbb{U}$ to a set $\mathbb{T}$, which is usually an initial segment of the natural numbers. We assume that $h$ is or looks at least random.\\
-Formally we consider a probability distribution on the space of all functions $h:\mathbb{U}\to\mathbb{T}$. If this probability distribution is the uniform distribution then we are dealing with truly random hash functions.\\
+A hash function $h$ on a universe $\mathbb{U}$ is just a function from $\mathbb{U}$ to a set $\mathbb{T}$, which is usually an initial segment of the natural numbers. We assume that $h$ is or looks at least random.
+
+Formally we consider a probability distribution on the space of all functions $h:\mathbb{U}\to\mathbb{T}$. If this probability distribution is the uniform distribution then we are dealing with truly random hash functions.
+
 Often, the analysis of algorithms based on hashing relies on the assumption that we have truly random hash functions. However, unless the size $N$ of the universe is small, in which case we normally need no hashing in the first place, this assumption is unrealistic.
 
 %\begin{defi}{Range of a Hash Function}
@@ -2458,16 +2491,16 @@ In the slides from 2019 was a complete and very detailed example on how to prove
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	We want to assign $k$-bit signatures to the elements of an $n$-element subset $S\subseteq \mathbb{U}$ in such a way that we have few collisions, that is, pairs of distinct elements from $S$ that get the same signature.\\
-	These signatures do only serve as small representations of the elements of the set $S$. They have nothing to do with cryptography.
+	These signatures only serve as small representations of the elements of the set $S$. They have nothing to do with cryptography.
 \end{halfboxl}
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{defi}{Number of Collisions}
 	For a function $h:\mathbb{U}\to\mathbb{T}$ and a set $S\subseteq \mathbb{U}$ we let
-	\begin{multline}
+	\begin{multline*}
 	coll(h,S)\coloneqq |\{\{x,x'\}\mid x,x'\in S \\
 	\text{ such that } x\neq x' \text{ and } h(x)=h(x') \}|
-	\end{multline}
+	\end{multline*}
 	denote the number of collisions of $h$ on $S$.
 	\end{defi}
 \end{halfboxr}
@@ -2475,7 +2508,8 @@ In the slides from 2019 was a complete and very detailed example on how to prove
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	\begin{theo}{Expected Number of Collisions}
-	Let $\mathcal{H}$ be a universal family of hash functions from $\mathbb{U}$ to $\{0,...,2^k-1 \}$. Then for every $\delta>0$ and every set $S\subseteq \mathbb{U}$ of cardinality $|S|=n$
+	Let $\mathcal{H}$ be a universal family of hash functions from $\mathbb{U}$ to $\{0,...,2^k-1 \}$. \\
+	Then for every $\delta>0$ and every set $S\subseteq \mathbb{U}$ of cardinality $|S|=n$,
 	\[
 	E_{h\in\mathcal{H}}(coll(h,s))=\frac{n(n-1)}{2^{k+1}}
 	\]
@@ -2488,9 +2522,10 @@ In the slides from 2019 was a complete and very detailed example on how to prove
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{theo}{}
-	Let $n\in\mathbb{N}$ and $\epsilon, \delta>0$. let $\mathcal{H}$ be a universal family of hash functions from $\mathbb{U}$ to $\{0,...,2^{k}-1\}$ where $k\geq \log n + \log \frac{1}{\delta}+\log \frac{1}{\epsilon}-1$. Then for every set $S\subseteq \mathbb{U}$ of cardinality $|S| \leq n$
+	Let $n\in\mathbb{N}$ and $\epsilon, \delta>0$. let $\mathcal{H}$ be a universal family of hash functions from $\mathbb{U}$ to $\{0,...,2^{k}-1\}$ where $k\geq \log n + \log \frac{1}{\delta}+\log \frac{1}{\epsilon}-1$. \\
+	Then for every set $S\subseteq \mathbb{U}$ of cardinality $|S| \leq n$,
 	\[
-	\underset{h\in\mathcal{H}}{Pr}(coll(h,S)\geq \epsilon n)\leq \delta
+	\underset{h\in\mathcal{H}}{Pr}(coll(h,S)\geq \epsilon n)\leq \delta.
 	\]
 	\end{theo}
 \end{halfboxr}
@@ -2547,10 +2582,7 @@ p_a(x)=a_0+a_1x+a_2x^2+...+a_{k-1}x^{k-1}
 \]
 and let $f_a:\mathbb{U}\to \{0,...,q-1 \}$ be the function $g_2\circ p_a\circ g_1$.\\
 Note that the theorem about Special Strongly $k$-universal Families applies here.
-\item Define functions $h_a:\mathbb{U}\to \{0,...,M-1\}$ by
-\[
-h_a(x)\coloneqq f_a(x) \mod M
-\]
+\item Define functions $h_a:\mathbb{U}\to \{0,...,M-1\}$ by: $h_a(x)\coloneqq f_a(x) \mod M$
 \item Let $\mathcal{H}_{q.M}^k\coloneqq \{h_a\mid a\in \mathbb{F}_q^k \}$
 \end{enumerate}
 
@@ -2639,7 +2671,7 @@ Let $\mathcal{H}$ be a strongly 2-universal family of hash function from $\mathb
 	}
 	\end{algo}
 
-	The FMCount algorithm needs $\mathcal{O}(\log N)$ memory space.
+	The algorithm needs $\mathcal{O}(\log N)$ memory space.
 \end{halfboxl}
 \begin{halfboxr}
 	\vspace{-\baselineskip}
@@ -2711,7 +2743,7 @@ Thus the variance is
 &= \frac{1}{N}\sum_{u\in\mathbb{U}} E(f_u^2)-\frac{1}{N}\times N\times \frac{n^2}{N^2}\\
 &= \frac{1}{N}F_2-\frac{n^2}{N^2}
 \end{align*}
-\subsubsection{An estimator for $F_k$}
+\subsubsection{An Estimator for $F_k$}
 
 
 %TODO there was a nice example in the lecture notes. It could be included here
