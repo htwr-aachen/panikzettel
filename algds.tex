@@ -20,6 +20,8 @@ This is the Panikzettel for Algorithmic Foundations of Data Science. It's 'kinda
 
 This project is licensed under \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC-BY-SA-4.0} and can be found on the Git server of the RWTH: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
 
+\newpage
+
 \section{Machine Learning Basics}
 Some terminology:
 \begin{itemize}
@@ -40,11 +42,11 @@ It is called regression if the function is numerical. In this case the agent tri
 In a passive supervised learning scenario the training examples are given without any manual influence in the selection of examples.\\
 In an active supervised learning scenario the programmer can actively choose specific data points and ask for there target values.
 
-%\subsubsection{Batch Learning and Online Learning}
-%In batch learning all examples are given at once and the agent has to come up with a good hypothesis.\\
-%
-%In online learning the examples are given over time which means the agent has to improve the hypothesis over time.
-
+One distinction:
+\begin{itemize}
+\item In \emph{batch learning} all examples are given at once and the agent has to come up with a good hypothesis.
+\item In \emph{online learning} the examples are given over time which means the agent has to improve the hypothesis over time.
+\end{itemize}
 
 \subsubsection{Semi-Supervised Learning}
 Semi-supervised learning is set-up like supervised learning but there are only a few and possible faulty examples.
@@ -61,13 +63,6 @@ The goal in a supervised leaning setting is to learn an unknown target function.
 The goal of a learning algorithm is to produce a hypothesis that generalizes well and approximates the target function well on all data points and not only on the training set.
 
 A learning problem is realizable if the target function is in the hypothesis space.
-
-%\subsubsection{Examples for Hypothesis Spaces}
-%\begin{itemize}
-%\item All linear functions
-%\item All polynomials or all polynomials of a certain degree
-%\item All functions that can be described by a decision tree
-%\end{itemize}
 
 \subsubsection{Occam's Razor}
 Occam's razor is a rule of thumb to decide which of multiple possible hypothesis should be chosen. It says one should choose the simplest hypothesis which is consistent with the data.
@@ -368,7 +363,7 @@ The perceptron algorithm always finds linear separators if they exist and does t
 %A setting like this is called deep learning when the weight vectors $w^{(v)}$ and the biases $b^{(v)}$ of the nodes can be changed. The standard algorithm carrying out this process is known as backpropagation with stochastic gradient descent.
 
 \subsection{k-Means Clustering}
-The goal of k-means clustering is to put a collection of data points into $k$ clusters. In the context of the lecture $k$ is fixed in advance. Clustering is an unsupervised learning problem.\\
+The goal of k-means clustering is to put a collection of data points into $k$ clusters. In the context of the lecture $k$ is fixed in advance. Clustering is an unsupervised learning problem.
 %Formally the problem is defined as follows.
 
 \begin{defi}{Centroid Clustering Problem}
@@ -467,7 +462,7 @@ The entropy of a probability distribution $\mathcal{P}$ on a finite sample space
 \[
 H(\mathcal{P})\coloneqq \sum_{\omega\in\Omega}\mathcal{P}(\{\omega \})\cdot \log_2\frac{1}{\mathcal{P}(\{\omega \})}.
 \]
-To avoid the case where the denominator is 0 we define $0\cdot \log (\frac{1}{0})=0$. Alternatively sum only over the event with $\mathcal{P}(\omega)>0$.
+To avoid the case where the denominator is 0 we define $0\cdot \log (\frac{1}{0})=0$. Alternatively sum only over the events with $\mathcal{P}(\omega)>0$.
 \end{defi}
 \end{halfboxl}
 \begin{halfboxr}
@@ -644,6 +639,7 @@ Shannon’s Source Coding Theorem determines the limits of compression. It does 
 \end{enumerate}
 \end{theo}
 
+\newpage
 
 \section{Statistical Learning Theory}
 \subsection{PAC Learning Framework}
@@ -676,7 +672,7 @@ A learning algorithm gets a training sequence $T$ and produces a hypothesis $h_T
 \begin{halfboxr}
 \vspace{-\baselineskip}
 	\begin{defi}{Generalization error}
-	The generalization error of a hypothesis $h$ is
+	Let $f^*$ be the target function. The generalization error of a hypothesis $h$ is
 	$$
 	\text{err}_\mathcal{D}(h) = \Pr_{x \in \mathcal{D}}(h(x) \neq f^\star(x))
 	$$
@@ -690,7 +686,7 @@ It is desirable to minimize the generalization error using so called PAC learnin
 \begin{defi}{Probably Approximately Correct Learning}
 A learning algorithm that on input $T$ produces a hypothesis $h_T$ is a PAC learning algorithm if for all $\varepsilon, \delta > 0$ there is an $m = m(\varepsilon, \delta)$ such that for every probability distribution $\mathcal{D}$ on $\mathbb{X}$
 $$
-\Pr_{T ~ \mathcal{D}} (\text{err}_\mathcal{D}(h_T) \leq \varepsilon) > 1 - \delta
+\Pr_{T \sim \mathcal{D}} (\text{err}_\mathcal{D}(h_T) \leq \varepsilon) > 1 - \delta
 $$
 \end{defi}
 
@@ -730,7 +726,7 @@ m \geq \frac{1}{\varepsilon} \ln (\frac{|\mathcal{H}|}{\delta})
 $$
 Then for any data generation distribution $\mathcal{D}$
 $$
-\Pr_{T ~ \mathcal{D}^m}(\forall h \in \mathcal{H}: (\text{err}_T(h) = 0 \Rightarrow \text{err}_\mathcal{D}(h) \leq \varepsilon)) > 1 - \delta
+\Pr_{T \sim \mathcal{D}^m}(\forall h \in \mathcal{H}: (\text{err}_T(h) = 0 \Rightarrow \text{err}_\mathcal{D}(h) \leq \varepsilon)) > 1 - \delta
 $$
 \end{theo}
 
@@ -1392,7 +1388,7 @@ Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducib
   The power iteration algorithm is used to approximate an eigenvector of a matrix. It can only be used if the following two following assumptions are met.\\
   Let $A\in\mathbb{C}^{n\times n}$ be a matrix with spectrum $\lambda_1,...\lambda_n$ where $|\lambda_1|\geq |\lambda_2|\geq ... \geq |\lambda_n|$ and let $\Lambda = diag(\lambda_1,...,\lambda_n)$. We assume:
   \begin{enumerate}
-  \item $\lambda_1\in\mathbb{R}_{\geq 0}$ and $\lambda_1\geq |\lambda_2|$.
+  \item $\lambda_1\in\mathbb{R}_{\geq 0}$ and $\lambda_1 > |\lambda_2|$.
   \item $A$ is diagonisable.
   \end{enumerate}
 
@@ -1421,6 +1417,8 @@ Let $n\geq 2$ and let $A\in\mathbb{R}^{n\times n}$ be non-negative and irreducib
 }
 \end{algo}
 \end{halfboxr}
+
+If $\frac{|\lambda_2|}{\lambda_1}$ is low the convergence is high.
 
 %TODO some of the theory is missing here
 
@@ -1605,6 +1603,17 @@ The problem is that this function is computationally hard.
 
 \begin{halfboxl}
 \vspace{-\baselineskip}
+	\begin{defi}{Positive Semi-Definite Matrices}
+	A matrix $A\in\mathbb{R}^{n\times n}$ is positive semi-definite (p.s.d.) if all its eigenvalues are non-negative numbers.
+	\end{defi}
+\end{halfboxl}
+\begin{halfboxr}
+\vspace{-\baselineskip}
+	The Laplacian has always the eigenvalue $\lambda_1=0$ with the respective eigenvector consisting only of ones.
+\end{halfboxr}
+
+\begin{halfboxl}
+\vspace{-\baselineskip}
 	\begin{defi}{The Laplacian}
 	Let $S$ be a similarity matrix. \\
 	The Laplacian $L$ of $S$ is the matrix
@@ -1612,7 +1621,7 @@ The problem is that this function is computationally hard.
 	L=D-S\in \mathbb{R}^{n\times n}
 	\]
 	where $D$ is the diagonal matrix with entries $D_{i,i}=\sum_{i=1}^n S_{i,j}$.\\
-	The Laplacian is always s.p.d.
+	The Laplacian is always p.s.d.
 	\end{defi}
 \end{halfboxl}
 \begin{halfboxr}
@@ -1738,10 +1747,12 @@ $$
 $$
 \end{theo}
 
+Note that $\boldsymbol{\pi} Q = \boldsymbol{\pi} \Leftrightarrow (Q^T - I)\boldsymbol{\pi}=0$ can be used to find $\boldsymbol{\pi}$.
+
 %TODO slide 6.11
 
 \begin{defi}{Aperiodic and Ergodic}
-A Markov chain $\mathcal{Q}$ is aperiodic if thee greatest common divisor of the length of all cycles in $G_Q$ is $1$.
+A Markov chain $\mathcal{Q}$ is aperiodic if the greatest common divisor of the length of all cycles in $G_Q$ is $1$.
 
 A Markov chain is ergodic if it is connected and aperiodic.
 \end{defi}
@@ -1908,9 +1919,9 @@ w \leftarrow wQ_{\text{web}}
 \]
 After this update the weights $w_j$ are proportional to the incoming edges of the page $j$ weighted by the inverse out-degree of their sources. Therefore we have
 \[
-w_j=\sum_{i\in [1,n], (i,j)\in E(G_{web}}\frac{1}{deg^{+}_i}.
+w_j=\sum_{i\in [1,n], (i,j)\in E(G_{web})}\frac{1}{deg^{+}_i}.
 \]
-This update is then repeated multiple times which results in a sequence $w_0,w_1,...$ of weight vectors. If the sequence converges the limit w is exactly what we want.A weight vector where for each page the weight of a page is proportional to the sum of the weights times inverse out-degree of the incoming edges.
+This update is then repeated multiple times which results in a sequence $w_0,w_1,...$ of weight vectors. If the sequence converges the limit w is exactly what we want. A weight vector where for each page the weight of a page is proportional to the sum of the weights times the inverse out-degree of the incoming edges.
 
 Note that the the sequence $w_0,w_1,...$ is exactly the sequence $p_0,p_1$ of probability distributions og the Markov Chain $Q_{web}$ when it is started with the initial distribution $p_0=w_0=(\frac{1}{n},...,\frac{1}{n})$.\\
 There are two cases that can occur in this scenario:
@@ -1994,7 +2005,7 @@ Note, the projection is computed in the \textsc{Map}-phase.
 \subsection{Matrix Multiplication}
 First we take a look at matrix-vector multiplication.
 The first variant is used when vector $v$ fits into main memory.
-The second variant is used when $v$ exceeds main memory.
+The second variant is used when $v$ exceeds the main memory.
 
 \begin{algo}{Vector-Matrix Multiplication (1)}
 \textbf{Input:} $v \in \mathbb{R}^n$ $A \in \mathbb{R}^{m \times n}$ stored as:
@@ -2089,7 +2100,7 @@ Due to the Map-reduce architecture all but the last output is automatically the 
 
 The size of an input can be the amount of bits ore more abstract measure such as number of tuples.
 
-But the measure only works for algorithms that balance the load "reasonable". A MR process that puts all computations into one note would minimize the communication cost but is of course pointless.
+But the measure only works for algorithms that balance the load "reasonable". A MR process that puts all computations into one node would minimize the communication cost but is of course pointless.
 
 \textbf{Replication rate:} This measure puts the communication cost into perspective and only works for single-round MR-processes.
 
@@ -2105,7 +2116,7 @@ Formally:
 \item $P(a_{ij}\neq 0)=p$ independently for all $i,j$.
 \item $P(b_{jk}\neq 0)=q$ independently for all $j,k$.
 \end{itemize}
-for (presumably small) $p, q$ with $0 \leq p, q \leq 1$.
+for (small) $p, q$ with $0 \leq p, q \leq 1$.
 
 \begin{theo}{Stats of the matrix multiplication}
 The analysis for the two round:
@@ -2337,6 +2348,7 @@ The task is to pick elements $a_i$ uniformly at random from the elements of the 
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
   \begin{algorithmic}[1]
   \Require Stream $a_1,...,a_n$ \Comment{Assume $n\geq 1$}
+  \Ensure A uniformly picked element from the stream.
   \State $i\leftarrow 0$
   \While{not end of stream}
     \State $i\leftarrow i+1$
@@ -2357,6 +2369,7 @@ Note that there are $\binom{n}{k}$ possible reservoirs.
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
   \begin{algorithmic}[1]
   \Require Stream $a_1,...,a_n$ and $k\leq n$
+  \Ensure $k$ uniformly picked elements from the stream.
   \For{$i=1,...,k$}
   \State sample[i]$\leftarrow a_i$ \Comment{variable $i$ has value $k$ now}
   \EndFor
@@ -2380,10 +2393,10 @@ Note that there are $\binom{n}{k}$ possible reservoirs.
 %\begin{theo}
 %The set of indices of the elements returned by the algorithm on input $a_1,...,a_n$ and $k\leq n$ is $\{i_1,...,i_k \}\in \binom{[n]}{k}$ with probability $\frac{1}{\binom{n}{k}}$.
 %\end{theo}
-The space complexity of the algorithm is $\mathcal{O}(\log n + k\cdot \log N)$.
+As before $N=|\mathbb{U}|$. The space complexity of the algorithm is $\mathcal{O}(\log n + k\cdot \log N)$.
 
 \subsection{Hash Functions}
-A hash function $h$ on a universe $\mathbb{U}$ is just a function from $\mathbb{U}$ to a set $\mathbb{T}$, which is usually an initial segment of the natural numbers. We assume that $h$ is or looks at least random.
+A hash function $h$ on a universe $\mathbb{U}$ is a function from $\mathbb{U}$ to a set $\mathbb{T}$, which is usually an initial segment of the natural numbers. We assume that $h$ is or looks at least random.
 
 Formally we consider a probability distribution on the space of all functions $h:\mathbb{U}\to\mathbb{T}$. If this probability distribution is the uniform distribution then we are dealing with truly random hash functions.
 
@@ -2636,6 +2649,8 @@ Therefore this is the trailing numbers of zeroes the binary representation of $k
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
   \begin{algorithmic}[1]
+  \Require Stream $a$.
+  \Ensure Estimator for the number of elements in the stream.
   \State $z\leftarrow 0$
   \While{not end of stream}
   	\State $a\leftarrow$ next stream element
@@ -2658,6 +2673,9 @@ Let $\mathcal{H}$ be a strongly 2-universal family of hash function from $\mathb
 	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
 	\renewcommand{\algorithmicensure}{\textbf{Output:}}
 	  \begin{algorithmic}[1]
+	    \Require Stream $a$ and 2-universal family of hash functions $\mathcal{H}$.
+ 	    \Ensure Estimator for the number of elements in the stream.
+      \State Draw $h$ uniformly at random from $\mathcal{H}$
 	  \State $z\leftarrow 0$
 	  \While{not end of stream}
 	  	\State $a\leftarrow$ next stream element
@@ -2725,35 +2743,24 @@ These values can be interpreted as follows.
 \begin{itemize}
 \item $F_0$ is the number of distinct elements in $a$.
 \item $F_1$ is the length $n$ of the stream $a$.
+\item $F_2$ is an indicator for how evenly the values are distributed. If $F_2$ is low the values are distributed evenly.
 \item $\sqrt{F_2}=\Vert f\Vert$ is the Euclidean norm of the vector $f=(f_u)_{u\in \mathbb{U}}$.
 \item $\sqrt[p]{F_p}\coloneqq\Vert f \Vert_p$ is the $L_p$-norm of $f$.
 \item $\sqrt[p]{F_p}$ converges to the maximum frequency of any element of $\mathbb{U}$. Therefore:
 \[
-\sqrt[p]{F_p} = \Vert f\Vert_p \overrightarrow{p\to\infty} \Vert f\Vert_{\max} = \max \{ f_u\mid u\in\mathbb{U} \}.
+\sqrt[p]{F_p} = \Vert f\Vert_p \text{ and for } p\to \infty \text{: } \Vert f\Vert_{\max} = \max \{ f_u\mid u\in\mathbb{U} \}.
 \]
 \end{itemize}
-The second frequency moment can be used to compute the variance of the stream. If we think of the stream elements as being chosen uniformly at random, the expected frequency is
+It is possible to compute the expected value of the stream and the variance using frequencies. Assume the elements from the stream are being chosen uniformly at random. Then the expected frequency is
 \[
 E(f_u)=\sum_{i=1}^n\frac{1}{N}=\frac{n}{N}
 \]
-Thus the variance is
-\begin{align*}
-\frac{1}{N}\sum_{u\in\mathbb{U}}E(f_u-E(f_u-E(f_u))^2 &= \frac{1}{N}\sum_{u\in\mathbb{U}} E(f_u^2-\frac{n^2}{N^2})\\
-&= \frac{1}{N}\sum_{u\in\mathbb{U}} E(f_u^2)-\frac{1}{N}\times N\times \frac{n^2}{N^2}\\
-&= \frac{1}{N}F_2-\frac{n^2}{N^2}
-\end{align*}
+Following from this the variance is
+\[
+\frac{1}{N}\sum_{u\in\mathbb{U}}E(f_u-E(f_u-E(f_u))^2 = \frac{1}{N}F_2-\frac{n^2}{N^2}
+\]
+
 \subsubsection{An Estimator for $F_k$}
-
-
-%TODO there was a nice example in the lecture notes. It could be included here
-%Example:
-%Let the input stream be
-%\[
-%abbcadaaababbccdccdabba
-%\]
-%where the marked element is selected.
-%Thus $n=23$ TODO\\
-
 \begin{halfboxl}
 \vspace{-\baselineskip}
 	Let $k\in\mathbb{2}$ with $k\geq 2$ and let $a=a_1,...,a_n$ be the input stream.\\
@@ -2775,6 +2782,8 @@ Thus the variance is
 	\renewcommand{\algorithmicrequire}{\textbf{Input:}}
 	\renewcommand{\algorithmicensure}{\textbf{Output:}}
 	  \begin{algorithmic}[1]
+	  \Require Stream $a$ and $k\in\mathbb{N}$.
+ 	    \Ensure Estimator for $F_k$.
 	  \State $i=0$
 	  \While{not end of stream}
 	    \State $i\leftarrow i+1$
@@ -2799,7 +2808,10 @@ Let $\mathcal{H}$ be a strongly 4-universal family of hash functions from $\math
 \vspace{-\baselineskip}
 \begin{algo}{Tug-of-War}
 {
-\begin{algorithmic}[1]
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}     \renewcommand{\algorithmicensure}{\textbf{Output:}}
+  \begin{algorithmic}[1]
+  \Require Strongly 4-universal hash family $\mathcal{H}$.
+  \Ensure Estimator for $F_2$.
   \State draw $h$ uniformly at random from $\mathcal{H}$
   \State $x\leftarrow 0$
   \While{not end of stream}
@@ -2825,7 +2837,10 @@ There is a variation of the Tug-of-War algorithm called Avg-ToW($k$).
 \vspace{-\baselineskip}
 	\begin{algo}{Avg-ToW($k$)}
 	{
-	\begin{algorithmic}[1]
+	\renewcommand{\algorithmicrequire}{\textbf{Input:}}     \renewcommand{\algorithmicensure}{\textbf{Output:}}
+  \begin{algorithmic}[1]
+  \Require Strongly 4-universal hash family $\mathcal{H}$.
+  \Ensure Estimator for $F_2$.
 	  \State draw $h_1,...,h_k$ uniformly at random from $\mathcal{H}$
 	  \For{$i=1,...k$}
 	    \State $x_i\leftarrow 0$
