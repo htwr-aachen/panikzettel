@@ -1,114 +1,146 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Panikzettel</title>
-    <style media="screen">
-      body {
-          color: #839496;
-          background: #002b36;
-          max-width: 900px;
-          margin-left: auto;
-          margin-right: auto;
-          font-family: 'Source Code Pro', 'Consolas', monospace;
-          padding: 1em;
+<head>
+  <meta charset="utf-8" />
+  <title>Panikzettel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style media="screen">
+    body {
+      color: #839496;
+      background: #002b36;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: 'Source Code Pro', 'Consolas', monospace;
+      padding: 1em;
+    }
+    a, a:visited {
+      color: #b58900;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    h1 {
+      color: #2aa198;
+    }
+    h1:after {
+      content: '_';
+      animation: 1.5s blink step-end infinite;
+    }
+    @keyframes blink {
+      from, to {
+        opacity: 0;
       }
-      a, a:visited {
-          color: #b58900;
+      50% {
+        opacity: 1;
       }
-      h1 {
-          color: #2aa198;
+    }
+    h2 {
+      font-size: 1.4em;
+      color: #859900;
+    }
+    header {
+      margin-bottom: 2em;
+    }
+    @media screen and (min-width: 800px) {
+      main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 2.5em;
+        grid-row-gap: 1em;
       }
-      h1:after {
-          content: '_';
-          animation: 1.5s blink step-end infinite;
-      }
-      @keyframes blink {
-          from, to {
-              opacity: 0;
-          }
-          50% {
-              opacity: 1;
-          }
-      }
-      h2 {
-        font-size: 1.4em;
-        color: #859900;
-      }
-      header {
-        margin-bottom: 2em;
-      }
-      footer {
-        margin-top: 2.5em;
-        font-size: 90%;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>Panikzettel</h1>
-      <p>Die ultimative Paniksammlung.</p>
-      <p>Wir sind ein Open Source-Projekt für RWTHler auf dem <a href="https://git.rwth-aachen.de/philipp.schroer/panikzettel">RWTH-GitLab</a>. Dort kannst Du uns Fehler und Verbesserungsideen melden, sowie uns deine eigenen Beiträge senden.</p>
-    </header>
-    <h2>Sommersemester 2019</h2>
-    <p>
-      <ul>
-        <li><a href="algds.pdf">Algorithmic Foundations of Data Science</a></li>
-      </ul>
-    </p>
-    <h2>Wintersemester 2018/19</h2>
-    <p>
-      <ul>
-        <li><a href="elehre.pdf">Entscheidungslehre</a></li>
-        <li><a href="pp.pdf">Probabilistic Programming</a></li>
-      </ul>
-    </p>
-    <h2>Sommersemester 2018</h2>
-    <p>
-      <ul>
-        <li><a href="aat.pdf">Advanced Automata Theory</a></li>
-        <li><a href="bpi.pdf">Business Process Intelligence</a></li>
-        <li><a href="spa.pdf">Static Program Analysis</a></li>
-      </ul>
-    </p>
-    <h2>Wintersemester 2017/18</h2>
-    <p>
-      <ul>
-        <li><a href="afi.pdf">Analysis für Informatiker</a></li>
-        <li><a href="cg.pdf">Basic Techniques in Computer Graphics</a></li>
-        <li><a href="effi.pdf">Effiziente Algorithmen</a></li>
-        <li><a href="ai.pdf">Introduction to Artifical Intelligence</a></li>
-        <li><a href="numrech.pdf">Numerisches Rechnen</a></li>
-      </ul>
-    </p>
-    <h2>Sommersemester 2017</h2>
-    <p>
-      <ul>
-        <li><a href="datkom.pdf">Datenkommunikation und Sicherheit</a></li>
-        <li><a href="dbis.pdf">Datenbanken und Informationssysteme</a></li>
-        <li><a href="la.pdf">Lineare Algebra</a></li>
-        <li><a href="malo.pdf">Mathematische Logik</a></li>
-        <li><a href="maschinengestaltung_i.pdf">Maschinengestaltung I</a></li>
-      </ul>
-    </p>
-    <h2>Wintersemester 2016/17</h2>
-    <p>
-      <ul>
-        <li><a href="buk.pdf">Berechenbarkeit und Komplexität</a></li>
-        <li><a href="swt.pdf">Softwaretechnik</a></li>
-      </ul>
-    </p>
-    <h2>Sommersemester 2016</h2>
-    <p>
-      <ul>
-        <li><a href="bus.pdf">Betriebssysteme und Systemsoftware</a></li>
-        <li><a href="dsal.pdf">Datenstrukturen und Algorithmen</a></li>
-        <li><a href="fosap.pdf">Formale Systeme, Automaten und Prozesse</a></li>
-        <li><a href="stocha.pdf">Stochastik</a></li>
-      </ul>
-    </p>
-    <footer>
-      <p>Uns kannst Du auch direkt erreichen: <small><a href="mailto:panikzettel@panikzettel.philworld.de">panikzettel@panikzettel.philworld.de</a></small></p>
-    </footer>
-  </body>
+    }
+    li {
+      margin-bottom: 0.5em;
+    }
+    footer {
+      margin-top: 2.5em;
+      font-size: 90%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Panikzettel</h1>
+    <p>Die ultimative Paniksammlung.</p>
+    <p>Wir sind ein Open Source-Projekt für RWTHler auf dem <a href="https://git.rwth-aachen.de/philipp.schroer/panikzettel">RWTH-GitLab</a>. Dort kannst Du uns Fehler und Verbesserungsideen melden, sowie uns deine eigenen Beiträge senden.</p>
+    <p>Keinen Zugriff auf das GitLab? Du willst wissen, wie man einen Panikzettel schreibt? <br><a href="meta.pdf">Der Meta-Panikzettel</a>.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Sommersemester 2019</h2>
+      <p>
+        <ul>
+          <li><a href="algds.pdf">Algorithmic Foundations of Data Science</a></li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h2>Wintersemester 2018/19</h2>
+      <p>
+        <ul>
+          <li><a href="elehre.pdf">Entscheidungslehre</a></li>
+          <li><a href="pp.pdf">Probabilistic Programming</a></li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h2>Sommersemester 2018</h2>
+      <p>
+        <ul>
+          <li><a href="aat.pdf">Advanced Automata Theory</a></li>
+          <li><a href="bpi.pdf">Business Process Intelligence</a></li>
+          <li><a href="spa.pdf">Static Program Analysis</a></li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h2>Wintersemester 2017/18</h2>
+      <p>
+        <ul>
+          <li><a href="afi.pdf">Analysis für Informatiker</a></li>
+          <li><a href="cg.pdf">Basic Techniques in Computer Graphics</a></li>
+          <li><a href="effi.pdf">Effiziente Algorithmen</a></li>
+          <li><a href="ai.pdf">Introduction to Artifical Intelligence</a></li>
+          <li><a href="numrech.pdf">Numerisches Rechnen</a></li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h2>Sommersemester 2017</h2>
+      <p>
+        <ul>
+          <li><a href="datkom.pdf">Datenkommunikation und Sicherheit</a></li>
+          <li><a href="dbis.pdf">Datenbanken und Informationssysteme</a></li>
+          <li><a href="la.pdf">Lineare Algebra</a></li>
+          <li><a href="malo.pdf">Mathematische Logik</a></li>
+          <li><a href="maschinengestaltung_i.pdf">Maschinengestaltung I</a></li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h2>Wintersemester 2016/17</h2>
+      <p>
+        <ul>
+          <li><a href="buk.pdf">Berechenbarkeit und Komplexität</a></li>
+          <li><a href="swt.pdf">Softwaretechnik</a></li>
+        </ul>
+      </p>
+    </section>
+    <section>
+      <h2>Sommersemester 2016</h2>
+      <p>
+        <ul>
+          <li><a href="bus.pdf">Betriebssysteme und Systemsoftware</a></li>
+          <li><a href="dsal.pdf">Datenstrukturen und Algorithmen</a></li>
+          <li><a href="fosap.pdf">Formale Systeme, Automaten und Prozesse</a></li>
+          <li><a href="stocha.pdf">Stochastik</a></li>
+        </ul>
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>Uns kannst Du auch direkt erreichen: <small><a href="mailto:panikzettel@panikzettel.philworld.de">panikzettel@panikzettel.philworld.de</a></small></p>
+  </footer>
+</body>
 </html>

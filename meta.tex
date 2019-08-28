@@ -1,0 +1,223 @@
+\documentclass{panikzettel}
+
+\title{Panikzettel Panikzettel}
+\author{Philipp Schröer}
+
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Einleitung}
+
+Nach 450 Seiten mit 30 Autoren wird es Zeit für den \emph{Panikzettel Panikzettel}.
+Hier wollen wir kurz beschreiben, wie man zum Projekt beiträgt: Wie soll ein Panikzettel aussehen, wie arbeitet man mit dem Code und wie kann ein Panikzettel veröffentlicht werden?
+Jedoch sollte nicht vergessen werden: Wie alle anderen Panikzettel auch ist dieser hier nur eine Sammlung von Notizen.
+So gut wie alles ist auch mit dem Team zur Diskussion offen.
+
+Am Besten ist es, wenn Ideen für Panikzettel mit dem Team abgesprochen werden: \\
+\href{mailto:panikzettel@panikzettel.philworld.de}{panikzettel@panikzettel.philworld.de}.
+
+Dieses Projekt ist lizenziert unter \href{https://creativecommons.org/licenses/by-sa/4.0/}{CC-BY-SA-4.0} und wird auf dem Git-Server der RWTH verwaltet: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+
+{\small{}
+\paragraph{Kein Zugriff auf den obigen Link?}
+Das Repository ist RWTH-intern verfügbar.
+Für den Zugriff muss man also als RWTH-Angehöriger angemeldet sein.
+Manchmal hat man trotzdem keinen Zugriff auf RWTH-interne Repositories, obwohl man über seinen RWTH-Account angemeldet ist.
+Das ist schon öfter passiert.
+Dann muss man eben dem \href{http://www.itc.rwth-aachen.de/cms/IT-Center/Services/kompletter-Servicekatalog/Beschaffungsportale/~estp/ServiceDesk/?lidx=1}{IT Center der RWTH} schreiben.}
+
+\section{Panikzettel kompilieren und erstellen}
+
+Für Panikzettel brauchst du \texttt{latex}/\texttt{xelatex}/usw., \texttt{git} und \texttt{make}.
+
+\paragraph{Kompilieren mit make}
+
+Panikzettel werden mit \texttt{make} kompiliert:
+\begin{itemize}
+  \item \texttt{make} bzw. \texttt{make all}: Alle Panikzettel kompilieren.
+  \item \texttt{make la.pdf}, \texttt{make meta.pdf}, etc.: Einen bestimmten Panikzettel bauen.
+  \item \texttt{make clean}: Alle Kompilate löschen.
+\end{itemize}
+
+{\small{}
+  Im Hintergrund wird in der \texttt{Makefile} für jeden Panikzettel eine \texttt{name.last-change} Datei erstellt, die von Git das Datum der letzten Änderung enthält.
+  Das Datum wird dann oben eingeblendet.
+}
+
+\paragraph{Kompilieren ohne make (etwa in Overleaf)}
+
+Lade die \texttt{panikzettel.cls} und die \texttt{.tex}-Datei des Panikzettels auf Overleaf hoch.
+Dann kommentiere in der \texttt{panikzttel.cls} die folgenden Zeilen aus:
+\begin{lstlisting}[language=tex]
+% Show most recent revision number and date in date field
+\makeatletter
+\date{\filename@parse{\jobname}{\small\input{\filename@base.last-change}}}
+\makeatother
+\end{lstlisting}
+
+\paragraph{Neuen Panikzettel erstellen}
+
+In der \texttt{Makefile}-Datei eine Regel für den neuen Panikzettel einfügen, etwa wie folgt.
+Außerdem oben in der \texttt{all}-Regel den neuen Eintrag zur Liste hinzufügen.
+\begin{lstlisting}
+  meta.pdf: meta.tex panikzettel.cls meta.last-change
+	latexmk -pdflatex="pdflatex -interaction=nonstopmode" -pdf meta.tex
+\end{lstlisting}
+
+\section{Einen Panikzettel schreiben}
+
+Panikzettel haben einen bestimmten Zweck: Sie sollen bei der Klausurvorbereitung im Moment der Panik helfen.
+Daraus ergeben sich einige grundlegende Tipps für den Stil der Panikzettel, die beim Schreiben beachtet werden sollten.
+
+\subsection{Grobe Richtlinien}
+
+Als Autor versetzt man sich in den Leser: Gerade alles zum Thema vergessen, und jetzt braucht man den Algorithmus oder den Satz zur Lösung einer Aufgabe.
+Kurze, verständliche Erklärungen, die Intuition vermitteln und nicht immer ganz formal korrekt sind.
+Keine langen Sätze und bitte nicht viel verschachteln.
+
+Nicht die Vorlesung oder das offizielle Skript ersetzen, sondern ergänzen.
+Deshalb auch generell keine Beweise und nur selten Beispiele.
+Hier gibt es natürlich Ausnahmen: Etwa bestimmte Beispiele oder Beweise beim Verständnis besonders helfen, oder wenn sie zentral für die Prüfung sind.
+
+Der Leser hat meistens Zeitdruck.
+Darum nicht mit überflüssigen Formulierungen oder Geschwafel langweilen, aber (kurze) Überleitungen und Einleitungen zur Erklärung und Einordnung sind meistens sinnvoll.
+
+In Panik achtet man auf farbige Boxen und hervorgehobenen Text.
+Bei Definitionen in heben wir gerne das definierte Wort mit \texttt{\textbackslash{}emph} hervor: ``Ein \emph{Wort} besteht aus Zeichen.''
+
+Definitions-, Satz- oder Algorithmen-Boxen sind für die zentralen Informationen eines Abschnittes hilfreich.
+Kurzer Text daneben kann diese weiter erklären.
+Unwichtigere Details, die technisch gesehen wohl auch Definitionen, Sätze oder Algorithmen sind, müssen nicht immer in Boxen.
+Überhaupt hilft gutes Layout bei der Orientierung.
+Deshalb sollte eine Seite gut gefüllt sein, aber die Struktur und empfohlene Leserichtung klar erkennbar sein.
+Jeder Panikzettel wird mindestens einmal gedruckt.
+Denke an die Umwelt und mache den Panikzettel kompakt.
+
+\subsection{Prozess}
+
+Panikzettel wurden meistens in Gruppen geschrieben und ziemlich kleinkariert kritisiert und sehr oft überarbeitet, bevor sie veröffentlicht werden.
+Eigentlich bleibt kein Satz so in der finalen Version, wie er zuerst geschrieben wurde.
+Anders als die private Zusammenfassung soll ein Panikzettel auch für andere verständlich sein.
+Deshalb legen wir sehr viel Wert auf Feedback und Korrektur.
+
+Sehr sinnvoll ist es daher auch, schon früh Feedback einzuholen.
+Dabei muss noch nichts fertig sein, aber oft kann man sich dadurch unnötige Arbeit ersparen.
+
+\subsection{Quellen}
+
+Panikzettel basieren meistens auf einer Vorlesung.
+Daher ist es sinnvoll, die Struktur und Terminologie der Vorlesung anzupassen.
+Jedoch sollte einfaches Kopieren vermieden werden.
+Panikzettel sind eigene Zusammenfassungen, und Mehrwehrt kommt oft davon, dass man etwas selber neu schreibt.
+Daher fühlen wir uns auch am wohlsten, wenn Grafiken selbst erstellt wurden (etwa mit TikZ).
+Screenshots aus Folien machen wir nicht.
+Damit wir unter unserer Projektlizenz Panikzettel verbreiten dürfen, müssen die Inhalte also selber erstellt sein oder unter einer kompatiblen Lizenz veröffentlicht worden sein.
+
+\subsection{Struktur}
+
+Ein Panikzettel hat ein detailliertes Inhaltsverzeichnis, um einen Überblick über die wichtigen Themen zu bekommen.
+Wenn wichtige Themen im Panikzettel nicht erklärt werden, sollte trotzdem dazu ein Abschnitt mit einem Vermerk existieren, damit man das Thema im Inhaltsverzeichnis findet.
+
+Die Einleitung sollte erklären, warum der Panikzettel existiert und worauf er basiert.
+
+Die weitere Kapitelstruktur kann man dann an die Struktur der Vorlesung anlehnen.
+Das macht das Lernen mit Vorlesungsmaterial und Panikzettel einfacher.
+
+\newpage
+\section{Panikzettel-Quellcode}
+
+Es folgen Tipps für den Latex-Code eines Panikzettels.
+
+\subsection{Code-Stil}
+
+Damit man den Latex-Code gut lesen und mit Git überarbeiten kann, haben wir einige Anforderungen an den Code (die nicht immer eingehalten werden):
+\begin{itemize}
+  \item Code zwischen \texttt{\textbackslash{}begin} und \texttt{\textbackslash{}end} einrücken.
+  \item Jeder Satz kommt im Quellcode auf eine eigene Zeile. Das hilft bei Diffs mit Git.
+  \item Absätze durch Leerzeilen trennen, \texttt{\textbackslash{}\textbackslash{}} nur selten verwenden.
+  \item Kommentare sind gut, aber bitte nicht halbfertige Texte auskommentiert übrig lassen.
+  \item Keine Leerzeichen am Ende der Zeile, das macht Diffs einfacher. Dein Editor sollte dafür eine Funktion haben (Stichwort ``trailing whitespace'').
+\end{itemize}
+
+\subsection{Die panikzettel.cls}
+
+In der \texttt{panikzettel.cls} haben wir unter anderem unsere Boxen für Definitionen, Sätze und Algorithmen definiert.
+Außerdem haben wir einige Pakete für alle Panikzettel importiert und einige praktische Kommandos selbst definiert.
+Wir empfehlen einen Blick in die \texttt{panikzettel.cls} für einen vollständigen Überblick.
+
+Importiert wird die Datei über \texttt{\textbackslash{}documentclass\{panikzettel\}} oder \\\texttt{\textbackslash{}documentclass[english]\{panikzettel\}} für Englisch.
+Mit \texttt{\textbackslash{}author} Autoren eintragen.
+Ein \texttt{\textbackslash{}\date} Kommando wird von der \texttt{panikzettel.cls} eingefügt (siehe Abschnitt über \texttt{make}).
+
+Wir benutzen UTF-8.
+
+\paragraph{Unsere Boxen}
+
+Wir definieren mit dem \texttt{tcolorbox}-Paket drei wichtige Arten von Boxen, die für typische Informatik-Panikzettel praktisch sind.
+Die Verwendung läuft über \texttt{\textbackslash{}begin\{algo\}\{Titel\}} und \texttt{\textbackslash{}end\{algo\}} bzw.\ mit \texttt{defi} und \texttt{theo} für Definitionen respektive Sätze.\footnote{Die ungleich großen Boxen sind übrigens \emph{kein} gutes Beispiel für schönes Layout.}
+
+\begin{thirdboxl}
+  \vspace{-\baselineskip}
+  \begin{algo}{Zwei Schritte}
+    \textbf{Eingabe:} Was bekommt der Algorithmus?
+
+    \textbf{Ausgabe:} Was kommt raus?
+    \tcblower
+    \begin{enumerate}
+      \item Schritt 1
+      \item Schritt 2
+    \end{enumerate}
+  \end{algo}
+\end{thirdboxl}%
+\begin{thirdboxm}
+  \vspace{-\baselineskip}
+  \begin{defi}{Wiederholung}
+    Sei $n \in \nat$ eine Zahl und $w \in \Sigma^\ast$ ein Wort. \\
+    Die \emph{Wiederholung} von $w$ ist: \quad $w^n = \underbrace{w \ldots w}_{n \text{ Mal}}$.
+  \end{defi}
+\end{thirdboxm}%
+\begin{thirdboxr}
+  \vspace{-\baselineskip}
+  \begin{theo}{P und NP}
+    Entweder ist $P = NP$, oder $P \neq NP$, aber wahrscheinlich nicht beides.
+  \end{theo}
+\end{thirdboxr}
+
+Bei Algorithmen verwenden wir immer das Schema mit \textbf{Eingabe} und \textbf{Ausgabe}, und dem Trennstrich mit \texttt{\textbackslash{}tcblower}.
+Ber der Definition ist manuell ein Absatz mit \texttt{\textbackslash{}\textbackslash{}} eingefügt, um die Vorraussetzungen und die eigentliche Definition zu trennen.
+Außerdem ist das definierte Wort mit \texttt{\textbackslash{}emph} hervorgehoben.
+
+\paragraph{Split Blocks}
+
+Um den Platz auf der Seite maximal effizient zu benutzen, teilen wir die Seite sehr oft in zwei oder sogar drei Spalten auf.
+Für gleich große Spalten haben wir die Umgebungen \texttt{halfboxl}/\texttt{halfboxr} und \texttt{thirdboxl}/\texttt{thirdboxm}/\texttt{thirdboxr} definiert.
+Beispielcode:
+
+\begin{minipage}[t]{0.25\textwidth}
+  \vspace{-\baselineskip}
+\begin{lstlisting}
+\begin{halfboxl}
+  Linke Seite
+\end{halfboxl}%
+\begin{halfboxr}
+  Rechte Seite
+\end{halfboxr}
+\end{lstlisting}
+\end{minipage}\hfil%
+\begin{minipage}[t]{0.7\textwidth}
+  Man beachte das Kommentar-Zeichen \texttt{\%} am Ende der Zeile.
+  Das ist wichtig, damit wegen des Zeilenumbruchs kein Leerzeichen von Latex eingefügt wird.
+  Sonst bekommt man Fehler, weil der Inhalt breiter als die Seite ist (``overfull hbox'').
+\end{minipage}
+
+In Verbindung mit Boxen, Grafiken oder Tabellen kann das Layout mit diesen Kommandos (und mit \texttt{minipage}s im Allgemeinen, auf denen die Kommandos basieren) schon mal ganz merkwürig verschoben sein.
+Dazu hilft es, liberal oben in die Box ein \texttt{\textbackslash{}vspace\{-\textbackslash{}baselineskip\}} einzufügen.
+Wir wissen nicht wieso das nötig ist, aber es hilft.
+
+\end{document}
