@@ -237,7 +237,7 @@ Ein Treap ist ein binärer Suchbaum mit Heap-Eigenschaft, wobei diese auf zufäl
 \begin{itemize}
 	\item Selbstorganisierende Datenstruktur; selbstlernend
     \item armortisiert effizient
-    \item Restrukturierung ducrch Rotationen; ohne Zusatzinformationen
+    \item Restrukturierung durch Rotationen; ohne Zusatzinformationen
 \end{itemize}
 
 \subsubsection{\texttt{splay}-Operation}
@@ -260,7 +260,7 @@ Ein Treap ist ein binärer Suchbaum mit Heap-Eigenschaft, wobei diese auf zufäl
 
 \subsubsection{Einfügen}
 \begin{enumerate}
-	\item Normale Suche $x$ im Baum, falls gefunden weiter bei 3.
+	\item Normale Suche von $x$ im Baum, falls gefunden weiter bei 3.
     \item Füge $x$ als Blatt ein
     \item Wende $\texttt{splay}(x)$ an
 \end{enumerate}
@@ -277,7 +277,7 @@ Ein Treap ist ein binärer Suchbaum mit Heap-Eigenschaft, wobei diese auf zufäl
 
 \subsubsection{Definition}
 \begin{itemize}
-	\item Jeder Knoten hat höchsten $b$ Kinder
+	\item Jeder Knoten hat höchstens $b$ Kinder
     \item Jeder innere Knoten außer der Wurzel hat mindestens $a$ Kinder
     \item Alle Blätter haben die gleiche Tiefe
     \item Als assoziatives Array: Schlüssel nur in den Blättern, von links nach rechts geordnet
@@ -417,14 +417,14 @@ $\newline$
 \subsection{Quicksort}
 \begin{itemize}
 \item Beispiel
-$\newline$ (4,7,5,6,9,1,2,8,3) $\xrightarrow{\textrm{Pivot 4, $7\geq4$, $3\leq4$, vertauschen}}$ (4,\textbf{3},5,6,9,1,2,8,\textbf{7}) \\ $\xrightarrow{\textrm{$5\geq4$, $2\leq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},6,9,1,\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{$6\geq4$, $1\leq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},\textbf{1},9,\textbf{6},\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{$9\geq4$, $1\geq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},\textbf{9},\textbf{1},\textbf{6},\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{Tausch rückgänig machen, und Pivot mit dem dann linken Elemnt tauschen}}$ (1,3,2,\textbf{4},9,6,5,8,7) \\
+$\newline$ (4,7,5,6,9,1,2,8,3) $\xrightarrow{\textrm{Pivot 4, $7\geq4$, $3\leq4$, vertauschen}}$ (4,\textbf{3},5,6,9,1,2,8,\textbf{7}) \\ $\xrightarrow{\textrm{$5\geq4$, $2\leq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},6,9,1,\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{$6\geq4$, $1\leq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},\textbf{1},9,\textbf{6},\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{$9\geq4$, $1\geq4$, vertauschen}}$ (4,\textbf{3},\textbf{2},\textbf{9},\textbf{1},\textbf{6},\textbf{5},\textbf{8},\textbf{7}) \\ $\xrightarrow{\textrm{Tausch rückgängig machen, und Pivot mit dem dann linken Element tauschen}}$ (1,3,2,\textbf{4},9,6,5,8,7) \\
 Vorgang für (1,3,2) und (9,6,5,8,7) wiederholen.
 
 \item Vorgehen:
 \begin{enumerate}
 \item Pivot Element wählen (bei uns immer das linkeste Element in dem Teil-Array).
 \item Von beiden Rändern nach innen gehen, bis links auf das erste Element gezeigt wird, welches größer als der Pivot ist, und rechts auf das erste Element gezeigt wird, welches kleiner als der Pivot ist, beide Elemente vertauschen.
-\item Wiederhole Schritt 2, bis der rechte Zeiger auf links vom Linken ist. Dann den letzten Tausch rückgänig machen, und den Pivot mit dem letzen Element aus der linken Teilliste tauschen.
+\item Wiederhole Schritt 2, bis der rechte Zeiger links vom linken Zeiger steht. Dann den letzten Tausch rückgängig machen, und den Pivot mit dem letzen Element aus der linken Teilliste tauschen.
 \item Erst die linke, dann die rechte Teilliste jeweils mit Quicksort sortieren.
 \end{enumerate}
 \end{itemize}
@@ -532,7 +532,7 @@ Ein Algorithmus in Linearzeit, welcher viele Anwendungen hat.
 
 \subsection{Starke Zusammenhangskomponenten}
 
-Eine starke Zusammenhangskomponenten sind die Teilmengen der Knoten eines Graphen, die sich gegenseitig von jedem Knoten dieser Komponente über entsprechend gerichtete Kanten erreichen können.
+Starke Zusammenhangskomponenten sind die Teilmengen der Knoten eines Graphen, die sich gegenseitig von jedem Knoten dieser Komponente über entsprechend gerichtete Kanten erreichen können.
 
 \subsection{Kreise}
 Wende Tiefensuche auf den Graphen an. Wenn eine Rückwärtskante exisitiert, dann ist der Graph nicht kreisfrei.
@@ -542,11 +542,11 @@ Findet starke Zusammenhangskomponenten in gerichteten Graphen.
 
 Vorgehen:
 \begin{enumerate}
-\item Kehrgraphen bilden. (Also alle Kanten einfach umdrehen)
+\item Kehrgraphen bilden (alle Kanten einfach umdrehen).
 \item Eine Tiefensuche darauf ausführen.
 \item Knoten nach Finishtime sortieren.
-\item In dieser Reihenfolge auf dem Originalgraphen eine Tiefensuche ausführen. (Also bei Schritt 1 und 2 der Tiefensuche den Knoten wählen, der die größte Finish-Zeit hat)
-\item Jeder Baum, der im Wald aus den Baumkante der Tiefensuche ist, spannt eine starke Zusammenhangskomponente auf.
+\item In dieser Reihenfolge auf dem Originalgraphen eine Tiefensuche ausführen (bei Schritt 1 und 2 der Tiefensuche den Knoten wählen, der die größte Finish-Zeit hat).
+\item Jeder Baum, der im Wald aus den Baumkanten der Tiefensuche ist, spannt eine starke Zusammenhangskomponente auf.
 \end{enumerate}
 \subsection{Topologisches Sortieren}
 Topologische Sortierung bezeichnet in der Mathematik eine Reihenfolge von Dingen, bei der vorgegebene Abhängigkeiten erfüllt sind.
@@ -650,7 +650,7 @@ Initialisiere $f=0$. Solange es einen augmentierenden Pfad $f$ von $s$ nach $t$ 
 
 \subsection{Schnitte in Netzwerken}
 
-In einem s-t-Netzwerk mit maximalem Fluss alle Kanten als sicher betrachten, welche noch Restkapazitäten haben. Achtung, auch bei voller Kapazität einer Kante besitzt die Gegenrichtung noch Restkapazität und ist somit noch sicher. Alle Knoten, weche noch von s aus über sichere Kanten erreicht werden können gehören zur Menge S. Die restlichen gehören zu T. Alle Kanten, die S und T verbinden gehören zum minimalen Schnitt.
+In einem s-t-Netzwerk mit maximalem Fluss alle Kanten als sicher betrachten, welche noch Restkapazitäten haben. Achtung, auch bei voller Kapazität einer Kante besitzt die Gegenrichtung noch Restkapazität und ist somit noch sicher. Alle Knoten, welche noch von s aus über sichere Kanten erreicht werden können gehören zur Menge S. Die restlichen gehören zu T. Alle Kanten, die S und T verbinden gehören zum minimalen Schnitt.
 
 \subsection{Bipartites Matching}
 Der Algorithmus von Edmond und Karp dient dem finden des maximalen Flusses zwischen zwei Knoten $s$ und $t$ in einem gerichteten Graphen. \\
