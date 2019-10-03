@@ -54,13 +54,8 @@ Panikzettel werden mit \texttt{make} kompiliert:
 \paragraph{Kompilieren ohne make (etwa in Overleaf)}
 
 Lade die \texttt{panikzettel.cls} und die \texttt{.tex}-Datei des Panikzettels auf Overleaf hoch.
-Dann kommentiere in der \texttt{panikzttel.cls} die folgenden Zeilen aus:
-\begin{lstlisting}[language=tex]
-% Show most recent revision number and date in date field
-\makeatletter
-\date{\filename@parse{\jobname}{\small\input{\filename@base.last-change}}}
-\makeatother
-\end{lstlisting}
+
+Wenn die \texttt{name.last-change} Datei nicht existiert, wird automatisch \texttt{\textbackslash{}today} für das Datum verwendet.
 
 \paragraph{Neuen Panikzettel erstellen}
 

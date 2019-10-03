@@ -57,7 +57,7 @@
 
 % Show most recent revision number and date in date field
 \makeatletter
-\date{\filename@parse{\jobname}{\small\input{\filename@base.last-change}}}
+\date{\small\filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
 \makeatother
 
 \subject{\normalfont{}\texttt{\href{https://panikzettel.philworld.de}{panikzettel.philworld.de}}}
