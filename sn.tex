@@ -86,20 +86,20 @@ The links of a directed graph can be asymmetrical i.e. they have an explicit dir
 	\end{defi}
 \end{thirdboxr}
 
-In \textit{Binary Networks} links just have two states: present or not. 
-In \textit{Weighted Networks} each links is labeled with a value indicating the connection's strength. 
+In \textit{binary networks} links just have two states: present or not. 
+In \textit{weighted networks} each links is labeled with a value indicating the connection's strength. 
 A strength of $ 0 $ indicates that there is no link.
 
 \subsection{Measuring Network Structure}
 \begin{defi}{Adjacency Matrix}
-	In a Binary Network $ (N,L) $ an \textit{adjacency matrix} $ A^{n \times n} $ with $ n = |N| $ can be used to describe the links $ L \subseteq N \times N $: 
+	In a binary network $ (N,L) $ an \textit{adjacency matrix} $ A^{n \times n} $ with $ n = |N| $ can be used to describe the links $ L \subseteq N \times N $: 
 	\begin{align*}
 		A_{ij} = \begin{cases}
 		1 & \text{if there is a link from } i \text{ to } j \\
 		0 & \text{otherwise}
 		\end{cases}
 	\end{align*}
-	If the given network is a Weighted Network, the matrix' elements represent the weights $ w_{ij} $:
+	If the given network is a weighted network, the matrix' elements represent the weights $ w_{ij} $:
 	\begin{align*}
 		A_{ij} = w_{ij}
 	\end{align*}
@@ -136,7 +136,7 @@ A graph with $ |L| = L_\text{max} $ is called complete graph.
 		
 		$ \langle k \rangle $ defines the average degree:
 		\begin{align*}
-			\langle k \rangle := \frac{1}{|N|} \sum\limits_{i=1}^{|N|} k_i = \frac{2 |L|}{|N|}
+			\langle k \rangle := \frac{1}{|N|} \sum\limits_{i \in N} k_i = \frac{2 |L|}{|N|}
 		\end{align*}		
 	\end{defi}
 \end{halfboxr}
@@ -240,9 +240,9 @@ where $ A \in \{0,1\}^{|N|\times|N|}  $ is the adjacency matrix and $ x(t) \in \
 \begin{align*}
 	x(t) = A^t \sum_i c_i v_i = \sum_i c_i k_i^t v_i = k_1^t \sum_i c_i \left[\dfrac{k_i}{k_1}\right]^t v_i
 \end{align*}
-$ k_i $ eigenvalues of A, $ k_1 $ largest eigenvalue
+$ k_i $ eigenvalues of A, $ k_1 $ largest eigenvalue.
 
-TODO
+% TODO explain eigenvector centrality better
 
 \subsection{Importance of Edges}
 Generally, ties (links or edges) are classified in two categories. 
