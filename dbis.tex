@@ -621,7 +621,7 @@ Um eine Relation in BCNF zu bringen, gibt es den Dekompositionsalgorithmus:
 \begin{itemize}
 \item[] Solange ein $\mathcal{R}_i = (X_i, F_i)$ nicht in BCNF ist:
 \begin{enumerate}
-\item Finde nichttriviale Abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$.
+\item Finde nichttriviale Abhängigkeit $\alpha \to \beta \in F_i^+$ mit $\alpha \cap \beta = \emptyset$ und $\alpha \nrightarrow X_i$.
 \item $X_{i1} := \alpha \cup \beta$, $X_{i2} := X_i \setminus \beta$
 \item Ersetze $\mathcal{R}_i$ durch $\mathcal{R}_{i1}$ und $\mathcal{R}_{i2}$ mit Attributmengen $X_{i1}$ bzw.\ $X_{i2}$ und FDs durch Einschränkung von $F_i^+$.
 \end{enumerate}
