@@ -506,7 +506,7 @@ The modularity of a partition can also be computed in another way: $$M = \sum_c 
 \textit{Label propagation} is a very fast and local algorithm to detect communities.
 First, every vertex is initialised to have a unique label.
 Then, in every step (and generally in a random order), every vertex is assigned the label of which it has the most neighbours.
-Ties are resolved by a round of rock-paper-scissors.
+Ties are resolved by a random choice.
 This algorithm can find any number of communities of any size and is very fast.
 However, its results are not unique and it can get stuck in oscillations, for example in bipartite subgraphs.
 
@@ -571,7 +571,7 @@ The population is modelled by a graph of people as nodes and interactions as ver
 The \textit{characteristic time} of a given model is the number of steps needed to infect about $\frac{1}{e} \approx 36\%$ of the nodes.
 The \textit{basic reproductive number} is the average number of individuals an infected node will infect before recovering in a completely susceptible population.
 
-\begin{halfboxl}
+\begin{minipage}[t]{0.475\textwidth}
     \paragraph{SIS Model}
     \begin{center}
         \begin{tikzpicture}
@@ -598,8 +598,8 @@ The \textit{basic reproductive number} is the average number of individuals an i
     Observe that for power law networks, $\lambda_c$ diverges when $n \to \infty$, which implies that in these networks, even very slow viruses can spread successfully there.
 
     In this model, either the infection dies out, or after enough time some fraction of the population (given by $1-\frac{\mu}{\beta \langle k \rangle}$) is infected.
-\end{halfboxl}%
-\begin{halfboxr}
+\end{minipage}\hfil{\color[gray]{0.7}\vline}\hfil%
+\begin{minipage}[t]{0.475\textwidth}
     \vspace{-\baselineskip}
     \paragraph{SI Model}
     \begin{center}
@@ -639,7 +639,7 @@ The \textit{basic reproductive number} is the average number of individuals an i
         \end{tikzpicture}
     \end{center}
     Analytically not solvable.
-\end{halfboxr}%
+\end{minipage}
 
 \begin{center}
     \begin{tabular}{c|l}
@@ -814,12 +814,13 @@ Further, use of meta-data and community structures can yield improved results.
 \subsection{Directed Networks}
 
 \paragraph{Triadic Census}
-The \textit{triadic census} evaluates every vertex triple and return a $T \in \N^{1\times16}$ vector, with the entries corresponding to the number of realisations for every motif.
+We can do a \emph{triadic census} that evaluates every vertex triple in a graph.
+The result is a $T \in \N^{1 \times 16}$ vector, counting how often each of the 16 triads below occured.
 
 \input{sn19/triads.tex}
 
 \paragraph{Flow Hierarchy}
-\textit{Flow Hierarchy} is a metric which measures how hierarchical a graph is, and is more nuanced than the binary hierarchical/not hierarchical.
+\textit{Flow hierarchy} is a metric which measures how hierarchical a graph is, and is more nuanced than the binary hierarchical/not hierarchical.
 Formally, the flow hierarchy is given by the size of the fraction of edges which are not part of a cycle:
 \[
     h(G) = \frac{\sum_{e \in E(G)} \begin{cases}1, \text{ if } e \text{ is not in a cycle.}\\0, \text{ otherwise.} \end{cases}}{|E(G)|}.
@@ -844,14 +845,14 @@ A graph is an \textit{association network} if each vertex $v \in V(G)$ has an at
 \paragraph{Pearson Correlation}
 The \textit{Pearson correlation} is useful for measuring the similarity for vertices $v,w$ with continuous attributes and is given by:
 \[
-    \rho_{vw} = \frac{\textsf{Cov}(x_v,x_w)}{\sqrt{\textsf{Var}(x_v)\cdot\textsf{Var}(x_w)}}.
+    \rho_{vw} = \frac{\textsf{Cov}(x_v,x_w)}{\sqrt{\textsf{Var}(x_v)\cdot\textsf{Var}(x_w)}} = \frac{\sum_{v,w} (A_{vw} - k_v k_w/2m) x_v x_w}{\sum_{v,w} (k_v \delta_{vw} - k_v k_w/2m) x_v x_w}.
 \]
 
 \section{Filtering}
 
 \paragraph{Minimum Spanning Tree}
 A very simple technique for filtering a network is to compute a minimum spanning tree.
-For example, we can use Kruskal's algorithm in that we sort all edges by decreasing similarity and then add them successively back to the network while making sure that the result is a tree.
+For example, we can use Kruskal's algorithm\footnote{See e.g.\ our \href{https://panikzettel.philworld.de/dsal.pdf}{DSAL Panikzettel} (German) for Kruskal's algorithm.} in that we sort all edges by decreasing similarity and then add them successively back to the network while making sure that the result is a tree.
 
 Though MSTs are very easy to compute and somewhat useful, they have the disadvantage of having no cycles or clustering.
 
