@@ -1,0 +1,123 @@
+\begin{center}
+\setlength{\tabcolsep}{15pt}
+    \begin{tabular}{cccc}
+        \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge []             node [] {} (B);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge [<->]             node [] {} (B);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge []             node [] {} (B)
+                                        (A) edge []             node [] {} (C);
+        \end{tikzpicture} \\ \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(B) edge []             node [] {} (A)
+                                        (C) edge []             node [] {} (A);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(B) edge []             node [] {} (A)
+                                        (A) edge []             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(B) edge [<->]             node [] {} (A)
+                                        (C) edge []             node [] {} (A);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(B) edge [<->]             node [] {} (A)
+                                        (A) edge []             node [] {} (C);
+        \end{tikzpicture} \\ \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge [<->]             node [] {} (B)
+                                        (A) edge [<->]             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge []             node [] {} (B)
+                                        (A) edge []             node [] {} (C)
+                                        (B) edge []             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge []             node [] {} (B)
+                                        (A) edge [<-]             node [] {} (C)
+                                        (B) edge []             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge []             node [] {} (B)
+                                        (A) edge []             node [] {} (C)
+                                        (B) edge [<->]             node [] {} (C);
+        \end{tikzpicture} \\ \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge [<-]             node [] {} (B)
+                                        (A) edge [<-]             node [] {} (C)
+                                        (B) edge [<->]             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge [<-]             node [] {} (B)
+                                        (A) edge []             node [] {} (C)
+                                        (B) edge []             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge [<-]             node [] {} (B)
+                                        (A) edge [<->]             node [] {} (C)
+                                        (B) edge [<->]             node [] {} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A]   {};
+                \node[vertex]       (C) [below right of=A]  {};
+                \node[]       (D) [below of=A]  {};
+                \path [very thick,->]  	(A) edge [<->]             node [] {} (B)
+                                        (A) edge [<->]             node [] {} (C)
+                                        (B) edge [<->]             node [] {} (C);
+        \end{tikzpicture}
+    \end{tabular}
+
+    In this table: The 16 triad motifs. All in all, there exist 64 realisations of these triads when distinguishing the vertices.
+\end{center}

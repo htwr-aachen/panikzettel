@@ -26,3 +26,6 @@ compile_pdf:
       - pp.pdf
       - elehre.pdf
       - algds.pdf
+      - meta.pdf
+      - sn19.pdf
+      - sn20.pdf

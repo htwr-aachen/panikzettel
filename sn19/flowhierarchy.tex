@@ -1,0 +1,43 @@
+\begin{center}
+    \begin{tabular}{cc}
+        \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A,node distance=2cm]   {};
+                \node[vertex]       (C) [below right of=A,node distance=2cm]  {};
+                \node[vertex]       (D) [below left of=B]   {};
+                \node[vertex]       (E) [below right of=B]  {};
+                \node[vertex]       (F) [below left of=C]   {};
+                \node[vertex]       (G) [below of=C,node distance=1.05cm]  {};
+                \node[vertex]       (H) [below right of=C]  {};
+
+                \path [very thick,<-]  	(A) edge []             node [] {} (B)
+                                        (A) edge []             node [] {} (C)
+                                        (A) edge []             node [] {} (F)
+                                        (B) edge []             node [] {} (D)
+                                        (B) edge []             node [] {} (E)
+                                        (C) edge []             node [] {} (F)
+                                        (C) edge []             node [] {} (G)
+                                        (C) edge []             node [] {} (H);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) []                  {};
+                \node[vertex]       (B) [below left of=A,node distance=2cm]   {};
+                \node[vertex]       (C) [below right of=A,node distance=2cm]  {};
+                \node[vertex]       (D) [below left of=B]   {};
+                \node[vertex]       (E) [below right of=B]  {};
+                \node[vertex]       (F) [below left of=C]   {};
+                \node[vertex]       (G) [below of=C,node distance=1.05cm]  {};
+                \node[vertex]       (H) [below right of=C]  {};
+
+                \path [very thick,<-]  	(A) edge []             node [] {} (B)
+                                        (A) edge [dashed]             node [] {} (C)
+                                        (A) edge [->,dashed]             node [] {} (F)
+                                        (B) edge []             node [] {} (D)
+                                        (B) edge []             node [] {} (E)
+                                        (C) edge [dashed]             node [] {} (F)
+                                        (C) edge []             node [] {} (G)
+                                        (C) edge []             node [] {} (H);
+        \end{tikzpicture} \\ \\
+        hierarchical graph & non-hierarchical graph \\
+        $h(G) = 1$ & $h(G) = \frac{5}{8}$ \\
+    \end{tabular}
+\end{center}

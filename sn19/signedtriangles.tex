@@ -1,0 +1,39 @@
+\begin{center}
+    \begin{tabular}{cccc}
+        \begin{tikzpicture}[node distance=1.75cm]
+                \node[vertex]       (A) []                  {$\textsf{A}$};
+                \node[vertex]       (B) [below left of=A]   {$\textsf{B}$};
+                \node[vertex]       (C) [below right of=A]  {$\textsf{C}$};
+
+                \path [very thick]  	(A) edge [bluishgreen] node [above left] {$\textcolor{bluishgreen}{+}$} (B)
+                                        (A) edge [bluishgreen] node [above right] {$\textcolor{bluishgreen}{+}$} (C)
+                                        (B) edge [bluishgreen] node [below] {$\textcolor{bluishgreen}{+}$} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.75cm]
+                \node[vertex]       (A) []                  {$\textsf{A}$};
+                \node[vertex]       (B) [below left of=A]   {$\textsf{B}$};
+                \node[vertex]       (C) [below right of=A]  {$\textsf{C}$};
+
+                \path [very thick]  	(A) edge [bluishgreen] node [above left] {$\textcolor{bluishgreen}{+}$} (B)
+                                        (A) edge [bluishgreen] node [above right] {$\textcolor{bluishgreen}{+}$} (C)
+                                        (B) edge [reddishpurple] node [below] {$\textcolor{reddishpurple}{-}$} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.75cm]
+                \node[vertex]       (A) []                  {$\textsf{A}$};
+                \node[vertex]       (B) [below left of=A]   {$\textsf{B}$};
+                \node[vertex]       (C) [below right of=A]  {$\textsf{C}$};
+
+                \path [very thick]  	(A) edge [bluishgreen] node [above left] {$\textcolor{bluishgreen}{+}$} (B)
+                                        (A) edge [reddishpurple] node [above right] {$\textcolor{reddishpurple}{-}$} (C)
+                                        (B) edge [reddishpurple] node [below] {$\textcolor{reddishpurple}{-}$} (C);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.75cm]
+                \node[vertex]       (A) []                  {$\textsf{A}$};
+                \node[vertex]       (B) [below left of=A]   {$\textsf{B}$};
+                \node[vertex]       (C) [below right of=A]  {$\textsf{C}$};
+
+                \path [very thick]  	(A) edge [reddishpurple] node [above left] {$\textcolor{reddishpurple}{-}$} (B)
+                                        (A) edge [reddishpurple] node [above right] {$\textcolor{reddishpurple}{-}$} (C)
+                                        (B) edge [reddishpurple] node [below] {$\textcolor{reddishpurple}{-}$} (C);
+        \end{tikzpicture} \\
+        \textbf{balanced} & \textbf{stressful} & \textbf{balanced} & \textbf{stressful} \\
+        \shortstack{All three \\ get along.} & \shortstack{\textsf{B} and \textsf{C} try to get \\ \textsf{A} to side with them \\ against the other.} & \shortstack{\textsf{A} and \textsf{B} are friends \\ against a common enemy.} & \shortstack{\textit{The enemy of my enemy} \\ \textit{is my friend...}} \\
+    \end{tabular}
+\end{center}

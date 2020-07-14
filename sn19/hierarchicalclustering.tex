@@ -1,0 +1,110 @@
+\begin{thirdboxl}
+    \begin{center}
+        \begin{tikzpicture}[node distance=0.75cm,shorten >= 0pt,shorten <= -3pt]
+            \node[]       (A) at (0,0)                    {\textsf{A}};
+            \node[]       (D) at (0.75,0)                 {\textsf{D}};
+            \node[]       (B) at (1.5,0)                  {\textsf{B}};
+            \node[]       (C) at (2.25,0)                 {\textsf{C}};
+            \node[]       (G) at (3,0)                    {\textsf{G}};
+            \node[]       (E) at (3.75,0)                 {\textsf{E}};
+            \node[]       (F) at (4.5,0)                  {\textsf{F}};
+
+            \node[] (AD) at (0.375,0.75)        {};
+            \node[] (BC) at (1.875,0.75)        {};
+            \node[] (EF) at (4.125,0.75)        {};
+            \node[] (BCG) at (2.25,1.5)         {};
+            \node[] (BCGEF) at (3,2.25)         {};
+            \node[] (ALL) at (2.25,3)           {};
+
+            \draw  (A) |- (AD.center);
+            \draw  (D) |- (AD.center);
+            \draw  (B) |- (BC.center);
+            \draw  (C) |- (BC.center);
+            \draw  (E) |- (EF.center);
+            \draw  (F) |- (EF.center);
+            \draw  (BC) |- (BCG.center);
+            \draw  (G) |- (BCG.center);
+            \draw  (BCG) |- (BCGEF.center);
+            \draw  (EF) |- (BCGEF.center);
+            \draw  (AD) |- (ALL.center);
+            \draw  (BCGEF) |- (ALL.center);
+
+            \node[vertex]       (A) at (0,0)                    {\textsf{A}};
+            \node[vertex]       (D) at (0.75,0)                 {\textsf{D}};
+            \node[vertex]       (B) at (1.5,0)                  {\textsf{B}};
+            \node[vertex]       (C) at (2.25,0)                 {\textsf{C}};
+            \node[vertex]       (G) at (3,0)                    {\textsf{G}};
+            \node[vertex]       (E) at (3.75,0)                 {\textsf{E}};
+            \node[vertex]       (F) at (4.5,0)                  {\textsf{F}};
+        \end{tikzpicture}
+    \end{center}
+\end{thirdboxl}%
+\begin{thirdboxm}
+    \begin{center}
+        \begin{tikzpicture}[node distance=1.5cm]
+            \node[vertex]       (A) []                  {\textsf{A}};
+            \node[vertex]       (B) [right of=A]        {\textsf{B}};
+            \node[vertex]       (C) [right of=B]        {\textsf{C}};
+            \node[vertex]       (D) [below of=A]        {\textsf{D}};
+            \node[vertex]       (E) [right of=D]        {\textsf{E}};
+            \node[vertex]       (F) [right of=E]        {\textsf{F}};
+            \node[vertex]       (G) [right of=C]        {\textsf{G}};
+
+            \path [very thick]  	(A) edge []             node [] {} (B)
+                                    (A) edge []             node [] {} (D)
+                                    (B) edge []             node [] {} (C)
+                                    (B) edge []             node [] {} (D)
+                                    (B) edge []             node [] {} (E)
+                                    (B) edge [bend left=45]             node [] {} (G)
+                                    (C) edge []             node [] {} (E)
+                                    (E) edge []             node [] {} (F);
+        \end{tikzpicture}
+    \end{center}
+\end{thirdboxm}%
+\begin{thirdboxr}
+    \begin{center}
+        \begin{tikzpicture}[node distance=0.75cm,shorten >= 0pt,shorten <= -3pt]
+            \node[]       (A) at (0,0)                  {\textsf{A}};
+            \node[]       (D) at (0.75,0)       {\textsf{D}};
+            \node[] (AD) at (0.375,0.75)        {};
+            \node[]       (B) at (1.5,0)         {\textsf{B}};
+            \node[]       (G) at (2.25,0)         {\textsf{G}};
+            \node[] (BG) at (1.875,0.75)        {};
+            \node[]       (C) at (3,0)         {\textsf{C}};
+            \node[]       (E) at (3.75,0)         {\textsf{E}};
+            \node[]       (F) at (4.5,0)         {\textsf{F}};
+            \node[] (EF) at (4.125,0.75)        {};
+            \node[] (CEF) at (3.75,1.5)        {};
+            \node[] (BGCEF) at (3,2.25)        {};
+            \node[] (ALL) at (2.25,3)        {};
+            \draw  (A) |- (AD.center);
+            \draw  (D) |- (AD.center);
+            \draw  (B) |- (BG.center);
+            \draw  (G) |- (BG.center);
+            \draw  (E) |- (EF.center);
+            \draw  (F) |- (EF.center);
+            \draw  (C) |- (CEF.center);
+            \draw  (EF) |- (CEF.center);
+            \draw  (BG) |- (BGCEF.center);
+            \draw  (CEF) |- (BGCEF.center);
+            \draw  (AD) |- (ALL.center);
+            \draw  (BGCEF) |- (ALL.center);
+            \node[vertex]       (A) at (0,0)                  {\textsf{A}};
+            \node[vertex]       (D) at (0.75,0)       {\textsf{D}};
+            \node[] (AD) at (0.375,0.75)        {};
+            \node[vertex]       (B) at (1.5,0)         {\textsf{B}};
+            \node[vertex]       (G) at (2.25,0)         {\textsf{G}};
+            \node[] (BG) at (1.875,0.75)        {};
+            \node[vertex]       (C) at (3,0)         {\textsf{C}};
+            \node[vertex]       (E) at (3.75,0)         {\textsf{E}};
+            \node[vertex]       (F) at (4.5,0)         {\textsf{F}};
+            \node[] (EF) at (4.125,0.75)        {};
+            \node[] (CEF) at (3.75,1.5)        {};
+            \node[] (BGCEF) at (3,2.25)        {};
+            \node[] (ALL) at (2.25,3)        {};
+        \end{tikzpicture}
+    \end{center}
+\end{thirdboxr}
+\begin{tightcenter}
+    In this diagram: A graph $G$ (middle) and two dendrograms, one obtained by the Ravasz algorithm (left), and one obtained by the Girvan-Newman Algorithm (right).
+\end{tightcenter}

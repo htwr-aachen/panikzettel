@@ -1,0 +1,54 @@
+\begin{center}
+    \begin{tabular}{cc}
+        \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) [label={above:$\frac{1}{8}$}]                  					{\textsf{A}};
+                \node[vertex]       (B) [below left of=A,node distance=2.5cm,label={above:$\frac{1}{8}$}]   {\textsf{B}};
+                \node[vertex]       (C) [below right of=A,node distance=2.5cm,label={above:$\frac{1}{8}$}]  {\textsf{C}};
+                \node[vertex]       (D) [below left of=B,label={left:$\frac{1}{8}$}]   					{\textsf{D}};
+                \node[vertex]       (E) [below right of=B,label={left:$\frac{1}{8}$}]  					{\textsf{E}};
+                \node[vertex]       (F) [below left of=C,label={right:$\frac{1}{8}$}]   					{\textsf{F}};
+                \node[vertex]       (G) [below right of=C,label={right:$\frac{1}{8}$}]  					{\textsf{G}};
+                \node[vertex]       (H) [below of=E,label={left:$\frac{1}{8}$}]  							{\textsf{H}};
+
+                \path [very thick,->]  	(A) edge []             node [] {} (B)
+                                        (A) edge []             node [] {} (C)
+                                        (B) edge []             node [] {} (D)
+                                        (B) edge []             node [] {} (E)
+                                        (C) edge []             node [] {} (F)
+                                        (C) edge []             node [] {} (G)
+                                        (D) edge [bend left=35]             node [] {} (A)
+                                        (D) edge []             node [] {} (H)
+                                        (E) edge []             node [] {} (A)
+                                        (E) edge []             node [] {} (H)
+                                        (F) edge []             node [] {} (A)
+                                        (G) edge [bend right=35]             node [] {} (A)
+                                        (H) edge [bend right=15]             node [] {} (A);
+        \end{tikzpicture} & \begin{tikzpicture}[node distance=1.5cm]
+                \node[vertex]       (A) [label={above:$\frac{1}{2}$}]                  					{\textsf{A}};
+                \node[vertex]       (B) [below left of=A,node distance=2.5cm,label={above:$\frac{1}{16}$}]   {\textsf{B}};
+                \node[vertex]       (C) [below right of=A,node distance=2.5cm,label={above:$\frac{1}{16}$}]  {\textsf{C}};
+                \node[vertex]       (D) [below left of=B,label={left:$\frac{1}{16}$}]   					{\textsf{D}};
+                \node[vertex]       (E) [below right of=B,label={left:$\frac{1}{16}$}]  					{\textsf{E}};
+                \node[vertex]       (F) [below left of=C,label={right:$\frac{1}{16}$}]   					{\textsf{F}};
+                \node[vertex]       (G) [below right of=C,label={right:$\frac{1}{16}$}]  					{\textsf{G}};
+                \node[vertex]       (H) [below of=E,label={left:$\frac{1}{8}$}]  							{\textsf{H}};
+
+                \path [very thick,->]  	(A) edge []             node [] {} (B)
+                                        (A) edge []             node [] {} (C)
+                                        (B) edge []             node [] {} (D)
+                                        (B) edge []             node [] {} (E)
+                                        (C) edge []             node [] {} (F)
+                                        (C) edge []             node [] {} (G)
+                                        (D) edge [bend left=35]             node [] {} (A)
+                                        (D) edge []             node [] {} (H)
+                                        (E) edge []             node [] {} (A)
+                                        (E) edge []             node [] {} (H)
+                                        (F) edge []             node [] {} (A)
+                                        (G) edge [bend right=35]             node [] {} (A)
+                                        (H) edge [bend right=15]             node [] {} (A);
+        \end{tikzpicture} \\
+        Initialisation & First Iteration \\
+    \end{tabular}
+
+    In this diagram: The first iteration of PageRank exemplified.
+\end{center}
