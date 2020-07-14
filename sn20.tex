@@ -1,0 +1,1095 @@
+\documentclass[english]{panikzettel}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usetikzlibrary{arrows.meta}
+\usepackage{hyperref}
+
+% Just for TeXStudio Autocorrect import them again
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{braket}
+\usepackage{cool}
+
+\hypersetup{
+unicode=true}
+
+\title{Social Networks\textsuperscript{2020} Panikzettel}
+\author{Daniel Sous}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\vspace{1cm}
+
+This Panikzettel is about the lecture Social Networks by Prof.~Dr.~Markus Strohmaier held in the summer semester 2020.
+
+\definecolor{panikgreen}{HTML}{2AA198}
+\begin{tcolorbox}[
+	colframe=panikgreen,
+	colback=white,
+	toprule=0pt,
+	boxrule=0.75pt,
+]
+	\sffamily
+	We have two Panikzettel on Social Networks!
+	This one is from the summer semester of 2020.
+	There is also one written mainly in the summer of 2019: \href{https://panikzettel.philworld.de/sn19.pdf}{Social Networks 2019 Panikzettel}.
+\end{tcolorbox}
+
+This Panikzettel is Open Source.
+We appreciate comments and suggestions at \\
+\url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+
+\newpage
+\section{Introduction and Concepts}
+
+\subsection{Graph Theory}\label{sec:graph_basics}
+A graph consists of components called nodes or vertices.
+In general, the set of node or vertices is called $ N $ or $ V $.
+Interactions between two components are indicated with links or edges.
+The set of links or edges is generally called $ L $ or $ E $.
+The complete system is called network or graph and is defined as $ G = (N,L) $.
+
+The links of an undirected graph are symmetrical i.e.\ they have no direction.
+The links of a directed graph can be asymmetrical i.e.\ they have an explicit direction.
+
+\begin{thirdboxl}
+	\begin{defi}{Self-Loop}
+		A link whose source and destination are the same node.
+
+		\centering
+		\begin{tikzpicture}
+		\node[draw,circle,scale=2](1) at (0,0) {};
+		\path[->] (1) edge[loop above] (1);
+		\end{tikzpicture}
+	\end{defi}
+\end{thirdboxl}%
+\begin{thirdboxm}
+	\begin{defi}{Multigraph}
+		A graph that have loops or multiple edges between two nodes.
+
+		\centering
+		\begin{tikzpicture}
+		\node[draw,circle,scale=2](1) at (0,0) {};
+		\node[draw,circle,scale=2](2) at (2,-0.575) {};
+		\path[->] (1) edge[bend left=30] (2);
+		\path[->] (1) edge[bend right=30] (2);
+		\end{tikzpicture}
+	\end{defi}
+\end{thirdboxm}%
+\begin{thirdboxr}
+	\begin{defi}{Simple Graph}
+		A simple graph contains no loops and no multiple links.
+
+		\centering
+		\begin{tikzpicture}
+		\node[draw,circle,scale=2](1) at (0,0) {};
+		\node[draw,circle,scale=2](2) at (2,-0.575) {};
+		\path[->] (1) edge (2);
+		\end{tikzpicture}
+	\end{defi}
+\end{thirdboxr}%
+
+In \textit{binary networks} links just have two states: present or not.
+In \textit{weighted networks} each links is labeled with a value indicating the connection's strength.
+A strength of $ 0 $ indicates that there is no link.
+
+\subsection{Measuring Network Structure}
+\begin{defi}{Adjacency Matrix}
+	In a binary network $ (N,L) $ an \textit{adjacency matrix} $ A^{n \times n} $ with $ n = |N| $ can be used to describe the links $ L \subseteq N \times N $:
+	\begin{align*}
+		A_{ij} = \begin{cases}
+		1 & \text{if there is a link from } i \text{ to } j, \\
+		0 & \text{otherwise.}
+		\end{cases}
+	\end{align*}
+	If the network is a weighted network, the elements of the matrix represent the weights $ w_{ij} $:
+	\begin{align*}
+		A_{ij} = w_{ij}.
+	\end{align*}
+\end{defi}
+
+The maximum number of links in a graph with $ n = |N| $ nodes is given with: \label{sec:max_number_links}
+\begin{align*}
+	L_\text{max} = \left(\begin{array}{c}
+	n\\ 2
+	\end{array}\right) = \frac{n (n-1)}{2}
+\end{align*}
+A graph with $ |L| = L_\text{max} $ is called \emph{complete graph}.
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{Density}
+		Given a graph $ G = (N,L) $.
+		The relationship between the number of links and the possible number of links is called \textit{density}:
+		\begin{align*}
+		\text{density}(G) = \frac{|L|}{L_\text{max}} = \frac{|L|}{\left(\begin{array}{c}
+			n\\ 2
+			\end{array}\right)} = \frac{2 |L|}{n (n-1)}
+		\end{align*}
+		where $ n = |N| $.
+
+		A network is called \textit{sparse} if the number of nodes is in the same order as the number of links~($ |N| \approx |L| $).
+		Networks with $ |L| \gg |N| $ are said to be \textit{dense}.
+	\end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{defi}{Degree, Average Degree}
+		\textbf{Undirected graphs:} $ k_n $ defines the number of links node $ n \in N $ has.
+
+		\textbf{Directed graphs:} $ k^\text{out}_n $ defines the number of outgoing and $ k^\text{in}_n $ defines the number of incoming links of node $ n \in N $.
+
+		$ \langle k \rangle $ defines the average degree:
+		\begin{align*}
+			\langle k \rangle := \frac{1}{|N|} \sum\limits_{i \in N} k_i = \frac{2 |L|}{|N|}
+		\end{align*}
+	\end{defi}
+\end{halfboxr}
+
+\subsection{Distance}\label{sec:distance}
+Some definitions about distances in a graph $ G = (N,L) $.
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{Walk}
+		A \emph{walk} is a sequence of nodes in which each node is adjacent to the next one.
+	\end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{defi}{Path}
+		A \emph{path} is a walk without node repeats and different ends (no loop).
+	\end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{Distance}
+		The \emph{distance} (shortest path, geodesic path) between two nodes is defined as the number of edges along the shortest path connecting them.
+	\end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{defi}{Diameter}
+		The \emph{diameter} $ d_\text{max} $ defines the maximum shortest path (or maximum distance) between any pair of nodes in a given graph.
+	\end{defi}
+\end{halfboxr}
+
+\subsection{Clustering Coefficient} \label{sec:clustering_coefficient}
+Let a graph $ G = (N,L) $.
+
+\begin{defi}{Clustering Coefficient}
+	The \textit{clustering coefficient} of node $ n \in N $ is
+	\begin{align*}
+		C_n = \frac{2 e_n}{k_n (k_n - 1)}
+	\end{align*}
+	where $ k_n $ is the degree of node $ n $ and $ e_k $ is the number of links between the neighbors of node~$ n $.
+\end{defi}
+
+\subsection{Small-World Problem}\label{sec:small_world_problem}
+A given network shows the \textit{small-world property} if the number of vertices reachable from a central vertex grows exponentially with the distance.
+So, a network shows the small-world effect if the average distance between two vertices in the network $ d_\text{avg} $ scales logarithmically or slower with the networks size:
+\begin{align*}
+	d_\text{avg} \sim \text{log} |N|
+\end{align*}
+
+\subsection{Components}\label{sec:components}
+Given a graph $ G = (N,L) $.
+
+\begin{defi}{Connected Component}
+	A \emph{connected component}\footnote{If the same property holds in a directed graph it is called \emph{strongly connected directed graph}.} is a subset of nodes $ C \subseteq N $ where there is a path between each pair of node $ x,y \in C $.
+
+	\begin{itemize}
+		\item A graph $ G = (N,L) $ is called \emph{connected graph} if there is one connected component with $ N = C $.
+		\item The largest component is called \emph{giant component}.
+		\item Components that are not the giant component are called \emph{isolates}.
+		\item A link $ l \in L $ is called \emph{bridge} if a graph becomes disconnected by erasing it.
+	\end{itemize}
+\end{defi}
+
+\subsection{Centrality Measures}
+Centrality measurements try to identify \textbf{nodes} that are more important than others.
+It depends on the network's context which measurement the highest amount of information gives.
+
+\subsubsection{Degree Centrality}
+The \emph{degree centrality} just measures the \textbf{number of links} each node has.
+This centrality measurement is easy to calculate but does not differentiate between links of different importance.
+Thus, it is a \textbf{local measure}, i.e. it does not depend on the rest of the network.
+
+\subsubsection{Closeness Centrality}
+The \emph{closeness centrality} measures the mean \hyperref[sec:distance]{distance} to all other nodes.
+The centrality measure states that nodes with a smaller average distance are more important than others.
+Given the distance $ d_{ij} $ between two nodes $ i $ and $ j $ the closeness centrality is calculated with $ C_i = \frac{1}{d_i} $ where $ d_i $ is the mean distance to all other nodes:
+\begin{align*}
+	d_i = \frac{1}{|N| - 1} \sum\limits_{j \in N \setminus \{i\}} d_{ij}.
+\end{align*}
+This centrality measurement is weak in small-diameter networks as the range of variation is too narrow.
+Additionally, it is not even defined for networks with two or more isolated components.
+
+\subsubsection{Betweenness Centrality} \label{sec:betweenness_centrality}
+The \emph{betweenness centrality} of a node $ v $ measures how often node $ v $ is visited when going along the \hyperref[sec:distance]{shortest path} of each pair of nodes.
+So, the betweenness centrality of a node $ v $ is given with
+\begin{align*}
+	g(v) = \sum\limits_{\substack{v,s,t \in N,\\ s \neq v \neq t}} \frac{\sigma_{st}(v)}{\sigma_{st}}
+\end{align*}
+where $ \sigma_{st} $ is the total number of shortest paths between $ s $ and $ t $ and $ \sigma_{st}(v) $ is the total number of shortest path between $ s $ and $ t $ that pass through $ v $.
+
+Normalization:
+\begin{align*}
+	g(v) = \frac{g(v)}{0.5 \cdot (|N| -1) \cdot (|N| - 2)}
+\end{align*}
+
+\subsubsection{Eigenvector Centrality}
+The \emph{eigenvector centrality} introduces the idea that nodes are more important if they have connections to nodes that are themselves important.
+Step $ t $ of the eigenvector centrality is calculated with
+\begin{align*}
+	x(t) = A^t x(0)
+\end{align*}
+where $ A \in \{0,1\}^{|N|\times|N|}  $ is the adjacency matrix and $ x(t) \in \mathbb{R}^{|N|} $ is the vector of centrality values.
+\begin{align*}
+	x(t) = A^t \sum_i c_i v_i = \sum_i c_i k_i^t v_i = k_1^t \sum_i c_i \left[\dfrac{k_i}{k_1}\right]^t v_i
+\end{align*}
+$ k_i $ eigenvalues of A, $ k_1 $ largest eigenvalue.
+
+% TODO explain eigenvector centrality better
+
+\subsection{Importance of Edges}
+Generally, ties (links or edges) are classified in two categories.
+\textit{Strong ties} represent friendships and \textit{weak ties} represent the connection between acquaintances.
+Weak ties connect different parts of a network.
+Thus, weak ties are \textit{bridges}.
+
+A node $ A $ fulfills the \textbf{strong triadic closure property} if $ A $ has strong ties to some nodes $ B $ and $ C $, then $ B $ and $ C $ share a strong or weak tie.
+
+\begin{defi}{Local Bridge}
+	An edge is called \emph{local bridge} if its node have no friends in common.
+
+	Formally: An edge $ e = \{i,j\} $ is called \emph{bridge} if the distance between its nodes $ i $ and $ j $ increases to a value greater than 2 when deleting $ e $.
+\end{defi}
+
+\section{Models of Networks}
+Models of networks allow us to generate and grow networks according to the given rules and compare different instances with each other.
+
+\newcommand{\erdosrenyi}{Erd\H{o}s-Rényi }
+\subsection{\erdosrenyi Model} \label{sec:erdosrenyi_model}
+A \erdosrenyi model is an undirected network model which is given with $ G(n,p) $ where $ n \in \mathbb{N} $ is the number of nodes and $ p \in [0,1] $ is the probability that an edge exists.
+
+\begin{algo}{Generation of \erdosrenyi Model}
+\begin{enumerate}
+	\item Start with $ n $ isolated nodes.
+	\item For each pair of nodes generate a random number $ r $ between 0 and 1. If $ r < p $ connect the nodes with an edge.
+\end{enumerate}
+\end{algo}
+
+To generate a network of the \erdosrenyi model with $ n $ nodes, \hyperref[sec:max_number_links]{$ \frac{n \cdot (n - 1)}{2} = L_\text{max} $} random numbers need to be generated.
+
+The probability of having $ m \in \mathbb{N} $ links in an \erdosrenyi model is given with:
+\begin{align*}
+	P(m) = \underset{\substack{\text{Number of ways}\\ \text{you can place}\\ m\text{ links}}}{\underbrace{\left(\begin{array}{c}
+			\resizebox{6mm}{!}{$\left(\begin{array}{c}
+			n \\ 2
+			\end{array}\right)$} \\
+			m
+			\end{array}\right)}} \cdot \underset{\substack{\text{Probability of}\\ m\text{ successful}\\ \text{links}}}{\underbrace{p^m}} \cdot \underset{\substack{\text{Probability that}\\ \text{remaining links}\\ \text{are not successful}}}{\underbrace{(1 - p)^{\resizebox{6mm}{!}{$\left(\begin{array}{c}
+				n\\ 2
+				\end{array}\right)$} - m}}}
+\end{align*}
+As $ P(m) $ is a binomial distribution its \textit{mean number of edges} can be derived as
+\begin{align*}
+	\left\langle m \right\rangle &= \sum\limits_{m = 0}^{\resizebox{6mm}{!}{$\left(\begin{array}{c}
+		n\\ 2
+		\end{array}\right)$}} m \cdot P(m) \\
+	& = \left(\begin{array}{c}
+	n\\ 2
+	\end{array}\right) p
+\end{align*}
+The average degree of $ G(n,p) $ is given with $ c = (n-1) p $.
+
+\subsubsection{Poisson Distribution}\label{sec:poisson_dist}
+The degree distribution of an \erdosrenyi model forms a Poisson probability distribution $ P(k) $ given with
+\begin{align*}
+	P(k) \simeq \frac{c^k}{k!} e^{-c}
+\end{align*}
+where $ k \in \mathbb{N}_0 $ is the degree and $ c \in \mathbb{R} $ is the average degree.
+In \autoref{fig:example_poisson} three example Poisson distributions are shown.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\begin{axis}
+		[
+		xlabel={Degree},
+		ylabel={Probability},
+		xmin=0, xmax=20,
+		ymin=0, ymax=0.4,
+		width=10cm,height=5cm
+		]
+		\addplot+[domain=0:20, samples at={0,1,2,...,20}, blue]{exp(-1) * (1^x/x!)};
+		\addlegendentry{$ c = 1 $}
+		\addplot+[domain=0:20, samples at={0,1,2,...,20}, red]{exp(-3) * (3^x/x!)};
+		\addlegendentry{$ c = 3 $}
+		\addplot+[domain=0:20, samples at={0,1,2,...,20}, green]{exp(-8) * (8^x/x!)};
+		\addlegendentry{$ c = 8 $}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Example Poisson Distributions with mean degree $ c = 1,3,8 $}
+	\label{fig:example_poisson}
+\end{figure}
+
+The global clustering coefficient $ C $ of an \erdosrenyi model $ G(n,p) $ is given with probability $ p $.
+Consequently, in networks with a small $ p $ there is very little clustering.
+These networks behave tree-like locally.
+
+\subsubsection{Phase Transition}
+The phase transition describes the relation between the mean degree $ c $ of an \erdosrenyi network $ G(n,p) $ and the \hyperref[sec:components]{giant component}. The mean degree is changed by letting $ p $ run from 0 to 1.
+
+\begin{table}[ht!]
+	\centering
+	\begin{tabular}{|r|p{12cm}|}
+		\hline
+		$ c < 1 $ & \textbf{subcritical regime} \\
+		& The network contains only small tree-like components. The giant component scales with $ \text{log}(n) $. \\
+		\hline
+		$ c = 1 $ & \textbf{critical point} \\
+		& The giant component scales with $ n^\frac{2}{3} $. \\
+		\hline
+		$ c > 1 $ & \textbf{supercritical regime} \\
+		& The giant component scales with $ n $. The second largest component scales with $ \text{log}(n) $. \\
+		\hline
+		$ c > \text{log}(n) $ & \textbf{connected regime} \\
+		& There exists only a single giant component. \\
+		\hline
+	\end{tabular}
+	\caption{The four phases of the \erdosrenyi model.}
+	\label{tab:phase_transition}
+\end{table}
+
+Let $ u \in [0,1] $ be the fraction of nodes \textbf{not} contained in the giant component. Then it is:
+\begin{align*}
+	u = e^{-c (1-u)}
+\end{align*}
+
+
+
+\subsection{Watts-Strogatz Model (Small-World Model)}
+Reminder: The \hyperref[sec:small_world_problem]{small-world phenomenon} combines short paths with high clustering.
+
+\subsubsection{Circle Model}\label{sec:circle_model}
+In the \emph{circle model} all vertices are arranged in the circle and connected to its $ x $ nearest neighbors.
+Thus, the clustering coefficient $ C $ can be varied depending on $ x $:
+\begin{align*}
+	C = \frac{3(x-2)}{4(x-1)}
+\end{align*}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\foreach \a in {1,2,...,12}{
+		\draw (\a*360/12: 2cm) node[draw,circle,fill=black](\a){};
+	}
+	\path (1) edge (2);
+	\path (2) edge (3);
+	\path (3) edge (4);
+	\path (4) edge (5);
+	\path (5) edge (6);
+	\path (6) edge (7);
+	\path (7) edge (8);
+	\path (8) edge (9);
+	\path (9) edge (10);
+	\path (10) edge (11);
+	\path (11) edge (12);
+	\path (12) edge (1);
+
+	\path (1) edge[bend left=20] (3);
+	\path (2) edge[bend left=20] (4);
+	\path (3) edge[bend left=20] (5);
+	\path (4) edge[bend left=20] (6);
+	\path (5) edge[bend left=20] (7);
+	\path (6) edge[bend left=20] (8);
+	\path (7) edge[bend left=20] (9);
+	\path (8) edge[bend left=20] (10);
+	\path (9) edge[bend left=20] (11);
+	\path (10) edge[bend left=20] (12);
+	\path (11) edge[bend left=20] (1);
+	\path (12) edge[bend left=20] (2);
+	\end{tikzpicture}
+	\caption{Example \hyperref[sec:circle_model]{Circle model} with 12 nodes and $ x = 2 $}
+\end{figure}
+
+For the \textbf{original small-world model} we start with a regular circle model.
+For all edges we exchange one end for another randomly chosen node with the probability $ p $.
+The added randomness may create bridges that can decrease average distances drastically.
+
+In a \textbf{second version of the small-world model} edges are only added randomly. Thus, no edges are removed.
+
+In the second version we add for each non-shortcut edge (edges that were present in the original circle model) a shortcut edge with probability $ p $ at a random location.
+So, we have $ \frac{1}{2} nxp $ shortcuts on average with $ nxp $ ends of shortcuts. So, the degree distribution is \hyperref[sec:poisson_dist]{Poisson} distributed
+\begin{align*}
+	p_s = e^{-xp}\frac{(xp)^s}{s!}
+\end{align*}
+with mean $ xp $ and $ s $ number of shortcuts added to a vertex. The total degree $ k $ of a vertex is given with $ k = s + x $. So $ s = k - x $ can be replace in the distribution.
+
+\subsection{Configuration Model}
+The basic idea of \emph{configuration models} is creating a network with a given degree distribution.
+A Configuration Model is a random graph $ G $ defined by $ G(n,\vec{k}) $ where $ n $ is the number of nodes and $ \vec{k} $ is a $ n $-dimensional vector that gives a degree $ k_i $ for each node $ i $ in the graph.
+
+The \textbf{first approach} of generating configuration models is calculating the probability that an edge between two nodes exists.
+
+\begin{defi}{Probabilistic Links}
+	Let $ G(N,E) $ be a graph with $ n = |N| $ nodes and $ m = |E| $ edges.
+	Given two nodes $ i \in N $ and $ j \in N $ with degrees $ k_i $ and $ k_j $ set the probability that an edge $ \{i,j\} $ exists to
+	\begin{align*}
+		p_{ij} = \frac{k_i k_j}{2m} = \frac{k_i k_j}{\sum_{l=1}^{n}k_l}
+	\end{align*}
+\end{defi}
+
+For larger graph the deviation of the desired degrees $ k_i $ are small. But the calculation for this approach are expensive: $ \mathcal{O}(n^2) $.
+
+The \textbf{second approach} creates for each node $ i $ $ k_i $ stubs, where $ k_i $ is the degree of node $ i $. Next, pick two stubs at random and join them until no more stubs remain.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\tikzstyle{n} = [draw,circle,fill=black]
+		\tikzstyle{p} = [thick]
+		\node[n] (a) at (0,0) {};
+		\node[n] (b) at (1,0) {};
+		\node[n] (c) at (2,0) {};
+		\node[n] (d) at (3,0) {};
+
+		\path[p] (a) edge (0.3,0.3);
+		\path[p] (a) edge (-0.3,0.3);
+		\path[p] (a) edge (0,-0.4);
+
+		\path[p] (b) edge (1.3,0.3);
+		\path[p] (b) edge (0.7,0.3);
+
+		\path[p] (c) edge (2,0.4);
+
+		\path[p] (d) edge (3,0.4);
+	\end{tikzpicture}
+	\caption{Example nodes with stubs}
+\end{figure}
+
+The calculations for this approach cost $ \mathcal{O}(m) $, where $ m $ is the number of edges in the resulting graph and $ 2m $ the number of stubs.
+
+In the previously presented approaches for generating a configuration model it is not guaranteed that there are no \hyperref[sec:graph_basics]{self-loops} and \hyperref[sec:graph_basics]{multiedges}. But the probability of a self-loop or multiedge
+\begin{align*}
+	p_\text{self/multi} = \frac{1}{2} \left[\frac{\langle k^2 \rangle - \langle k \rangle}{\langle k \rangle}\right]^2
+\end{align*}
+depending on the average degree $ \langle k \rangle $ is low for a larger number of nodes. If a self-loop/multiegde was generated, it is simply dropped/combined.
+
+The \hyperref[sec:clustering_coefficient]{clustering coefficient} of the Configuration Model graph is given with
+\begin{align*}
+	C = \frac{1}{n} \frac{[\langle k^2 \rangle - \langle k \rangle]^2}{\langle k \rangle^3}
+\end{align*}
+
+\newcommand{\barabasi}{Barabasi-Albert }
+\subsection{\barabasi Model} \label{sec:barabasi_albert_model}
+The \barabasi model belongs to the class of \textbf{generative network models}.
+These types of models explore hypothesized generative mechanisms to see what graph structures they produce.
+If these structures are similar to real networks, it suggests that the hypothesized mechanisms may also be at work in these networks.
+
+\subsubsection{Power-Law Distribution}\label{sec:power_law}
+The \emph{power-law distribution} is a degree distribution that often occurs in empirical networks.
+The statement ''small is common'' is represented by this distribution.
+A power-law distribution is described by the function
+\begin{align*}
+	f(k) = ak^{-\gamma}
+\end{align*}
+where $ k $ is the degree, $ f(k) $ is the occurrence of degree $ k $ and $ a,\gamma \in \mathbb{R}_+ $ are variables. \autoref{fig:example_power_laws} shows a set of example power-law distributions.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}
+	[
+	xlabel={Degree $ k $},
+	ylabel={Frequency $ f(k) $},
+	xmin=1, xmax=10,
+	ymin=0, ymax=300,
+	width=12cm,height=8cm
+	]
+	\addplot[domain=1:10, smooth, blue, thick]{100*\x^(-3)};
+	\addlegendentry{$ a=100, \gamma = 3 $}
+	\addplot[domain=1:10, smooth, red, thick]{200*\x^(-2)};
+	\addlegendentry{$ a=200, \gamma = 2 $}
+	\addplot[domain=1:10, smooth, green, thick]{300*\x^(-1)};
+	\addlegendentry{$ a=300, \gamma = 1 $}
+	\end{axis}
+	\end{tikzpicture}
+	\caption{Example Power-Law Distributions}
+	\label{fig:example_power_laws}
+\end{figure}
+
+The following algorithm describes how to generate a scale-free network (Barabasi-Albert model) with $ m_0 + t $ nodes.
+
+\begin{algo}{Generating Scale-Free Networks}
+\begin{enumerate}
+	\item Start with a graph $ G = (V,E) $ where $ m_0 = |V| $ and a given set of edges $ E $.
+	\item Define a number $ m \in \mathbb{N} $ that will be the degree for each additional node.
+	\item Calculate for each node $ i \in V $ the probability $ \pi(k_i) $ that a new node connects to $ i $:
+	\begin{align*}
+		\pi(k_i) = \frac{k_i}{\sum_{j \in V} k_j}
+	\end{align*}
+	where $ k_i $ is the degree of node $ i $.
+	\item Add a new node to the graph and add $ m $ edges from the new node to other nodes corresponding to the calculated probability.
+	\item Repeat step 3 and 4 until $ t $ nodes were added to the initial graph.
+\end{enumerate}
+\end{algo}
+
+In the Barabasi-Albert model, nodes with higher degree are more likely to get new links.
+Therefore, nodes with a high degree will get an even higher degree and nodes with a low degree will stick at their low degree.
+This behavior causes a \hyperref[sec:power_law]{power-law} degree distribution.
+
+\subsection{Comparison}
+In this section the presented network models are compared against each other and against the empirical network. See \autoref{tab:comparision_models} and \autoref{tab:comparison_empirical} for the comparison.
+
+\begin{table}[ht!]
+	\centering
+	\begin{tabular}{|r||c|c|c|}
+		\hline
+		Network Property & \erdosrenyi & Configuration & \barabasi \\
+		\hline
+		degree distribution & Poisson($ \langle k \rangle $) & specified & Power Law with $ \gamma = 3 $ \\
+		diameter & $ \mathcal{O}(\log n) $ & $ \mathcal{O}(\log n) $ & \\
+		clustering coefficient & $\mathcal{O}(\frac{1}{n}) $ & $\mathcal{O}(\frac{1}{n}) $ & $\frac{(\ln |N|)^2}{|N|}$ \\
+		reciprocity & $ \mathcal{O}(\frac{1}{n}) $ & $ \mathcal{O}(\frac{1}{n}) $ & \\
+		giant component & $ \langle k \rangle > 1 $ & $ \langle k^2 \rangle - 2 \langle k \rangle > 0 $ & \\
+		average distance & & & $ \frac{\log |N|}{\log \log |N|} $ \\
+		\hline
+	\end{tabular}
+	\caption{Comparison between network models}
+	\label{tab:comparision_models}
+\end{table}
+
+\begin{table}[ht!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		& Degree Distribution & Clustering & Diameter \\
+		\hline
+		Empirical Networks & Heavy tailed, heterogeneous & high & low \\
+		\hline
+		\erdosrenyi & Poisson (homogeneous) & low & low \\
+		\hline
+		Watts-Strogatz & Nearly regular & high & low \\
+		\hline
+		Configuration & Specified & low & low \\
+		\hline
+	\end{tabular}
+	\caption{Comparison of empirical networks and network models}
+	\label{tab:comparison_empirical}
+\end{table}
+
+\subsection{Robustness}
+Robustness measure the network's reliability of certain aspects when there are nodes (node attacks) or edges (edge attacks) deleted.
+E.g.\ when (after how many removals) does the giant component split up into isolated components?
+Additionally, how does the selection of the nodes or edges influence reliability of a network?
+
+\begin{defi}{Molloy-Reed Criterion}
+The Molloy-Reed criterion states that for any degree distribution a giant component exists if
+\begin{align*}
+	\frac{\langle k^2 \rangle}{\langle k \rangle} \geq 2
+\end{align*}
+where $ \langle k \rangle $ is the average degree and $ \langle k^2 \rangle $ is the average of the squared degrees.
+\end{defi}
+
+Thereby, the critical threshold where the network breaks apart is given with
+\begin{align*}
+	f_c = 1 - \frac{1}{\frac{\langle k^2 \rangle}{\langle k \rangle} - 1}.
+\end{align*}
+Real networks are robust to failures or random attacks, but are vulnerable to targeted attacks.
+
+\section{Mesoscopic Structures}
+This section deals with structures at mesoscopic scale (which is somewhere between microscopic and macroscopic scale).
+
+\subsection{Communities}
+In a network a group of nodes is called community if they are more likely to connect to each other than to nodes of other communities. Furthermore, communities are described by the following three hypotheses:
+\begin{itemize}
+	\item[H1] \textit{Fundamental Hypothesis}
+
+	A network's community structure is uniquely encoded	in its wiring diagram.
+
+	\item[H2] \textit{Connectedness Hypothesis}
+
+	A community corresponds to a connected subgraph.
+
+	\item[H3] \textit{Density Hypthesis}
+
+	Communities are locally dense subgraphs.
+\end{itemize}
+
+There are different ways of defining communities.
+The \textbf{first approach} would be defining communities by \textit{cliques}.
+The problem with this approach is that small cliques are frequent and large cliques are rare.
+The \textbf{second approach} splits up the degree of each node $ i $ into $ k_i^\text{int} $ (internal degree), number of connections to the same community and $ k_i^\text{ext} $ (external degree), number of connections to other communities.
+\begin{itemize}
+	\item A community $ \mathcal{C} $ is a \textit{strong community} if for each node $ i $ in $ \mathcal{C} $
+	\begin{align*}
+		k_i^\text{int} > k_i^\text{ext}.
+	\end{align*}
+	\item A community $ \mathcal{C} $ is a \textit{weak community} if its total internal degree exceeds its total external degree:
+	\begin{align*}
+		\sum\limits_{i \in \mathcal{C}} k_i^\text{int} > \sum\limits_{i \in \mathcal{C}} k_i^\text{ext}.
+	\end{align*}
+\end{itemize}
+
+\subsubsection{Hierarchical Clustering}
+Exact community detection by considering all possibilities is computationally infeasible for larger networks.
+Therefore, we use algorithms that predict the communities using heuristics.
+
+\begin{algo}{Ravasz - Agglomerative hierarchical clustering}
+Given an undirected network $ G = (V,E) $.
+\begin{enumerate}
+	\item Define the similarity matrix $ S \in \mathbb{R}_{\geq 0}^{|V| \times |V|} $ that gives the similarity between each node $ i,j \in V $ with entries:
+	\begin{align*}
+		s_{ij} = \frac{J(i,j) + \Theta (A_{ij})}{\min(k_i, k_j)}
+	\end{align*}
+	where $ J(i,j) $ gives the number of common neighbors of node $ i $ and $ j $, $ \Theta(x) = \begin{cases}
+	0 & \text{if } x \leq 0 \\
+	1 & \text{otherwise}
+	\end{cases} $ is the heaviside step function, $ A $ is the adjacency matrix of graph $ G $ and $ k_i $ is the degree of node $ i $.
+
+	\item Create a community for each node itself.
+	\item Merge communities with high similarity.
+	\item Repeat step 1 for the new communities and merge them again (step 2 \& 3) until all nodes form a single community.
+	\item Calculating a dendrogram visualizes the order in which the nodes are assigned to specific communities.
+	To identify the communities we must cut	the dendrogram.
+	Hierarchical clustering	does not tell us where that cut should be.
+\end{enumerate}
+\end{algo}
+The time complexity of the algorithm is in $ \mathcal{O}(|V|^2) $.
+
+The Girvan-Newman algorithm is a divisive hierarchical clustering algorithm.
+It starts deleting edges that connect different communities until all edges are deleted.
+For choosing these edges the \hyperref[sec:betweenness_centrality]{betweenness centrality} can be used.
+Thereby, it is possible to cut the network into different communities.
+The time complexity of this algorithm for a graph $ G = (V,E) $ is in $ \mathcal{O}(|E|^2 \cdot |V|) $ (or for sparse networks in $ \mathcal{O}(|V|^3) $).
+
+\subsubsection{Modularity}
+Modularity is an approach of rating a given partition that is based on the assumption that there are no community structures in randomly wired networks.
+
+\begin{defi}{Modularity}
+Given a graph $ G = (N,L) $ and community subsets $ \mathcal{C}_1, \dots, \mathcal{C}_n \subseteq N $ such that $ \bigcup_{i = 1}^{n} \mathcal{C}_i = N $ and $ \bigcap_{i = 1}^n \mathcal{C}_i = \emptyset $.
+The modularity $ M $ of the given partition is given with
+\begin{align*}
+	M = \sum\limits_{i = 1}^{n} \left[\frac{|L_i|}{|L|} - \left(\frac{k_i}{2|L|}\right)^2\right]
+\end{align*}
+where $ |L_i| $ is the number of links of the subgraph of $ C_i $, $ |L| $ is the number of links in the original graph and $ k_i $ is the summed degree of all nodes in $ C_i $.
+\end{defi}
+
+Higher modularity values indicate better partitions.
+A modularity value of 0 indicates that there is a single community.
+Negative modularity values are also possible.
+
+\begin{algo}{Greedy Modularity Maximization}
+\begin{enumerate}
+	\item Assign each node to a community of its own.
+	\item Inspect each pair of communities connected by at least one link
+	and compute the modularity variation $ \Delta M $ obtained if we merge
+	these two communities.
+	\item Identify the community pairs for which $ \Delta M $ is the largest and
+	merge them. Note that modularity of a particular partition is always
+	calculated from the full topology of the network.
+	\item Repeat step 2 until all nodes are merged into a single
+	community.
+	\item Record for each step and select the partition for which the
+	modularity is maximal.
+\end{enumerate}
+\end{algo}
+
+The problem with modularity is if there are two communities $ A $ and $ B $ with total degree $ k_A $ and $ k_B $ the resolution limit of modularity is given with $ k_A \sim k_B = k \leq \sqrt{2L} $.
+Modularity cannot detect communities smaller than this size.
+
+A faster way to compute communities using modularity is the Louvain algorithm that detects communities in two steps that are iteratively repeated.
+
+\begin{algo}{Louvain Method}
+Given a (weighted) network $ G = (N,L) $.
+
+\begin{enumerate}
+	\item Assign each node to a different community.
+	For each node $ i \in N $ calculate the gain in modularity $ \Delta M_{i,C} $ if we place node $ i $ in one of its neighboring communities $ C $.
+	We move node $ i $ to the community with the largest positive gain.
+	This process is applied to all nodes until no improvement is achieved.
+	The gain in modularity $ \Delta M_{i,C} $ is given with
+	\begin{align*}
+		\Delta M_{i,C} = \left[\frac{\sum_{in} + 2 k _{i,in}}{2W} - \left(\frac{\sum_{tot} + k_i}{2W}\right)^2\right] - \left[\frac{\sum_{in}}{2W} - \left(\frac{\sum_{tot}}{2W}\right)^2 - \left(\frac{k_i}{2W}\right)^2\right]
+	\end{align*}
+	where $ \sum_{in} $ is the sum of (weighted) links inside of $ C $, $ \sum_{tot} $ is the sum of all (weighted) links of nodes in $ C $, $ k_i $ is the sum of (weighted) links of node $ i $, $ k_{i,in} $ is the sum of (weighted) links from $ i $ to nodes in $ C $ and $ W $ is the sum of all (weighted) links in the network.
+	\item Construct a new network whose nodes are communities identified in step 1.
+	The weight of a link between two nodes is the sum of (weighted) links between the corresponding communities.
+	Links within a community lead to weighted \hyperref[sec:graph_basics]{self-loops}.
+\end{enumerate}
+
+Repeat both steps until no more changes are applied.
+\end{algo}
+
+\subsubsection{Infomap}
+The idea of \emph{infomaps} is to have a walker that walks randomly through the network.
+Since edges within a community are more probable than edges between communities the walker should get stuck within communities (at least for a while).
+Thereby, it is possible to draw conclusions of the community structure.
+To make this method even more efficient it is possible to make use of \textit{Huffman codes}.
+
+\subsubsection{Label Propagation}
+Label propagation is a very fast and local method to detect communities within a network.
+
+\begin{algo}{Label Propagation}
+\begin{enumerate}
+	\item Initialize each node to have its own label.
+	\item For each node (randomly ordered) adopt the most popular label among its neighbors.
+	Ties are settled randomly.
+	\item Repeat step 2 until no more changes are applied.
+\end{enumerate}
+\end{algo}
+
+\subsubsection{Rand Index}
+The Rand Index $ \mathcal{R} $ is able to measure the performance of a community detection if the actual (ground truth) communities  are known.
+
+\begin{defi}{Rand Index}
+\begin{align*}
+	\mathcal{R} = \frac{n_{00} + n_{11}}{n_{00} + n_{11} + n_{10} + n_{01}}
+\end{align*}
+\begin{tabular}{cp{14.5cm}}
+$ n_{11} $ & Number of pairs of elements in the same community under both $ D $ and $ T $ \\
+$ n_{00} $ & Number of pairs of elements not in the same community under both $ D $ and $ T $ \\
+$ n_{01} $ & Number of pairs of elements not in the same community under $ D $ but in the same community under $ T $ \\
+$ n_{10} $ & Number of pairs of elements in the same community under $ D $ but not in the same community under $ T $ \\
+\end{tabular}
+
+where $ T $ is the ground truth and $ D $ is the detected solution.
+\end{defi}
+
+\subsection{Homophily and Assortativity}
+A network is \emph{homophilic} (or \emph{heterophilic}) if its nodes are more (less) likely to connect to a node with a similar value of a given property.
+The homophily of two nodes $ i $ and $ j $ with a given property $ x_i $ and $ x_j $ can be measured using the covariance.
+
+\begin{defi}{Covariance}
+The \emph{covariance} will be high if $ x_i $ and $ x_j $ at either end of an edge tend to be both high or both low.
+\begin{align*}
+	\text{cov} (x_i, x_j) = \frac{1}{2m} \sum\limits_{i,j \in N} \left(A_{ij} - \frac{k_i k_j}{2m}\right) x_i x_j
+\end{align*}
+\end{defi}
+
+After normalization of the covariance we obtain the \textit{Pearson correlation}.
+
+\begin{defi}{Pearson Correlation}
+The \emph{Pearson correlation} considers scalar observations over all edges of the network:
+\begin{align*}
+	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) x_i x_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2m}) x_i x_j}
+\end{align*}
+\end{defi}
+
+\subsubsection{Degree Assortativity}
+When considering homophily with respect to the scalar degree value it is called degree assortativity.
+So, the Pearson correlation for degree assortativity is given with
+\begin{align*}
+	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) k_i k_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2m}) k_i k_j}
+\end{align*}
+where $ x_i = k_i $.
+
+This can be simplified by iterating over the edges instead of iterating over the nodes twice. Given an undirected graph $ G = (N,L) $ the Pearson correlation can be calculated using
+\begin{align*}
+	r = \frac{S_1 S_e - S_2^2}{S_1 S_3 - S_2^2}
+\end{align*}
+where
+\begin{align*}
+	S_e &= 2 \sum\limits_{\{i,j\} \in L} k_i k_j & S_1 &= \sum\limits_{i \in N} k_i & S_2 &= \sum\limits_{i \in N} k_i^2 & S_3 &= \sum\limits_{i \in N} k_i^3.
+\end{align*}
+
+Assortativity has a direct impact on the network's structure.
+In high assortativity networks hubs tend to connect to hubs and low degree nodes tend to connect to low degree nodes.
+A natural \textit{core-periphery} structure emerges.
+In networks with low degree assortativity ($ r < 0 $) hubs tend to connect to low degree nodes.
+\hyperref[sec:erdosrenyi_model]{\erdosrenyi} and \hyperref[sec:barabasi_albert_model]{\barabasi} networks are neutral and have degree assortativity close to 0.
+
+The assortativity of a given network $ G = (N,L) $ can be adjusted by specific rewiring of the edges.
+
+\begin{algo}{Xalvi-Brunet and Sokolov (XBS)}
+\begin{enumerate}
+	\item Choose two random links and name their adjacent nodes $ a,b,c,d $ such that $ k_a \geq k_b \geq k_c \geq k_d $ where $ k_i $ is the degree of node $ i $.
+	\item Break the links and rewire depending on the goal:
+	\begin{itemize}
+		\item \textit{Increase assortativity}
+
+		Join $ a $ with $ b $ and $ c $ with $ d $.
+
+		\item \textit{Increase disassortativity}
+
+		Join $ a $ with $ d $ and $ b $ with $ c $.
+	\end{itemize}
+\end{enumerate}
+Repeat step 1 \& 2  and stop after a certain number of non changing attempts.
+\end{algo}
+
+To moderate the effect the \textbf{tuned XBS} model only does an assortative (disassortative) rewiring with probability $ p $.
+Otherwise the rewiring is random.
+
+\subsubsection{Degree Correlation}
+Given a graph $ G = (N,L) $.
+For each node $ i \in N $ the average degree of its neighbors is calculated:
+\begin{align*}
+	k_{nn} (k_i) = \frac{1}{k_i} \sum\limits_{j \in N} A_{ij} k_j
+\end{align*}
+
+% TODO explain Degree correlation in more detail. It is pretty bad explained in the lecture...
+
+\subsubsection{Stochastic Block Models}
+Block models allow to generate networks with communities.
+
+\begin{defi}{Stochastic Block Model (SBM)}
+A stochastic block model generates a network $ G = (N,L) $ and is defined as tuple $ (k,z,M) $ where
+\begin{itemize}
+	\item $ k \in \mathbb{N} $ is the numbers of communities in the resulting network
+	\item $ z \in \{1, \dots, k\}^{|N|} $ indexing the nodes into communities
+	\item $ M \in [0,1]^{k \times k} $ where $ M_{uv} $ denotes the probability that a vertex of group $ u $ connects to a vertex in group $ v $.
+\end{itemize}
+\end{defi}
+
+A stochastic block model can now be generated by adding edges between $ i $ and $ j $ corresponding to the probability $ M_{z_i z_j} $ where $ z_i \in \{1, \dots, k\} $ is the community number of node $ i $.
+
+The probability of a graph $ G = (V,E) $ given a node labeling $ z \in \{1,\dots, k\}^{|V|} $ and a block matrix $ M $ is
+\begin{align*}
+	P(G | z, M) = \underbrace{\prod\limits_{\{i,j\} \in E} M_{z_i z_j}}_\text{edge} \underbrace{\prod\limits_{\{i,j\} \notin E} (1 - M_{z_i z_j})}_\text{non edge}
+\end{align*}
+
+\section{Advanced Network Structure}
+
+\subsection{Signed Networks}
+In signed networks each edge has either a positive sign or a negative sign.
+To evaluate these networks 	we can take a look at the triangles.
+For triangles there are four different configurations shown in \autoref{fig:signed_network_triangles}.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\tikzstyle{n} = [circle, fill=black];
+		\tikzstyle{po} = [very thick, green];
+		\tikzstyle{ne} = [very thick, red, dashed];
+
+		\node[n] (a) at (0,0) {};
+		\node[n] (b) at (-1,-1.4) {};
+		\node[n] (c) at (1,-1.4) {};
+
+		\path[po] (a) edge node[auto,swap,black] {$ + $} (b);
+		\path[po] (b) edge node[auto,swap,black] {$ + $} (c);
+		\path[po] (c) edge node[auto,swap,black] {$ + $} (a);
+
+		\node[] (d) at (0,-2.1) {balanced};
+	\end{tikzpicture} \hspace{1cm}
+	\begin{tikzpicture}
+	\tikzstyle{n} = [circle, fill=black];
+	\tikzstyle{po} = [very thick, green];
+	\tikzstyle{ne} = [very thick, red, dashed];
+
+	\node[n] (a) at (0,0) {};
+	\node[n] (b) at (-1,-1.4) {};
+	\node[n] (c) at (1,-1.4) {};
+
+	\path[po] (a) edge node[auto,swap,black] {$ + $} (b);
+	\path[po] (b) edge node[auto,swap,black] {$ + $} (c);
+	\path[ne] (c) edge node[auto,swap,black] {$ - $} (a);
+
+	\node[] (d) at (0,-2.1) {imbalanced};
+	\end{tikzpicture} \hspace{1cm}
+	\begin{tikzpicture}
+	\tikzstyle{n} = [circle, fill=black];
+	\tikzstyle{po} = [very thick, green];
+	\tikzstyle{ne} = [very thick, red, dashed];
+
+	\node[n] (a) at (0,0) {};
+	\node[n] (b) at (-1,-1.4) {};
+	\node[n] (c) at (1,-1.4) {};
+
+	\path[po] (a) edge node[auto,swap,black] {$ + $} (b);
+	\path[ne] (b) edge node[auto,swap,black] {$ - $} (c);
+	\path[ne] (c) edge node[auto,swap,black] {$ - $} (a);
+
+	\node[] (d) at (0,-2.1) {balanced};
+	\end{tikzpicture} \hspace{1cm}
+	\begin{tikzpicture}
+	\tikzstyle{n} = [circle, fill=black];
+	\tikzstyle{po} = [very thick, green];
+	\tikzstyle{ne} = [very thick, red, dashed];
+
+	\node[n] (a) at (0,0) {};
+	\node[n] (b) at (-1,-1.4) {};
+	\node[n] (c) at (1,-1.4) {};
+
+	\path[ne] (a) edge node[auto,swap,black] {$ - $} (b);
+	\path[ne] (b) edge node[auto,swap,black] {$ - $} (c);
+	\path[ne] (c) edge node[auto,swap,black] {$ - $} (a);
+
+	\node[] (d) at (0,-2.1) {imbalanced};
+	\end{tikzpicture}
+	\caption{Four possible configurations of signed triangles (strong formulation)}
+	\label{fig:signed_network_triangles}
+\end{figure}
+\textbf{Structural balance theory} splits these configuration up into balanced and imbalanced/stressed configurations.
+A network is balanced if all of its triangles are balanced.
+
+\begin{theo}{Harary's Balance Theorem}
+	A \textbf{complete} signed network is balanced only if it has two groups of nodes, where all nodes in each group have positive ties only, and all the ties between the groups are negative.
+	One of the groups can be empty.
+\end{theo}
+
+In the weak formulation of balance, triangles with negative edges only are also declared as \textit{balanced}.
+
+\begin{theo}{Weak Structural Balance}
+	A \textbf{complete} signed network is balanced if and only if it has an arbitrary number of groups of nodes where all edges within groups are labeled with $ + $ and all edges between groups are negative.
+\end{theo}
+
+If there is an imbalanced triangle in a signed network, it can be in indicator that the network will \textbf{tend to change} since it is currently out of equilibrium.
+In \autoref{fig:balance_theorem_example} an example for this behavior is shown.
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\tikzstyle{n} = [circle, fill=black];
+		\tikzstyle{po} = [very thick, green];
+		\tikzstyle{ne} = [very thick, red, dashed];
+
+		\node[n,label=north:Friend] (a) at (0,0) {};
+		\node[n,label=south:Husband] (b) at (-1,-1.4) {};
+		\node[n,label=south:Wife] (c) at (1,-1.4) {};
+
+		\path[po] (a) edge node[auto,swap,black] {$ + $} (b);
+		\path[po] (b) edge node[auto,swap,black] {$ + $} (c);
+		\path[po] (c) edge node[auto,swap,black] {$ + $} (a);
+
+		\node[scale=2] () at (2.5,-0.75) {$ \Rightarrow $};
+
+		\node[n,label=north:Friend] (a) at (5,0) {};
+		\node[n,label=south:Husband] (b) at (4,-1.4) {};
+		\node[n,label=south:Wife] (c) at (6,-1.4) {};
+
+		\path[po] (a) edge node[auto,swap,black] {$ + $} (b);
+		\path[ne] (b) edge node[auto,swap,black] {$ - $} node[auto,black,scale=0.8,inner sep=2] {divorce} (c);
+		\path[po] (c) edge node[auto,swap,black] {$ + $} (a);
+
+		\node[scale=2] () at (7.5,-0.75) {$ \Rightarrow $};
+
+		\node[n,label=north:Friend] (a) at (10,0) {};
+		\node[n,label=south:Husband] (b) at (9,-1.4) {};
+		\node[n,label=south:Wife] (c) at (11,-1.4) {};
+
+		\path[ne] (a) edge node[auto,swap,black] {$ - $} node[auto,black,scale=0.8,inner sep=0.5] {reject} (b);
+		\path[ne] (b) edge node[auto,swap,black] {$ - $} (c);
+		\path[po] (c) edge node[auto,swap,black] {$ + $} (a);
+	\end{tikzpicture}
+	\caption{Example for Balance Theorem}
+	\label{fig:balance_theorem_example}
+\end{figure}
+Here is shown that if a married couple is divorced it is likely that a common friend will only keep friendship with either the husband or the wife.
+This concept can also be applied to larger scale.
+For example, the alliances formed before and during World War I followed this concept.
+
+Comparing empirical signed networks with random signed networks reveals that there are much more balanced triangles and much less imbalanced triangles in the empirical network than in the random network.
+This fact suggests that \textit{structural balance theory} does indeed describe signed networks.
+
+\subsection{Directed Networks}
+Directed networks contain more information than their undirected counterpoints which is why they are more complex.
+At dyadic (pairs of nodes) level directed networks allow four different configuration instead of two.
+There is one configuration for a null dyad (no connection between two nodes).
+There are two configurations for asymmetric dyads ($ n_i \rightarrow n_j $ or $ n_i \leftarrow n_j $).
+The last configuration is the mutual dyad ($ n_i \leftrightarrow n_j $).
+
+\begin{defi}{Dyadic Census}
+Measuring the number of mutual, asymmetric and null dyads is called \textit{dyadic census}.
+Given a directed graph $ G = (N,L) $ with the adjacency matrix $ X $ the dyads are defined as
+
+$ \begin{array}{lrcl}
+\text{Mutual:} & M & = & \sum\limits_{\substack{i,j \in N\\ i < j}} X_{ij} X_{ji} \\
+\text{Asymmetric:} & A & = & |L| - 2 M \\
+\text{Null:} &&& \left(\begin{array}{c}
+n \\ 2
+\end{array}\right) - A - M
+\end{array} $
+\end{defi}
+
+Thereby, a simple reciprocity value $ r $ can be calculated with $ r = \frac{2M}{|L|} $ where $ r = 0 $ implies no reciprocated edges and $ r = 1 $ implies that every edge is bidirectional.
+
+\begin{defi}{Garlaschelli and Loffredo Reciprocity}
+Given a network $ G = (N,L) $ with the adjacency matrix $ X $ the Garlaschelli and Loffredo reciprocity is defined as
+\begin{align*}
+	\rho = \frac{\sum\limits_{i,j \in N, i \neq j} (X_{ij} - X') (X_{ji} - X')}{\sum\limits_{i,j \in N, i \neq j} (X_{ij} - X')^2}
+\end{align*}
+where $ X' = \frac{|L|}{|N| (|N| - 1)} $ denotes the ratio of observed to possible links.
+It can be simplified to:
+\begin{align*}
+	\rho = \frac{r - X'}{1 - X'}
+\end{align*}
+
+It is $ \rho \in [-1,1] $ where $ 1 $ is perfect reciprocity, $ -1 $ is no reciprocity and $ 0 $ is the expected value of reciprocity of a random network.
+\end{defi}
+
+Considering a network of three nodes.
+Between each pair of nodes we could place two different directed edges ending up with a total of 6 different edges in the network.
+So, there are $ 2^6 = 64 $ different \textbf{realizations}.
+Some of these realizations are \textbf{isomorphic} with respect to swapping the node labels.
+The isomorphic realizations are structurally indistinguishable from each other.
+
+There are 16 isomorphic classes of triangles in directed networks called \textit{motifs}.
+A triangle is called closed if there exists at least one edge between each pair of nodes.
+
+\begin{defi}{Triadic Consensus}
+To identify each of the isomorphic classes they can be labeled by four characters:
+\begin{itemize}
+	\item Number of mutual dyads,
+	\item Number of asymmetric dyads,
+	\item Number of null dyads,
+	\item Optional Character: \textit{D} (for down), \textit{U} (for up), \textit{T} (for transitive), \textit{C} (for cyclic).
+\end{itemize}
+The triadic consensus is now a tuple $ T \in \mathbb{N}_0^{16} $ counting the occurrence of each motif.
+\end{defi}
+
+The transition from an ''open'' triangle to a ''closed'' triangle is called \textbf{triadic closure}.
+
+\begin{defi}{Triadic Census $ z $-Score}
+The $ z $-score indicates how much the occurrence of the motifs varies from randomized networks:
+\begin{align*}
+	z = \frac{x - E(x)}{\sigma_x}
+\end{align*}
+where $ E(x) $ is the expected number of occurs of motif $ x $ in the null model\footnote{A null model of a network is a modification of the original network where arbitrary many edges were randomly swapped.}, calculated as average of 1000 different realizations of the null model.
+$ \sigma_x $ is the standard derivation of the occurs of the motif $ x $ over the realizations.
+\end{defi}
+
+\subsection{Temporal Networks}
+Temporal networks are used to describe a networks that may change over time.
+Edge in a temporal network have timestamps indicating at which point in time they exist.
+
+\begin{defi}{Temporal Network}
+A temporal network $ T $ defined by $ T = (V,S) $ where
+\begin{itemize}
+	\item $ V $ is the set of nodes,
+	\item $ S $ is a function mapping pairs of nodes to sets of timestamps:
+\begin{align*}
+	S(u,v) = \{t_1, \dots, t_n\}
+\end{align*}
+indicating that there are edges at time $ t_1, \dots, t_n $ from node $ u \in V $ to node $ v \in V $.
+\end{itemize}
+\end{defi}
+
+In temporal network we can define a new kind of path that respects the given timing.
+
+\begin{defi}{Time-Respecting Path}
+Given a temporal network $ G = (V,S) $.
+A time-respecting path from $ i_0 \in V $ to $ i_n \in V $ is defined as sequence
+\begin{align*}
+	(i_0,i_1,t_1), (i_1,i_2,t_2), \dots, (i_{n-1}, i_n,t_n)
+\end{align*}
+where $ t_1 < t_2 < \dots < t_n $ and $ t_k \in S(i_{k-1},i_k) $ for all $ k \in \{1, \dots, n\} $.
+\end{defi}
+
+The definition of time-respecting paths creates a new type of metric next to \hyperref[sec:distance]{shortest paths}.
+\textbf{Fastest paths} consider the minimum time that is necessary to reach a certain node.
+
+
+\end{document}
