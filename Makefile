@@ -6,7 +6,7 @@ la.pdf: la.tex panikzettel.cls la.last-change
 stocha.pdf: stocha.tex
 	latexmk -xelatex stocha.tex
 
-dsal.pdf: dsal.tex
+dsal.pdf: dsal.tex dsal.last-change
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make dsal.tex
 
 fosap.pdf: fosap.tex

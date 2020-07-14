@@ -25,6 +25,11 @@
 }
 \makeatother
 
+% Show most recent revision number and date in date field
+\makeatletter
+\date{\small\filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
+\makeatother
+
 \title{DSAL Panikzettel}
 \author{Caspar Zecha, Luca Oeljeklaus, Philipp Schröer}
 
