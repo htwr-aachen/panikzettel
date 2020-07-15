@@ -228,9 +228,9 @@ Thus, it is a \textbf{local measure}, i.e. it does not depend on the rest of the
 \subsubsection{Closeness Centrality}
 The \emph{closeness centrality} measures the mean \hyperref[sec:distance]{distance} to all other nodes.
 The centrality measure states that nodes with a smaller average distance are more important than others.
-Given the distance $ d_{ij} $ between two nodes $ i $ and $ j $ the closeness centrality is calculated with $ C_i = \frac{1}{d_i} $ where $ d_i $ is the mean distance to all other nodes:
+Given the distance $d_{ij}$ between two nodes $i$ and $j$, the closeness centrality $C_i$ is calculated using the mean distance mean distance $d_i$ to all other nodes:
 \begin{align*}
-	d_i = \frac{1}{|N| - 1} \sum\limits_{j \in N \setminus \{i\}} d_{ij}.
+	C_i = \frac{1}{d_i} \quad\text{ where }\quad d_i = \frac{1}{|N| - 1} \sum\limits_{j \in N \setminus \{i\}} d_{ij}.
 \end{align*}
 This centrality measurement is weak in small-diameter networks as the range of variation is too narrow.
 Additionally, it is not even defined for networks with two or more isolated components.
