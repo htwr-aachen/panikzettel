@@ -42,11 +42,11 @@ Es scheint, als hätten selbst die Panikzettel-Autoren Dich verlassen.
 \pageref{LastPage} Seiten!
 Wer soll das Lernen?
 Verzweifle nicht.
-Wir haben hier nur etwas anders gemacht als sonst: Wir haben fast alle Stichworte aus der Vorlesung mal erwähnt, von denen man wahrscheinlich in der Klausur was gehört haben sollten könnte.
+Wir haben hier nur etwas anders gemacht als sonst: Wir haben fast alle Stichworte aus der Vorlesung mal erwähnt, von denen man wahrscheinlich für die Klausur was gehört haben sollte.
 So hilft dir der Panikzettel auch bei maximal schlechter Vorbereitung.
 
 Die meisten Abschnitte solltest du wahrscheinlich nur ein- oder zweimal gelesen haben, dann hast du wahrscheinlich den Großteil verstanden.
-Deinen Fokus solltest du auf die Abschnitte Diagrammtypen (\ref{sec:diagrammtypen}) und Vorgehensmodelle (\ref{sec:vorgehensmodelle}).
+Deinen Fokus solltest du auf die Abschnitte Diagrammtypen (\ref{sec:diagrammtypen}) und Vorgehensmodelle (\ref{sec:vorgehensmodelle}) legen.
 Muster (\ref{sec:muster}) werden auch relevant sein.
 Generative Softwareentwicklung (\ref{sec:gensoft}) wurde außerdem besonders hervorgehoben.
 
@@ -118,14 +118,14 @@ Rauten ermöglichen es, \emph{Fallunterscheidungen} zu signalisieren, während d
 \end{tikzpicture}
 
 Im obigen Diagramm sieht man ein \emph{Use-Case-Diagramm} für unseren Panikzettel-Server.
-Die drei \emph{Akteure}, Autoren, Korrektoren\footnote{Weil wir keine Fehler machen, momentan nicht vorhanden.} und Studis interagieren mit dem System und haben \emph{nehmen an} Use-Cases \emph{teil}.
+Die drei \emph{Akteure} Autoren, Korrektoren\footnote{Weil wir keine Fehler machen, momentan nicht vorhanden.} und Studis interagieren mit dem System und \emph{nehmen an} Use-Cases \emph{teil}.
 Die Korrektoren \emph{erweitern} dabei die Akteure Autoren, und nehmen an allen Use-Cases der Autoren teil.
 Use-Cases können \emph{spezialisiert} werden, wie etwa Upload durch die Korrektur spezialisiert wird.
 Der Use-Case Upload selber ist abstrakt und hält nur Gemeinsamkeiten zwischen anderen Use-Cases fest.
 
 \subsubsection{Use-Case-Beziehung}
 
-Es gibt verschieden Arten von Use-Case-Beziehungen:
+Es gibt verschiedene Arten von Use-Case-Beziehungen:
 
 \textbf{Spezialisierung:} (Im Diagramm oben).
 
@@ -182,7 +182,7 @@ Hier heißt unser extension point ``Korrekturtyp''.
 \textbf{Achtung}: In der Vorlesung wird im Gegensatz zum Panikzettel der Name abstrakter Klassen \textit{kursiv} geschrieben.
 Es müsste daher im obigen UML-Diagramm \textbf{\textit{Klasse}} statt \textbf{Klasse} heißen.
 
-In diesem Klassendiagramm sind zwei Unterklassen die von der Klasse $\textit{Klasse}$ erben.
+In diesem Klassendiagramm sind zwei Unterklassen, die von der Klasse $\textit{Klasse}$ erben.
 Diese wiederum implementiert das Interface $\textit{Interface}$.
 Außerdem ist oben rechts eine Enumerations-Klasse mit drei Konstanten und Funktionen auf diesen Konstanten.
 
@@ -264,7 +264,7 @@ Falls $\textit{A}$, $\textit{B}$ oder $\textit{C}$ gelöscht werden, sollten all
 
 Wir können visualisieren, wie Objekte nacheinander verändert werden.
 Dazu verwenden wir \emph{Sequenzdiagramme}.
-Zwischen den \emph{Objekten}, für die die Zeit alle gleichmäßig nach unten voranschreitet, werden \emph{Nachrichten} gesendet und empfangen.
+Zwischen den \emph{Objekten}, für die alle die Zeit gleichmäßig nach unten voranschreitet, werden \emph{Nachrichten} gesendet und empfangen.
 
 \begin{tikzpicture}
   \begin{umlseqdiag}
@@ -287,7 +287,7 @@ Ebenso kann durch ein Kreuz auf der Linie unter dem Objekt explizite Objektlösc
 
 Zwischen den Objekten werden Nachrichten gesendet (oder auch zu sich selbst).
 Dabei gibt es vier Pfeilarten: Im Diagramm sind \emph{synchrone} Pfeile zu sehen, wo es keine Verzögerung gibt.
-Die Pfeiler mit gestrichelten Linien sind \emph{Returns} und stellen Rückgabewerten von Aufrufen dar.
+Die Pfeiler mit gestrichelten Linien sind \emph{Returns} und stellen Rückgabewerte von Aufrufen dar.
 Außerdem gibt es noch \emph{neutrale} Pfeile, diese stellen keine Festlegung des Kommunikationsmechanismus fest.
 \emph{Asynchrone} Pfeile sind für Interaktionen, wo Senden und Empfang unterschiedliche Ereignisse sind (etwa bei SMS-Kommunikation).
 ~\\~\\
@@ -388,7 +388,7 @@ Legende:
 Es gibt auch weitere Diagramme aus der Vorlesung, die möglicherweise relevant sein könnten:
 
 \begin{itemize}
-  \item \textbf{Blockdiagramm:} Man zeichnet (möglicherweise geschachtelte) Blöcke, die Subsysteme strukturieren.Diese werden durch Linien, die Schnittstellen repräsentieren, verbunden.
+  \item \textbf{Blockdiagramm:} Man zeichnet (möglicherweise geschachtelte) Blöcke, die Subsysteme strukturieren. Diese werden durch Linien, die Schnittstellen repräsentieren, verbunden.
   \item \textbf{UML-Implementationsdiagramm:} Die UML-Variante von Blockdiagrammen. Hier werden Namen unterstrichen in die Blöcke geschrieben. Schnittstellen sind Kreise, die mit durchgezogenen Linien an Blöcke angehangen werden. An diese können dann mit den Assoziationen (siehe \ref{sec:klassendiagramm}) andere Blöcke angehangen werden.
   \item \textbf{Konfigurationsdiagramm:} Grobe schematische Zeichnung physikalischer Verteilung von Komponenten.
   \item \textbf{UML-Verteilungsdiagramm:} UML-Variante von Konfigurationsdiagrammen. Komponenten werden durch Linien verbunden. Die Namen haben zusätzlich ``Stereotypen'' wie etwa \lstinline{<<processor>>} oder \lstinline{<<network>>}.
@@ -425,7 +425,7 @@ Tests und Programmcode als Analyseergebnis.
 Tests werden oft geschrieben, bevor die Implementierung beginnt.
 Für kleine Projekte geeignet.
 
-\textbf{Scrum:} ``Agile Methode''. Inkrementell und iterativ entwickeln und durch Transparenz, Überprüfung und Anpassung während jedem Zeitpunkt der Entwicklung.
+\textbf{Scrum:} ``Agile Methode''. Inkrementell und iterativ entwickeln und Transparenz, Überprüfung und Anpassung während jedem Zeitpunkt der Entwicklung.
 Die drei verschiedenen Aktivitäten, ``Sprint Planning'', ``Sprint Review'' und ``Daily Scrum'' sind zeitlich fest beschränkt.
 Ein Sprint dauert i.d.R. 30 Tage und versucht den ``Sprint Backlog'', einen Teil des ``Produkt-Backlogs'' für diesen Monat, zu entwickeln.
 Ein sogenanntes ``Burndown-Chart'' visualisiert detailliert den täglichen Fortschritt im Vergleich zum geplanten Fortschritt.
@@ -444,7 +444,7 @@ Unter diese Kategorie fallen verschiedenste Aspekte wie etwa Effizienzanforderun
 
 Mischfälle können in in funktionale und nicht-funktionale Anforderungen zerlegt werden.
 
-\textbf{Geschäftsprozess:} Die zeitlich-logische Abfolge von Tätigkeiten zur Erfüllung einer betriebswirtschaftlichen Aufgaben.
+\textbf{Geschäftsprozess:} Die zeitlich-logische Abfolge von Tätigkeiten zur Erfüllung einer betriebswirtschaftlichen Aufgabe.
 
 Für \emph{grobe} Geschäftsprozessmodelle können wir sehr einfache Flussdiagramme verwenden.
 Bei \emph{detaillierten} Geschäftsprozessmodellen werden UML-Aktivitätsdiagramme (\ref{sec:aktivitaetsdiagramm}) verwendet.
@@ -526,7 +526,7 @@ Auf die verwendeten Statecharts gehen wir in Abschnitt~\ref{sec:statecharts} gen
 Eine Komponente ist ein Teil einer Software die \emph{explizite Schnittstellen} besitzt, von der Umgebung \emph{unabhängig} ist und \emph{kombinierbar} ist.
 Man versucht die Komponenten so zu entwerfen, dass man eine hohe Kohäsion und eine schwache Kopplung erreicht.
 
-\textbf{Kohäsion}: Bezeichnet wie gut ein Programmkomponenten eine logische Einheit bildet.
+\textbf{Kohäsion}: Bezeichnet wie gut eine Programmkomponente eine logische Einheit bildet.\\
 \textbf{Kopplung}: Unter Kopplung versteht man, wie stark eine Programmkomponente von anderen abhängt.
 
 \section{Muster}
@@ -541,7 +541,7 @@ Dazu haben die Apostel der Softwarearchitektur, die sogenannte ``Gang of Four'',
 
 \begin{wrapfigure}[10]{R}{0pt}
   \begin{tikzpicture}
-    % TODO: abstrakt?
+    % TODO: abstrakt
     \umlclass{Target}{}{
       request()
     }
@@ -593,8 +593,8 @@ Wir können die sich immer wieder wiederholenden Daten in der \lstinline{Monster
 
 Das Koordinator-Muster fasst Eigenschaften einer Beziehung zwischen zwei Klassen zusammen, die so wirklich nicht zu einer der beiden Klassen allein passen.
 
-Man kann sich etwa die Beziehung ``gebucht haben'' zwischen den Klassen  \lstinline{Kunde} und \lstinline{Veranstaltung} vorstellen.
-Das Buchungsdatum gehört weder zum Kunden noch zur Veranstaltung selber, also führt man den Koordinator \lstinline{Buchung} hinzu.
+Man kann sich etwa die Beziehung ``gebucht haben'' zwischen den Klassen \lstinline{Kunde} und \lstinline{Veranstaltung} vorstellen.
+Das Buchungsdatum gehört weder zum Kunden, noch zur Veranstaltung selber, also führt man den Koordinator \lstinline{Buchung} hinzu.
 
 \subsubsection{Abstrakte Oberklasse}
 
