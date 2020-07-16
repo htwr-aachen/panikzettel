@@ -4,7 +4,7 @@
 \pgfplotsset{compat=1.14}
 \usepackage{graphicx}
 \usepackage{amssymb}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows.meta,shapes.misc}
 \usepackage{hyperref}
 
 % Just for TeXStudio Autocorrect import them again
@@ -1097,23 +1097,47 @@ The definition of time-respecting paths creates a new type of metric next to \hy
 
 \section{Epidemics}
 There are differently detailed models that help to understand the spreading of infectious diseases.
-Remember that all models are wrong, but some are useful.
+Each model has different compartments which individuals can switch between.
+For the following section, remember that all models are wrong, but some are useful.
 
 \subsection{(SI)-Model}
 The (SI)-model is the simplest of the epidemic models.
-The model adds one of the two states \textit{susceptible} and \textit{infected} to each node.
+The model adds one of the two compartments \textit{susceptible} and \textit{infected} to each individual.
+Infected individuals spread the pathogens with probability $ \beta $ to susceptible neighbors.
+Once an individual is infected it stays infected.
 
-Consider a disease that spreads in population of $ N $ individuals.
-We define
-\begin{itemize}
-	\item $ S(t) $: the number of individuals susceptible at time $ t $
-	\item $ I(t) $: the number of individuals infected at time $ t $
-	\item $ s(t) = \frac{S(t)}{N} $: fraction of susceptible population at time $ t $
-	\item $ i(t) = \frac{I(t)}{N} $: fraction of infected population at time $ t $
-	\item $ \beta $: likelihood that an individual infects a susceptible neighbor
-\end{itemize}
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=2cm,minimum width=4cm];
+		
+		\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
+		\node[state,draw=reddishpurple,fill=reddishpurple!20] (i) at (6,0) {Infected};
+		
+		\path[->,ultra thick] (s) edge (i);
+	\end{tikzpicture}
+\end{figure}
 
-% TODO write some more detail hered
+Each individual has $ \langle k \rangle $ contacts on average which get infected with probability $ \beta $.
+It is 
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si \quad\text{and}\quad \frac{\delta s}{\delta t} = -\beta \langle k \rangle si
+\end{align*}
+where $ s $ is the fraction of susceptible and $ i $ the fraction of susceptible population.
+
+By integration we get the fraction of infected population $ i $ after $ t $ time steps:
+\begin{align*}
+	i = \frac{i_0 e^{\beta \langle k \rangle t}}{1 - i_0 + i_0 e^{\beta \langle k \rangle t}}
+\end{align*}
+where $ i_0 $ is the fraction of infected population at time step 0.
+
+The \textbf{characteristic time} $ \tau $ is the time required to reach $ \frac{1}{e} \approx 36.8\% $ of the susceptible individuals.
+For the (SI)-model it is
+\begin{align*}
+	\tau = \frac{1}{\beta \langle k \rangle}.
+\end{align*}
+
+\subsection{(SIS)-Model}
 
 
 \end{document}
