@@ -1113,8 +1113,8 @@ Once an individual is infected it stays infected.
 	\begin{tikzpicture}
 		\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
 		
-		\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
-		\node[state,draw=vermillion,fill=vermillion!20] (i) at (6,0) {Infected};
+		\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+		\node[state,draw=vermillion,fill=vermillion!10] (i) at (6,0) {Infected};
 		
 		\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
 	\end{tikzpicture}
@@ -1139,7 +1139,7 @@ For the (SI)-model it is
 	\tau = \frac{1}{\beta \langle k \rangle}.
 \end{align*}
 
-\subsubsection{(SIS)-Model}
+\subsubsection{(SIS)-Model} \label{sec:sis_model}
 Similar to the (SI)-model, the (SIS)-model has the two compartments susceptible and infected.
 In the (SIS)-model infected individuals can recover and thereby switch back to the susceptible state.
 
@@ -1148,8 +1148,8 @@ In the (SIS)-model infected individuals can recover and thereby switch back to t
 	\begin{tikzpicture}
 	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
 	
-	\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
-	\node[state,draw=vermillion,fill=vermillion!20] (i) at (6,0) {Infected};
+	\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!10] (i) at (6,0) {Infected};
 	
 	\path[->,ultra thick] (s.10) edge node[auto] {Infection} (i.170);
 	\path[->,ultra thick] (i.190) edge node[auto] {Recovery} (s.-10);
@@ -1184,9 +1184,9 @@ Thereby, the whole population is removed in the long term.
 	\begin{tikzpicture}
 	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
 	
-	\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
-	\node[state,draw=vermillion,fill=vermillion!20] (i) at (5,0) {Infected};
-	\node[state,draw=reddishpurple,fill=reddishpurple!20] (r) at (10,0) {Removed};
+	\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!10] (i) at (5,0) {Infected};
+	\node[state,draw=reddishpurple,fill=reddishpurple!10] (r) at (10,0) {Removed};
 	
 	\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
 	\path[->,ultra thick] (i) edge node[auto] {Removal} (r);
@@ -1210,9 +1210,9 @@ So, removed individuals switch back to the susceptible state.
 	\begin{tikzpicture}
 	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
 	
-	\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
-	\node[state,draw=vermillion,fill=vermillion!20] (i) at (5,0) {Infected};
-	\node[state,draw=reddishpurple,fill=reddishpurple!20] (r) at (10,0) {Removed};
+	\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!10] (i) at (5,0) {Infected};
+	\node[state,draw=reddishpurple,fill=reddishpurple!10] (r) at (10,0) {Removed};
 	
 	\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
 	\path[->,ultra thick] (i) edge node[auto] {Removal} (r);
@@ -1227,5 +1227,33 @@ Removed individuals lose their immunity at a fixed rate $ d $:
 	\frac{\delta r}{\delta t} = \gamma i - dr
 \end{align*}
 where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
+
+\subsection{Epidemic Threshold \& Vaccinating Strategies}
+To predict whether a pathogen persists in the population, the \textit{spreading rate} $ \lambda $ is defined:
+\begin{align*}
+	\lambda = \frac{\beta}{\mu}
+\end{align*}
+which only depends on the pathogen's transmission probability $ \beta $ and recovery rate $ \mu $.
+A pathogen is only able to spread if the epidemic threshold $ \lambda_c $ is exceeded.
+
+For the \hyperref[sec:sis_model]{(SIS)-model} and a \hyperref[sec:erdosrenyi_model]{\textit{random network}} the epidemic threshold is
+\begin{align*}
+	\lambda_c = \frac{1}{\langle k \rangle + 1}.
+\end{align*}
+
+For the \hyperref[sec:sis_model]{(SIS)-model} and a \hyperref[sec:barabasi_albert_model]{\textit{scale-free network}} the epidemic threshold is
+\begin{align*}
+	\lambda_c = \frac{\langle k \rangle}{\langle k^2 \rangle}.
+\end{align*}
+For large networks $ \langle k^2 \rangle $ diverges whereby the epidemic threshold $ \lambda_c $ vanishes.
+This means that even viruses with a low transmission probability may spread successfully in a scale-free network.
+
+To slow down an epidemic, the network structure can be exploited using a good vaccination strategy.
+The friendship paradox helps choosing nodes to vaccinate.
+
+\begin{theo}{Friendship Paradox}
+	On average, most people have fewer friends than their friends do.
+\end{theo}
+
 
 \end{document}
