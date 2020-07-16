@@ -838,10 +838,14 @@ Otherwise the rewiring is random.
 Given a graph $ G = (N,L) $.
 For each node $ i \in N $ the average degree of its neighbors is calculated:
 \begin{align*}
-	k_{nn} (k_i) = \frac{1}{k_i} \sum\limits_{j \in N} A_{ij} k_j
+	k_{nn} (i) = \frac{1}{k_i} \sum\limits_{j \in N} A_{ij} k_j
 \end{align*}
-
-% TODO explain Degree correlation in more detail. It is pretty bad explained in the lecture...
+We define $ N_k = \{n \in N | k_n = k\} \subseteq N $ the subset of nodes with degree $ k $.
+The \textit{degree correlation function} is the average $ k_{nn} $ for all nodes of degree $ k $.
+Thus, it is given with
+\begin{align*}
+	k_{nn}(k) = \frac{1}{|N_k|} \sum\limits_{i \in N_k} k_{nn}(i).
+\end{align*}
 
 \subsubsection{Stochastic Block Models}
 Block models allow to generate networks with communities.
@@ -947,7 +951,7 @@ In the weak formulation of balance, triangles with negative edges only are also 
 	A \textbf{complete} signed network is balanced if and only if it has an arbitrary number of groups of nodes where all edges within groups are labeled with $ + $ and all edges between groups are negative.
 \end{theo}
 
-If there is an imbalanced triangle in a signed network, it can be in indicator that the network will \textbf{tend to change} since it is currently out of equilibrium.
+If there is an imbalanced triangle in a signed network, it can be an indicator that the network will \textbf{tend to change} since it is currently out of equilibrium.
 In \autoref{fig:balance_theorem_example} an example for this behavior is shown.
 \begin{figure}[ht!]
 	\centering
@@ -1073,7 +1077,7 @@ A temporal network $ T $ defined by $ T = (V,S) $ where
 \begin{align*}
 	S(u,v) = \{t_1, \dots, t_n\}
 \end{align*}
-indicating that there are edges at time $ t_1, \dots, t_n $ from node $ u \in V $ to node $ v \in V $.
+indicating that there are edges at times $ t_1, \dots, t_n $ from node $ u \in V $ to node $ v \in V $.
 \end{itemize}
 \end{defi}
 
@@ -1090,6 +1094,26 @@ where $ t_1 < t_2 < \dots < t_n $ and $ t_k \in S(i_{k-1},i_k) $ for all $ k \in
 
 The definition of time-respecting paths creates a new type of metric next to \hyperref[sec:distance]{shortest paths}.
 \textbf{Fastest paths} consider the minimum time that is necessary to reach a certain node.
+
+\section{Epidemics}
+There are differently detailed models that help to understand the spreading of infectious diseases.
+Remember that all models are wrong, but some are useful.
+
+\subsection{(SI)-Model}
+The (SI)-model is the simplest of the epidemic models.
+The model adds one of the two states \textit{susceptible} and \textit{infected} to each node.
+
+Consider a disease that spreads in population of $ N $ individuals.
+We define
+\begin{itemize}
+	\item $ S(t) $: the number of individuals susceptible at time $ t $
+	\item $ I(t) $: the number of individuals infected at time $ t $
+	\item $ s(t) = \frac{S(t)}{N} $: fraction of susceptible population at time $ t $
+	\item $ i(t) = \frac{I(t)}{N} $: fraction of infected population at time $ t $
+	\item $ \beta $: likelihood that an individual infects a susceptible neighbor
+\end{itemize}
+
+% TODO write some more detail hered
 
 
 \end{document}
