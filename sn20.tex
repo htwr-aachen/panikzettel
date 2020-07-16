@@ -1096,11 +1096,13 @@ The definition of time-respecting paths creates a new type of metric next to \hy
 \textbf{Fastest paths} consider the minimum time that is necessary to reach a certain node.
 
 \section{Epidemics}
+
+\subsection{Compartmental Models}
 There are differently detailed models that help to understand the spreading of infectious diseases.
 Each model has different compartments which individuals can switch between.
 For the following section, remember that all models are wrong, but some are useful.
 
-\subsection{(SI)-Model}
+\subsubsection{(SI)-Model}
 The (SI)-model is the simplest of the epidemic models.
 The model adds one of the two compartments \textit{susceptible} and \textit{infected} to each individual.
 Infected individuals spread the pathogens with probability $ \beta $ to susceptible neighbors.
@@ -1109,12 +1111,12 @@ Once an individual is infected it stays infected.
 \begin{figure}[ht!]
 	\centering
 	\begin{tikzpicture}
-		\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=2cm,minimum width=4cm];
+		\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
 		
 		\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
-		\node[state,draw=reddishpurple,fill=reddishpurple!20] (i) at (6,0) {Infected};
+		\node[state,draw=vermillion,fill=vermillion!20] (i) at (6,0) {Infected};
 		
-		\path[->,ultra thick] (s) edge (i);
+		\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
 	\end{tikzpicture}
 \end{figure}
 
@@ -1137,7 +1139,93 @@ For the (SI)-model it is
 	\tau = \frac{1}{\beta \langle k \rangle}.
 \end{align*}
 
-\subsection{(SIS)-Model}
+\subsubsection{(SIS)-Model}
+Similar to the (SI)-model, the (SIS)-model has the two compartments susceptible and infected.
+In the (SIS)-model infected individuals can recover and thereby switch back to the susceptible state.
 
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+	
+	\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!20] (i) at (6,0) {Infected};
+	
+	\path[->,ultra thick] (s.10) edge node[auto] {Infection} (i.170);
+	\path[->,ultra thick] (i.190) edge node[auto] {Recovery} (s.-10);
+	\end{tikzpicture}
+\end{figure}
+
+Additional to the (SI)-model, infected individuals recover at a fixed rate $ \mu $. It is
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \mu i
+\end{align*}
+where $ s $ is the fraction of susceptible and $ i $ the fraction of infected population and $ \mu i $ is term that captures the population that recovers from the disease.
+
+The fraction of infected population $ i $ after $ t $ time steps is given with
+\begin{align*}
+	i = \left(1 - \frac{\mu}{\beta \langle k \rangle}\right) \frac{C e^{(\beta \langle k \rangle - \mu}) t}{1 + C e^{(\beta \langle k \rangle - \mu) t}}
+\end{align*}
+where the initial condition $ i_0 $ gives $ C = \frac{i_0}{(1 - i_0 - \frac{\mu}{\beta \langle k \rangle})} $.
+
+In the (SIS)-model the epidemic has two possible outcomes based on the $ \mu $ and $ \beta \langle k \rangle $.
+If $ \mu < \beta \langle k \rangle $ the model results in a \textbf{endemic state} where $ i(\infty) = 1 - \frac{\mu}{\beta \langle k \rangle} $ of the population will be infected in the long term. 
+If $ \mu > \beta \langle k \rangle $ the model results in a \textbf{disease-free state} where the initial infection dies out quickly since the number of recovering individuals exceeds the number of infected individuals.
+
+The \textbf{basic reproduction number} $ R_0 $ is given with $ \frac{\beta \langle k \rangle}{\mu} $.
+If $ R_0 > 1 $, the epidemic results in the endemic state.
+
+\subsubsection{(SIR)-Model}
+In the (SIR)-model infected individuals are removed after some time (because of immunity or death) instead returning to the susceptible state.	
+Thereby, the whole population is removed in the long term.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+	
+	\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!20] (i) at (5,0) {Infected};
+	\node[state,draw=reddishpurple,fill=reddishpurple!20] (r) at (10,0) {Removed};
+	
+	\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
+	\path[->,ultra thick] (i) edge node[auto] {Removal} (r);
+	\end{tikzpicture}
+\end{figure}
+
+Infected individuals are removed at a fixed rate $ \gamma $:
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \gamma i, \quad
+	\frac{\delta s}{\delta t} = - \beta \langle k \rangle si, \quad 
+	\frac{\delta r}{\delta t} = \gamma i
+\end{align*}
+where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
+
+\subsubsection{(SIRS)-Model}
+In the (SIRS)-model we also consider that the individuals lose their immunity after some time.
+So, removed individuals switch back to the susceptible state.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+	
+	\node[state,draw=bluishgreen,fill=bluishgreen!20] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!20] (i) at (5,0) {Infected};
+	\node[state,draw=reddishpurple,fill=reddishpurple!20] (r) at (10,0) {Removed};
+	
+	\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
+	\path[->,ultra thick] (i) edge node[auto] {Removal} (r);
+	\path[->,ultra thick] (r) edge[bend left=18] node[auto] {Lose Immunity} (s);
+	\end{tikzpicture}
+\end{figure}
+
+Removed individuals lose their immunity at a fixed rate $ d $:
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \gamma i, \quad
+	\frac{\delta s}{\delta t} = dr - \beta \langle k \rangle si, \quad 
+	\frac{\delta r}{\delta t} = \gamma i - dr
+\end{align*}
+where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
 
 \end{document}
