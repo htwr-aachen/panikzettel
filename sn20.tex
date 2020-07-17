@@ -591,7 +591,7 @@ In this section the presented network models are compared against each other and
 	\label{tab:comparison_empirical}
 \end{table}
 
-\subsection{Robustness}
+\subsection{Robustness} \label{sec:robustness}
 Robustness measure the network's reliability of certain aspects when there are nodes (node attacks) or edges (edge attacks) deleted.
 E.g.\ when (after how many removals) does the giant component split up into isolated components?
 Additionally, how does the selection of the nodes or edges influence reliability of a network?
@@ -1095,15 +1095,15 @@ where $ t_1 < t_2 < \dots < t_n $ and $ t_k \in S(i_{k-1},i_k) $ for all $ k \in
 The definition of time-respecting paths creates a new type of metric next to \hyperref[sec:distance]{shortest paths}.
 \textbf{Fastest paths} consider the minimum time that is necessary to reach a certain node.
 
-\section{Epidemics}
+\section{Dynamics and Spreading on Networks}
 
 \subsection{Compartmental Models}
-There are differently detailed models that help to understand the spreading of infectious diseases.
+There are models of different detail that help to understand the spreading of infectious diseases.
 Each model has different compartments which individuals can switch between.
 For the following section, remember that all models are wrong, but some are useful.
 
-\subsubsection{(SI)-Model}
-The (SI)-model is the simplest of the epidemic models.
+\subsubsection{SI-Model}
+The SI-model is the simplest of the epidemic models.
 The model adds one of the two compartments \textit{susceptible} and \textit{infected} to each individual.
 Infected individuals spread the pathogens with probability $ \beta $ to susceptible neighbors.
 Once an individual is infected it stays infected.
@@ -1121,7 +1121,7 @@ Once an individual is infected it stays infected.
 \end{figure}
 
 Each individual has $ \langle k \rangle $ contacts on average which get infected with probability $ \beta $.
-It is 
+It holds
 \begin{align*}
 	\frac{\delta i}{\delta t} = \beta \langle k \rangle si \quad\text{and}\quad \frac{\delta s}{\delta t} = -\beta \langle k \rangle si
 \end{align*}
@@ -1134,14 +1134,14 @@ By integration we get the fraction of infected population $ i $ after $ t $ time
 where $ i_0 $ is the fraction of infected population at time step 0.
 
 The \textbf{characteristic time} $ \tau $ is the time required to reach $ \frac{1}{e} \approx 36.8\% $ of the susceptible individuals.
-For the (SI)-model it is
+For the SI-model it is
 \begin{align*}
 	\tau = \frac{1}{\beta \langle k \rangle}.
 \end{align*}
 
-\subsubsection{(SIS)-Model} \label{sec:sis_model}
-Similar to the (SI)-model, the (SIS)-model has the two compartments susceptible and infected.
-In the (SIS)-model infected individuals can recover and thereby switch back to the susceptible state.
+\subsubsection{SIS-Model} \label{sec:sis_model}
+Similar to the SI-model, the SIS-model has the two compartments susceptible and infected.
+In the SIS-model infected individuals can recover and thereby switch back to the susceptible state.
 
 \begin{figure}[ht!]
 	\centering
@@ -1156,7 +1156,8 @@ In the (SIS)-model infected individuals can recover and thereby switch back to t
 	\end{tikzpicture}
 \end{figure}
 
-Additional to the (SI)-model, infected individuals recover at a fixed rate $ \mu $. It is
+Additional to the SI-model, infected individuals recover at a fixed rate $ \mu $.
+It holds
 \begin{align*}
 	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \mu i
 \end{align*}
@@ -1168,15 +1169,15 @@ The fraction of infected population $ i $ after $ t $ time steps is given with
 \end{align*}
 where the initial condition $ i_0 $ gives $ C = \frac{i_0}{(1 - i_0 - \frac{\mu}{\beta \langle k \rangle})} $.
 
-In the (SIS)-model the epidemic has two possible outcomes based on the $ \mu $ and $ \beta \langle k \rangle $.
+In the SIS-model the epidemic has two possible outcomes based on the $ \mu $ and $ \beta \langle k \rangle $.
 If $ \mu < \beta \langle k \rangle $ the model results in a \textbf{endemic state} where $ i(\infty) = 1 - \frac{\mu}{\beta \langle k \rangle} $ of the population will be infected in the long term. 
 If $ \mu > \beta \langle k \rangle $ the model results in a \textbf{disease-free state} where the initial infection dies out quickly since the number of recovering individuals exceeds the number of infected individuals.
 
 The \textbf{basic reproduction number} $ R_0 $ is given with $ \frac{\beta \langle k \rangle}{\mu} $.
 If $ R_0 > 1 $, the epidemic results in the endemic state.
 
-\subsubsection{(SIR)-Model}
-In the (SIR)-model infected individuals are removed after some time (because of immunity or death) instead returning to the susceptible state.	
+\subsubsection{SIR-Model}
+In the SIR-model infected individuals are removed after some time (because of immunity or death) instead returning to the susceptible state.	
 Thereby, the whole population is removed in the long term.
 
 \begin{figure}[ht!]
@@ -1201,8 +1202,8 @@ Infected individuals are removed at a fixed rate $ \gamma $:
 \end{align*}
 where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
 
-\subsubsection{(SIRS)-Model}
-In the (SIRS)-model we also consider that the individuals lose their immunity after some time.
+\subsubsection{SIRS-Model}
+In the SIRS-model we also consider that the individuals lose their immunity after some time.
 So, removed individuals switch back to the susceptible state.
 
 \begin{figure}[ht!]
@@ -1236,12 +1237,12 @@ To predict whether a pathogen persists in the population, the \textit{spreading 
 which only depends on the pathogen's transmission probability $ \beta $ and recovery rate $ \mu $.
 A pathogen is only able to spread if the epidemic threshold $ \lambda_c $ is exceeded.
 
-For the \hyperref[sec:sis_model]{(SIS)-model} and a \hyperref[sec:erdosrenyi_model]{\textit{random network}} the epidemic threshold is
+For the \hyperref[sec:sis_model]{SIS-model} and a \hyperref[sec:erdosrenyi_model]{\textit{random network}} the epidemic threshold is
 \begin{align*}
 	\lambda_c = \frac{1}{\langle k \rangle + 1}.
 \end{align*}
 
-For the \hyperref[sec:sis_model]{(SIS)-model} and a \hyperref[sec:barabasi_albert_model]{\textit{scale-free network}} the epidemic threshold is
+For the \hyperref[sec:sis_model]{SIS-model} and a \hyperref[sec:barabasi_albert_model]{\textit{scale-free network}} the epidemic threshold is
 \begin{align*}
 	\lambda_c = \frac{\langle k \rangle}{\langle k^2 \rangle}.
 \end{align*}
@@ -1249,11 +1250,22 @@ For large networks $ \langle k^2 \rangle $ diverges whereby the epidemic thresho
 This means that even viruses with a low transmission probability may spread successfully in a scale-free network.
 
 To slow down an epidemic, the network structure can be exploited using a good vaccination strategy.
+This is comparable to measuring the \hyperref[sec:robustness]{robustness} against different attack strategies.
+In general, vaccinating nodes with high degree (hubs) is a good vaccinating strategy.
+Unfortunately, in real networks it is hard to identify the hubs.
 The friendship paradox helps choosing nodes to vaccinate.
 
 \begin{theo}{Friendship Paradox}
 	On average, most people have fewer friends than their friends do.
 \end{theo}
+
+The paradox suggests that vaccinating random neighbors might lead to a slowdown of the epidemic.
+Empirical studies confirmed that the \textit{random neighbor vaccinating strategy} is able slow down the spread of a pathogen.
+
+\subsection{Threshold Models \& Cascades}
+
+
+
 
 
 \end{document}
