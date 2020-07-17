@@ -228,7 +228,7 @@ Thus, it is a \textbf{local measure}, i.e. it does not depend on the rest of the
 \subsubsection{Closeness Centrality}
 The \emph{closeness centrality} measures the mean \hyperref[sec:distance]{distance} to all other nodes.
 The centrality measure states that nodes with a smaller average distance are more important than others.
-Given the distance $d_{ij}$ between two nodes $i$ and $j$, the closeness centrality $C_i$ is calculated using the mean distance mean distance $d_i$ to all other nodes:
+Given the distance $d_{ij}$ between two nodes $i$ and $j$, the closeness centrality $C_i$ is calculated using the mean distance $d_i$ to all other nodes:
 \begin{align*}
 	C_i = \frac{1}{d_i} \quad\text{ where }\quad d_i = \frac{1}{|N| - 1} \sum\limits_{j \in N \setminus \{i\}} d_{ij}.
 \end{align*}
@@ -264,7 +264,7 @@ $ k_i $ eigenvalues of A, $ k_1 $ largest eigenvalue.
 
 \subsection{Importance of Edges}
 Generally, ties (links or edges) are classified in two categories.
-\textit{Strong ties} represent friendships and \textit{weak ties} represent the connection between acquaintances.
+\emph{Strong ties} represent friendships and \emph{weak ties} represent the connection between acquaintances.
 Weak ties connect different parts of a network.
 Thus, weak ties are \textit{bridges}.
 
@@ -634,11 +634,11 @@ The \textbf{first approach} would be defining communities by \textit{cliques}.
 The problem with this approach is that small cliques are frequent and large cliques are rare.
 The \textbf{second approach} splits up the degree of each node $ i $ into $ k_i^\text{int} $ (internal degree), number of connections to the same community and $ k_i^\text{ext} $ (external degree), number of connections to other communities.
 \begin{itemize}
-	\item A community $ \mathcal{C} $ is a \textit{strong community} if for each node $ i $ in $ \mathcal{C} $
+	\item A community $ \mathcal{C} $ is a \emph{strong community} if for each node $ i $ in $ \mathcal{C} $
 	\begin{align*}
 		k_i^\text{int} > k_i^\text{ext}.
 	\end{align*}
-	\item A community $ \mathcal{C} $ is a \textit{weak community} if its total internal degree exceeds its total external degree:
+	\item A community $ \mathcal{C} $ is a \emph{weak community} if its total internal degree exceeds its total external degree:
 	\begin{align*}
 		\sum\limits_{i \in \mathcal{C}} k_i^\text{int} > \sum\limits_{i \in \mathcal{C}} k_i^\text{ext}.
 	\end{align*}
@@ -841,7 +841,7 @@ For each node $ i \in N $ the average degree of its neighbors is calculated:
 	k_{nn} (i) = \frac{1}{k_i} \sum\limits_{j \in N} A_{ij} k_j
 \end{align*}
 We define $ N_k = \{n \in N | k_n = k\} \subseteq N $ the subset of nodes with degree $ k $.
-The \textit{degree correlation function} is the average $ k_{nn} $ for all nodes of degree $ k $.
+The \emph{degree correlation function} is the average $ k_{nn} $ for all nodes of degree $ k $.
 Thus, it is given with
 \begin{align*}
 	k_{nn}(k) = \frac{1}{|N_k|} \sum\limits_{i \in N_k} k_{nn}(i).
@@ -1176,7 +1176,7 @@ If $ \mu > \beta \langle k \rangle $ the model results in a \textbf{disease-free
 The \textbf{basic reproduction number} $ R_0 $ is given with $ \frac{\beta \langle k \rangle}{\mu} $.
 If $ R_0 > 1 $, the epidemic results in the endemic state.
 
-This characteristic time for the SIS-model is given with
+The characteristic time for the SIS-model is given with
 \begin{align*}
 	\tau = \frac{\langle k \rangle}{\beta (\langle k^2 \rangle - \mu \langle k \rangle)}.
 \end{align*}
@@ -1235,7 +1235,7 @@ Removed individuals lose their immunity at a fixed rate $ d $:
 where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
 
 \subsection{Epidemic Threshold \& Vaccinating Strategies}
-To predict whether a pathogen persists in the population, the \textit{spreading rate} $ \lambda $ is defined:
+To predict whether a pathogen persists in the population, the \emph{spreading rate} $ \lambda $ is defined:
 \begin{align*}
 	\lambda = \frac{\beta}{\mu}
 \end{align*}
@@ -1269,8 +1269,8 @@ Empirical studies confirmed that the \textit{random neighbor vaccinating strateg
 
 \subsection{Threshold Models \& Cascades}
 Today, many goods offer two kinds of value to the customer.
-The \textit{intrinsic value} measures the good's value on its own with respect to the customer.
-The \textit{network value} measures the value a customer gets by other users using the product.
+The \emph{intrinsic value} measures the good's value on its own with respect to the customer.
+The \emph{network value} measures the value a customer gets by other users using the product.
 Examples for these network goods are social media or programming languages.
 The total value of a good with respect to customer $ x $ is defined as
 \begin{align*}
@@ -1299,7 +1299,7 @@ where $ d $ is the number of neighbors, $ p $ is the share of neighbors adopting
 Consider a network in which everyone is using $ B $.
 Some initial adopters are attracted by $ A $ for some intrinsic reasons.
 A node will adopt $ A $ if the fraction of $ A $ neighbors exceeds the threshold $ q = \frac{b}{a + b} $.
-If every node in the network adopts $ A $ the chain reaction is called \textit{complete cascade}.
+If every node in the network adopts $ A $ the chain reaction is called \emph{complete cascade}.
 
 % TODO add an example here
 
