@@ -1263,9 +1263,53 @@ The paradox suggests that vaccinating random neighbors might lead to a slowdown 
 Empirical studies confirmed that the \textit{random neighbor vaccinating strategy} is able slow down the spread of a pathogen.
 
 \subsection{Threshold Models \& Cascades}
+Today, many goods offer two kinds of value to the customer.
+The \textit{intrinsic value} measures the good's value on its own with respect to the customer.
+The \textit{network value} measures the value a customer gets by other users using the product.
+Examples for these network goods are social media or programming languages.
+The total value of a good with respect to customer $ x $ is defined as
+\begin{align*}
+	p = r(x) \cdot f(z)
+\end{align*}
+where $ x \in [0,1] $ represents all possible consumers, $ r(x) $ is a continuous, decreasing function measuring $ x $'s value of the good in isolation, $ z $ is the fraction of other individuals using the good and $ f(z) $ measures the benefit of others using the good.
 
+The equilibrium price for consumer $ z $ is now given with
+\begin{align*}
+	p_\text{equ} = r(z) \cdot f(z).
+\end{align*}
 
+% TODO Explain equilibrium price
 
+The previous analysis implicitly assumes that the network is homogeneous since it depends on the fraction of all users of a good.
+Actually, the neighbors of an individual a relevant.
 
+There are two alternatives $ A $ and $ B $ and each individual can adopt either $ A $ or $ B $.
+If two nodes linked by an edge both adopt $ A $ they get a payoff $ a > 0 $ and if both adopt $ B $ they get a payoff $ b > 0 $.
+If their choice differs they get no payoff. A node should adopt $ A $ if
+\begin{align*}
+	pda \geq (1 - p)db \quad\Leftrightarrow\quad p \geq \frac{b}{a + b}
+\end{align*}
+where $ d $ is the number of neighbors, $ p $ is the share of neighbors adopting $ A $ and $ a,b $ are payoff for $ A $ and $ B $.
+
+Consider a network in which everyone is using $ B $.
+Some initial adopters are attracted by $ A $ for some intrinsic reasons.
+A node will adopt $ A $ if the fraction of $ A $ neighbors exceeds the threshold $ q = \frac{b}{a + b} $.
+If every node in the network adopts $ A $ the chain reaction is called \textit{complete cascade}.
+
+% TODO add an example here
+
+\begin{defi}{Densely Connected Group}
+A group of nodes is connected with density $ p $ if each node in the group has at least a fraction $ p $ of its neighbors in the group.
+\end{defi}
+
+Consider a set of initial adopters of $ A $ with a threshold $ q $:
+\begin{itemize}
+	\item[(i)] If the remaining network contains a densely connected group of density greater than $ 1 - q $ then the initial adopters will not cause a complete cascade.
+	\item[(ii)] When a set of initial adopters does not cause a complete cascade, the remaining network must contain a group of density greater than $ 1 - q $.
+\end{itemize}
+
+In the previous model of cascades everyone has the same payoffs and thereby the same threshold.
+The model can be extended to heterogeneous payoffs whereby every node has its own threshold.
+Heterogeneous threshold increase the complexity of densely connected groups blocking a complete cascade since there are nodes that are easy to ''convince'' and nodes that are hard to ''convince''.
 
 \end{document}
