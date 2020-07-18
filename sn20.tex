@@ -774,18 +774,18 @@ A network is \emph{homophilic} (or \emph{heterophilic}) if its nodes are more (l
 The homophily of two nodes $ i $ and $ j $ with a given property $ x_i $ and $ x_j $ can be measured using the covariance.
 
 \begin{defi}{Covariance}
-The \emph{covariance} will be high if $ x_i $ and $ x_j $ at either end of an edge tend to be both high or both low.
+The \emph{covariance} will be high if $ x_i $ and $ x_j $ at either end of an edge tend to be both high or both low. Given a graph $ G = (N,L) $, the covariance is given with:
 \begin{align*}
-	\text{cov} (x_i, x_j) = \frac{1}{2m} \sum\limits_{i,j \in N} \left(A_{ij} - \frac{k_i k_j}{2m}\right) x_i x_j
+	\text{cov} (x_i, x_j) = \frac{1}{2 |L|} \sum\limits_{i,j \in N} \left(A_{ij} - \frac{k_i k_j}{2 |L|}\right) x_i x_j
 \end{align*}
 \end{defi}
 
 After normalization of the covariance we obtain the \textit{Pearson correlation}.
 
 \begin{defi}{Pearson Correlation}
-The \emph{Pearson correlation} considers scalar observations over all edges of the network:
+The \emph{Pearson correlation} considers scalar observations over all edges of a network $ G = (N,L) $:
 \begin{align*}
-	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) x_i x_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2m}) x_i x_j}
+	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2 |L|}) x_i x_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2 |L|}) x_i x_j}
 \end{align*}
 \end{defi}
 
@@ -793,7 +793,7 @@ The \emph{Pearson correlation} considers scalar observations over all edges of t
 When considering homophily with respect to the scalar degree value it is called degree assortativity.
 So, the Pearson correlation for degree assortativity is given with
 \begin{align*}
-	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) k_i k_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2m}) k_i k_j}
+	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2 |L|}) k_i k_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2 |L|}) k_i k_j}
 \end{align*}
 where $ x_i = k_i $.
 
