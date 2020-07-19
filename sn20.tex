@@ -4,7 +4,7 @@
 \pgfplotsset{compat=1.14}
 \usepackage{graphicx}
 \usepackage{amssymb}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows.meta,shapes.misc}
 \usepackage{hyperref}
 
 % Just for TeXStudio Autocorrect import them again
@@ -228,7 +228,7 @@ Thus, it is a \textbf{local measure}, i.e. it does not depend on the rest of the
 \subsubsection{Closeness Centrality}
 The \emph{closeness centrality} measures the mean \hyperref[sec:distance]{distance} to all other nodes.
 The centrality measure states that nodes with a smaller average distance are more important than others.
-Given the distance $d_{ij}$ between two nodes $i$ and $j$, the closeness centrality $C_i$ is calculated using the mean distance mean distance $d_i$ to all other nodes:
+Given the distance $d_{ij}$ between two nodes $i$ and $j$, the closeness centrality $C_i$ is calculated using the mean distance $d_i$ to all other nodes:
 \begin{align*}
 	C_i = \frac{1}{d_i} \quad\text{ where }\quad d_i = \frac{1}{|N| - 1} \sum\limits_{j \in N \setminus \{i\}} d_{ij}.
 \end{align*}
@@ -264,7 +264,7 @@ $ k_i $ eigenvalues of A, $ k_1 $ largest eigenvalue.
 
 \subsection{Importance of Edges}
 Generally, ties (links or edges) are classified in two categories.
-\textit{Strong ties} represent friendships and \textit{weak ties} represent the connection between acquaintances.
+\emph{Strong ties} represent friendships and \emph{weak ties} represent the connection between acquaintances.
 Weak ties connect different parts of a network.
 Thus, weak ties are \textit{bridges}.
 
@@ -591,7 +591,7 @@ In this section the presented network models are compared against each other and
 	\label{tab:comparison_empirical}
 \end{table}
 
-\subsection{Robustness}
+\subsection{Robustness} \label{sec:robustness}
 Robustness measure the network's reliability of certain aspects when there are nodes (node attacks) or edges (edge attacks) deleted.
 E.g.\ when (after how many removals) does the giant component split up into isolated components?
 Additionally, how does the selection of the nodes or edges influence reliability of a network?
@@ -634,11 +634,11 @@ The \textbf{first approach} would be defining communities by \textit{cliques}.
 The problem with this approach is that small cliques are frequent and large cliques are rare.
 The \textbf{second approach} splits up the degree of each node $ i $ into $ k_i^\text{int} $ (internal degree), number of connections to the same community and $ k_i^\text{ext} $ (external degree), number of connections to other communities.
 \begin{itemize}
-	\item A community $ \mathcal{C} $ is a \textit{strong community} if for each node $ i $ in $ \mathcal{C} $
+	\item A community $ \mathcal{C} $ is a \emph{strong community} if for each node $ i $ in $ \mathcal{C} $
 	\begin{align*}
 		k_i^\text{int} > k_i^\text{ext}.
 	\end{align*}
-	\item A community $ \mathcal{C} $ is a \textit{weak community} if its total internal degree exceeds its total external degree:
+	\item A community $ \mathcal{C} $ is a \emph{weak community} if its total internal degree exceeds its total external degree:
 	\begin{align*}
 		\sum\limits_{i \in \mathcal{C}} k_i^\text{int} > \sum\limits_{i \in \mathcal{C}} k_i^\text{ext}.
 	\end{align*}
@@ -774,18 +774,18 @@ A network is \emph{homophilic} (or \emph{heterophilic}) if its nodes are more (l
 The homophily of two nodes $ i $ and $ j $ with a given property $ x_i $ and $ x_j $ can be measured using the covariance.
 
 \begin{defi}{Covariance}
-The \emph{covariance} will be high if $ x_i $ and $ x_j $ at either end of an edge tend to be both high or both low.
+The \emph{covariance} will be high if $ x_i $ and $ x_j $ at either end of an edge tend to be both high or both low. Given a graph $ G = (N,L) $, the covariance is given with:
 \begin{align*}
-	\text{cov} (x_i, x_j) = \frac{1}{2m} \sum\limits_{i,j \in N} \left(A_{ij} - \frac{k_i k_j}{2m}\right) x_i x_j
+	\text{cov} (x_i, x_j) = \frac{1}{2 |L|} \sum\limits_{i,j \in N} \left(A_{ij} - \frac{k_i k_j}{2 |L|}\right) x_i x_j
 \end{align*}
 \end{defi}
 
 After normalization of the covariance we obtain the \textit{Pearson correlation}.
 
 \begin{defi}{Pearson Correlation}
-The \emph{Pearson correlation} considers scalar observations over all edges of the network:
+The \emph{Pearson correlation} considers scalar observations over all edges of a network $ G = (N,L) $:
 \begin{align*}
-	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) x_i x_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2m}) x_i x_j}
+	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2 |L|}) x_i x_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2 |L|}) x_i x_j}
 \end{align*}
 \end{defi}
 
@@ -793,7 +793,7 @@ The \emph{Pearson correlation} considers scalar observations over all edges of t
 When considering homophily with respect to the scalar degree value it is called degree assortativity.
 So, the Pearson correlation for degree assortativity is given with
 \begin{align*}
-	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2m}) k_i k_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2m}) k_i k_j}
+	r = \frac{\sum_{ij} (A_{ij} - \frac{k_i k_j}{2 |L|}) k_i k_j}{\sum_{ij} (k_i \delta_{ij} - \frac{k_i k_j}{2 |L|}) k_i k_j}
 \end{align*}
 where $ x_i = k_i $.
 
@@ -838,10 +838,14 @@ Otherwise the rewiring is random.
 Given a graph $ G = (N,L) $.
 For each node $ i \in N $ the average degree of its neighbors is calculated:
 \begin{align*}
-	k_{nn} (k_i) = \frac{1}{k_i} \sum\limits_{j \in N} A_{ij} k_j
+	k_{nn} (i) = \frac{1}{k_i} \sum\limits_{j \in N} A_{ij} k_j
 \end{align*}
-
-% TODO explain Degree correlation in more detail. It is pretty bad explained in the lecture...
+We define $ N_k = \{n \in N | k_n = k\} \subseteq N $ the subset of nodes with degree $ k $.
+The \emph{degree correlation function} is the average $ k_{nn} $ for all nodes of degree $ k $.
+Thus, it is given with
+\begin{align*}
+	k_{nn}(k) = \frac{1}{|N_k|} \sum\limits_{i \in N_k} k_{nn}(i).
+\end{align*}
 
 \subsubsection{Stochastic Block Models}
 Block models allow to generate networks with communities.
@@ -947,7 +951,7 @@ In the weak formulation of balance, triangles with negative edges only are also 
 	A \textbf{complete} signed network is balanced if and only if it has an arbitrary number of groups of nodes where all edges within groups are labeled with $ + $ and all edges between groups are negative.
 \end{theo}
 
-If there is an imbalanced triangle in a signed network, it can be in indicator that the network will \textbf{tend to change} since it is currently out of equilibrium.
+If there is an imbalanced triangle in a signed network, it can be an indicator that the network will \textbf{tend to change} since it is currently out of equilibrium.
 In \autoref{fig:balance_theorem_example} an example for this behavior is shown.
 \begin{figure}[ht!]
 	\centering
@@ -1073,7 +1077,7 @@ A temporal network $ T $ defined by $ T = (V,S) $ where
 \begin{align*}
 	S(u,v) = \{t_1, \dots, t_n\}
 \end{align*}
-indicating that there are edges at time $ t_1, \dots, t_n $ from node $ u \in V $ to node $ v \in V $.
+indicating that there are edges at times $ t_1, \dots, t_n $ from node $ u \in V $ to node $ v \in V $.
 \end{itemize}
 \end{defi}
 
@@ -1091,5 +1095,226 @@ where $ t_1 < t_2 < \dots < t_n $ and $ t_k \in S(i_{k-1},i_k) $ for all $ k \in
 The definition of time-respecting paths creates a new type of metric next to \hyperref[sec:distance]{shortest paths}.
 \textbf{Fastest paths} consider the minimum time that is necessary to reach a certain node.
 
+\section{Dynamics and Spreading on Networks}
+
+\subsection{Compartmental Models}
+There are models of different detail that help to understand the spreading of infectious diseases.
+Each model has different compartments which individuals can switch between.
+For the following section, remember that all models are wrong, but some are useful.
+
+\subsubsection{SI-Model}
+The SI-model is the simplest of the epidemic models.
+The model adds one of the two compartments \textit{susceptible} and \textit{infected} to each individual.
+Infected individuals spread the pathogens with probability $ \beta $ to susceptible neighbors.
+Once an individual is infected it stays infected.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+		\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+		
+		\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+		\node[state,draw=vermillion,fill=vermillion!10] (i) at (6,0) {Infected};
+		
+		\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
+	\end{tikzpicture}
+\end{figure}
+
+Each individual has $ \langle k \rangle $ contacts on average which get infected with probability $ \beta $.
+It holds
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si \quad\text{and}\quad \frac{\delta s}{\delta t} = -\beta \langle k \rangle si
+\end{align*}
+where $ s $ is the fraction of susceptible and $ i $ the fraction of susceptible population.
+
+By integration we get the fraction of infected population $ i $ after $ t $ time steps:
+\begin{align*}
+	i = \frac{i_0 e^{\beta \langle k \rangle t}}{1 - i_0 + i_0 e^{\beta \langle k \rangle t}}
+\end{align*}
+where $ i_0 $ is the fraction of infected population at time step 0.
+
+The \textbf{characteristic time} $ \tau $ is the time required to reach $ \frac{1}{e} \approx 36.8\% $ of the susceptible individuals.
+For the SI-model it is
+\begin{align*}
+	\tau = \frac{1}{\beta \langle k \rangle}.
+\end{align*}
+
+\subsubsection{SIS-Model} \label{sec:sis_model}
+Similar to the SI-model, the SIS-model has the two compartments susceptible and infected.
+In the SIS-model infected individuals can recover and thereby switch back to the susceptible state.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+	
+	\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!10] (i) at (6,0) {Infected};
+	
+	\path[->,ultra thick] (s.10) edge node[auto] {Infection} (i.170);
+	\path[->,ultra thick] (i.190) edge node[auto] {Recovery} (s.-10);
+	\end{tikzpicture}
+\end{figure}
+
+Additional to the SI-model, infected individuals recover at a fixed rate $ \mu $.
+It holds
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \mu i
+\end{align*}
+where $ s $ is the fraction of susceptible and $ i $ the fraction of infected population and $ \mu i $ is term that captures the population that recovers from the disease.
+
+The fraction of infected population $ i $ after $ t $ time steps is given with
+\begin{align*}
+	i = \left(1 - \frac{\mu}{\beta \langle k \rangle}\right) \frac{C e^{(\beta \langle k \rangle - \mu}) t}{1 + C e^{(\beta \langle k \rangle - \mu) t}}
+\end{align*}
+where the initial condition $ i_0 $ gives $ C = \frac{i_0}{(1 - i_0 - \frac{\mu}{\beta \langle k \rangle})} $.
+
+In the SIS-model the epidemic has two possible outcomes based on the $ \mu $ and $ \beta \langle k \rangle $.
+If $ \mu < \beta \langle k \rangle $ the model results in a \textbf{endemic state} where $ i(\infty) = 1 - \frac{\mu}{\beta \langle k \rangle} $ of the population will be infected in the long term. 
+If $ \mu > \beta \langle k \rangle $ the model results in a \textbf{disease-free state} where the initial infection dies out quickly since the number of recovering individuals exceeds the number of infected individuals.
+
+The \textbf{basic reproduction number} $ R_0 $ is given with $ \frac{\beta \langle k \rangle}{\mu} $.
+If $ R_0 > 1 $, the epidemic results in the endemic state.
+
+The characteristic time for the SIS-model is given with
+\begin{align*}
+	\tau = \frac{\langle k \rangle}{\beta (\langle k^2 \rangle - \mu \langle k \rangle)}.
+\end{align*}
+
+\subsubsection{SIR-Model}
+In the SIR-model infected individuals are removed after some time (because of immunity or death) instead returning to the susceptible state.	
+Thereby, the whole population is removed in the long term.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+	
+	\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!10] (i) at (5,0) {Infected};
+	\node[state,draw=reddishpurple,fill=reddishpurple!10] (r) at (10,0) {Removed};
+	
+	\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
+	\path[->,ultra thick] (i) edge node[auto] {Removal} (r);
+	\end{tikzpicture}
+\end{figure}
+
+Infected individuals are removed at a fixed rate $ \gamma $:
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \gamma i, \quad
+	\frac{\delta s}{\delta t} = - \beta \langle k \rangle si, \quad 
+	\frac{\delta r}{\delta t} = \gamma i
+\end{align*}
+where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
+
+\subsubsection{SIRS-Model}
+In the SIRS-model we also consider that the individuals lose their immunity after some time.
+So, removed individuals switch back to the susceptible state.
+
+\begin{figure}[ht!]
+	\centering
+	\begin{tikzpicture}
+	\tikzstyle{state} = [draw, ultra thick, rounded rectangle, minimum height=1.5cm,minimum width=3cm];
+	
+	\node[state,draw=bluishgreen,fill=bluishgreen!10] (s) at (0,0) {Susceptible};
+	\node[state,draw=vermillion,fill=vermillion!10] (i) at (5,0) {Infected};
+	\node[state,draw=reddishpurple,fill=reddishpurple!10] (r) at (10,0) {Removed};
+	
+	\path[->,ultra thick] (s) edge node[auto] {Infection} (i);
+	\path[->,ultra thick] (i) edge node[auto] {Removal} (r);
+	\path[->,ultra thick] (r) edge[bend left=18] node[auto] {Lose Immunity} (s);
+	\end{tikzpicture}
+\end{figure}
+
+Removed individuals lose their immunity at a fixed rate $ d $:
+\begin{align*}
+	\frac{\delta i}{\delta t} = \beta \langle k \rangle si - \gamma i, \quad
+	\frac{\delta s}{\delta t} = dr - \beta \langle k \rangle si, \quad 
+	\frac{\delta r}{\delta t} = \gamma i - dr
+\end{align*}
+where $ s $ is the fraction of susceptible, $ i $ the fraction of infected and $ r $ the fraction of removed population.
+
+\subsection{Epidemic Threshold \& Vaccinating Strategies}
+To predict whether a pathogen persists in the population, the \emph{spreading rate} $ \lambda $ is defined:
+\begin{align*}
+	\lambda = \frac{\beta}{\mu}
+\end{align*}
+which only depends on the pathogen's transmission probability $ \beta $ and recovery rate $ \mu $.
+A pathogen is only able to spread if the epidemic threshold $ \lambda_c $ is exceeded.
+
+For the \hyperref[sec:sis_model]{SIS-model} and a \hyperref[sec:erdosrenyi_model]{\textit{random network}} the epidemic threshold is
+\begin{align*}
+	\lambda_c = \frac{1}{\langle k \rangle + 1}.
+\end{align*}
+
+For the \hyperref[sec:sis_model]{SIS-model} and a \hyperref[sec:barabasi_albert_model]{\textit{scale-free network}} the epidemic threshold is
+\begin{align*}
+	\lambda_c = \frac{\langle k \rangle}{\langle k^2 \rangle}.
+\end{align*}
+For large networks $ \langle k^2 \rangle $ diverges whereby the epidemic threshold $ \lambda_c $ vanishes.
+This means that even viruses with a low transmission probability may spread successfully in a scale-free network.
+
+To slow down an epidemic, the network structure can be exploited using a good vaccination strategy.
+This is comparable to measuring the \hyperref[sec:robustness]{robustness} against different attack strategies.
+In general, vaccinating nodes with high degree (hubs) is a good vaccinating strategy.
+Unfortunately, in real networks it is hard to identify the hubs.
+The friendship paradox helps choosing nodes to vaccinate.
+
+\begin{theo}{Friendship Paradox}
+	On average, most people have fewer friends than their friends do.
+\end{theo}
+
+The paradox suggests that vaccinating random neighbors might lead to a slowdown of the epidemic.
+Empirical studies confirmed that the \textit{random neighbor vaccinating strategy} is able slow down the spread of a pathogen.
+
+\subsection{Threshold Models \& Cascades}
+Today, many goods offer two kinds of value to the customer.
+The \emph{intrinsic value} measures the good's value on its own with respect to the customer.
+The \emph{network value} measures the value a customer gets by other users using the product.
+Examples for these network goods are social media or programming languages.
+The total value of a good with respect to customer $ x $ is defined as
+\begin{align*}
+	p = r(x) \cdot f(z)
+\end{align*}
+where $ x \in [0,1] $ represents all possible consumers, $ r(x) $ is a continuous, decreasing function measuring $ x $'s value of the good in isolation, $ z $ is the fraction of other individuals using the good and $ f(z) $ measures the benefit of others using the good.
+
+The equilibrium price for consumer $ z $ is now given with
+\begin{align*}
+	p_\text{equ} = r(z) \cdot f(z).
+\end{align*}
+
+% TODO Explain equilibrium price
+
+The previous analysis implicitly assumes that the network is homogeneous since it depends on the fraction of all users of a good.
+Actually, the neighbors of an individual a relevant.
+
+There are two alternatives $ A $ and $ B $ and each individual can adopt either $ A $ or $ B $.
+If two nodes linked by an edge both adopt $ A $ they get a payoff $ a > 0 $ and if both adopt $ B $ they get a payoff $ b > 0 $.
+If their choice differs they get no payoff. A node should adopt $ A $ if
+\begin{align*}
+	pda \geq (1 - p)db \quad\Leftrightarrow\quad p \geq \frac{b}{a + b}
+\end{align*}
+where $ d $ is the number of neighbors, $ p $ is the share of neighbors adopting $ A $ and $ a,b $ are payoff for $ A $ and $ B $.
+
+Consider a network in which everyone is using $ B $.
+Some initial adopters are attracted by $ A $ for some intrinsic reasons.
+A node will adopt $ A $ if the fraction of $ A $ neighbors exceeds the threshold $ q = \frac{b}{a + b} $.
+If every node in the network adopts $ A $ the chain reaction is called \emph{complete cascade}.
+
+% TODO add an example here
+
+\begin{defi}{Densely Connected Group}
+A group of nodes is connected with density $ p $ if each node in the group has at least a fraction $ p $ of its neighbors in the group.
+\end{defi}
+
+Consider a set of initial adopters of $ A $ with a threshold $ q $:
+\begin{itemize}
+	\item[(i)] If the remaining network contains a densely connected group of density greater than $ 1 - q $ then the initial adopters will not cause a complete cascade.
+	\item[(ii)] When a set of initial adopters does not cause a complete cascade, the remaining network must contain a group of density greater than $ 1 - q $.
+\end{itemize}
+
+In the previous model of cascades everyone has the same payoffs and thereby the same threshold.
+The model can be extended to heterogeneous payoffs whereby every node has its own threshold.
+Heterogeneous threshold increase the complexity of densely connected groups blocking a complete cascade since there are nodes that are easy to ''convince'' and nodes that are hard to ''convince''.
 
 \end{document}
