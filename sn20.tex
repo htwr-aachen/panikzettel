@@ -1,7 +1,6 @@
 \documentclass[english]{panikzettel}
 \usepackage{tikz}
 \usepackage{pgfplots}
-\pgfplotsset{compat=1.14}
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usetikzlibrary{arrows.meta,shapes.misc}
@@ -454,7 +453,7 @@ The \textbf{first approach} of generating configuration models is calculating th
 
 For larger graph the deviation of the desired degrees $ k_i $ are small. But the calculation for this approach are expensive: $ \mathcal{O}(n^2) $.
 
-The \textbf{second approach} creates for each node $ i $ $ k_i $ stubs, where $ k_i $ is the degree of node $ i $. Next, pick two stubs at random and join them until no more stubs remain.
+The \textbf{second approach} adds $k_i$ stub edges to each node $ i $, where $ k_i $ is the degree of node $ i $. Next, pick two stubs at random and join them until no more stubs remain.
 
 \begin{figure}[ht!]
 	\centering

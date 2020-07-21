@@ -159,7 +159,7 @@ An alternative to the clustering coefficient is the \textit{potential triangle c
 
 \subsection{Components and Paths}
 
-In a graph where more than $90\%$ of vertices are contained in a single component, we refer to that component as the \textit{giant component}.
+We call the largest component in a graph the \emph{giant component}, usually when $90\%$ or more vertices are contained in it.
 
 A digraph is \textit{strongly connected} if for every pair of vertices there exists a path leading from one to the other and vice versa.
 It is \textit{weakly connected} if this is satisfied for at least one direction.
@@ -284,7 +284,7 @@ Every vertex is initialised to the value $\frac{1}{n}$ and in every turn, the va
 \paragraph{Scaled PageRank}
 
 In some graphs, PageRank results in all the value being concentrated into few vertices which act as sinks.
-To counteract this, after every step, \textit{scaled page rank} scales down the value of each vertex equally by some $s$ and redistributes the rest equally to all nodes such that the sum becomes one again.
+To counteract this, after every step, \textit{scaled PageRank} scales down the value of each vertex equally by some $s$ and redistributes the rest equally to all nodes such that the sum becomes one again.
 Formally, this means that:
 \[
     \textsf{PR}(i) = \frac{1-s}{n}+s \cdot \sum_{\forall j: i \in N_G(j)}\frac{\textsf{PR}(j)}{\deg^{out}_G(j)}.
@@ -422,7 +422,7 @@ We can explain this using the \emph{Molloy-Reed criterion} below.
 
 \paragraph{Hierarchical Clustering}
 
-\textit{Hierarchical clustering} is a technique used to arrange nodes of a graph in a so-called \textit{dendrogram} (see examples) such that vertices which are more likely to be in the same community are connected earlier on. The advantage is that here, we can first analyse the structure of a graph \textit{before} deciding where to actually split the graph into communities. In the following, we present two heuristics which generate such dendrograms.
+\textit{Hierarchical clustering} is a technique used to arrange nodes of a graph in a so-called \textit{dendrogram} (see examples) such that vertices which are more likely to be in the same community are connected earlier on. The advantage is that here we can first analyse the structure of a graph \textit{before} deciding where to actually split the graph into communities. In the following, we present two heuristics which generate such dendrograms.
 
 \input{sn19/hierarchicalclustering.tex}
 \medskip
@@ -478,7 +478,7 @@ There are multiple heuristics for cutting a dendrogram. For example, we can for 
 
 The \emph{modularity of a partition} is given by
 \[
-    M= \sum_{c=1}^p \left(\frac{|E_c(G)|}{|E(G)|} - \left(\frac{k_c}{2\cdot|E(G)|}\right)^2 \right),
+    M= \sum_c \left(\frac{|E_c(G)|}{|E(G)|} - \left(\frac{k_c}{2\cdot|E(G)|}\right)^2 \right),
 \]
 where $k_c$ is the sum of the degrees within a community $c$ and $E_c(G)$ are the edges.
 
