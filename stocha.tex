@@ -68,7 +68,7 @@ Sei $P:\mathfrak{P} \rightarrow [0,1]$ mit
 	\item{$P(\Omega) = 1$}
 	\item{$P(\cup_{n=1}^{\infty} A_n) = \sum_{n=1}^{\infty} P (A_n)$, für paarweise diskunkte Mengen} 
 \end{itemize}
-Dann heißt $P$ Wahrscheinlichkeitsmaß/Wahrscheinlichkeitsverteilung auf $\Omega$. $(\Omega,\mathfrak{P},P)$ heißt Wahrscheinlichkeitsraum, $(\Omega,\mathfrak{P}$ heißt messbarer Rauum oder Messraum.
+Dann heißt $P$ Wahrscheinlichkeitsmaß/Wahrscheinlichkeitsverteilung auf $\Omega$. $(\Omega,\mathfrak{P},P)$ heißt Wahrscheinlichkeitsraum, $(\Omega,\mathfrak{P})$ heißt messbarer Rauum oder Messraum.
 
 \subsection{Borelsche $\sigma$-Algebra}
 Die kleinstmögliche $\sigma$-Algebra über einem Intervall (hier z.B. $[a,b]$), welche alle Teilmengen des Intervalls enthält heißt Borelsche $\sigma$-Algebra $\mathcal{B}^1$. Für $\Omega \subset R^n$ entsprechend $\mathcal{B}^n$.
@@ -76,7 +76,7 @@ Die kleinstmögliche $\sigma$-Algebra über einem Intervall (hier z.B. $[a,b]$),
 \subsection{Riemann-Dichte, Verteilungsfunktion}
 Sei $f: \mathbb{R} \rightarrow \mathbb{R}$ mit $f(x) \geq 0, x \in \mathbb{R}$ und $\int_{\infty}^{\infty} f(x) dx = 1$ integrierbar, dann heißt $f$ Riemann-Dichtefunktion. Wahrscheinlichkeitsmaß festgelegt über
 
-\[F(x) = P((-\infty,x]) = \int_{-\infty}^{\infty} f(y) dy\]
+\[F(x) = P((-\infty,x]) = \int_{-\infty}^{x} f(y) dy\]
 
 $F$ ist Verteilungsfunktion. Für Verteilungsfunktionen siehe Formelsammlung.
 
@@ -106,7 +106,7 @@ $P(A\vert B) = \frac{P (A \cap B)}{P(B)}$ heißt elementar bedingte Wahrscheinli
 
 \begin{itemize}
 	\item{$P(A\vert B) = P(B\vert A) \cdot \frac{P(A)}{P(B)}$}
-	\item{$P(\bigcap\limits_{i=1}^n A_i) = P(A_1) \cdot P(A_2\mid A_1) \cdot P(A_3\mid A_2 \cap A_2)$}
+	\item{$P(\bigcap\limits_{i=1}^n A_i) = P(A_1) \cdot P(A_2\mid A_1) \cdot P(A_3\mid A_2 \cap A_1)$}
 \end{itemize}
 
 \subsection{Stochastische Unabhängigkeit}
@@ -118,7 +118,7 @@ Für diskrete Wahrscheinlichkeitsräume $(\Omega_i, \mathfrak{P}_i, P_i)$ heißt
 \[(\Omega, \mathfrak{P}, P) = (\Omega_1, \mathfrak{P}_1, P_1) \times \ldots \times (\Omega_n, \mathfrak{P}_n, P_n)\]
 
 \section{Zufallsvariablen und Wahrscheinlichkeitsmaße}
-Zufallsvorgänge hier wieder beschrieben durch den Wahrscheinlichkeitsraum $(\Omega,, \mathfrak{P}, P)$, wobei der Ausgang des Vorgangs $\omega \in \Omega$ ist. Dabei ist häufig nicht $\omega$ von Interesse sondern ein Funktionswert $X(\omega)$, wobei $X$ eine Abbildung auf $X: \omega \rightarrow \mathbb{R}^n$ ist.
+Zufallsvorgänge hier wieder beschrieben durch den Wahrscheinlichkeitsraum $(\Omega, \mathfrak{P}, P)$, wobei der Ausgang des Vorgangs $\omega \in \Omega$ ist. Dabei ist häufig nicht $\omega$ von Interesse sondern ein Funktionswert $X(\omega)$, wobei $X$ eine Abbildung auf $X: \omega \rightarrow \mathbb{R}^n$ ist.
 
 \[P(X = k) = P(\{\omega \in \Omega \mid X(\omega) = k\}) = P^X (\{k\}) \]
 
@@ -169,12 +169,12 @@ Zudem sind $(X_1,X_2)$ genau dann stochastisch unabhängig, wenn sie normalverte
 Sei $X$ eine Zufallsvariable mit Zähldichte $p$ oder Riemann-Dichte $f$. Dann gilt für den Erwartngswert $EX$:
 
 \begin{enumerate}
-	\item{Sei $X(\Omega) \subset [0,\infty)$ oder $X(\omega) \subset (-\infty,0]$.}
+	\item{Sei $X(\Omega) \subset [0,\infty)$ oder $X(\Omega) \subset (-\infty,0]$.}
 		\begin{enumerate}
 			\item{$EX = E(X) = \sum\limits_{x \in X(\Omega)} xp(x)$, oder}
 			\item{$EX = E(X) = \int\limits_{\infty}^\infty xf(x)dx$}
 		\end{enumerate}
-	\item{Ist $E(max(X,0)) < \infty$, oder $E(min(X,=)) > -\infty$, dann heißt $EX$ wie in 1 Erwartungswert von $X$ (unter $P$)}
+	\item{Ist $E(max(X,0)) < \infty$, oder $E(min(X,0)) > -\infty$, dann heißt $EX$ wie in 1 Erwartungswert von $X$ (unter $P$)}
 \end{enumerate}
 Für Zufallsvariablen mit Werten in $\mathbb{N}_0$ gilt auch:
 
@@ -195,12 +195,12 @@ Für stochastisch unabhängige Zufallsvariablen mit (endlichen) Erwartungswerten
 \begin{enumerate}
 	\item{$m_k(c) = E((X-c)^k)$ heißt $k$-tes Moment von $X$ um $c$ (unter $P$). (zentrales Moment, falls $c=0$)}
 	\item{$Var X = E((X-EX)^2)$ ist die Varianz (Streuung) von $X$}
-	\item{$Kov(X,Y) = E((X-EX)(Y-EY))$ ist die Kovarianz voon $X$ und $Y$}
+	\item{$Kov(X,Y) = E((X-EX)(Y-EY))$ ist die Kovarianz von $X$ und $Y$}
 \end{enumerate}
 
 Zudem ist:
 
-\[Var(\sum\limits_{i=1}^n X_i) = \sum\limits_{i=1}^n Var X_i + 2 \sum\limits_{1\leq i < j \leq n} Kov(X_i,X_j)\]
+\[Var(\sum\limits_{i=1}^n X_i) = \sum\limits_{i=1}^n Var X_i + 2* \sum\limits_{1\leq i < j \leq n} Kov(X_i,X_j)\]
 
 und $Kov(X,Y) = 0$, falls $X,Y$ stochastisch unabhängig.
 \subsection{Verschiebungssatz von Steiner}
@@ -220,7 +220,7 @@ Stochastisch unabhängige Variablen sind unkorreliert. (aber nicht andersrum (au
 \subsection{Ungleichungen mit Momenten}
 \begin{enumerate}
 	\item{Ungleichung von Jensen: Sei $h:\mathbb{R} \rightarrow \mathbb{R}$ eine konvexe Funktion (linksgekrümmt), und E(h(X)) und EX existieren und sind endlich. Dann ist $E(h(X)) \geq h(EX)$ (bzw. andersrum im konkaven Fall)}
-	\item{Ungleichung von Markov: Sei $g:[0,\infty) \rightarrow [0\infty]$ monoton wachsend. Dann ist: 
+	\item{Ungleichung von Markov: Sei $g:[0,\infty) \rightarrow [0,\infty)$ monoton wachsend. Dann ist: 
 		\[P(\vert X\vert > \epsilon) \leq P(\vert X\vert \geq \epsilon) \leq \frac{1}{g(\epsilon)} E(g(\vert X\vert)), \epsilon > 0\]}
 	\item{Ungleichung von Tschebyscheff: \[P(\vert X-EX\vert \geq \epsilon) \leq \frac{Var X}{\epsilon^2}\]}
 \end{enumerate}
@@ -228,8 +228,8 @@ Stochastisch unabhängige Variablen sind unkorreliert. (aber nicht andersrum (au
 \subsection{Erwartungswertvektor, Kovarianzmatrix}
 Hier $X$ nicht Zufallsvariable, sondern Zufallsvektor.
 \begin{enumerate}
-	\item{$E(X) = (EX_1, \ldots, EX_n$ ist der Erwartungsvektor von $X$}
-	\item{$Kov (X)$ Kovarianzmatrix von $X$ mit $Kov(X)_{i,j} \coloneqq Kov(X_i,X_j))$}
+	\item{$E(X) = (EX_1, \ldots, EX_n$) ist der Erwartungsvektor von $X$}
+	\item{$Kov (X)$ Kovarianzmatrix von $X$ mit $Kov(X)_{i,j} \coloneqq Kov(X_i,X_j)$}
 \end{enumerate}
 
 \subsection{Erzeugende Funktion}
@@ -282,5 +282,5 @@ Seien $X_1, \ldots$ stochastisch unabhängig und identisch verteilt, mit $EX_1 =
 \[\frac{1}{n}\sum\limits_{i=1}^n X_i \xrightarrow{n \to \infty} \mu\]
 
 \subsection{Eine Version des zentralen Grenzwertsatzes}
-Scheint mir nicht in der Klausur forzukommen, da Terme zu lang. Außerdem habe ich dann eine Ausrede um das mir nicht angucken zu müssen. 
+Scheint mir nicht in der Klausur vorzukommen, da Terme zu lang. Außerdem habe ich dann eine Ausrede um das mir nicht angucken zu müssen. 
 \end{document}
