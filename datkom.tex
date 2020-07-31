@@ -3,7 +3,7 @@
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage[pdftex]{hyperref}
+\usepackage[pdftex,pdfborder={0 0 0}]{hyperref}
 \usepackage{bookmark}
 \usepackage[ngerman]{babel}
 \usepackage{braket}
@@ -118,7 +118,7 @@ Für jede Schicht gilt also: $(N)$-PDU $=$ $(N{-}1)$-SDU.
 \begin{minipage}{0.45\textwidth}
 \begin{enumerate}[nolistsep]
 	\item \emph{Bitübertragungsschicht:}\\ Digitale Datenübertragung,\\ z.B.\ Ethernet.
-	\item \emph{Sicherungsschicht:}\\ Gewährleisten von zuverlässiger uns fehlerfreier Übertragung,\\ z.B.\ MAC, ALOHA, Token Ring.
+	\item \emph{Sicherungsschicht:}\\ Gewährleisten von zuverlässiger und fehlerfreier Übertragung,\\ z.B.\ MAC, ALOHA, Token Ring.
 \end{enumerate}
 \end{minipage}\hspace{0.05\textwidth}
 \begin{minipage}{0.45\textwidth}
@@ -178,7 +178,7 @@ Für jede Schicht gilt also: $(N)$-PDU $=$ $(N{-}1)$-SDU.
 \item \emph{Schrittgeschwindigkeit}: Schritte pro Zeiteinheit (1 baud = 1/s).
 \item \emph{Zweiwertiges Signal}: Übertragung eines Bits pro Signal (binär).
 \item \emph{Mehrwertiges Signal}: Übertragung von mehreren Bits pro Signal (z.B.\ DIBIT, 2 Bit pro Signal, also quaternär, 4 Werte).
-\item \emph{Übertragungsgeschwindigkeit}: $\textrm{baud} \cdot \log_2($n$) \textrm{ Bit}$, mit $n$ der Anzahl der Bits pro Signal.
+\item \emph{Übertragungsgeschwindigkeit}: $\textrm{baud} \cdot \log_2($n$) \textrm{ Bit}$, mit $n$ als Anzahl der diskreten Wertstufen pro Signal.
 \end{itemize}
 
 \begin{minipage}{\textwidth}
@@ -672,7 +672,8 @@ Ein \emph{Sliding Window} begrenzt die Rahmen, die auf einmal ohne Bestätigung 
 
 \subsubsection{HDLC}
 
-Das \emph{High-Level Data Link Control} Protokoll würde für den Anschluss von Datennetzen über Telefonnetze entworfen. Es unterstüzt Framing, Fehlerkorrektur (mit CRC), Flusskontrolle (mit Sliding Window) und Zeitmultiplexing.
+Das \emph{High-Level Data Link Control} Protokoll wurde für den Anschluss von Datennetzen über Telefonnetze entworfen.
+Es unterstüzt Framing, Fehlerkorrektur (mit CRC), Flusskontrolle (mit Sliding Window) und Zeitmultiplexing.
 
 Der Medienzugriff hat mehrere Betriebsarten:
 \begin{itemize}
