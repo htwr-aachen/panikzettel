@@ -821,6 +821,52 @@ Man teilt ein Programm in drei Teilaspekte strukturell auf: \begin{itemize}
 \item \emph{Controller:} Kümmert sich um die Benutzerschnittstelle und Modifikation. % TODO: Controller vs View/Model
 \end{itemize}
 
+\subsection{Architekturmuster für Netzwerkapplikationen}
+Man hat nun ein System, was im Netzwerk läuft.
+Es gibt verschiedene Möglichkeiten, die Arbeit zwischen Server(n) und den Clients aufzuteilen
+
+\subsubsection{Zentrales System}
+Unintelligente Terminals stellen Anfragen an ein kluges zentrales System.
+So z.B. bei Mainframe-Anwendungen: Terminals präsentieren Eingabemasken, der Mainframe errechnet die Ausgabe.
+Auch: Rein lokale Anwendungen, hier ist der PC Zentrale und Terminal zugleich.
+
+\subsubsection{Two-Tier Client / Server}
+Die Aufgaben werden zwischen Terminal und Client aufgeteilt.
+So präsentiert der Client die Oberfläche und enthält Teile der Businesslogik.
+Der Server ist Beispielsweise für Datenhaltung und Validierung der Client-Eingaben zuständig.
+
+\subsubsection{Thin vs Fat Client}
+\emph{Thin-Clients} zeigen nur die Benutzeroberfläche, ähnlich dem Muster Zentrales System.
+Nur minimale Aufgaben, wie das Rendering einer GUI aus einer legacy Terminal-Appliaktion erfolgen auf dem Client.
+
+\emph{Fat-Clients} enthalten Teile oder die gesamte Fachlogik auf dem System und führen eigenständig Berechnungen durch.
+Fat-Clients sind also analog zum Muster Two-Tier Client / Server.
+Der Server ist hauptsächlich für Datenhaltung zuständig.
+Dafür müssen die Clients die Rechenkraft und die Daten haben, um die Berechnungen durchzuführen.
+Ebenso müssen tendenziell mehr Patches auf den Clients durchgeführt werden.
+
+\subsubsection{Three-Tier Client / Server}
+Hier wird zwischen Anwendungsserver und Datenserver unterschieden.
+Gerade für den Datenserver kann Standardsoftware benutzt werden.
+Dies ist heute der Standard.
+Die Applikationslogik liegt gemischt zwischen Anwendungsserver und Client vor.
+Der Anwendungsserver führt bei hinreichend großer Applikation auch Load-Balancing durch. 
+
+\subsubsection{Föderation}
+Alle beteiligten Systeme kommunizieren in einem Peer-To-Peer-Netzwerk.
+
+\subsubsection{Cloud Computing}
+Die IT-Ressourcen werden abstrahiert.
+In der Cloud können Server gemietet werden, aber auch ganze Dienste wie DBs oder Load Balancer.
+
+\emph{IaaS}: Infrastruktur (Server, HDDs) werden von einem Anbieter zur Verfügung gestellt.
+
+\emph{PaaS}: Laufzeitumgebungen, die dynamisch angepasst werden können, werden zur Verfügung gestellt.
+Skalierung und Patching wird vom Anbieter übernommen.
+
+\emph{SaaS (Software on demand)}: Anwendungsprogramme und Bibliotheken werden
+schlüsselfertig von einem Dienstanbieter online zur Verfügung gestellt.
+
 \subsection{Architekturmuster für die Kommunikation}
 
 \subsubsection{Command}
@@ -882,6 +928,21 @@ Der \lstinline{Dispatcher} merkt sich alle \lstinline{Interceptor}s und ruft die
 \end{tikzpicture}
 
 Nun kann das Webserver-Framework einfach immer den Dispatcher nutzen und das System kann beliebig erweitert werden, indem zum Dispatcher neue Interceptors registriert werden.
+
+\subsubsection{Client-Dispatcher-Server}
+Der Dispatcher kennt die Namen aller Server.
+Clients wenden sich an den Dispatcher mit dem Namen des gewünschten Servers, dieser gibt dann die IP / den Domainnamen des Servers zurück.
+Hier kann transparent Load-Balancing oder eine Zuweisung zum logisch nächsten Server erfolgen (vgl. CDNs).
+Die Kommunikation läuft danach direkt, sodass der Dispatcher kein Bottleneck ist und keine Zeit verloren geht.
+Es entsteht allerdings ein Overhead und der Dispatcher wird zum Single-Point-of-Failure.
+
+\subsubsection{Broker}
+Broker sind ähnlich zum Client-Dispatcher-Server Muster.
+Allerdings wird der gesamte Traffic durch den Broker geleitet.
+Wenn der Broker eine lokale Klasse ist, kann durch Remote Procedure Calls Zugriffstransparenz erreicht werden.
+Als entfernter Server ähneln sich die Aufgaben mit Client-Dispatcher-Server, wobei nur eine Verbindung, nämlich die zum Broker aufgebaut werden muss.
+Allerdings wird der Broker zum Bottleneck des gesamten Systems.
+\emph{Broker-Bridge}: Mehrere Broker werden über Bridges vernetzt.
 
 \section{Software- und Systementwurf}
 
