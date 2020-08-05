@@ -1,0 +1,762 @@
+\documentclass[english]{panikzettel}
+
+\title{Operations Research 1 Panikzettel}
+\author{Philipp Schröer, Younes Müller}
+
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\usepackage{array}
+\newcolumntype{C}{>{$}c<{$}}
+
+\newcommand{\true}{\text{true}}
+\newcommand{\false}{\text{false}}
+\newcommand{\gap}{\text{gap}~}
+\newcommand{\zover}{\overline{z}_{IP}}
+\newcommand{\zunder}{\underline{z}_{LP}}
+
+\usepackage{environ} % alignat* won't work with newenvironment
+\NewEnviron{linearprogram}{%
+  \begin{alignat*}{3}
+    \BODY
+  \end{alignat*}
+  \vspace{-1.8\baselineskip}
+}
+\newcommand{\lpAnnotation}[1]{\ifx&#1&{}\else\text{\footnotesize{}(#1)}\fi}
+\newcommand{\lpVars}[3]{\text{\textcolor{gray}{Variables: }} & #1 \quad && #2 \quad & \lpAnnotation{#3}\\[0.8em]}
+\newcommand{\lpMoreVars}[3]{\\[-2.2em] & #1 \quad && #2 \quad & \lpAnnotation{#3}\\[0.8em]}
+\newcommand{\lpMin}[1]{\text{min} \quad & #1 \\}
+\newcommand{\lpMax}[1]{\text{max} \quad & #1 \\}
+\newcommand{\lpWhere}[3]{\text{\textcolor{gray}{where}} \quad & #1 \quad && #2 \quad & \lpAnnotation{#3} \\}
+\newcommand{\lpConstraint}[3]{ & #1 \quad && #2 \quad & \lpAnnotation{#3} \\}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+This Panikzettel is about the lecture Operations Research 1 by Prof.\ Lübbecke held in the winter semester 2019/20.
+
+This Panikzettel is Open Source. We appreciate comments and suggestions at \\ \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}.
+\bigskip
+
+In this Panikzettel, we introduce new notation for better readability: $\overline{n} := \set{1,\ldots, n}$ for some $n$.
+
+\section{Mixed-Integer Linear Programs}
+
+\begin{halfboxl}
+  A \emph{mixed-integer linear program (MILP, MIP)} consists of an objective (here, a linear function to maximize), and linear inequalities over a bunch of variables.
+
+  Minimization and inequalities in other directions can be implemented by simple transformations (which we won't cover here).
+
+  Note that we use a slightly different notation in this Panikzettel than in the definition on the right.
+  Here, variables along with a domain are listed first.
+  Technically speaking, the domain is also a constraint!
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{defi}{Mixed-Integer Linear Program}
+    A \emph{mixed-integer linear program (MILP)} has the following form, where $n,~ q \in \nat$:
+    \vspace{-0.6\baselineskip}
+    \begin{alignat*}{4}
+      \max \quad & c^T \\
+      \text{s.t.} \quad & A x & ~\leq~ & b \\
+                        & x & ~\in~ & \mathbb{Z}^n_+ \times \mathbb{Q}^q_+
+    \end{alignat*}
+    If $n = 0$, we have a \emph{linear program} (LP), if $q = 0$, we have a \emph{(pure) integer linear program} (ILP, IP).
+  \end{defi}
+\end{halfboxr}
+
+Logical operators can be easily implemented in LPs.
+Let binary variable $x = 1$ iff statement $X$ is $\true$ or $x = 0$ iff $X$ is $\false$.
+
+\begin{halfboxl}
+  \textsc{Logical operators}
+
+  \begin{itemize}
+    \item $X = Y \land Z$: $x \leq y$, $y \leq z$, $x \geq y + z - 1$
+    \item $X = Y \lor Z$: $x \geq y$, $x \geq z$, $x \leq y + z$
+    \item $X = \neg Y$: $x = 1 - y$
+  \end{itemize}
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \textsc{Consequences}
+
+  \begin{itemize}
+    \item $X \implies Y$: $x \leq y$
+    \item $\neg Y \implies \neg X$: $x \leq y$
+    \item $X \iff Y$: $x = y$
+  \end{itemize}
+\end{halfboxr}
+
+\section{Modeling with Integer Linear Programs}
+
+\subsection{Minimum Cost (Bipartite) Matching Problem}
+
+This is also known as an \emph{assignment problem}.
+The goal is to assign $n$ workers to $m$ machines with an assignment cost $c_{ij}$, minimizing the cost such that each machine is operated by a worker.
+\begin{linearprogram}
+  \lpVars{x_{ij} \in \Set{0,~1}}{\Forall i \in \overline{n},~ j \in \overline{m}}{$x_{ij} = 1$ iff worker $i$ operates $j$}
+  \lpMin{\sum_{\substack{i \in \overline{n},\\j \in \overline{m}}} c_{ij} \cdot x_{ij}}
+  \lpWhere{\sum_{j \in \overline{m}} x_{ij} \leq 1}{\Forall i \in \overline{n}}{each worker to at most one machine}
+  \lpConstraint{\sum_{i \in \overline{n}} x_{ij} = 1}{\Forall j \in \overline{m}}{operate every machine}
+\end{linearprogram}
+\vspace{-0.5\baselineskip}
+
+\subsection{Transportation Problem}
+
+Let $G = (V,E)$ be a directed graph.
+Given $n$ supplies $a_i$, and $m$ demands $b_j$, and a transport cost $c_{ij}$ for each pair $i \to j$, find a cost-minimal transport that fulfills demands with the given supplies.
+\begin{linearprogram}
+  \lpVars{x_{ij} \in \nat_0}{\Forall i \in \overline{n},~ j \in \overline{m}}{ship $x_{ij}$ units from $i$ to $j$}
+  \lpMin{\sum_{(i,j) \in E} c_{ij} \cdot x_{ij}}
+  \lpWhere{\sum_{(i,j) \in E} x_{ij} \geq b_j}{\Forall j \in \overline{m}}{fulfill demands}
+  \lpConstraint{\sum_{(i,j) \in E} x_{ij} \leq a_i}{\Forall i \in \overline{n}}{supply limits}
+\end{linearprogram}
+\vspace{-0.5\baselineskip}
+
+\subsection{Minimum Cost Network Flows}
+
+\begin{halfboxl}
+  We want to find a minimum cost flow in a directed graph $G = (V,A)$ with a cost function $c : E \to \nat_0$, arc capacities $u : A \to \nat_0$ and demands $b : V \to \mathbb{Z}$.
+
+  Outgoing edges from $i$ are denoted $\delta^+(i)$, and incoming edges are denoted $\delta_-(i)$.
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{defi}{Flow}
+    A \emph{flow} is a mapping $f : A \to \nat_0$ with
+    \begin{itemize}[leftmargin=*]
+      \item \emph{Capacity satisfaction:} For all $a \in A$:
+        \begin{tightcenter}$f(a) \leq u(a)$,\end{tightcenter}
+      \item \emph{Flow conservation:} For all $v \in V$:
+        \begin{tightcenter}$\sum\limits_{a \in \delta^+(v)} f(a) - \sum\limits_{a \in \delta^-(v)} f(a) = b(v)$.\end{tightcenter}
+    \end{itemize}
+  \end{defi}
+\end{halfboxr}
+\vspace{-\baselineskip}
+\begin{linearprogram}
+  \lpVars{x_{ij} \in \nat}{\Forall (i,j) \in A}{flow of $x_{ij}$ from $i$ to $j$}
+  \lpMin{\sum_{(i,j) \in A} c_{ij} \cdot x_{ij}}
+  \lpWhere{x_{ij} \leq u_{ij}}{\Forall (i,j) \in A}{capacities}
+  \lpConstraint{\sum_{\mathclap{(i,j) \in \delta^+(i)}} x_{ij} ~ - ~ \sum_{\mathclap{(j,i) \in \delta^-(i)}} x_{ji} = b_i}{\Forall i \in V}{flow conservation}
+\end{linearprogram}
+
+\subsection{Knapsack Problem}
+\label{sec:knapsack-problem}
+
+In the \emph{0-1 knapsack problem}, we want to to find a profit-maximizing selection of $n$ items of size $a_i$ with profits $p_i$ to pack in a knapsack of capacity $b$.
+\begin{linearprogram}
+  \lpVars{x_{i} \in \Set{0,~1}}{\Forall i \in \overline{n}}{$x_i = 1$ iff $i$ is in the knapsack}
+  \lpMax{\sum_{i \in \overline{n}} p_i \cdot x_i}
+  \lpWhere{\sum_{i \in \overline{n}} a_i \cdot x_i \leq b}{}{capacity}
+\end{linearprogram}
+
+% TODO: pattern-based solution?
+
+\subsection{Bin Packing Problem}
+\label{sec:bin-packing}
+
+In the (one-dimensional) \emph{bin packing problem}, we want to pack $n$ items of sizes $a_i$ into bins of capacity $b$, minimising the number of bins.
+There is an upper bound of $m$ bins.
+\begin{linearprogram}
+  \lpVars{x_{ij} \in \Set{0,1}}{\Forall i \in \overline{n},~ j \in \overline{m}}{$x_{ij} = 1$ iff item $i$ is in bin $j$}
+  \lpMoreVars{y_j \in \Set{0,1}}{\Forall j \in \overline{m}}{$y_j = 1$ iff bin j is used}
+  \lpMin{\sum_{j \in \overline{m}} y_i}
+  \lpWhere{\sum_{j \in \overline{m}} x_{ij} = 1}{\Forall i \in \overline{n}}{every item $i$ must be packed}
+  \lpConstraint{\sum_{i \in \overline{n}} a_i \cdot x_{ij} \leq b \cdot y_j}{\Forall j \in \overline{m}}{capacity for each bin}
+\end{linearprogram}
+
+\subsubsection*{Pattern-based Alternative Model}
+\label{subsec:alt-bin-packing}
+
+Use one variable for each feasible \emph{pattern}: One pattern $x \in \set{0,1}^n$ for every combination of items that can be packed into a single bin:
+\[
+  Q = \Set{x \in \set{0,1}^n | \sum_{i=1}^{n} a_i  \cdot x_i \leq b}.
+\]
+We minimize the number of used bins by minimising the number of patterns $\lambda_q$.
+To ensure that each item is packed exactly once, we define the set of patterns that contain item $i$: $Q_i = \set{ q \in Q | q_i = 1 }$ for all $i \in \overline{n}$.
+\begin{linearprogram}
+  \lpVars{\lambda_{q} \in \Set{0,1}}{\Forall q \in Q}{$\lambda_q = 1$ iff a bin is filled according to pattern $q$}
+  \lpMin{\sum_{q \in Q} \lambda_q}
+  \lpWhere{\sum_{q\in Q_i} \lambda_q = 1}{\Forall i \in \overline{n}}{each item is packed exactly once}
+\end{linearprogram}
+
+\subsection{Location Problems}
+
+In the basic \emph{facility location problem}, we have $m$ potential facilities with opening costs $f_i$, and connection costs $c_{ij}$.
+We want to open facilities such that each client is served by exactly one opened facility, minimizing the total cost.
+\begin{linearprogram}
+  \lpVars{x_{ij} \in \Set{0,~1}}{\Forall i \in \overline{m}, \Forall j \in \overline{n}}{$x_{ij} = 1$ iff client $j$ is served by facility $i$}
+  \lpMoreVars{y_i \in \Set{0,~1}}{\Forall i \in \overline{m}}{$y_i = 1$ iff facility $i$ is opened}
+  \lpMin{\sum_{i \in \overline{m}} f_i \cdot y_i + \sum_{\substack{i \in \overline{m},\\j \in \overline{n}}} c_{ij} \cdot x_{ij}}
+  \lpWhere{\sum_{i \in \overline{m}} x_{ij} = 1}{\Forall j \in \overline{n}}{exactly one serving facility per client}
+  \lpConstraint{x_{ij} \leq y_i}{ \Forall i \in \overline{m}, \Forall j \in \overline{n}}{a facility can serve only when opened}
+\end{linearprogram}
+
+There are various variants of the basic problem:
+\begin{itemize}
+  \item \emph{demands and capacities}: demands $q_j$ and capacities $C_i$: $\sum_{j \in \overline{n}} q_j x_{ij} \leq C_i\forall i \in \overline{m}$
+  \item \emph{$p$-median problem}: open exactly $p$ facilities: $\sum_{i \in \overline{m}} y_i = p$.
+  \item \emph{$p$-center problem}: minimize largest distances to open facilities: $\min \max_{i,j}~ c_{ij} \cdot x_{ij}$.
+\end{itemize}
+
+\subsection{Lot Sizing (sketch)}
+
+We decide how much of a product we produce at a time step and how much we store while minimizing the storing cost and setup cost for the machine. \\
+There are $T$ periods, with a demand of $b_t$ in each. Storing the product costs $l$ per unit per time and setting up the machine to produce goods costs $r$ in a timestep.
+\begin{linearprogram}
+  \lpVars{x_t\geq 0}{\Forall t \in \overline{T}}{amount to produce in t}
+  \lpMoreVars{y_t\geq 0}{\Forall t \in \overline{T}}{amount to store in t}
+  \lpMoreVars{z_t \in \Set{0,~1}}{\forall t \in \overline{T}}{set up in t?}
+  \lpMin{\sum_{t\in \overline{T}}l\cdot y_t + \sum_{t\in\overline{T}}r\cdot z_t}
+  \lpWhere{y_{t-1}+x_t-y_t=b_t}{\Forall t \in \overline{T}}{balance material}
+  \lpConstraint{x_t \leq z_t \cdot M}{\Forall t \in \overline{T}}{set up only if producing}
+\end{linearprogram}
+
+\subsection{Scheduling}
+
+In the \emph{parallel machine scheduling} setting, we want to assign $n$ jobs which require times $p_j$ to $m$ identical machines, minimizing the
+\emph{makespan} (longest completion time).
+\begin{linearprogram}
+  \lpVars{x_{jk} \in \Set{0,~1}}{\Forall j \in \overline{n},~ k \in \overline{m}}{$x_{jk} = 1$ iff job $j$ is assigned to machine $k$}
+  \lpMoreVars{C_{\text{max}} \geq 0}{}{makespan}
+  \lpMin{C_{\text{max}}}
+  \lpWhere{\sum_{k \in \overline{m}} x_{jk} = 1}{\Forall j \in \overline{n}}{assign all jobs}
+  \lpConstraint{\sum_{j \in \overline{n}} p_j \cdot x_{jk} \leq C_{\text{max}}}{\Forall k \in \overline{m}}{last completion time defines $C_\text{max}$}
+\end{linearprogram}
+
+On a \textbf{single machine}, we can also solve \emph{scheduling with precedence constraints}.
+Given $n$ jobs, and a partial order $i \prec j$ on the jobs that defines that $i$ must start before $j$, we want to minimize the makespan again.
+Define $E = \Set{ \set{i,j} | i \neq j,~ i \nprec j,~ j \nprec i }$ and choose $M$ to be ``large''.
+\begin{linearprogram}
+  \lpVars{x_{ij} \in \Set{0,~ 1}}{\Forall \Set{i,j} \in E}{$x_{ij} = 1$ iff job $i$ runs before $j$}
+  \lpMoreVars{t_j \geq 0}{\Forall j \in \overline{n}}{start times}
+  \lpMoreVars{C_\text{max}\geq 0}{}{makespan}
+  \lpMin{C_\text{max}}
+  \lpWhere{t_i + p_i \leq t_j}{\Forall i \prec j}{start after previous has completed}
+  \lpConstraint{t_i + p_i \leq t_j + (1 - x_{ij}) \cdot M}{\Forall \Set{i,j} \in E}{1}
+  \lpConstraint{t_j + p_j \leq t_i + x_{ij} \cdot M}{\Forall \Set{i,j} \in E}{2}
+  \lpConstraint{t_j + p_j \leq C_\text{max}}{\Forall j \in \overline{n}}{}
+\end{linearprogram}
+
+Equations (1) and (2) express that $x_{ij} = 1$ iff $i$ precedes $j$.
+Formally, we have $x_{ij} = 1 \Rightarrow t_i + p_i \leq t_j$ and $x_{ij} = 0 \Rightarrow t_j + p_j \leq t_i$.
+These two expressions are linearised using the ``big $M$'' constant.
+
+Extensions:
+\begin{itemize}[beginpenalty=10000]
+  \item \emph{Release dates} $r_j$ can be added by constraints $t_j \geq r_j \quad \Forall j \in \overline{n}$.
+  \item \emph{Deadlines} $d_j$ can be enforced by $t_j + p_j \leq d_j \quad \Forall j \in \overline{n}$.
+\end{itemize}
+
+\pagebreak
+The ``big $M$'' can be avoided by discretising the time horizon, creating lots of new variables.
+So let the time horizon $t = 1, \ldots, T$.
+\begin{linearprogram}
+  \lpVars{x_{jt} \in \Set{0,1}}{\Forall j \in \overline{n},~t \in \overline{T}}{$x_{jt} = 1$ iff job $j$ starts at time $t$}
+  \lpMoreVars{C_\text{max}}{}{makespan}
+  \lpMin{C_\text{max}}
+  \lpWhere{\sum_{t=1}^{T-p_j+1} x_{jt} = 1}{\Forall j \in \overline{n}}{each job must start}
+  \lpConstraint{\sum_{t=1}^{T-p_i+1} (t+p_i) \cdot x_{it} \leq \sum_{t=1}^{T-p_j+1} t_j \cdot x_{jt}}{\Forall i,~ j \in  \overline{n},~ i \prec j}{precedence}
+  \lpConstraint{1-x_{jt} \geq \sum_{\tau=t}^{t+p_j-1} x_{i\tau}}{\Forall \begin{array}{l}i \in \overline{n} \setminus \Set{j},~ j \in \overline{n}\\ t \in \overline{T-p_j+1}\end{array}}{\scriptsize{}\begin{tabular}{c}job $j$ starts at $t$ $\Rightarrow$ \\ no other $i$ can start before $t+p_j$ \end{tabular}}
+  \lpConstraint{\sum_{t=1}^{T-p_j+1} (t+p_j) \cdot x_{jt} \leq C_\text{max}}{\Forall j \in \overline{n}}{completion time}
+\end{linearprogram}
+
+In the above, the expression $\sum_{t=1}^{T-p_i+1} t\cdot x_{it}$ equals the starting time of job $i$.
+The expression $\sum_{t=1}^{T-p_i+1} (t+p_i)\cdot x_{it}$ equals the end time of job $i$.
+
+\subsection{Minimum Spanning Tree}
+
+A \emph{minimum spanning tree} of a graph $G = (V,E)$ with edge weights $c_e \geq 0$ is a tree in $G$ that connects all nodes.
+\begin{linearprogram}
+  \lpVars{x_e \in \Set{0,1}}{\Forall e \in E}{$x_e = 1$ iff edge $e$ is in the MST}
+  \lpMin{\sum_{e \in E} c_e \cdot x_e}
+  \lpWhere{\sum_{e \in E} x_e = \abs{V} - 1}{}{spanning tree}
+  \lpConstraint{\sum_{e \in \delta(X)} x_e \geq 1}{\Forall \emptyset \subsetneq X \subsetneq V}{connectivity}
+\end{linearprogram}
+\vspace{-0.5\baselineskip}
+
+\subsection{Traveling Salesperson Problem}
+\label{sec:tsp}
+
+In the \emph{traveling salesperson problem (TSP)}, we want to find a minimum cost tour in a graph $G = (V,E)$ with edge costs $c_{ij}$.
+A \emph{tour} is a cycle that visits each node exactly once.
+\begin{linearprogram}
+  \lpVars{x_e \in \Set{0,1}}{\Forall e \in E}{$x_{ij} = 1$ iff $i \to j$ is in the tour}
+  \lpMin{\sum_{e \in E} c_e \cdot x_e}
+  \lpWhere{\sum_{e \in \delta(i)} x_e = 2}{\Forall i \in V}{connectivity}
+  \lpConstraint{\sum_{e \in \delta(S)} x_e \geq 2}{\Forall S \subsetneq V,~ \abs{S} \geq 3}{subtour elimination constraints}
+\end{linearprogram}
+
+\subsubsection*{Alternative Subtour Elimination Constraint}
+\label{sec:tsp-alternative}
+
+The following formulation has only linearly many constraints.
+We formulate the TSP for a directed graph $G=(V,A)$.
+\begin{linearprogram}
+  \lpVars{x_e \in \Set{0,1}}{\Forall e\in A}{$x_{ij} = 1$ iff $i \to j$ is in the tour}
+  \lpMoreVars{u_i \geq 0}{\Forall i \in V}{index of i in tour}
+  \lpMin{\sum_{e \in A} c_e \cdot x_e}
+  \lpWhere{\sum_{e\in\delta^-(i)}x_e=1}{\Forall e\in A}{in-degree constraint}
+  \lpConstraint{\sum_{e\in\delta^+(i)}x_e=1}{\Forall e\in A}{out-degree constraint}
+  \lpConstraint{u_i + 1 \leq u_j + (1-x_e) \cdot M}{\forall i \in V}{subtour elimination}
+\end{linearprogram}\\
+The subtour elimination constraint uses the big-$M$ method. It can be adapted to feature time windows.
+
+\subsection{Vehicle Routing Problem}
+
+In the \emph{vehicle routing problem (VRP)}, we want to serve $n$ customers with $K$ identical vehicles on a directed graph $G = (V, E)$.
+There is a driving cost for each edge of $c_{ij}$.
+We want to find a tour for each vehicle starting and ending at a depot $d$, so that all customers are served (by one vehicle) at minimum cost.
+We assume that not all vehicles have to be used.
+\begin{linearprogram}
+  \lpVars{x^k_{ij} \in \Set{0,1}}{\Forall k \in \overline{K},~ (i,j) \in E}{$x^k_{ij}=1$ iff vehicle $k$ goes from $i$ to $j$}
+  \lpMoreVars{z^k_i \in \Set{0,1}}{\Forall k \in \overline{K},~ i \in V}{$z^k_i = 1$ iff vehicle $k$ visits $i$}
+  \lpMin{\sum_{(i,j) \in E} c_{ij}^k \cdot x_{ij}^k}
+  \lpWhere{\sum_{\mathclap{(i,j) \in \delta^+(i)}} x_{ij}^k = \sum_{\mathclap{(j,i) \in \delta^-(i)}} x_{ji}^k \geq z_i^k}{\Forall k \in \overline{K},~ i \in V}{flow conservation}
+  \lpConstraint{ \sum_{\mathclap{e \in \delta^-(d)}} x_e^k = 1}{}{every vehicle visits depot}
+  \lpConstraint{\sum_{k \in \overline{K}} z_i^k = 1}{\Forall i \in V}{every customer must be visited}
+  \lpConstraint{\sum_{\mathclap{(i,j) \in \delta^+(S)}} x_{ij}^k = \sum_{\mathclap{(j,i) \in \delta^-(S)}} x_{ji}^k \geq z_i^k}{\Forall k \in \overline{K},~ S \subsetneq V \setminus{d},~ i \in S}{SEC}
+\end{linearprogram}
+
+\subsubsection{Capacity - CVRP}
+
+In the \emph{capacitated vehicle routing problem (CVRP)}, we also have demands $q_i \geq 0$ and a vehicle capacity $Q$. We just need one additional constraint:
+\begin{linearprogram}
+  \lpWhere{\sum_{i \in V} z_i^k \cdot q_i \leq Q}{\Forall k \in \overline{K}}{vehicle capacities}
+\end{linearprogram}
+\vspace{-\baselineskip}
+
+\subsection{Pickup and Delivery}
+
+With \emph{CVRP with pickups and deliveries}, we extend the problem domain to $q_i \in \mathbb{R}$.
+Instead of the simple constraint above, we need a ``big $M$'' constraint and new variables $y_i^k$.
+\begin{linearprogram}
+  \lpVars{0 \leq y_i^k \leq Q}{\Forall i \in V,~ k \in \overline{K}}{vehicle load after leaving $i$}
+  \lpWhere{y_i^k + q_i \leq y_j^k + (1-x_{ij}^k) \cdot M}{\Forall (i,j) \in E,~ k \in \overline{K}}{vehicle load}
+\end{linearprogram}
+
+\vspace{-0.5\baselineskip}
+{\footnotesize{}(The ``big $M$'' constraint is equivalent to $x_{ij}^k = 1 \implies y_i^k + q_j \leq y_j^k$.)}
+\medskip
+
+\subsubsection{Time Windows - VRPTW}
+
+The last variant we cover is the \emph{vehicle routing problem with time windows (VRPTW)}.
+It is like VRP, but now we require delivery in a time window $[a_i,b_i]$ at customer $i$.
+The vehicles need $t_{ij}$ to traverse $i\Rightarrow j$.
+Add variables $w_i^k \geq 0 \quad \Forall i \in V,~ k \in \overline{K}$ for  the time vehicle $k$ starts at customer $i$.
+We want to express
+\[
+  x_{ij}^k = 1 \implies w_i^k + t_{ij} \leq w_j^k \qquad \Forall (i,j) \in E,~ k \in \overline{K}.
+\]
+
+This can be realized using a ``big $M$'' constraint.
+It also acts as SEC, so the original SEC can be removed.
+We add the following constraints:
+\begin{linearprogram}
+  \lpVars{w_i^k \geq 0}{\Forall i\in E, k\in \overline{K}}{vehicle k start time at customer i}
+  \lpWhere{w_i^k + t_{ij} \leq w_j^k + (1-x_{ij}^k) \cdot M }{\Forall (i,j) \in E,~ k \in \overline{K}}{\begin{tabular}{l}link $w_i^k$ and $x_{ij}^k$,\\ vehicle k needs $t_{ij}$ to go from i to j\end{tabular}}
+  \lpConstraint{a_i \leq w_i^k \leq b_i}{\Forall i \in V}{time window is met}
+\end{linearprogram}
+
+Sidenote: The constraint is similar to the alternative SEC in TSP (\cref{sec:tsp-alternative}).
+
+\subsection{Set Covering, Set Partitioning, Set Packing}
+
+\begin{minipage}[t]{0.65\textwidth}
+  The class of set problems includes \emph{set covering}, \emph{set partitioning}, and \emph{set packing}.
+  In every case, we have a ``universe'' $\mathcal{U} = \Set{e_1, \ldots, e_n}$, a set of subsets $\mathcal{S} \subseteq \mathcal{P}(\mathcal{U})$, and a cost $c(S)$ for each subset $S \in \mathcal{S}$.
+  All three LPs are similar, and differ only in the objective and inequation operator.
+\end{minipage}%
+\begin{minipage}[t]{0.35\textwidth}
+  \vspace{-0.5\baselineskip}
+  \centering
+  \begin{tabular}{c|c|c}
+    Set Cover & $\min$ & $\geq$ \\
+    Set Partition & $\min$ & $=$ \\
+    Set Packing & $\max$ & $\leq$
+  \end{tabular}
+\end{minipage}
+
+\vspace{-\baselineskip}
+\paragraph{Set Cover}
+We want to cover all elements with a subset of $\mathcal{S}$.
+\begin{linearprogram}
+  \lpVars{x_S \in \Set{0,1}}{\Forall S \in \mathcal{S}}{$x_S = 1$ iff $S$ is selected}
+  \lpMin{\sum_{S \in \mathcal{S}} c(S) \cdot x_s}
+  \lpWhere{\sum_{\substack{S \in \mathcal{S},\\e_i \in S}} x_S \geq 1}{\Forall i \in \overline{n}}{must cover all elements}
+\end{linearprogram}
+
+\vspace{-\baselineskip}
+\paragraph{Set Partition}
+Choose a partition $\subseteq \mathcal{S}$, i.e.\ each element is in exactly one set of the partition.
+\begin{linearprogram}
+  \lpVars{x_S \in \Set{0,1}}{\Forall S \in \mathcal{S}}{$x_S = 1$ iff $S$ is in the partition}
+  \lpMin{\sum_{S \in \mathcal{S}} c(S) \cdot x_s}
+  \lpWhere{\sum_{\substack{S \in \mathcal{S},\\e_i \in S}} x_S = 1}{\Forall i \in \overline{n}}{each element is in exactly one selected set}
+\end{linearprogram}
+
+\vspace{-\baselineskip}
+\paragraph{Set Packing}
+Select cost-maximal sets, but each element can only be selected at most once.
+\begin{linearprogram}
+  \lpVars{x_S \in \Set{0,1}}{\Forall S \in \mathcal{S}}{$x_S = 1$ iff $S$ is selected}
+  \lpMax{\sum_{S \in \mathcal{S}} c(S) \cdot x_s}
+  \lpWhere{\sum_{\substack{S \in \mathcal{S},\\e_i \in S}} x_S \leq 1}{\Forall i \in \overline{n}}{each element is selected at most once}
+\end{linearprogram}
+
+The three set problems are problems that reoccur frequently. The alternative bin-packing model (\cref{subsec:alt-bin-packing}) for example is a packing problem, where the the universe $U$ consists of the items and the set of subsets $S \subseteq P(U)$ is the set of possible one-bin-packings.
+
+\section{Modeling with Non-Linear Integer Programs}
+
+Previously, we only presented linear integer programs (although often with exponential size).
+Now we show some techniques to deal with nonlinearity.
+
+\begin{minipage}[t]{0.45\textwidth}
+  \paragraph{Product of two binary variables}
+  A product of two binary variables $z = x \cdot y$ where $x,y,z \in \Set{0,1}$ can be linearised as follows:
+  \begin{halfboxl}
+    \vspace{-1.5\baselineskip}
+    \begin{align*}
+      z &\leq x \\
+      z &\leq y \\
+      y &\geq x + y - 1
+    \end{align*}
+  \end{halfboxl}%
+  \begin{halfboxr}
+    \vspace{-1\baselineskip}
+    \footnotesize{}
+    \textcolor{gray}{
+      \begin{align*}
+        x = 0 &~\Rightarrow~ z = 0 \\
+        y = 0 &~\Rightarrow~ z = 0 \\
+        x = 1 \land y = 1 &~\Rightarrow~ z = 1
+      \end{align*}
+    }
+  \end{halfboxr}
+\end{minipage}\hfil\vline\hfil%
+\begin{minipage}[t]{0.45\textwidth}
+  \vspace{-\baselineskip}
+  \paragraph{Product of binary and bounded variable}
+  Consider $z = x \cdot y$ where $x \in \Set{0,1}$ and $l \leq y \leq u$.
+  \vspace{-0.5\baselineskip}
+  \begin{align*}
+    z &\leq u \cdot x \\
+    z &\geq l \cdot x \\
+    z &\leq y - l \cdot (1-x) \\
+    z &\geq y - u \cdot (1-x)
+  \end{align*}
+\end{minipage}
+
+\section{Relaxations of Strength and Models}
+
+\begin{halfboxl}
+  Let's start with general problem $X \subseteq \mathbb{Z}^n_+$, i.e.\ the task is to find minimal/maximal points in $X$.
+  A \emph{formulation} for $X$ is a polyhedron that includes all of $X$ (but possibly more points).
+  Because the polyhedra can be arbitrarily precise, there are infinitely many formulations for a problem.
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{defi}{Formulation}
+    A polyhedron $P \subseteq \mathbb{Q}^n_+$ is a \emph{formulation} for a problem $X \subseteq \mathbb{Z}^n_+$ if $X = P \cap \mathbb{Z}^n_+$.
+
+    \footnotesize{}
+    Analogously for mixed integer sets $X \subseteq \mathbb{Z}^n_+ \times \mathbb{Q}^q_+$.
+  \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+  However, we want the polyhedron to be as precise as possible.
+  We call a formulation \emph{stronger} than another formulation if it is strictly smaller.
+
+  The strongest possible formulation is called \emph{ideal} if it is exactly the convex hull of the problem.
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{defi}{Strength of Formulations}
+    Let $P_1$, $P_2$ be formulations for $X$. \\
+    $P_1$ is \emph{stronger} than $P_2$ when $P_1 \subsetneq P_2$.
+
+    A formulation $P$ is \emph{ideal} for $X$ when \\
+    $P = \mathrm{conv}(X)$.
+  \end{defi}
+\end{halfboxr}
+
+\begin{halfboxl}
+  By removing integrality constraints on an integer linear program, we can find lower bounds for optimal solutions (for $\min$ problems).
+  We call this \emph{relaxation}, because the problem without integrality constraints is less strong than the integer problem.
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{theo}{Relaxation}
+    Let $z^\ast = \Set{ c^t x | Ax \geq b,~ x \in \mathbb{Z}^n_+ }$.
+
+    The \emph{relaxation} $\underline{z} = \Set{ c^t x | Ax \geq b,~ x \geq 0 }$ is a lower bound on the optimum: $\underline{z} \leq z^\ast$.
+  \end{theo}
+\end{halfboxr}
+
+\begin{halfboxl}
+  Given an IP/MIP, any integer feasible solution gives an upper bound $\overline{z}$ for the optimal solution $z^\ast$.
+  We call $\overline{z}$ \emph{primal bound}.
+
+  Together with the result from optimizing over any relaxation of an IP, we get lower and upper bounds for the IP solution.
+
+  The $\gap \gamma$ gives us a worst-case quality guarantee in percent on the primal bound $\overline{z}$.
+  $\overline{z}$ is no further away from $z^\ast$ than $\gamma \%$ (for $\min$ problems).
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{defi}{Relaxation Quality (gap)}
+    Let $z^\ast$ be the optimal solution for an IP/MIP,
+    \begin{itemize}
+      \item $\overline{z} \geq z^\ast$ be the primal bound,
+      \item $\underline{z} \leq z^\ast$ the dual bound.
+    \end{itemize}
+    We define
+    \begin{tightcenter}$
+      \gap \gamma := \begin{cases}
+          \frac{\overline{z} - \underline{z}}{\abs{\underline{z}}} & \text{if } \underline{z} \cdot \overline{z} > 0 \\
+          \infty & \text{otherwise}
+        \end{cases}
+    $\end{tightcenter}
+  \end{defi}
+\end{halfboxr}
+
+% TODO: maybe talk about big M here?
+
+\subsection{Cutting Planes}
+\label{sec:cutting-planes}
+
+\begin{halfboxl}
+  \emph{Cutting planes} are used to strengthen the LP that results from relaxation of an IP again, so that the lower bound (again, we assume $\min$ problems) becomes more precise (that is, higher).
+
+  A \emph{valid} inequality for an LP relaxation preserves all integer solutions.
+  And a \emph{cutting plane} is a valid inequality that cuts away an optimal solution $x^\ast$ in the LP relaxation (that is not a solution for the original IP).
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{defi}{Cutting plane}
+    Given
+    \vspace{-0.5\baselineskip}
+    {\small{}\begin{itemize}[leftmargin=*]
+      \item an IP $\min \set{ c^t x | \overbrace{Ax \geq b,~ x \in \mathbb{Z}^n_+}^{:= X}}$,
+      \item its LP relaxation $\min \set{ c^t x | \underbrace{Ax \geq b,~ x \geq 0}_{:= P}}$.
+    \end{itemize}}
+
+    An inequality $a^t x \geq a_0$ is \emph{valid} for $X$ iff
+    \begin{tightcenter}$
+      a^t \overline{x} \geq a_0 \qquad \Forall \overline{x} \in X
+    $\end{tightcenter}
+
+    A valid $a^t x \geq a_0$ for $X$ is a \emph{cutting plane} iff
+    \begin{tightcenter}$
+      a^t x^\ast < a_0 \qquad \Exists x^\ast \in P
+    $\end{tightcenter}
+  \end{defi}
+\end{halfboxr}
+
+\section{Exact Algorithms}
+
+\subsection{Branch-and-Bound}
+
+Because of math, solving mixed integer programs (MIPs) is NP-hard.
+We use the \emph{branch-and-bound algorithm} to recursively split problems into sub-problems and then try to find a solution for the MIP using LPs.
+
+We keep a list of all current sub-problems in a list (``open'') and select a sub-problem $S$.
+We consider the LP relaxation of $S$.
+If $S$ is infeasible or worse than the current best solution, we discard and close $S$.
+If the solution is integral, we save the solution as our current best solution (``\emph{incumbent}'').
+Otherwise we split $S$ into sub-problems and put those in the list.
+When all those subproblems are closed, close $S$.
+We do this until the list of subproblems is empty.
+
+\begin{halfboxl}
+  In this way, we explore the tree of subproblem solutions step by step.
+  But using the upper bound $\overline{z}$, we can \emph{prune} nodes: If a subproblem has a fractional value that is not better than $\zover$, we can ignore it and its children (their values are at least as high).
+  Finally, the LP relaxation values of \textbf{open} subproblems with the current $\zover$ gives us the $\gap$ during the execution.
+\end{halfboxl}%
+\begin{halfboxr}
+  \vspace{-\baselineskip}
+  \begin{theo}{Branch-and-Bound Gap}
+    Let $\zover$ be the upper bound of closed node's values, and $\zunder$ the minimum LP relaxation value of all open subproblems.
+    \begin{center}
+      $\gap = \frac{\abs{\zover - \zunder}}{\abs{\zunder}}.$
+    \end{center}
+  \end{theo}
+\end{halfboxr}
+
+\begin{algo}{Branch-and-Bound}
+  \textbf{Input:} IP $\min c^T x,~ x \in X$ (bounded and feasible).
+
+  \textbf{Output:} Optimal integer solution $x^\ast$.
+  \tcblower
+  \begin{enumerate}
+    \item Set $\zover \leftarrow \infty$, let $x^\ast \leftarrow \text{\footnotesize{}undefined}$. \\
+        {\footnotesize{}At any point, $\zunder$ is the minimal LP relaxation value of all open subproblems.}
+    \item For next new subproblem $S$: Solve its relaxation. \\[0.5em]
+      \begin{tabular}{lll}
+        If infeasible: & \textbf{Close} $S$. \\
+        If $\hat{x}$ is integral and $c^T \hat{x} < \zover$: & Set $\zover \leftarrow c^T \hat{x}$,~ $x^\ast \leftarrow \hat{x}$. \textbf{Close} $S$. & \emph{(better)} \\
+        If $\hat{x}$ is fractional and $c^T \hat{x} \geq \zover$: & \textbf{Close} $S$. & \emph{(pruning)} \\
+        If $\hat{x}$ is fractional and $c^T \hat{x} < \zover$: & \textbf{Branch} (add new open subproblems). \\
+                                                                     & After all child LPs are \underline{solved}\footnote{A parent node is closed if all direct children's LPs are solved (not necessarily closed).}, \textbf{close} $S$.
+      \end{tabular}
+    \item Return $x^\ast$.
+  \end{enumerate}
+\end{algo}
+
+\vspace{-\baselineskip}
+\paragraph*{Search Strategy}
+The lecture discusses two strategies to find the next subproblem among the list of open subproblems: \emph{Depth-first search (DFS)}, and \emph{best-first search (BestFS)}.
+DFS selects the deepest sub-problem in the search tree first.
+This strategy is fast in finding feasible solutions, that however may be of poor quality.
+BestFS selects the sub-problem with the smallest local dual bound first.
+This gives a small search tree, but requires a lot of memory.
+
+\vspace{-\baselineskip}
+\paragraph*{Branching Rule}
+We can use several different \emph{branching rules} to generate the subproblems.
+\begin{itemize}[beginpenalty=10000]
+  \item \textbf{Selecting fractional variables}: For $\overline{x}_j \notin \mathbb{Z}_+$, we add either $x_j \leq \floor{\overline{x}_j}$ or $x_j \geq \ceil{\overline{x}_j}$.
+    If there are several fractional variables, we compute a \emph{score} of some kind and select the best.
+  \item With \textbf{most infeasible branching}, we select the variable with the fractional part closest to $0.5$.
+  Formally, we select $\argmin_j \min \Set{ \overline{x}_j - \floor{\overline{x}_j},~ \ceil{\overline{x}_j} - \overline{x}_j }$.
+  Although popular, it's poorly performing.
+  \item Another poorly performing alternative that is not so popular is \textbf{least infeasible branching} where the the least fractional variable is selected.
+  \item Then we have the method of \textbf{pseudo costs} where a success history of variables is tracked and the success history is multiplied with the ``fractionality'', i.e.\ the closeness of the fractional part to $0.5$.
+\end{itemize}
+
+\subsection{Solving LPs With Exponentially Many Constraints}
+
+\hyperref[sec:tsp]{TSP} example: Even the LP relaxation has too many constraints to be solved fast.
+To speed up the solving of the LP relaxation, first relax (ignore) all subtour elimination constraints (SEC).
+Compute the solution of the resulting LP and search the solution for subtours, which violate SECs.
+This is done by finding minimum cuts in the support graph.
+
+The \emph{support graph} is the graph which has an arc for every decision variable with its value as weight.
+Finding a \emph{minimum cut} with value $v$ in the support graph means finding a set of vertices which are the most disconnected from the rest of the graph.
+If $v<2$, a SEC is violated; thus add the violated SEC to the LP and repeat.
+If $v\geq 2$, no SEC is violated, thus the solution is optimal.
+\begin{align*}
+    \sum_{e\in\delta(S)} x_e \geq 2 \qquad \Forall S \subsetneq V, \abs{S} \geq 3 \qquad & \text{\footnotesize{}(subtour elimination constraints of \hyperref[sec:tsp]{TSP})}
+\end{align*}
+
+We can also use valid inequalities (\cref{sec:cutting-planes}) to strengthen LP relaxations.
+This is called \emph{cutting plane method}.
+Within branch-and-bound, this is called \emph{branch-and-cut}.
+
+\subsection{Column Generation}
+
+\emph{Column generation} is a method to address models where there are many more variables than constraints.
+This occurs in e.g.\ our bin packing encoding (\cref{sec:bin-packing}).
+In practice most of the variables, that are defined in an integer program are zero in the end.
+So the ide of column generation is to solve the Lp with a small subset of variables, while assuming the others to be zero.
+Then the set of variables, that the problem is solved for, is enlarged iteratively.
+More on this in OR3.
+When the LP relaxation of each node branch-and-bound is solved by column generation, we call this \emph{branch-and-price}.
+
+
+\subsection{0-1 Knapsack Problem with Bellman's Equation}
+
+We can also solve optimisation problems \emph{without linear programming}.
+A completely misnamed technique called \emph{dynamic programming} uses tables to solve a problem by memoisation.
+The \emph{Bellman-Ford algorithm} essentially uses dynamic programming to solve the shortest-path problem.
+
+Recall the 0-1 Knapsack problem (\cref{sec:knapsack-problem}): We have $n$ items of sizes $a_i$, with profits $p_i$ and a capacity of the knapsack of $b$.
+We want to find a profit maximizing subset of the items that respects the capacity.
+
+\emph{Bellman's equation} calculates the maximum profit using only the first $j$ items and a capacity $c$:
+\vspace{-0.3\baselineskip}
+\begin{alignat*}{3}
+  j = 1: \qquad && f(1,c) &= \begin{cases}
+    0 & \text{for } c = 0, \ldots, a_1 - 1, \\
+    p_1 \hspace{15.5em}~ & \text{for } c = a_1, \ldots, b.
+  \end{cases} \\[2em]
+  j \geq 2: \qquad && f(j,c) &= \begin{cases}
+    \smash{\overbrace{f(j-1,c)}^\text{$j$ does not fit}} & \text{for } c = 0, \ldots, a_j - 1, \\
+    \smash{\max(\underbrace{f(j-1,c)}_\text{do not select $j$},~ \underbrace{f(j-1,c-a_j)+p_j}_\text{select $j$})} & \text{for } c = a_j,\ldots,b.
+  \end{cases}
+\end{alignat*}
+\vspace{0.7\baselineskip}
+
+\begin{minipage}[t]{0.6\textwidth}
+  Thus the optimal profit value is given by $f(n,b)$.
+  Consider the table on the right: We want to compute the field on the bottom right ($f(n,b)$) that contains the final profit value.
+  \begin{enumerate}
+    \item Fill in the first line: Zeros, from $c = a_1$ enter $p_1$.
+    \item For each next line $j$, calculate for all $c$ the \emph{states} (cells):
+      \begin{itemize}
+        \item While $c < a_j$, copy from $\uparrow$ ($j$ does not fit).
+        \item Then, calculate $\max(\uparrow,~ \uparrow \leftleftarrows + p_j)$.
+      \end{itemize}
+  \end{enumerate}
+\end{minipage}\hfil%
+\begin{minipage}[t]{0.35\textwidth}
+  \centering
+  \vspace{0\baselineskip}
+  \begin{tabular}{C|C|C|C}
+          & c = 0 & c = 1 & \ldots \\ \hline
+    j = 1 & 0     & 0     & p_1    \\ \hline
+    j = 2 & 0     & 0     &        \\ \hline
+    \ldots & 0      &      &
+  \end{tabular}
+\end{minipage}
+\medskip
+
+The chosen items must be computed by tracing back the computation from the final state:
+\begin{alignat*}{3}
+  \text{if } f(j,c) &= \overbrace{f(j-1,c)}^\text{$j$ does not fit} &\implies x_j = 0 \\
+  \text{if } f(j,c) &= \underbrace{f(j-1,c-a_j)+p_j}_\text{select $j$} &\implies x_j = 1
+\end{alignat*}
+
+\section{Heuristics}
+
+\emph{Heuristics} are algorithms that try to solve problems without some guarantees:
+Often, there is no optimality guarantee for computed results, nor a guarantee on the runtime.
+And then the heuristic may not even find a feasible solution.
+In practice, many heuristics are quite useful.
+
+Heuristics can be classified into \emph{construction heuristics} which build a solution from scratch and \emph{improvement heuristics} which improve an existing solution.
+Some heuristics are \emph{problem-specific}, and some are \emph{general heuristics} for many kinds of problems.
+
+\paragraph{Problem-specific heuristics}
+One simple heuristic is the \emph{nearest neighbor heuristic} for TSP where a TSP tour is constructed by always choosing the nearest univisited vertex.
+More on TSP heuristics can be found in our \href{https://panikzettel.philworld.de/lsp1.pdf}{Logistics Systems Planning 1 Panikzettel}.
+
+The nearest neighbor heuristic is an example of a \emph{greedy} heuristic: It always chooses the next best solution, but that means it only ever reaches local optima, and not necessarily a global optimum.
+
+It is a construction heuristic because it builds up a tour from scratch.
+
+\paragraph{General Improvement Heuristics}
+We have a bunch of general heuristics that (try to) improve existing solutions.
+
+\emph{Local search} looks in the space around one existing feasible solution by trying some small changes to the solution.
+This is repeated until no better solution can be found: we have reached a local optimum.
+It's also possible to choose worse solutions sometimes to escape a local optimum and try to find a better one.
+
+\emph{Tabu search} is another general method.
+
+\emph{Simulated annealing} is a local search that accepts worsening solutions with a certain probability that is initially very large and decreases with time.
+The method is named after the physical process called ``annealing'' where metal is cooled slowly to strengthen it.
+
+\emph{Genetic algorithms} mimic natural selection.
+A set of solutions called \emph{population} is generated.
+Solutions are combined in some way and then only the best are kept.
+This is repeated for some time to generate good solutions.
+
+\paragraph{Primal Heuristics in Branch-and-Bound}
+Heuristics can also be applied to find integer solutions for integer programs, supplementing branching.
+For example, rounding fractional values is very cheap, but does not always work.
+Doing this repeatedly until a solution or infeasibility is found is called \emph{diving}.
+
+\paragraph{Approximation Algorithms}
+An \emph{$\alpha$-approximation algorithm} runs in polynomial time and always computes solutions that are only $\alpha$ times worse than the optimal solution.
+One example is the amazing \emph{Christofide's approximation algorithm}.
+We discuss it and many other approximation algorithms in our \href{https://panikzettel.philworld.de/effi.pdf}{Effiziente Algorithmen Panikzettel}.
+
+\end{document}

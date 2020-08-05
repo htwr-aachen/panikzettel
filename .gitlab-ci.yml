@@ -29,3 +29,5 @@ compile_pdf:
       - meta.pdf
       - sn19.pdf
       - sn20.pdf
+      - lsp1.pdf
+      - or1.pdf
