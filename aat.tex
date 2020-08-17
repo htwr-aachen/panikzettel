@@ -19,6 +19,10 @@
 \usepackage{tabularx}
 \newcolumntype{P}{>{\raggedright\arraybackslash}X}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{positioning}
+
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\M}{\mathcal{M}}
 
@@ -107,29 +111,32 @@ We use the following notation in this lecture and define the basic automata:
     \end{defi}
 \end{halfboxr}
 
-We can create a DFA from an NFA recognising the same language by using the subset construction.
+We can create a DFA from an NFA recognising the same language by using subset construction.
+Here the idea is to collect the NFA's non-deterministic possibilities as subsets, consisting of all reachable states from the previous subset.
+The initial subset consists of only the initial state. Subset construction on an NFA with $n$ states may in worst case lead to a DFA with $2^n$ states.
 
 \section{Minimisation of NFAs}
 DFAs can be minimised by merging equivalent states.
 The result is a unique minimal DFA that is equivalent to the given DFA.
 This minimisation is efficient (polynomial time).
 
-We want to analyse the problem of state merging on NFAs, i.e.\ taking the quotient of an automaton. This might change the accepted language.
+We want to analyse the problem of state merging on NFAs, i.e.\ taking the quotient of an automaton. Merging states can change the accepted language.
 
 \subsection{Quotient Automaton}
-Let $\mathcal{A}=(Q,\Sigma,q_0,\Delta,F)$ be an NFA and let $\sim$ be some equivalence relation (reflexive, symmetric and transitive) on $Q$.
+Let $\mathcal{A}=(Q,\Sigma,q_0,\Delta,F)$ be an NFA and let $\sim$ be some \emph{equivalence relation} (reflexive, symmetric and transitive) on $Q$.
 For a state $q \in Q$, the equivalence class is defined as $[q]_{\sim}=\Set{p \in Q \mid p \sim q}$.
 
 Now the \emph{quotient automaton} $\mathcal{A}_{/\sim}$ of an NFA with respect to some equivalence relation $\sim$ is easy.
-Simply take the equivalence classes and connect transitions with the classes that contain the start and end states.
+Merge states into equivalence classes (single states) and connect two classes if there exists a transition from a state of one class to a state in the other class.
 A state representing an equivalence class is \emph{initial} or \emph{accepting} if at least one of the states it contains is.
 
-By simple induction, one can show $L(\mathcal{A}) \subseteq L(\mathcal{A}_{/\sim})$.
+By induction one can show that the quotient automaton accepts all words in $L(\mathcal{A})$ and an example can be given where the equivalence relation leads to $L(\mathcal{A}) \subset L(\mathcal{A}_{/\sim})$. Thus in general $L(\mathcal{A}) \subseteq L(\mathcal{A}_{/\sim})$. To assure that the language is not changed consider only relations which merge language equivalent states.
 
+\subsubsection{Quotient on DFAs}
 Viewing a DFA as an NFA and then applying the quotient operation on the NFA, the resulting quotient $\mathcal{A}_{/\sim}$ is a DFA again exactly if $\sim$ is a \emph{congruence relation} w.r.t.\ the transition function $\delta$: $p \sim q \implies \delta(p,a) \sim \delta(q,a) \Forall a \in \Sigma$.
 
 For DFA $\mathcal{A}$ and $q \in Q$, let $\mathcal{A}_q$ be the DFA $\mathcal{A}$ with $q$ as initial state.
-We then define $\sim_\mathcal{A}$ by $q \sim_\mathcal{A} p$ iff $L(\mathcal{A}_q) = L(\mathcal{A}_p)$.
+We then define $\sim_\mathcal{A}$ by $q \sim_\mathcal{A} p$ iff $L(\mathcal{A}_q) = L(\mathcal{A}_p)$ and call states $q$ and $p$ \emph{language equivalent}.
 
 Using this, the quotient $\mathcal{A}_{/\sim_\mathcal{A}}$ is the \emph{minimal DFA accepting the same language as $\mathcal{A}$}.
 The minimal DFA can be computed efficiently in $\mathcal{O}(|\Sigma||Q| \cdot \log |Q|)$.
@@ -151,21 +158,21 @@ The minimal DFA can be computed efficiently in $\mathcal{O}(|\Sigma||Q| \cdot \l
         \begin{enumerate}
             \item  Is $\mathcal{B}$ an NFA equivalent to $\mathcal{A}$ with the least possible number of states?
             \item Are $\mathcal{A}$ and $\mathcal{B}$ equivalent?
-            \item Is $L(A) \neq \Sigma^*$?
+            \item Is $L(A) \neq \Sigma^*$? (minimal NFA has more than one state)
         \end{enumerate}
     \end{defi}
 \end{halfboxr}
 
-The proof in the lecture demonstrates PSPACE-completeness by providing a polynomial-time reduction for every language $D$ in PSPACE to the NFA non-universality problem (problem 3).
+%The proof in the lecture demonstrates PSPACE-completeness by providing a polynomial-time reduction for every language $D$ in PSPACE to the NFA non-universality problem (problem 3).
 
-The proof constructs, from a PSPACE-bounded TM $M$, an NFA.
-The NFA only rejects an accepting computation of $M$ by searching for an error in the input word.
-Because of the space bound, the NFA can compare a position in a configuration with the same position in the successive configuration (by counting the number of steps to get there from the start of the configuration in the state). To be constructed in polynomial time, the NFA guesses where the error occurs.
+%The proof constructs, from a PSPACE-bounded TM $M$, an NFA.
+%The NFA only rejects an accepting computation of $M$ by searching for an error in the input word.
+%Because of the space bound, the NFA can compare a position in a configuration with the same position in the successive configuration (by counting the number of steps to get there from the start of the configuration in the state). To be constructed in polynomial time, the NFA guesses where the error occurs.
 
 \subsection{Bisimulation}
 
 \begin{halfboxl}
-    \emph{Bisimulation} provides an equivalence relation on the states of a NFA.
+    \emph{Bisimulation} provides an equivalence relation on the states of an NFA.
     It is similar to the $\sim_\mathcal{A}$ relation for DFAs.
 
     The bisimulation relation $\approx_\mathcal{A}$ is the biggest relation (w.r.t.\ $\subseteq$) that satisfies the following three conditions:
@@ -191,7 +198,7 @@ Because of the space bound, the NFA can compare a position in a configuration wi
 
         Then the duplicator reacts accordingly from the other state.
 
-        Unless the spoiler creates a configuration $(\Tilde{p},\Tilde{q})$ such that $\Tilde{p} \in F_{\mathcal{A}} \Leftrightarrow \Tilde{q} \not \in F_{\mathcal{B}}$ or the duplicator can't react, the duplicator wins.
+        Unless the spoiler creates a configuration $(\Tilde{p},\Tilde{q})$ such that $\Tilde{p} \in F_{\mathcal{A}} \Leftrightarrow \Tilde{q} \not \in F_{\mathcal{B}}$ or the duplicator doesn't have a transition over the chosen letter, the duplicator wins.
     \end{defi}
 \end{halfboxr}
 
@@ -229,23 +236,20 @@ Because of the space bound, the NFA can compare a position in a configuration wi
 \end{halfboxr}
 
 \subsection{Comparison of Reductions}
-
-The $\approx_\mathcal{A}$-quotient can be bigger than the $\sim_\mathcal{A}$-quotient.
+Thus the $\approx_\mathcal{A}$-quotient can be bigger than the $\sim_\mathcal{A}$-quotient.
 The latter can be bigger than the \emph{optimal quotient} (the smallest quotient NFA that accepts the same language as $\mathcal{A}$).
-But the optimal quotient is not necessarily the smallest equivalent NFA.
-
-\newpage
+But the optimal quotient is not necessarily the smallest equivalent NFA, imagine for example an NFA that does not use its non-determinism: its quotient automaton can not be smaller than the minimal DFA.
 
 \section{Learning Algorithms for DFAs}
-We want to develop an algorithm (\emph{learner}) that constructs a finite automaton for an unknown language $L$.
+We want to develop an algorithm (\emph{learner}) that constructs a \emph{deterministic} finite automaton for an unknown language $L$.
 The learner has some information about $L$.
 Different settings are possible:
 \begin{itemize}
-    \item \emph{Passive}: The learner is given a finite example of words (not) in $L$.
-    \item \emph{Active}: The learner can query the language. It can ask whether $w \in L$ or $L=L(\mathcal{A})$.
+    \item \emph{Passive}: The learner is given a finite set of words (not) in $L$.
+    \item \emph{Active}: The learner can query the language. They can ask whether a word $w$ is in L or can construct an automaton $\mathcal{A}$ and ask whether $L=L(\mathcal{A})$.
 \end{itemize}
 
-\subsection{Construction of Finite Automata from Examples}
+\subsection{Passive: Construction of Finite Automata from Examples}
 
 \begin{halfboxl}
     We first consider the passive learning where we want learners as computable functions $f$ that take a sample $S$ and return a DFA $\mathcal{A} = f(S)$.
@@ -279,7 +283,7 @@ There exists a learner that constructs a smallest DFA that is consistent for eac
 The learner enumerates all DFAs by increasing size and checks for consistency with $S$.
 
 Unfortunately, checking whether there exists a DFA with at most $m$ states that is consistent with a sample $S$ is NP-complete.
-This can be shown using a reduction from the 3-Coloring decision problem.
+This can be shown using a reduction from the 3-Coloring decision problem which translates to the question "Is there a consistent DFA with at most 4 states?", encoding adjacency constraints of the coloring problem in the negative samples and using positive samples to simulate coloring.
 
 \newpage
 \subsection{Regular Positive Negative Inference (RPNI)}
@@ -294,14 +298,14 @@ Thus the automaton is simplified and its language is generalised, i.e.\ $S_+$ is
 \begin{algo}{Regular Positive Negative Inference (RPNI)}
     \textbf{Input}: Sample $S = (S_+, S_-)$.
 
-    \textbf{Output}: DFA $\mathcal{A}(S_+)_{/\sim}$.
+    \textbf{Output}: (partial) DFA $\mathcal{A}(S_+)_{/\sim}$.
     \tcblower
     \begin{enumerate}
         \item Construct $\A(S_+)$ accepting precisely $S_+$.
         (States are prefixes of words in $S_+$)
         \item Sort states $Q_+ = \Set{ u_0, \ldots, u_n }$ from $\A(S_+)$ in \emph{canonical order}:
             \begin{tightcenter}
-                $u < v \iff \abs{u} < \abs{v} \lor (\abs{u} = \abs{v} \land u \text{ is before } w \text{ in lexicographic ordering})$.
+                $u < v \iff \abs{u} < \abs{v} \lor (\abs{u} = \abs{v} \land u \text{ is before } v \text{ in lexicographic ordering})$.
             \end{tightcenter}
         \item Initialise $\sim ~= \Set{ (u,u) | u \in Q_+ }$. \\
             {\footnotesize{}\textcolor{darkgray}{$\A(S_+)_{/\sim}$ looks just like $\A(S_+)$.}}
@@ -310,11 +314,11 @@ Thus the automaton is simplified and its language is generalised, i.e.\ $S_+$ is
             \smallskip
             \begin{itemize}
                 \item If $u_i \not\sim u_j$ for all $u_j \in \Set{ u_0, \ldots, u_{i-1} }$: \\
-                    {\footnotesize{}\textcolor{darkgray}{Only try those states that are distinct from all others; don't merge states again.}}
+                    {\footnotesize{}\textcolor{darkgray}{Skip words that have already been merged with smaller words (in canonical order)}}
                     \smallskip
                     \begin{itemize}
-                        \item Try next $u_k \in Q_+$, until $L(\A(S_+)_{/\sim'}) \cap S_- \neq \emptyset$. \\
-                            {\footnotesize{}\textcolor{darkgray}{Try to merge with the next state (in canonical order) such that no negative example is accepted.}}
+                        \item Try next $u_k \in Q_+$ with $k < i$, until $L(\A(S_+)_{/\sim'}) \cap S_- \neq \emptyset$. \\
+                            {\footnotesize{}\textcolor{darkgray}{Try to merge with the next (smaller) state (in canonical order) such that no negative example is accepted.}}
                             \smallskip
                             \begin{itemize}
                                 \item $\sim'$ = extend $\sim$ to the smallest congruence with $(u_i, u_k)$. \\
@@ -402,7 +406,7 @@ Then $u$ and $v$ are called \emph{compatible}.
 \end{minipage}
 
 After adding escaping words from $R \cdot \Sigma$ until $B$ is closed, we construct the \emph{hypothesis} $\A_B$ and ask the teacher the equivalence query.
-The construction of the automaton is simple: Each of the representatives becomes a state, and each transition from a state $u \in R$ with $a$ goes to the unique $v \in R$ compatible with the word $ua$.
+The construction of the automaton is simple: Each of the representatives becomes a state, and each transition from a state $u \in R$ with $a$ goes to the unique $v \in R$ compatible with the word $ua$. Representative $\varepsilon$ becomes the initial state. Final states are all states with their representative $u \in R$ evaluating to 1, i.e $f(u \cdot \varepsilon) = 1$ in the observation table. 
 
 If the hypothesis is correct, we're done.
 Otherwise, we extend the experiments $E$ based on the counter-example $w = a_1 \cdots a_m$ the teacher provided.
@@ -410,8 +414,8 @@ First, define $r_i = \delta_B^\ast(q_0^B,a_1 \cdots a_i)$ to be the state reache
 Per construction of $\A_B$, this is always a representative: $r_i \in R$.
 
 Now we search for a \emph{breakpoint} $i \in \Set{1, \ldots, m}$ where our hypothesis automaton becomes wrong: $r_{i-1} a_i \cdots a_m \in L \iff r_i a_{i+1} \cdots a_m \notin L$.
-We then add $a_{i+1} \cdots a_m$ to $E$.
-This makes $r_{i-1} a_i$ an escaping word and we must add it to $R$.
+We then add the remaining suffix $a_{i+1} \cdots a_m$ to our experiments $E$.
+This makes $r_{i-1} a_i$ an escaping word and we must add it to $R$, introducing a new state in our hypothesis.
 
 \begin{algo}{$L^\ast$}
     \textbf{Input}: Teacher $T$ for a regular language $L\in \Sigma^\ast$.
@@ -459,7 +463,7 @@ Therefore, we want a logic that is equivalent to automata in expressive power.
         \end{center}
         where
         \begin{itemize}
-            \item $dom(w) = \Set{ 1, \dots, m }$,
+            \item $dom(w) = \Set{ 1, \dots, m }$ are positions,
             \item $S^w$ is the successor relation,
             \item $<^w$ the less relation on $dom(w)$,
             \item $min^w=1$ and $max^w=m$ and
@@ -591,8 +595,9 @@ Note that while words are defined over sentences (no free variables), an inducti
 
 For the translation, assume prenex normal form, that is
 \begin{tightcenter}
-    $Q_1 X_1~ \ldots Q_n X_n~ \eta(X_1, \ldots, X_n)$ with $Q_i \in \Set{ \Forall, \Exists }$.
+    $Q_1 X_1~ \ldots Q_n X_n~ \eta(X_1, \ldots, X_n)$ with $Q_i \in \Set{ \Forall, \Exists }$, $\eta$ is quantifier-free.
 \end{tightcenter}
+In the following we denote bitvectors in $\Sigma \times \Set{0,1}^n$ as $(a, x_1,\ldots,x_n)$.
 
 {\renewcommand{\arraystretch}{1.45}
 \begin{tabularx}{\textwidth}{l|P}
@@ -626,8 +631,7 @@ For the translation, assume prenex normal form, that is
     \end{theo}
 \end{minipage}
 
-This translation yields an automaton with at most $2^{2^{\cdot^{\cdot^{\cdot^2}}}} ${\raise0.35\baselineskip\hbox{$\Big\rbrace \abs{\varphi}$}} states.
-There is no translation that is bounded by a tower of the form $2^{2^{\cdot^{\cdot^{\cdot^{2^{\abs{\varphi}}}}}}}$ {\raise0.4\baselineskip\hbox{$\bigg\rbrace k$}} for a fixed $k$.
+This translation yields an automaton with at most $2^{2^{\cdot^{\cdot^{\cdot^2}}}} ${\raise0.35\baselineskip\hbox{$\Big\rbrace \abs{\varphi}$}} states. The reason for that being that computing the complement of an automaton may require determinization of it first. There is no translation that is bounded by a tower of the form $2^{2^{\cdot^{\cdot^{\cdot^{2^{\abs{\varphi}}}}}}}$ {\raise0.4\baselineskip\hbox{$\bigg\rbrace k$}} for a fixed $k$.
 
 \subsubsection{Consequences of the equivalence theorem}
 \begin{halfboxl}
@@ -672,12 +676,12 @@ Let $L$ be a regular language. The following conditions are equivalent:
 \begin{defi}{Counting Languages}
     A language $L$ is called \emph{counting} if there are $u,v \in \Sigma^*$, such that for all $n \geq 1$:
     \begin{tightcenter}
-        $uv^n \nsim uv^{n+1}$
+        $uv^n \nsim_L uv^{n+1}$
     \end{tightcenter}
 
     Correspondingly $L$ is called \emph{non-counting} if for all $u,v \in \Sigma^*$ there is $n \geq 1$:
     \begin{tightcenter}
-        $uv^n \sim uv^{n+1}$
+        $uv^n \sim_L uv^{n+1}$
     \end{tightcenter}
 \end{defi}
 
@@ -688,8 +692,8 @@ The counting condition exactly defines the difference between FO-definable and M
 \begin{halfboxl}
     A DFA defines a function from finite words to states: $\delta^* : \Sigma^* \rightarrow Q$.
     This computation of $\delta^*(wa)$ is based on the computation of $\delta^*(w)$ and $a$.
-    The function $\delta^*$ is not compositional: $\delta^*(ww')$ cannot be computed from $\delta^*(w)$ and $\delta^*(w')$.
-    So, the language accepted by monoids can be seen as a form of automata with fully compositional behaviour.
+    The function $\delta^*$ is not \emph{compositional}: $\delta^*(ww')$ cannot be computed from $\delta^*(w)$ and $\delta^*(w')$.
+    Thus we introduce the language accepted by monoids, which can be seen as a form of automata with fully compositional behaviour.
 
     Let $\mathcal{M}=(M,\cdot,1)$ be a monoid, $P \subseteq M$, and $h: \Sigma^* \rightarrow M$ be a homomorphism from the free monoid ($(\Sigma^*,\cdot, \varepsilon)$) into $\mathcal{M}$.
 
@@ -715,7 +719,7 @@ The counting condition exactly defines the difference between FO-definable and M
 
         A \emph{monoid homomorphism} is a mapping $h : M \rightarrow N$ such that
         \begin{enumerate}
-            \item $h(x \cdot_M y)=h(x) \cdot_N h(y)$
+            \item $\forall x,y \in M: h(x \cdot_M y)=h(x) \cdot_N h(y)$
             \item $h(1_M)=1_N$
         \end{enumerate}
     \end{defi}
@@ -733,7 +737,7 @@ The counting condition exactly defines the difference between FO-definable and M
         \textsc{Monoids $\to$ Automata}
     \end{tightcenter}
 
-    Let $L=L(\M,P,h)$ with $\M=(M,\cdot,1)$. View $M$ as the states of an automaton, $P$ as final states, $1$ as initial states, and use $h$ and $\cdot$ to define the transtions: $\delta(m,a)=m \cdot h(a)$.
+    Let $L=L(\M,P,h)$ with $\M=(M,\cdot,1)$. View $M$ as the states of an automaton, $P$ as final states, the neutral element $1$ as the initial state and use $h$ and $\cdot$ to define the transitions: $\delta(m,a)=m \cdot h(a)$, where $a \in \Sigma$ and $m \in M$.
 
     For the resulting DFA $\A=(M,\Sigma,1,\delta,P)$ we have $\delta^*(w)=h(w)$ and thus $L(\A)=L(\M,P,h)$.
 \end{halfboxl}%
@@ -751,9 +755,9 @@ The counting condition exactly defines the difference between FO-definable and M
         \end{tightcenter}
 
         \small{}
-        For $u \in \Sigma^\ast$, the transformation on $Q$ by $u$:
+        For $u \in \Sigma^\ast$, the transformation on $Q$ by $u$ is
         \begin{tightcenter}
-            $u^\A : Q \to Q,~ u^\A(q) \mapsto \delta^\ast(q,u)$
+            $u^\A : Q \to Q,~ u^\A(q) \mapsto \delta^\ast(q,u)$.
         \end{tightcenter}
     \end{defi}
 \end{halfboxr}
@@ -1055,12 +1059,12 @@ The number of ${\sim_T}$-equivalence classes is called the \emph{index} of $T$. 
 
 As in the word-case, we can use this equivalence to minimise DTA. Unlike the word case, unreachable states have to be purged first to avoid them influencing refinement.
 
-In the refinement step, we separate $p$ from $p'$ if there are previously separated states $q$ and $q'$, a letter $a \in \Sigma_n$, and a sequence $p_1,\ldots, p_{i-1}, p_{i+1}, \ldots, p_{n}$ such that $\delta(p_1,\ldots, p_{i-1} ,p, p_{i+1}, \ldots p_n, a) = q$ and $\delta(p_1,\ldots, p_{i-1} ,p', p_{i+1}, \ldots, p_n, a) = q'$.
+In the refinement step, we separate $p$ from $p'$ if there are previously separated states $q$ and $q'$, a letter $a \in \Sigma_n$, and a sequence $p_1,\ldots, p_{i-1}, p_{i+1}, \ldots, p_{n}$ such that $\delta(p_1,\ldots, p_{i-1} ,p, p_{i+1}, \ldots p_n, a) = q$ and $\delta(p_1,\ldots, p_{i-1} ,p', p_{i+1}, \ldots, p_n, a) = q'$. Initially separate all pairs $(q,q')$ with $(q \in F \Leftrightarrow q' \notin F)$.
 
 \subsection{Unranked Tree Automata}
 
 \begin{halfboxl}
-    \emph{Unranked tree automta} accept \emph{unranked trees}.
+    \emph{Unranked tree automata} accept \emph{unranked trees}.
 
     A \emph{nondeterministic bottom-up automaton for unranked trees} (NUTA) has a state set $Q$, a transition relation $\Delta$ and a set of final states $F$.
 
@@ -1117,7 +1121,7 @@ In the refinement step, we separate $p$ from $p'$ if there are previously separa
 We call a NUTA \emph{normalised} if for each $a \in \Sigma$ and $q \in Q$ there is a unique transition $(L,a,q)$.
 Each NUTA can be trivially normalised, since regular languages with $\emptyset$ and $\cup$ form a monoid.
 
-We further call a NUTA \emph{deterministic} (also abbreviated as DUTA), if for each two transitions $(L,a,q_1)$, $(L_2,a,q_2)$ either $q_1 = q_2$ or $L_1 \cap L_2 = \emptyset$.
+We further call a NUTA \emph{deterministic} (also abbreviated as DUTA), if for each two transitions $(L_1,a,q_1)$, $(L_2,a,q_2)$ either $q_1 = q_2$ or $L_1 \cap L_2 = \emptyset$.
 
 We use the \emph{subset construction}.
 From a normalised NUTA $\A$, we build a DUTA $(2^Q, \Sigma, \Delta', F')$.
@@ -1153,9 +1157,9 @@ The inclusion problem for NUTAs is decidable in exponential time and the inclusi
 \begin{defi}{Logic on Ranked Trees}
     Logic on ranked trees over an alphabet $\Sigma = \Sigma_0 \cup \ldots \cup \Sigma_n$ uses a signature with a unary relation $P_a$ for each $a \in \Sigma$ and binary relations $S_1, \ldots, S_n$.
 
-    Then $P_ax$ represents ``at $x$, the symbol is $a$'' and $S_ixy$ represents ``$y$ is the $i$-th successor of $x$''.
+    Then $P_a(x)$ represents ``at $x$, the symbol is $a$'' and $S_i(x,y)$ represents ``$y$ is the $i$-th successor of $x$''.
 
-    From these, one can additionaly define shorthands $Sxy$ for ``$x$ is the parent of $y$'' and $x \sqsubseteq y$ for ``$x$ is an ancestor of $y$''.
+    From these, one can additionaly define shorthands $S(x,y)$ for ``$x$ is the parent of $y$'' and $x \sqsubseteq y$ for ``$x$ is an ancestor of $y$''.
 
     A tree $t = (\dom_t, \val_t)$ is then represented as a structure $\mathfrak{A}$ with $A = \dom_t$,\\ $P_a^{\mathfrak{A}} = \Set{x \in \dom_t | \val_t(x) = a}$, $S_i^{\mathfrak{A}} = \Set{v.i | v \in \nat^\ast, v.i \in \dom_t}$.
 \end{defi}
@@ -1324,16 +1328,67 @@ Thus the simple reachability problem for $1$-register machines is decidable.
 The simple reachability problem for $2$-register machines is however undecidable:
 
 \begin{proof}
-One can reduce the simple reachability problem for $n$-register machines to that for $2$-register machines and the simple reachability problem for $n$-PDS to that for $n+1$-register machines.
+One can reduce the simple reachability problem for $n$-register machines to that for $2$-register machines and the simple reachability problem for $n$-PDS to that for $n+1$-register machines, as illustrated below.
+
+$n$-PDS $\to$ $n+1$-register: \\
+
+\begin{tightcenter}
+\begin{tikzpicture}[stack/.style={rectangle split, rectangle split parts=#1,draw}]
+
+% two stacks
+\node (pds_0)[stack=3]  {
+\nodepart{one}4
+\nodepart{two}2
+\nodepart{three}1
+};
+\node (pds_1)[label=below:2 stacks, stack=3] at (0.5, 0){
+\nodepart{one}8
+\nodepart{two}4
+\nodepart{three}2
+};
+
+% 3 registers
+\node (reg) [label=below:3 registers, draw,rectangle split, rectangle split horizontal,rectangle split parts=3, right = of pds_1]{
+\nodepart{one}124
+\nodepart{two}248
+\nodepart{three}\ 0 \
+};
+
+\draw [->] (pds_1) edge (reg);
+\end{tikzpicture}
+\captionof{figure}{From 2-PDS to 3-register}
+\end{tightcenter}
+
+Each stack is encoded as a decimal number where the top element of the stack is represent by the least significant digit. This way the top element can be easily identified using the modulo 10 operation. Its removal corresponds to a division by 10, pushing a number $k$ to the stack corresponds to multiplication by 10 followed by an addition of $k$. The $n +1$ register is needed since multiplication and division require an auxiliary register. If the stack alphabet is different from $\{1,\ldots,9\}$ a different base is needed.
 
 $n$-register $\to$ $2$-register:\\
-The first register holds the encoding of the $n$ registers of the original machine by powers of prime numbers. The second register is used as a helper to compute operations such as multiplication and division, and to hold the remainder of a division to check an encoded register for zero.
+The first register holds the encoding of the $n$ registers of the original machine as a product of the first $n$ prime numbers, with the register values stored as their exponents: \\
 
-$n$-PDS $\to$ $n+1$-register:\\
-The first $n$ registers hold encodings of the stack contents, by encoding words over a stack alphabet with $m$ letters as base-$m+1$ numbers with the digits corresponding to symbols on the stack (with the least significant digit on top).
-%\todo[inline]{design?}
+\begin{tightcenter}
+\begin{tikzpicture}[stack/.style={rectangle split, rectangle split parts=#1,draw}]
+
+% 3 registers
+\node (reg_0) [label=below:5 registers, draw,rectangle split, rectangle split horizontal,rectangle split parts=5]{
+\nodepart{one}\ 4 \
+\nodepart{two}\ 3 \
+\nodepart{three}\ 2 \
+\nodepart{four}\ 1 \
+\nodepart{five}\ 0 \
+};
+
+% two registers
+\node (reg_1) [label=below:2 registers, draw,rectangle split, rectangle split horizontal,rectangle split parts=2, right = of reg_0]{
+\nodepart{one}$2^4 \cdot 3^3 \cdot 5^2 \cdot 7^1 \cdot 11^0$
+\nodepart{two}\ 0 \
+};
+
+\draw [->] (reg_0) edge (reg_1);
+\end{tikzpicture}
+\captionof{figure}{From 5-register to 2-register}
+\end{tightcenter}
+
+The second register is again just a helper register for multiplication, division and storing division remainder. Checking whether register $i \in [1\ldots n]$ is equal to 0 corresponds to dividing our encoding by the ith prime number. If the division has a remainder the ith register value must have been 0. Indeed the encoding in our example $(2^4 \cdot 3^3 \cdot 5^2 \cdot 7^1 \cdot 11^0)$ is dividable by all prime numbers up to 7 but has a remainder of 1 when divided by 11.
 \end{proof}
-
 \subsection{Data Words}
 \begin{defi}{Data Words}
     A \emph{data word} is a word $w \in \Sigma^\ast$, $\abs{w} = n$ together with \emph{data} for each position, represented by a function $d : \Set{1,\ldots,n} \to \nat$.
@@ -1350,11 +1405,41 @@ In addition to the usual parts of FO/MSO over words, we add relations
 for terms $x,y$.
 
 Satisfiability for FO-sentences modulo data-words (given a sentence $\varphi$, does there exist a data-word $w,d$ satisfying it?) is undecidable.
-\begin{proof} \ \\
-    We can construct an FO-sentence describing valid, terminating computations of a $2$-register machine. Thus we reduce the halting problem of $2$-register machines to the satisfiability of FO-sentences over data-words.
+\begin{proof} We can construct an FO-sentence describing valid, terminating computations of a $2$-register machine. Thus we reduce the halting problem of $2$-register machines to the satisfiability of FO-sentences over data-words.
 
-    This construction uses as an alphabet the line-numbers of the register machine's program, together with an extra symbol $\#$. Then computations can be described as a sequence of line numbers with $\#$ following each line number, and the contents of the two registers as the data-part of the word.
-    By checking that the computations starts at the beginning, uses a valid step between any two letters, and contains the line number of the $stop$-instruction, we axiomatize valid computations of the given register machine.
+    This construction uses as an alphabet the line numbers of the register machine's program, together with a \emph{padding symbol} $\#$. A word describes the sequence of line numbers in the order they were visited with $\#$ following each line number. Pairs of data cells represent the two register values: \\
+    
+\begin{tightcenter}
+\begin{tikzpicture}[stack/.style={ text width=3cm,rectangle split, rectangle split parts=#1,draw}]
+
+% word
+\node (word) [label=left: $line number$, draw,rectangle split, rectangle split horizontal,rectangle split parts=7, text width=1cm] {
+\nodepart{one}\ $1$ \ 
+\nodepart{two}\ $\#$ \ 
+\nodepart{three}\ $j_1$ \ 
+\nodepart{four}\ $\#$ \ 
+\nodepart{five}\ $j_2$ \ 
+\nodepart{six}\ $\#$ \ 
+\nodepart{seven}\ldots
+};
+
+% data
+\node (data) [label=left: $registers$, draw,rectangle split, rectangle split horizontal,rectangle split parts=7, text width=1cm] at (0, -0.8){
+\nodepart{one}\ $0$ \ 
+\nodepart{two}\ $0$ \ 
+\nodepart{three}\ $m_1$ \ 
+\nodepart{four}\ $n_1$ \ 
+\nodepart{five}\ $m_2$ \ 
+\nodepart{six}\ $n_2$ \ 
+\nodepart{seven}\ldots
+};
+
+\end{tikzpicture}
+
+\captionof{figure}{Potentially valid data-word for a 2-register machine}
+\end{tightcenter}
+
+    Our conjunction of FO-formulas asserts that we are initially in line 1 and both registers are equal to 0. Furthermore the word contains the line number of the $stop$-instruction at some point. The register machine's instructions are translated to FO-formula so that line numbers and register values of the data word change as expected from the simulated instructions: We are axiomatizing valid computations/runs of the given register machine.
 \end{proof}
 
 \section{Communication via FIFO Channels}
@@ -1374,15 +1459,21 @@ One can simulate the run of a turing machine, using the queue to hold the conten
 \begin{defi}{Message Passing Automaton}
     A \emph{message passing automaton} is a structure $(CN, \Gamma, \mathcal{A}_1, \ldots, \mathcal{A}_n)$ with
     \begin{itemize}[leftmargin=1.0em]
-        \item set of channels $CN \subseteq \Set{1,\ldots,n}^2$
+        \item set of channels $CN \subseteq \Set{1,\ldots,n}^2$ \\
+        {\footnotesize{}\textcolor{darkgray}{$(i, j)$ is the channel $\A_i$ \emph{writes} and $A_j$ \emph{reads} from}}
+            \smallskip
         \item message alphabet $\Gamma$
         \item automata $\mathcal{A}_i = (Q_i, \Sigma_i, q_{0i}, \Delta_i, F_i)$ with transitions of the form
         \begin{itemize}[leftmargin=1.0em]
             \item $(p, a, q)$ with $p,q \in Q_i$, $a \in \Sigma_i$
             \item $(p, m!j, q)$ with $p,q \in Q_i$, $m \in \Gamma$ and $(i,j) \in CN$   \\
-            (Write $m$ to channel $(i,j)$)
+            (Write $m$ to channel $(i,j)$) \\
+        {\footnotesize{}\textcolor{darkgray}{Automata write from the left.}}
+            \smallskip
             \item $(p, m?j, q)$ with $p,q \in Q_i$, $m \in \Gamma$ and $(j,i) \in CN$   \\
-            (If $m$ is the first letter of channel $(j,i)$, remove it and go to state $q$)
+            (If $m$ is the first letter of channel $(j,i)$, remove it and go to state $q$) \\
+        {\footnotesize{}\textcolor{darkgray}{Automata read from the right.}}
+            \smallskip
         \end{itemize}
     \end{itemize}
     Configurations for message passing automata contain the states of each automaton as well as the contents of each channel.
