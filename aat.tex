@@ -31,7 +31,7 @@
 \newcommand{\val}{\mathrm{val}}
 
 \title{Advanced Automata Theory Panikzettel}
-\author{Caspar Zecha, Tobias Polock, Philipp Schröer}
+\author{Caspar Zecha, Tobias Polock,\\ Philipp Schröer, Julian Schakib-Ekbatan}
 
 \begin{document}
 
@@ -406,7 +406,7 @@ Then $u$ and $v$ are called \emph{compatible}.
 \end{minipage}
 
 After adding escaping words from $R \cdot \Sigma$ until $B$ is closed, we construct the \emph{hypothesis} $\A_B$ and ask the teacher the equivalence query.
-The construction of the automaton is simple: Each of the representatives becomes a state, and each transition from a state $u \in R$ with $a$ goes to the unique $v \in R$ compatible with the word $ua$. Representative $\varepsilon$ becomes the initial state. Final states are all states with their representative $u \in R$ evaluating to 1, i.e $f(u \cdot \varepsilon) = 1$ in the observation table. 
+The construction of the automaton is simple: Each of the representatives becomes a state, and each transition from a state $u \in R$ with $a$ goes to the unique $v \in R$ compatible with the word $ua$. Representative $\varepsilon$ becomes the initial state. Final states are all states with their representative $u \in R$ evaluating to 1, i.e $f(u \cdot \varepsilon) = 1$ in the observation table.
 
 If the hypothesis is correct, we're done.
 Otherwise, we extend the experiments $E$ based on the counter-example $w = a_1 \cdots a_m$ the teacher provided.
@@ -1408,29 +1408,29 @@ Satisfiability for FO-sentences modulo data-words (given a sentence $\varphi$, d
 \begin{proof} We can construct an FO-sentence describing valid, terminating computations of a $2$-register machine. Thus we reduce the halting problem of $2$-register machines to the satisfiability of FO-sentences over data-words.
 
     This construction uses as an alphabet the line numbers of the register machine's program, together with a \emph{padding symbol} $\#$. A word describes the sequence of line numbers in the order they were visited with $\#$ following each line number. Pairs of data cells represent the two register values: \\
-    
+
 \begin{tightcenter}
 \begin{tikzpicture}[stack/.style={ text width=3cm,rectangle split, rectangle split parts=#1,draw}]
 
 % word
 \node (word) [label=left: $line number$, draw,rectangle split, rectangle split horizontal,rectangle split parts=7, text width=1cm] {
-\nodepart{one}\ $1$ \ 
-\nodepart{two}\ $\#$ \ 
-\nodepart{three}\ $j_1$ \ 
-\nodepart{four}\ $\#$ \ 
-\nodepart{five}\ $j_2$ \ 
-\nodepart{six}\ $\#$ \ 
+\nodepart{one}\ $1$ \
+\nodepart{two}\ $\#$ \
+\nodepart{three}\ $j_1$ \
+\nodepart{four}\ $\#$ \
+\nodepart{five}\ $j_2$ \
+\nodepart{six}\ $\#$ \
 \nodepart{seven}\ldots
 };
 
 % data
 \node (data) [label=left: $registers$, draw,rectangle split, rectangle split horizontal,rectangle split parts=7, text width=1cm] at (0, -0.8){
-\nodepart{one}\ $0$ \ 
-\nodepart{two}\ $0$ \ 
-\nodepart{three}\ $m_1$ \ 
-\nodepart{four}\ $n_1$ \ 
-\nodepart{five}\ $m_2$ \ 
-\nodepart{six}\ $n_2$ \ 
+\nodepart{one}\ $0$ \
+\nodepart{two}\ $0$ \
+\nodepart{three}\ $m_1$ \
+\nodepart{four}\ $n_1$ \
+\nodepart{five}\ $m_2$ \
+\nodepart{six}\ $n_2$ \
 \nodepart{seven}\ldots
 };
 
