@@ -165,7 +165,7 @@ There is an upper bound of $m$ bins.
 \begin{linearprogram}
   \lpVars{x_{ij} \in \Set{0,1}}{\Forall i \in \overline{n},~ j \in \overline{m}}{$x_{ij} = 1$ iff item $i$ is in bin $j$}
   \lpMoreVars{y_j \in \Set{0,1}}{\Forall j \in \overline{m}}{$y_j = 1$ iff bin j is used}
-  \lpMin{\sum_{j \in \overline{m}} y_i}
+  \lpMin{\sum_{j \in \overline{m}} y_j}
   \lpWhere{\sum_{j \in \overline{m}} x_{ij} = 1}{\Forall i \in \overline{n}}{every item $i$ must be packed}
   \lpConstraint{\sum_{i \in \overline{n}} a_i \cdot x_{ij} \leq b \cdot y_j}{\Forall j \in \overline{m}}{capacity for each bin}
 \end{linearprogram}
