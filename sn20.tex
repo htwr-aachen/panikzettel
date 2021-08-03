@@ -1042,7 +1042,7 @@ The isomorphic realizations are structurally indistinguishable from each other.
 There are 16 isomorphic classes of triangles in directed networks called \textit{motifs}.
 A triangle is called closed if there exists at least one edge between each pair of nodes.
 
-\begin{defi}{Triadic Consensus}
+\begin{defi}{Triadic Census}
 To identify each of the isomorphic classes they can be labeled by four characters:
 \begin{itemize}
 	\item Number of mutual dyads,
@@ -1050,7 +1050,7 @@ To identify each of the isomorphic classes they can be labeled by four character
 	\item Number of null dyads,
 	\item Optional Character: \textit{D} (for down), \textit{U} (for up), \textit{T} (for transitive), \textit{C} (for cyclic).
 \end{itemize}
-The triadic consensus is now a tuple $ T \in \mathbb{N}_0^{16} $ counting the occurrence of each motif.
+The triadic census is now a tuple $ T \in \mathbb{N}_0^{16} $ counting the occurrence of each motif.
 \end{defi}
 
 The transition from an ''open'' triangle to a ''closed'' triangle is called \textbf{triadic closure}.
@@ -1135,7 +1135,7 @@ where $ i_0 $ is the fraction of infected population at time step 0.
 The \textbf{characteristic time} $ \tau $ is the time required to reach $ \frac{1}{e} \approx 36.8\% $ of the susceptible individuals.
 For the SI-model it is
 \begin{align*}
-	\tau = \frac{1}{\beta \langle k \rangle}.
+	\tau = \frac{\langle k \rangle}{\beta (\langle k^2 \rangle - \langle k \rangle)}.
 \end{align*}
 
 \subsubsection{SIS-Model} \label{sec:sis_model}
