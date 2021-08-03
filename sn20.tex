@@ -191,7 +191,7 @@ Let a graph $ G = (N,L) $.
 	\begin{align*}
 		C_n = \frac{2 e_n}{k_n (k_n - 1)}
 	\end{align*}
-	where $ k_n $ is the degree of node $ n $ and $ e_k $ is the number of links between the neighbors of node~$ n $.
+	where $ k_n $ is the degree of node $ n $ and $ e_n $ is the number of links between the neighbors of node~$ n $.
 \end{defi}
 
 \subsection{Small-World Problem}\label{sec:small_world_problem}
@@ -211,7 +211,7 @@ Given a graph $ G = (N,L) $.
 		\item A graph $ G = (N,L) $ is called \emph{connected graph} if there is one connected component with $ N = C $.
 		\item The largest component is called \emph{giant component}.
 		\item Components that are not the giant component are called \emph{isolates}.
-		\item A link $ l \in L $ is called \emph{bridge} if a graph becomes disconnected by erasing it.
+		\item A link $ l \in L $ is called \emph{bridge} if the number of connected components increases by erasing it.
 	\end{itemize}
 \end{defi}
 
@@ -660,7 +660,7 @@ Given an undirected network $ G = (V,E) $.
 	\end{cases} $ is the heaviside step function, $ A $ is the adjacency matrix of graph $ G $ and $ k_i $ is the degree of node $ i $.
 
 	\item Create a community for each node itself.
-	\item Merge communities with high similarity.
+	\item Merge communities with highest average similarity.
 	\item Repeat step 1 for the new communities and merge them again (step 2 \& 3) until all nodes form a single community.
 	\item Calculating a dendrogram visualizes the order in which the nodes are assigned to specific communities.
 	To identify the communities we must cut	the dendrogram.
@@ -1164,7 +1164,7 @@ where $ s $ is the fraction of susceptible and $ i $ the fraction of infected po
 
 The fraction of infected population $ i $ after $ t $ time steps is given with
 \begin{align*}
-	i = \left(1 - \frac{\mu}{\beta \langle k \rangle}\right) \frac{C e^{(\beta \langle k \rangle - \mu}) t}{1 + C e^{(\beta \langle k \rangle - \mu) t}}
+	i = \left(1 - \frac{\mu}{\beta \langle k \rangle}\right) \frac{C e^{(\beta \langle k \rangle - \mu) t}}{1 + C e^{(\beta \langle k \rangle - \mu) t}}
 \end{align*}
 where the initial condition $ i_0 $ gives $ C = \frac{i_0}{(1 - i_0 - \frac{\mu}{\beta \langle k \rangle})} $.
 
@@ -1285,7 +1285,7 @@ The equilibrium price for consumer $ z $ is now given with
 % TODO Explain equilibrium price
 
 The previous analysis implicitly assumes that the network is homogeneous since it depends on the fraction of all users of a good.
-Actually, the neighbors of an individual a relevant.
+Actually, the neighbors of an individual are relevant.
 
 There are two alternatives $ A $ and $ B $ and each individual can adopt either $ A $ or $ B $.
 If two nodes linked by an edge both adopt $ A $ they get a payoff $ a > 0 $ and if both adopt $ B $ they get a payoff $ b > 0 $.
