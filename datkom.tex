@@ -16,6 +16,18 @@
 \usepackage{tikz}
 \usepackage{todonotes}
 \usepackage{textcomp}
+
+\usepackage{tcolorbox}
+
+\usepackage{iflang}
+\newcommand{\PanikzettelWarnung}{\IfLanguageName{ngerman}{Warnung}{Warning}}
+
+\newenvironment{warning}[1]{%
+\setlist{nosep,leftmargin=*}%
+\begin{tcolorbox}[colback=red!5!white, colframe=red!75!black, title={\sffamily \PanikzettelWarnung: #1}]
+}{%
+\end{tcolorbox}}
+
 \usepackage[binary-units=true,retain-unity-mantissa=false]{siunitx}
 \usepackage{pgfplots}
 \pgfplotsset{width=10cm,compat=1.9,tick label style={color=white}, every axis x label/.style={
@@ -54,8 +66,8 @@
 \newcommand\pro{\item[$+$]}
 \newcommand\con{\item[$-$]}
 
-\title{Datenkommunikation und Sicherheit Panikzettel}
-\author{der Dude\footnote{Pseudonyme gehören anonymen Autoren, die anonym bleiben wollen.}, Luca Oeljeklaus, Philipp Schröer}
+\title{Datenkommunikation (und Sicherheit) Panikzettel}
+\author{der Dude\footnote{Pseudonyme gehören anonymen Autoren, die anonym bleiben wollen.}, Luca Oeljeklaus, Philipp Schröer, Jonas Schneider}
 \date{\today}
 
 \begin{document}
@@ -908,7 +920,13 @@ Verbesserung von Fast Retransmit. Wenn das dritte \lstinline{DUP-ACK} empfangen 
 
 UDP-Pakete haben nur einen \SI{8}{\byte} großen Header: Sie enthalten Quell- und Zielports, die Nachrichtenlänge und eine (optionale) Checksumme. Mehr gibt es zu UDP eigentlich nicht zu sagen.
 
-\section{Sicherheit}
+\section{Sicherheit (Alte Prüfungsordnung)}
+
+\begin{warning}{Neue Bachelor-Prüfungsordnung}
+    In der neuen Bachelor-Prüfungsordnung wird dieses Kapitel nicht mehr behandelt. Stattdessen wurden die Inhalte in die Vorlesung IT-Security verschoben.
+    Da eventuell manche noch die alte Prüfungsordnung haben, ist dieses Kapitel hier noch enthalten.
+\end{warning}
+
 
 Um Sicherheit von Daten und Infrastruktur zu gewährleisten, bedient man sich einer Menge an Werkzeugen: \emph{Firewalls}, \emph{Intrusion Detection}, \emph{Authentifizierung}, \emph{Verschlüsselung} und \emph{Integritätsprüfung},
 
