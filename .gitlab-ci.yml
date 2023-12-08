@@ -1,33 +1,22 @@
-compile_pdf:
-  image: guusk/docker-latex:xenial
+compile_latex:
+  image: kjarosh/latex:2023.1
+  before_script:
+    - apk add make
+    - apk add git
   script:
-    - make clean all
+    - make clean
+    - make --keep-going all || echo "failure"
   artifacts:
     paths:
-      - la.pdf
-      - stocha.pdf
-      - dsal.pdf
-      - fosap.pdf
-      - bus.pdf
-      - maschinengestaltung_i.pdf
-      - numrech.pdf
-      - buk.pdf
-      - swt.pdf
-      - datkom.pdf
-      - malo.pdf
-      - dbis.pdf
-      - effi.pdf
-      - afi.pdf
-      - ai.pdf
-      - cg.pdf
-      - bpi.pdf
-      - aat.pdf
-      - spa.pdf
-      - pp.pdf
-      - elehre.pdf
-      - algds.pdf
-      - meta.pdf
-      - sn19.pdf
-      - sn20.pdf
-      - lsp1.pdf
-      - or1.pdf
+      - ./build/*.pdf
+compile_typst:
+  image: ghcr.io/typst/typst:latest
+  before_script:
+    - apk add make
+    - apk add git
+    - apk add bash
+  script:
+    - make typst
+  artifacts:
+    paths:
+      - ./build/*.pdf

@@ -260,3 +260,6 @@ TSWLatexianTemp*
 
 # standalone packages
 *.sta
+
+build/
+gitlab-ci-local/

@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir -p build
+OUTPUT_FILE=$(echo $1 | sed "s/typ/pdf/" | cut -c3-)
+echo "compiling... $1 to ./build/$OUTPUT_FILE"
+typst compile -f pdf --root=. "$1" "./build/$OUTPUT_FILE"
