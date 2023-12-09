@@ -1,4 +1,9 @@
-compile_latex:
+stages:
+  - build
+  - deploy
+
+build:latex:
+  stage: build
   image: kjarosh/latex:2023.1
   before_script:
     - apk add make
@@ -7,9 +12,11 @@ compile_latex:
     - make clean
     - make --keep-going all || echo "failure"
   artifacts:
+    name: latex-artifacts
     paths:
       - ./build/*.pdf
-compile_typst:
+build:typst:
+  stage: build
   image: ghcr.io/typst/typst:latest
   before_script:
     - apk add make
@@ -18,5 +25,31 @@ compile_typst:
   script:
     - make typst
   artifacts:
+    name: typst-artifacts
     paths:
       - ./build/*.pdf
+
+deploy:
+  stage: deploy
+  only: 
+   - master
+  dependencies:
+    - build:latex
+    - build:typst
+  image: docker:latest
+  script: 
+    # Install CA certs, openssl to https downloads, python for gcloud sdk
+    - apk add --update make ca-certificates openssl python
+    - update-ca-certificates
+
+    # Download and install Google Cloud SDK
+    - wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
+    - tar zxvf google-cloud-sdk.tar.gz && ./google-cloud-sdk/install.sh --usage-reporting=false --path-update=true
+    - PATH="google-cloud-sdk/bin:${PATH}"
+    - gcloud --quiet components update
+
+    - echo $GCP_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+
+    - gsutil -m cp -R build/* $GCP_BUCKET_URL
