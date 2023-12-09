@@ -262,4 +262,4 @@ TSWLatexianTemp*
 *.sta
 
 build/
-gitlab-ci-local/
+.gitlab-ci-local/

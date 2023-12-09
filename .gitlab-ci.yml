@@ -39,7 +39,7 @@ deploy:
   image: docker:latest
   script: 
     # Install CA certs, openssl to https downloads, python for gcloud sdk
-    - apk add --update make ca-certificates openssl python
+    - apk add --update make ca-certificates openssl python3
     - update-ca-certificates
 
     # Download and install Google Cloud SDK
