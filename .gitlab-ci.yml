@@ -52,4 +52,6 @@ deploy:
     - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
 
+    - cp naming.json ./build/naming.json
+
     - gsutil -m cp -R build/* $GCP_BUCKET_URL
