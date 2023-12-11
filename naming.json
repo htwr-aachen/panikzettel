@@ -1,30 +1,132 @@
 {
-  "aat.pdf": "Advanced Automata Theory",
-  "afi.pdf": "Analysis für Informatiker (AFI)",
-  "ai.pdf": "Introduction to Artifical Intelligence",
-  "algds.pdf": "Algorithmic Foundations of Data Science",
-  "bpi.pdf": "Business Process Intelligence",
-  "buk.pdf": "Berechenbarkeit und Komplexität",
-  "bus.pdf": "Betriebssyteme und Systemsoftware",
-  "cg.pdf": "Basic Techniques in Computer Graphics",
-  "datkom.pdf": "Datenkommunikation",
-  "dbis.pdf": "Datenbanken und Informationssysteme",
-  "dsal.pdf": "Datenstrukturen und Algorithmen",
-  "effi.pdf": "Effiziente Algorithmen",
-  "elehre.pdf": "Entscheidungslehre",
-  "fosap.pdf": "Formale Systeme, Automaten und Prozesse",
-  "la.pdf": "Lineare Algebra für Informatiker",
-  "lsp1.pdf": "Logistics Systems Planning 1",
-  "malo.pdf": "Mathematische Logik 1",
-  "maschinengestaltung_i.pdf": "Maschinengestaltung 1",
-  "meta.pdf": "Latex Templates für Panikzettel (Und Abgaben)",
-  "numrech.pdf": "Numerisches Rechnen",
-  "or1.pdf": "Operations Research 1 (Quantitative Methoden)",
-  "pp.pdf": "Probabilistic Programming",
-  "sn19.pdf": "Social Networks 2019",
-  "sn20.pdf": "Social Networks 2020",
-  "spa.pdf": "Static Program Analysis",
-  "stocha.pdf": "Stochastik",
-  "swt.pdf": "Softwaretechnik",
-  "test.pdf": "Typst test"
+  "aat.pdf": {
+    "name": "Advanced Automata Theory",
+    "semester": 3,
+    "type": "wpf"
+  },
+  "afi.pdf": {
+    "name": "Analysis für Informatiker (AFI)",
+    "semester": 1,
+    "type": "pf"
+  },
+  "ai.pdf": {
+    "name": "Introduction to Artifical Intelligence",
+    "semester": 3,
+    "type": "wpf"
+  },
+  "algds.pdf": {
+    "name": "Algorithmic Foundations of Data Science",
+    "semester": 3,
+    "type": "wpf"
+  },
+  "bpi.pdf": {
+    "name": "Business Process Intelligence",
+    "semester": 3,
+    "type": "af"
+  },
+  "buk.pdf": {
+    "name": "Berechenbarkeit und Komplexität",
+    "semester": 3,
+    "type": "pf"
+  },
+  "bus.pdf": {
+    "name": "Betriebssyteme und Systemsoftware",
+    "semester": 2,
+    "type": "pf"
+  },
+  "cg.pdf": {
+    "name": "Basic Techniques in Computer Graphics",
+    "semester": 3,
+    "type": "wpf"
+  },
+  "datkom.pdf": {
+    "name": "Datenkommunikation",
+    "semester": 3,
+    "type": "pf"
+  },
+  "dbis.pdf": {
+    "name": "Datenbanken und Informationssysteme",
+    "semester": 4,
+    "type": "pf"
+  },
+  "dsal.pdf": {
+    "name": "Datenstrukturen und Algorithmen",
+    "semester": 2,
+    "type": "pf"
+  },
+  "effi.pdf": {
+    "name": "Effiziente Algorithmen",
+    "semester": 3,
+    "type": "wpf"
+  },
+  "elehre.pdf": {
+    "name": "Entscheidungslehre",
+    "semester": 3,
+    "type": "af"
+  },
+  "fosap.pdf": {
+    "name": "Formale Systeme, Automaten und Prozesse",
+    "semester": 2,
+    "type": "pf"
+  },
+  "la.pdf": {
+    "name": "Lineare Algebra für Informatiker",
+    "semester": 2,
+    "type": "pf"
+  },
+  "lsp1.pdf": {
+    "name": "Logistics Systems Planning 1",
+    "semester": 3,
+    "type": "wpf"
+  },
+  "malo.pdf": {
+    "name": "Mathematische Logik",
+    "semester": 4,
+    "type": "pf"
+  },
+  "maschinengestaltung_i.pdf": {
+    "name": "Maschinengestaltung 1",
+    "semester": 3,
+    "type": "af"
+  },
+  "meta.pdf": {
+    "name": "Latex Templates für Panikzettel (Und Abgaben)",
+    "type": "none"
+  },
+  "numrech.pdf": {
+    "name": "Numerisches Rechnen",
+    "semester": 3,
+    "type": "af"
+  },
+  "or1.pdf": {
+    "name": "Operations Research 1 (Quantitative Methoden)",
+    "semester": 3,
+    "type":"af"
+  },
+  "pp.pdf": {
+    "name": "Probabilistic Programming",
+    "type": "wpf"
+  },
+  "sn19.pdf": {
+    "name": "Social Networks 2019",
+    "type": "wpf"
+  },
+  "sn20.pdf": {
+    "name": "Social Networks 2020",
+    "type": "wpf"
+  },
+  "spa.pdf": {
+    "name": "Static Program Analysis",
+    "type": "wpf"
+  },
+  "stocha.pdf": {
+    "name": "Stochastik",
+    "semester": 4,
+    "type": "pf"
+  },
+  "swt.pdf": {
+    "name": "Softwaretechnik",
+    "semester": 3,
+    "type": "pf"
+  }
 }
