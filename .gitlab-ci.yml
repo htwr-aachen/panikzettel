@@ -60,4 +60,4 @@ deploy:
 
     - cp naming.json ./build/naming.json
 
-    - gsutil -m cp -R build/* $GCP_BUCKET_URL
+    - gcloud storage cp --cache-control="public, max-age=3600" build/* $GCP_BUCKET_URL
