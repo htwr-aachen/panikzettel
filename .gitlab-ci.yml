@@ -58,7 +58,5 @@ deploy:
     - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
 
-    - mkdir -p build
-    - cp naming.json ./build/naming.json
-
+    - gcloud storage cp --cache-control="public, max-age=3600" naming.json $GCP_BUCKET_URL
     - gcloud storage cp --cache-control="public, max-age=3600" build/* $GCP_BUCKET_URL
