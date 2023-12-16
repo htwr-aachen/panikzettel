@@ -8,6 +8,9 @@ build:latex:
   only:
     - master
     - merge_requests
+    - changes
+      /*.{tex, cls}
+      Makefile
   before_script:
     - apk add make
     - apk add git
@@ -42,16 +45,8 @@ deploy:
   dependencies:
     - build:latex
     - build:typst
-  image: docker:latest
+  image: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
   script: 
-    # Install CA certs, openssl to https downloads, python for gcloud sdk
-    - apk add --update make ca-certificates openssl python3
-    - update-ca-certificates
-
-    # Download and install Google Cloud SDK
-    - wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
-    - tar zxvf google-cloud-sdk.tar.gz && ./google-cloud-sdk/install.sh --usage-reporting=false --path-update=true
-    - PATH="google-cloud-sdk/bin:${PATH}"
     - gcloud --quiet components update
 
     - echo $GCP_SERVICE_KEY > ${HOME}/gcloud-service-key.json
