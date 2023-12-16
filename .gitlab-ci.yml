@@ -7,13 +7,12 @@ build:latex:
   image: kjarosh/latex:2023.1
   needs: []
   rules:
-    - changes
+    - changes:
       - /*.{tex, cls}
       - Makefile
       - scripts/*
-  only:
-    - master
-    - merge_requests
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
     - apk add make
     - apk add git
@@ -29,13 +28,12 @@ build:typst:
   image: ghcr.io/typst/typst:latest
   needs: []
   rules:
-    - changes
-      - /*.typ
+    - changes:
+      - /*.{typ}
       - Makefile
       - scripts/*
-  only:
-    - master
-    - merge_requests
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
     - apk add make
     - apk add git
@@ -49,8 +47,8 @@ build:typst:
 
 deploy:
   stage: deploy
-  only: 
-   - master
+  rules: 
+   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - job: build:latex
       optional: true
