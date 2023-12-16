@@ -58,5 +58,7 @@ deploy:
     - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
 
-    - gcloud storage cp --cache-control="public, max-age=3600" naming.json $GCP_BUCKET_URL
+    # clear bucket and then upload files
+    - gsutil rm -a $GCP_BUCKET_URL/** 
+    - gcloud storage cp --cache-control="public, max-age=3600" metadata.json $GCP_BUCKET_URL
     - gcloud storage cp --cache-control="public, max-age=3600" build/* $GCP_BUCKET_URL

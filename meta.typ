@@ -74,7 +74,7 @@ Bei `typst` hingegen, müsstest du selber eine `.last-change` Datei erstellen (D
 
 === Neuen Panikzettel erstellen
 
-Für beide Arten gilt es in der `naming.json` Datei einen neuen Eintrag zu erstellen.
+Für beide Arten gilt es in der `metadata.json` Datei einen neuen Eintrag zu erstellen.
 
 ==== Latex
 In der `Makefile`-Datei eine Regel für den neuen Panikzettel einfügen, etwa wie folgt.
