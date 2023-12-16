@@ -69,8 +69,8 @@ elehre.pdf: elehre.tex panikzettel.cls elehre.last-change
 algds.pdf: algds.tex panikzettel.cls algds.last-change
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -pdf algds.tex
 
-meta.pdf: meta.tex panikzettel.cls meta.last-change
-	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode -shell-escape" -pdf meta.tex
+#meta.pdf: meta.tex panikzettel.cls meta.last-change
+#	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode -shell-escape" -pdf meta.tex
 
 sn19.pdf: sn19.tex panikzettel.cls sn19.last-change $(wildcard sn19/*.tex)
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -pdf sn19.tex
