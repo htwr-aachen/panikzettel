@@ -1,13 +1,19 @@
+stages:
+  - build
+  - deploy
+
 build:latex:
+  stage: build
   image: kjarosh/latex:2023.1
   needs: []
+  rules:
+    - changes
+      - /*.{tex, cls}
+      - Makefile
+      - scripts/*
   only:
     - master
     - merge_requests
-    - changes
-      /*.{tex, cls}
-      Makefile
-      scripts/*
   before_script:
     - apk add make
     - apk add git
@@ -19,15 +25,17 @@ build:latex:
     paths:
       - ./build/*.pdf
 build:typst:
+  stage: build
   image: ghcr.io/typst/typst:latest
   needs: []
+  rules:
+    - changes
+      - /*.typ
+      - Makefile
+      - scripts/*
   only:
     - master
     - merge_requests
-    - changes
-      /*.{tex, cls}
-      Makefile
-      scripts/*
   before_script:
     - apk add make
     - apk add git
@@ -40,6 +48,7 @@ build:typst:
       - ./build/*.pdf
 
 deploy:
+  stage: deploy
   only: 
    - master
   needs:
