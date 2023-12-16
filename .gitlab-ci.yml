@@ -3,6 +3,7 @@ stages:
   - deploy
 
 build:latex:
+  stage: build
   image: kjarosh/latex:2023.1
   needs: []
   only:
@@ -23,6 +24,7 @@ build:latex:
     paths:
       - ./build/*.pdf
 build:typst:
+  stage: build
   image: ghcr.io/typst/typst:latest
   needs: []
   only:
@@ -52,9 +54,6 @@ deploy:
       optional: true
     - job: build:typst
       optional: true
-  dependencies:
-    - build:latex
-    - build:typst
   image: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
   script: 
     - gcloud --quiet components update
