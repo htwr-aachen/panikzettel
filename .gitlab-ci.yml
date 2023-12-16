@@ -1,9 +1,4 @@
-stages:
-  - build
-  - deploy
-
 build:latex:
-  stage: build
   image: kjarosh/latex:2023.1
   needs: []
   only:
@@ -24,7 +19,6 @@ build:latex:
     paths:
       - ./build/*.pdf
 build:typst:
-  stage: build
   image: ghcr.io/typst/typst:latest
   needs: []
   only:
@@ -46,7 +40,6 @@ build:typst:
       - ./build/*.pdf
 
 deploy:
-  stage: deploy
   only: 
    - master
   needs:
