@@ -49,8 +49,8 @@ Für Panikzettel brauchst du `latex` / `xelatex`/ `typst` usw., `git` und `make`
 === Kompilieren mit make
 
 Panikzettel werden mit `make` kompiliert:
-  - `make` bzw. `make all`: Alle `latex` Panikzettel kompilieren. Sie sind dann im `/build` Verzeichniss zu finden
-  - `make la.pdf`, `make meta.pdf`, etc.: Einen bestimmten (nur `latex`) Panikzettel bauen. \ Er ist dann im `/build` Verzeichniss zu finden
+  - `make` bzw. `make all`: Alle `latex` Panikzettel kompilieren. Sie sind dann im `/build` Verzeichnis zu finden
+  - `make la.pdf`, `make meta.pdf`, etc.: Einen bestimmten (nur `latex`) Panikzettel bauen. \ Er ist dann im `/build` Verzeichnis zu finden
   - `make typst`: Alle `typst` Panikzettel kompilieren.
   - `typst meta.typ`, etc.: Einen bestimmten `typst`-Panikzettel bauen. (Benötigt `{name}.last-change` Datei. Siehe unten)
   - `typst watch meta.typ`, etc.: Einen bestimmten `typst`-Panikzettel kontinuierlich bei Änderungen bauen. (Benötigt `{name}.last-change` Datei. Siehe unten)
@@ -66,15 +66,17 @@ Panikzettel werden mit `make` kompiliert:
 
 === Kompilieren ohne make (etwa in Overleaf/#link("typst.app"))
 
-Lade bei `latex` die `panikzettel.cls` und die `.tex`-Datei des Panikzettels auf Overleaf hoch.
-Lade bei `typst` die `conf.typ` und die `.typ`-Date des Panikzettels auf Typst hoch.
+- Für `latex`, lade die `panikzettel.cls` und die `.tex`-Datei des Panikzettels auf Overleaf hoch.
+- Für `typst` brauchst du die `conf.typ` und die `.typ`-Datei des Panikzettels.
 
-Bei `latex` wird, wenn die `name.last-change` Datei nicht existiert, automatisch `\textbackslash{}today` für das Datum verwendet.
-Bei `typst` hingegen, müsstest du selber eine `.last-change` Datei erstellen (Die erste Zeile wird als Version, die dritte als Kompilationsdatum angezeigt).
+- Bei `latex` wird, wenn die `name.last-change` Datei nicht existiert, automatisch `\today` für das Datum verwendet.
+- Bei `typst` hingegen, must du selber eine `.last-change` Datei erstellen (Die erste Zeile wird als Version, die dritte als Kompilationsdatum angezeigt).
 
 === Neuen Panikzettel erstellen
 
-Für beide Arten gilt es in der `metadata.json` Datei einen neuen Eintrag zu erstellen.
+Für beide Schriftsysteme muss `metadata.json` ein neuer Eintrag erstellen werden. Hier werden generelle Informationen zu den Fächern angegeben.
+
+> Wir empfehlen für neue Panikzettel auf Typst zu setzten, da, dass das Schreiben deutlich einfacherer gestaltet.
 
 ==== Latex
 In der `Makefile`-Datei eine Regel für den neuen Panikzettel einfügen, etwa wie folgt.
@@ -112,7 +114,7 @@ Der Leser hat meistens Zeitdruck.
 Darum nicht mit überflüssigen Formulierungen oder Geschwafel langweilen, aber (kurze) Überleitungen und Einleitungen zur Erklärung und Einordnung sind meistens sinnvoll.
 
 In Panik achtet man auf farbige Boxen und hervorgehobenen Text.
-Bei Definitionen in heben wir gerne das definierte Wort mit \texttt{\textbackslash{}emph} hervor: ``Ein \emph{Wort} besteht aus Zeichen.''
+Bei Definitionen in heben wir gerne das definierte Wort mit `\emph` (typst \* \* ) hervor: "Ein *Wort* besteht aus Zeichen."
 
 Definitions-, Satz- oder Algorithmen-Boxen sind für die zentralen Informationen eines Abschnittes hilfreich.
 Kurzer Text daneben kann diese weiter erklären.
@@ -137,7 +139,7 @@ Dabei muss noch nichts fertig sein, aber oft kann man sich dadurch unnötige Arb
 Panikzettel basieren meistens auf einer Vorlesung.
 Daher ist es sinnvoll, die Struktur und Terminologie der Vorlesung anzupassen.
 Jedoch sollte einfaches Kopieren vermieden werden.
-Panikzettel sind eigene Zusammenfassungen, und Mehrwehrt kommt oft davon, dass man etwas selber neu schreibt.
+Panikzettel sind eigene Zusammenfassungen, und Mehrwert kommt oft davon, dass man etwas selber neu schreibt.
 Daher fühlen wir uns auch am wohlsten, wenn Grafiken selbst erstellt wurden (etwa mit TikZ).
 Screenshots aus Folien machen wir nicht.
 Damit wir unter unserer Projektlizenz Panikzettel verbreiten dürfen, müssen die Inhalte also selber erstellt sein oder unter einer kompatiblen Lizenz veröffentlicht worden sein.
