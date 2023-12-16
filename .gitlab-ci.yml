@@ -5,6 +5,9 @@ stages:
 build:latex:
   stage: build
   image: kjarosh/latex:2023.1
+  only:
+    - main
+    - merge_requests
   before_script:
     - apk add make
     - apk add git
@@ -18,6 +21,9 @@ build:latex:
 build:typst:
   stage: build
   image: ghcr.io/typst/typst:latest
+  only:
+    - main
+    - merge_requests
   before_script:
     - apk add make
     - apk add git

@@ -2,4 +2,13 @@
 mkdir -p build
 OUTPUT_FILE=$(echo $1 | sed "s/typ/pdf/" | cut -c3-)
 echo "compiling... $1 to ./build/$OUTPUT_FILE"
+
+FILENAME=$(echo "$1" | sed "s/\.typ\([^\.]*\)$/.last-change\1/")
+
+echo -n "Version " > $FILENAME
+git log --format=oneline -- $1 | wc -l >> $FILENAME
+echo "---" >> $FILENAME
+git log --pretty=format:%ad --date=format:'%d.%m.%Y' -n 1 -- $1 >> $FILENAME
+
+
 typst compile -f pdf --root=. "$1" "./build/$OUTPUT_FILE"

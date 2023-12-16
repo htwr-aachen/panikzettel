@@ -263,3 +263,4 @@ TSWLatexianTemp*
 
 build/
 .gitlab-ci-local/
+.vscode
