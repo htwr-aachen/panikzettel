@@ -128,5 +128,15 @@
     "name": "Softwaretechnik",
     "semester": 3,
     "type": "pf"
+  },
+  "male.pdf": {
+    "name": "Elements of Machine Learning and Data Science",
+    "semester": 5,
+    "type": "pf"
+  },
+  "male_en.pdf": {
+    "name": "Elements of Machine Learning and Data Science (English)",
+    "semester": 5,
+    "type": "pf"
   }
 }
