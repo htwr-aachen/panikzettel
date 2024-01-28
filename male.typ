@@ -124,11 +124,55 @@ $ diff/(diff theta) E(theta) &= - limits(sum_(n=1)^N (1/p(x_n | theta)) dot diff
 %TODO: Eher nicht mit rein nehmen oder?
 Bei Maximum Log-Likelihood Optimierungen wird die Varianz unterschätzt, und muss im Fall der Normalverteilung mit $N/(N-1)$ ausgeglichen werden.
 
-== Histogramme
+== Histogramme, Kernel Methods & k-Nearest Neighbors
+
+=== Histogramme
 
 Aufteilung der Daten in $N$ Säulen mit breite $Delta_i$. Die Höhe der Säule ist dann $p_i = n_i/(N Delta_i)$, wobei $n_i$ die Anzahl der Beobachteten Ergebnisse in dem Bereich ist.
 
-== Kernel Methods
+#grid(
+  columns: (1fr, 1fr),
+  [#figure(
+    image("img/male/kernel-method.png", width: 30%),
+    caption: [Kernel Method]
+  ) <k-nearest>],
+  [#figure(
+    image("img/male/k-nearest-neighbors.svg", width: 30%),
+    caption: [1-Nearest Neighbors]
+  ) <k-nearest>]
+)
+Gegeben eine _probability density function_ (pdf) $p(Cl_k | x)$, die wir erneut approximieren wollen. Wir visualisieren hier mit zwei Dimensionen. Wir können nun $p$ approximieren indem wir uns einen kleinen Bereich $cal(R)$ um die Datenpunkte angucken
+und somit ein $P=integral_cal(R) p(y) d y = K/N approx p(x)V $, wobei $V$ das Volumen von $cal(R)$ ist und $K$ die Anzahl der Datenpunkte die in $cal(R)$ liegen.
+
+Wir haben somit zwei Möglichkeiten zu approximieren:
+/ Kernel Methods: Fixes Volumen $V$, aber mit einer variablen Menge von Punkten $K$ in $cal(R)$
+/ K-Nearest Neighbors: Fixe Punktzahl $K$ in $cal(R)$, somit unterschiedlich große Volumen $V$
+
+=== Kernel Methods
+
+Wir bilden einen Kernel $k$ mit $k(u) >= 0$ und $integral k(u) d u = 1$
+Hierbei beschreibt $u$ einen Vektor von einem Punkt $x$ zu einem einem $x_n$. 
+$k$ gewichtet diese Distanz dann.
+
+Somit gilt $K = sum_(n=1)^N k(x - x_n)$ und $p(Cl_k | x) = K/(N V) = 1/N sum_(n=1)^N k(x-x_n)$
+
+Der parzen-window (kernel), indem man ein Würfel der Höhe $h in NN$ um $x$ aufbaut, wäre als Beispiel 
+$ k = cases(1/(h^D) "if" |u_i| <= 1/2h\, i=1\,...D,
+           0 "else") $
+Also skaliert 1 falls $x_n$ (in allen Dimensionen) im Würfel liegt und $0$ sonst.
+
+Somit ergibt sich eine probability density estimation von $p(Cl_k | x) approx K/(N V) = 1/(N h^D) sum_(n=1)^N k(x-x_n)$
+
+Populäre kernels sind z.B. auch Gaussian Blurs (Smoothener)
+
+=== k-Nearest Neighbors
+
+Hier setzten wir ein $K in NN$ fest und bestimmen eine Sphäre, die es braucht um die $K$ nächsten Nachbarn zu inkludieren.
+Somit gilt immernoch $p(x) approx K / (N V)$.
+
+Die allermeisten _non-parameterized_ probability density estimators, haben bestimmte Einstellungen, die für Unterschiedliche Ergebnisse sorgt, sogenannte _Hyperparameter_ (z.B. $Delta_i, h, K,$ etc.).
+
+== Linear Discriminants
 
 
 = Data Science
