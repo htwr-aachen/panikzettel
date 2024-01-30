@@ -119,7 +119,7 @@ Da alle Variablen i.i.d. (d.h. unabhängig und identisch verteilt) sind können 
 Um nun das Maximum zu berechnen ist nun die Ableitung von $E(theta)$ erforderlich: 
 $ diff/(diff theta) E(theta) &= - limits(sum_(n=1)^N (1/p(x_n | theta)) dot diff/(diff theta) p(x_n | theta)) \
 &= ... = 1/sigma^2 sum_(n=1)^N x_n - N mu =^! 0 \
-&<==> accent(mu, hat) = 1/N sum_(n=1)^N x_n and accent(sigma, hat)^2 = 1/N sum_(n=1)^N (x_n - accent(mu, hat)^)^2 $ .
+&<==> hat(mu) = 1/N sum_(n=1)^N x_n and hat(sigma)^2 = 1/N sum_(n=1)^N (x_n - hat(mu)^)^2 $ .
 
 %TODO: Eher nicht mit rein nehmen oder?
 Bei Maximum Log-Likelihood Optimierungen wird die Varianz unterschätzt, und muss im Fall der Normalverteilung mit $N/(N-1)$ ausgeglichen werden.
@@ -172,7 +172,42 @@ Somit gilt immernoch $p(x) approx K / (N V)$.
 
 Die allermeisten _non-parameterized_ probability density estimators, haben bestimmte Einstellungen, die für Unterschiedliche Ergebnisse sorgt, sogenannte _Hyperparameter_ (z.B. $Delta_i, h, K,$ etc.).
 
+k-NNs können mittels Bayes Decision Theory auch als Klassifizierer dienen. In dem man die class-conditional Verteilung approximiert mit $p(x | C_j) approx K_j/(N_j V)$ und durch die priors $p(C_j) approx N_j/N$ die posteriors $p(C_j | x) approx p(x | C_j)p(C_j) 1/p(x) = K_j/K$
+
+== Mixture Models
+
+In einem Mixture Model wird davon ausgegangen nach mehrere ($M in NN$) probability distributions verteilt zu sein, die sich addieren. Meist wird die Normalverteilung gewählt.
+
+Also $p( x | theta ) = sum_(j=1)^M p(x|theta_j) p(j)$, wobei $theta = (pi_1, theta_1, ..., pi_1, theta_M)$ alle Parameter bündelt und $p(j)=pi_j$ die priors (also die Anfangsvermutungen des _mixtures components_).
+
+Um hieraus eine formale Wahrscheinlichkeitsverteilung zu erstellen muss $sum_(j=1)^M pi_j = 1$ und somit $integral p(x|theta)d x = 1$.
+
+Hierfür gibt es kein analytisches Verfahren, die Maximum Log Likelihoods zu finden. Somit bleiben numerische Verfahren (und) iterative Optimierungsverfahren.
+
+=== EM Algorithmus
+Der _E-STEP_: $ gamma_j(x_n) <- (pi_j cal(N)(x_n | mu_j, Sigma_j))/(sum_(k=1)^K pi_k cal(N)(x_n | mu_k, Sigma_k)) $
+Hier ist $Sigma$ die Kovarianzmatrix.
+
+Der _M-STEP_: 
+#grid(
+  columns: (1fr,1fr),
+  $ hat(N) &<- sum_(n=1)^N gamma_j(x_n) \
+  hat(pi)_j &<- hat(N)_j/N $,
+  $ hat(mu)_j &<- 1/hat(N)_j sum_(n=1)^N gamma_j(x_n)x_n \
+  hat(Sigma)_j &<- 1/hat(N)_j sum_(n=1)^N gamma_j(x_n)(x_n - hat(mu)_j)(x_n - hat(mu)_j)^sans(T) $,
+)
+
+Der EM Algorithmus muss durch _regularization_ gegen $sigma -> 0$ geschützt werden, weswegen $sigma_min I$ addiert wird #footnote("Der EM Algorithmus wird aus meiner Sicht nicht groß in der Klausur angewandt werden können, Wissensfragen jedoch schon.")
+
 == Linear Discriminants
+
+_Linear Discriminats_ versuchen ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein dataset trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$. Falls dies gelingt heißt ein dataset _linearly seperable_). 
+
+Häufiger wird aber $y(x) = tilde(w)^sans(T) tilde(x) = sum_(i=0)^D w_i x_i$, wobei hier $x_0 = 1$ gesetzt ist und der Bias $w_0$ somit verrechnet wird.
+
+Es lassen sich $K in NN$ _linear discriminats_ berechnen und die Klasse $C_k$ genau dann gewählt werden wenn $y_k (x) > y_j (x)$ für alle $j != k$.
+
+Nun aber zur Optimierungsmethoden dieser $y_k (x)$.
 
 
 = Data Science
