@@ -207,8 +207,30 @@ Häufiger wird aber $y(x) = tilde(w)^sans(T) tilde(x) = sum_(i=0)^D w_i x_i$, wo
 
 Es lassen sich $K in NN$ _linear discriminats_ berechnen und die Klasse $C_k$ genau dann gewählt werden wenn $y_k (x) > y_j (x)$ für alle $j != k$.
 
-Nun aber zur Optimierungsmethoden dieser $y_k (x)$.
+Nun aber zur Optimierungsmethoden dieser $y_k (x)$. Zunächst werden alle $k$ Diskriminanten zusammen gruppiert $tilde(W)=(tilde(w_1), ..., tilde(w_K)) = mat(w_(10), ..., w_(K 0);
+dots.v, dots.down, dots.v;
+w_(1D), ..., w_(K D))$, $tilde(X) = vec(x_1^sans(T), dots.v, x_N^sans(T))$ und $Y(tilde(X))=tilde(X)tilde(W)$. Ebenso werden die _target vectors_ (die label) $T = vec(t_1^sans(T), dots.v, t_N^sans(T))$.
 
+Um lernen zu können definieren wir eine _error function_ (hier _Sum of squares_) $E(W) = 1/2sum_(n=1)^N sum_(k=1)^K (w_k^sans(T)x_n - t_(n k))^2$. Nehmen wir nun im 2-class Fall die Ableitung: $(diff E(w))/(diff w) = ... = w = (X^sans(T)X)^(-1)X^sans(T)t = X^dagger t$ (das $X^dagger$ ist die pseudo-inverse, da X ja singulär seine könnte) somit erhalten wir eine _closed-form_ Lösung $y(x;w) = w^sans(T) x = t^sans(T) (X^dagger)^sans(T) x$.
+
+Um weniger sensitiv gegen _outliers_ zu sein wird $y$ allerdings meist mit einer Aktivierungsfunktion versehen (ähnlich wie bei NNs) $y(x)=g(w^T x)$.
+In der Vorlesung der Logistic-Sigmoid $sigma(x) = 1/(1+e^(-x))$.
+
+_Basis functions_ $phi.alt$ erweitern die $y(x) = w^sans(T) phi.alt(x)$ um nicht linear trennbare Datensätze zu klassifizieren zu können.
+
+
+== Logistic Regressions
+
+//TODO: Ridge Regression? 
+
+// Bei der Logistischen Regression versuchen wir die posteriors $p(Cl_k | x)$ durch eine linear discriminant function zu modellieren. 
+
+// Zunächst $p(Cl_1 | x) = sigma(a)$ mit $a = ln (p(x | Cl_1)p(Cl_1))/(p(x|Cl_2)p(Cl_2))$ beschreibt der logistic sigmoid eine posterior probability und modellieren so $p(Cl_1 | x) = y(x) = sigma(w^sans(T)x); quad p(C_2|x)=1-p(Cl_1|x)$
+
+//TODO: softmax Regression
+// 
+
+=== Support Vector Machines (SVM)
 
 = Data Science
 
