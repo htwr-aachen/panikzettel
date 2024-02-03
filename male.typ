@@ -553,9 +553,42 @@ Dies ist jeweils eine Iteration. Erst selection, dann pruning dann testing.
 
 Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei durchläufe des Datensatzen nötig.
 
-= Association-Rules and Frequence Mining
+=== Association-Rules
 / Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A sect B = emptyset$.
 
-$ support(A => B) = $
+$ support(A => B) &= (supportCount(A union B))/(supportCount(emptyset)) \ 
+  "conf"(A => B) &= (supportCount(A union B))/(supportCount(A)) $
+
+$"conf"$ ist die Confidence.
+
+Da es noch mehr dieser Rules als frequent itemsets gibt, können wir auch hier wieder pruning und redundant rules löschen.
+
+> A trend appears in several different groups of
+data but disappears or reverses when these
+groups are combined 
+
+Das ist Simpons-Paradox.
+
+== Sequence Mining
+
+Hierbei gibt es _temporal data_, heißt jede Aktion hat einen Timestamp, eine Case-ID und eine Aktion (z.B. Nutzer 1 registriert sich $t_1$, Nutzer 2 meldet sich an $t_2$, etc...).
+
+Hieraus entstehen cases $"case" 1= <"Nuzter registriert", ...>$.
+
+Wir brauchen erneut eine Relation das _containment_ $A subset.sq.eq B$. Wir gucken einfach ob wir die Events von $A$ in $B$ in der *gleichen Reihenfolge*, aber gegebenenfalls mit Lücken, in $B$ finden.
+
+Der Support ist dann wieder gleich definiert: $support(P) = (|[S in X mid P subset.sq.eq S]|)/(|X|)$.
+
+=== Apriori-All Algorithmus
+
+Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I mid support(<A>) >= "min_sup"}$
+
+Nun mappen wir _Sequences_ um auf die drunterliegenden _litemsets_. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $<{a,c}, {a,b,c}>$ wird zu $<{{a},{c}},{{a},{b},{c},{a,b}>$
+
+Nun erstellen wir wieder die Kandidaten und prunen das Ergebniss.
+
+Dann müssen wir noch testen ob $"min_sup"$ eingehalten wurde.
+
+Wirklich interessante Daten müssen dann mit contraints gefunden werden.
 
 = Evaluation and AutoML/DS
