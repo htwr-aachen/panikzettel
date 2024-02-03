@@ -334,7 +334,16 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
 == Error Funktion Analyse
 // TODO: Do
 == Neural Nets
-// TODO: DO
+
+//TODO: Überarbeiten
+
+Ein _perceptron_ bekommt eine Menge $D in NN$ Inputs, gewichtet die dann und summiert sie.
+Das Ergebniss ist dann $y(x) = sigma(b + sum_(i=1)^D w_i x_i)$, $b$ ist der Bias, $sigma$ ist die _activation function_ (auch hier werden die Gewichte meistens in eine einheitliche Matrix gepackt, weswegen die Formel sich ändern kann). Perceptrons sind also nur generalisierte Lineare Discriminants.
+
+Nun fügen wir mehrere Layers von Perceptrons zusammen und bilden daraus ein _Multi-Layer Perceptron_. Jede Layer fügt einen _bias_ (z.B 1) hinzu, der dann mit Weights zu jedem Perceptron der Layer verbunden ist.
+
+Die Weights und Biases werden dann durch Backpropagation und Stochastic Gradient Descent trainiert. Auch hier ist die _learning rate_ ein Wichtiger Hyperparameter.
+
 = Data Science
 
 In Data Science sprechen wir über _features_
