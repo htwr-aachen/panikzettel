@@ -591,4 +591,18 @@ Dann müssen wir noch testen ob $"min_sup"$ eingehalten wurde.
 
 Wirklich interessante Daten müssen dann mit contraints gefunden werden.
 
+=== Time-Series Forecasting
+
+Die Analyse betrachte ich als nicht wirklich relevant und überspringe sie. Falls jemand anders hier eine kleine Zusammenfassung schreibt wäre das vllt gut. Nun aber zum _forecasting_
+
+/ Moving Average: Regression der vorherigen aufsummierten fehler.
+
+== Sonstiges Data Science Zeugs
+
+Preprossesing ist sehr häufig sehr wichtig. Vorallem bei Big-Data müssen die Datenmengen reduziert werden:
+/ Feature Reduction: Autoencoders sind NNs die eine automatische effizientere encoding der Datenmachen. Principal Component Analysis kombiniert die features zusammen. \
+  Aber auch Feature Selection, also aussortieren unnötiger Features, gehört dazu.
+/ Instance Reduction: Sampling (z.B. nehme $N$ zufällige instances)
+
 = Evaluation and AutoML/DS
+
