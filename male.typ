@@ -331,6 +331,10 @@ $epsilon_n = 0$ bei Korrektheit und erfährt bis $1$ eine penalty.
 
 Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter, gewichtet ($1/2 ||w||^2 + C sum_(n=1)^N epsilon_n$).
 
+== Error Funktion Analyse
+// TODO: Do
+== Neural Nets
+// TODO: DO
 = Data Science
 
 In Data Science sprechen wir über _features_
@@ -389,6 +393,59 @@ Continuous Werte können mit $< 500$, $>= 500$ in ein Decision Tree eingebaut we
 Sehr simple. Versuche den Tree möglichst klein zu halten, also nehme immer ein Leaf Node wenn du nurnoch gleiche target labels, keine weiteren features hast oder einen pre-pruning threshold überschritten hast. 
 Sonst splite immer nach dem feature mit dem *höchsten* information gain (nicht doppelt splitten mit dem gleichen feature).
 
+== Clustering
 
+Clustering fällt in die Kategorie des unsupervised learning. 
+
+Für clustering müssen wir irgendwie messen wie weit wir entfernt sind (hier in 2 Dimensionen):
+/ Euclidian Distance: $d(x,y) = sqrt((x_1 - y_1)^2 + (x_2 - y_2)^2)$
+/ Manhatten: $d(x,y) = |x_1-y_1| + |x_2 - y_2|$
+/ Chebychev: $d(x,y) = limits(max)_i (|x_i - y_i|)$
+/ Minkowski ($L^p$): $d(x,y) = root(p, limits(sum)_i |x_i - y_i|^p)$
+=== k-means
+
+Erzeuge $k in NN$ _centroid_ (zufällig). Weise dann jedem Datenpunkt den nächsten _centroid_ zu. Nehmen den Mean (Durchschnitt) aus allen zu einem _centroid_ gehörigen Datenpunkte und setzte den _centroid_ dahin. Weise erneut jedem ...
+
+Es ist garantiert, dass dies irgendwann konvergiert. Problem ist nur, dass nur "kreisförmige" Cluster gefunden werden können, insbesondere keine komplizierten verschachtelten Formen.
+
+Eine häufige Error funktion ist Sum-of-Squares: $E(x,C) = sum_(i=1)^k sum_(x_j in C_i) d(x_j, c_i)^2$.
+
+=== k-medoids
+
+Anstant eigene _centroids_ zu kreiren nutze manche Datenpunkte _medoids_. 
+
+Weise jedem Datenpunkt zu ein _medoid_. Tausche Medoids falls ein Punkt $x_i$ den Error veringert tausche in mit einem _medioid_.
+
+Die Intuition ist richitg und k-medioids ist komplexer (zeitlich) zu berechnen, aber es ist weniger sensitiv zu outliers, da nicht ein einzelner Punkt den _centroid_ außerhalb vom wirklichen Cluster ziehen kann. In beiden Fällen ist $k$ natürlich ein Hyperparameter.
+
+== Aglomeratives/Dendrogram
+
+
+Hier wird die Bottom-Up Technik verwendet um zu clustern. 
+
+#figure(
+  image("img/male/dendrogram.png", height: 5cm),
+  caption: [Beispiel eines Dendrogramms]
+) <dendrogram>
+
+1. Erstelle cluster $Cl_i$ für jedes $x_i$
+2. Berechne zu allen $d(Cl_i, Cl_j)$
+3. Merge $min d(Cl_i, Cl_j)$.
+4. Schritt 2 bis es nur noch einen Cluster gibt.
+
+
+Bild #ref(<dendrogram>) zeigt die Visualisierung anhand eines Dendrograms. Ich denke keine Erklärung notwendig.
+
+== DB-Scan
+
+Keien sorge wir sind nicht wieder bei DBIS gelandet. 
+
+Zwei Punkte $x_i, x_j$ sind density-connected falls es ein $x_k$ gibt, das mit beiden Verbunden ist. Hieraus werden dann _core-points_ gebildet die mit _MinPts_ Punkten in $epsilon$ Nähe sind.
+
+Core points werden dann zu clustern oder clusters werden um core-points erweitert. 
+
+Am Ende lassen sich beliebige Formen clustern, anders als k-means (wird aber häufig wegen einfachheit genutzt).
+
+== Frequent Itemsets
 
 = Evaluation and AutoML/DS
