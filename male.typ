@@ -447,5 +447,115 @@ Core points werden dann zu clustern oder clusters werden um core-points erweiter
 Am Ende lassen sich beliebige Formen clustern, anders als k-means (wird aber häufig wegen einfachheit genutzt).
 
 == Frequent Itemsets
+#let support = math.op("support")
+#let supportCount = math.op("support_count")
+
+Notation:
+- $I={I_1, ..., I_D}$ sind alle möglichen Items
+- $A subset.eq I$ ist dann ein Itemset (_transaction_ bei nichtleerem $A$).
+- Ein Dataset $X$ ist ein multiset von Transaktionen (mehere gleiche sind möglich).
+
+Wichtige Metriken sind $support(A) = ("support_count"(A))/(|X|) = (|[T in X mid A subset.eq T]|)/(|X|)$
+
+Hierzu ein Beispiel aus der Vorlesung:
+
+$ X &= [{A,B,E}, {C,B}, {A,D}, {A,D,B}] \
+  T &= {A,B} subset.eq I $
+
+$supportCount(A)= |[T_1,T_2]| = 2$
+$support(A) = 2/4 = 1/2$
+
+
+Wir sagen nun $A$ ist ein frequent itemset, falls $support(A) >= "min_sup"$
+Weil es natürlich viel zu viele Kombinationen gibt, betrachten wir nur die Itemsets, für die es keine gleichen Supersets gibt. Also $A$ ist _closed_, falls $support(A) > support(B)$ für alle $B supset A$.
+
+Zwei Algorithmen
+
+== Apriori
+
+1. Candidate Generation. Nutze $L_k$ (Frequent Itemsets der Länge $k$) um die Kandidaten $C_(k+1)$ zu generieren.
+2. Pruning Supersets von _infrequent_ itemsets können nicht _frequent_ sein.
+3. Testen.
+
+Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
+
+#grid(
+  columns: 3,
+  gutter: 2em,
+  table(
+    columns: 2,
+    [TID], [Fruits],
+    [1], [{Grapes, Apple, Pineapple}],
+    [2], [{Orange, Apple, Banana}],
+    [3], [{Grapes, Orange, Apple, Banana}],
+    [4], [{Orange, Banana}],
+    [5], [{Grapes, Apple, Banana}]
+  ),
+  table(
+    columns: 2,
+    [Itemsets], [Counts],
+    [{Grapes}], [3],
+    [{Orange}], [2],
+    [{Apple}], [4],
+    [{Pineapple}], [1],
+    [{Banana}], [4]
+  ),
+  table(
+    columns: 2,
+    [Itemsets], [Counts],
+    [{Grapes}], [3],
+    [{Orange}], [2],
+    [{Apple}], [4],
+    [{Banana}], [4]
+  ),
+  table(
+    columns: 1,
+    [Itemsets],
+    [{Grapes, Orange}],
+    [{Grapes, Apple}],
+    [{Grapes, Banana}],
+    [{Orange, Apple}],
+    [{Orage, Banana}],
+    [{Apple, Banana}],
+  ),
+  table(
+    columns: 2,
+    [Itemsets], [Counts],
+    [{Grapes, Orange}], [1],
+    [{Grapes, Apple}], [3],
+    [{Grapes, Banana}], [2],
+    [{Orange, Apple}], [2],
+    [{Orage, Banana}], [3],
+    [{Apple, Banana}], [3]
+  ),
+  table(
+    columns: 2,
+    [Itemsets], [Counts],
+    [{Grapes, Apple}], [3],
+    [{Grapes, Banana}], [2],
+    [{Orange, Apple}], [2],
+    [{Orage, Banana}], [3],
+    [{Apple, Banana}], [3]
+  ),
+)
+
+Dies ist jeweils eine Iteration. Erst selection, dann pruning dann testing.
+
+== FP-Growth
+
+1. Gehe alle Items $I_1, ..., I_D$ durch und sortiere nach Häufigkeit.
+2. Lösche alle _non-frequent_ items.
+3. Gehe durch alle Transaktionen und sortiere die Items nach der obrigen Häufigkeit.
+4. Baue daraus einen FP-Tree.
+  1. Starte bei der Gesamtzahl als Wurzel
+  2. Gehe die Transaktionen durch und füge sie an den Baum. Notiere die Häufigkeit der Items.
+  3. Mine den FP-Tree um die Frequent Items zu bekommen. Hier gibt es Taktik, aber ich würde es raten in der Klausur einfach zu "machen".
+
+Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei durchläufe des Datensatzen nötig.
+
+= Association-Rules and Frequence Mining
+/ Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A sect B = emptyset$.
+
+$ support(A => B) = $
 
 = Evaluation and AutoML/DS
