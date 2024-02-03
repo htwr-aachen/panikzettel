@@ -1,5 +1,7 @@
 
 #import "conf.typ": conf, algoBox, defiBox, theoBox
+#import "@preview/cetz:0.2.0": canvas, plot
+
 
 #show: conf.with(
   title: "Elements of Machine Learning and Data Science",
@@ -219,18 +221,115 @@ In der Vorlesung der Logistic-Sigmoid $sigma(x) = 1/(1+e^(-x))$.
 _Basis functions_ $phi.alt$ erweitern die $y(x) = w^sans(T) phi.alt(x)$ um nicht linear trennbare Datensätze zu klassifizieren zu können.
 
 
-== Logistic Regressions
+== Regressions
+
+// #canvas(length: 1cm, {
+//   plot.plot(size: (8, 6),
+//     x-tick-step: none,
+//     x-ticks: ((-calc.pi, $-pi$), (0, $0$), (calc.pi, $pi$)),
+//     y-tick-step: 1,
+//     {
+//       plot.add(
+//         style: style,
+//         domain: (-calc.pi, calc.pi), calc.sin)
+//     })
+// })
+
+Wir haben zwei verschiedene Arten Regression behandelt:
+/ Linear Regression: approximieren einer Funktion $h(x) in RR$ gegeben durch label $t_n = h(x) + epsilon$
+/ Logistic Regression: approximieren einer diskreten Funktion (hier sind zwar auch nur Datenpunkte gegeben, aber die Funktion ist diskret)
+
+=== Linear Regression
+Für linear regression wenden wir die Least Square Regression an.
+Wir nehmen als _error function_ erneut die $E(w)=1/2 sum_(i=1)^N (y(x_n;w) - t-n)^2$ 
+Sum of squares funktion.
+
+Kommen also bei der gleichen $w=(Phi^sans(T)Phi)^(-1)Phi^sans(T)$ an wie bei den Diskriminanten. Allerdings mit $y(x) = w^sans(T) phi.alt(x)$ einer Basis Funktion
+
+Nehmen wir also als Basis Funktion $phi.alt_j(x) = x^j$. Nun ist die Wahl des Polynomgrades ein wichtiger _Hyperparameter_. Jedoch ist mit dieser Error Funktion des _overfitting_ groß, da es die unterliegende $epsilon$ noise modelliert und nicht $h(x)$.
+
+Um gegen dies Vorzugehen wird ein _regulerizer_ $Omega$ (z.B. $Omega = 1/2||w||^2$) eingesetzt $E(X)=L(w) + lambda Omega(w)$, hierbei ist $L(w)$ der Loss-Term also einfach die vorherige _error function_.
 
 //TODO: Ridge Regression? 
 
+=== Logistic Regression
+
+Wir wollen die Class-posteriors $p(Cl_1 | phi.alt)$ modellieren und zwar als _linear discriminant_ $y(phi.alt) = sigma(Cl_1^sans(T) phi.alt)$. Wir gehen also nicht der generativen modellierung nach (die direkt die posterior Wahrscheinlichkeitsverteilung modellerien will), sondern *nur* der Grenze zwischen den Klassen (_discriminative modelling_) [Note: hierfür sind labels zwangsweise nötig]. 
+
+Falls ihr gefragt werden was die Vorteile sind:
+- Effizientere Parameter nutzung. Da weniger Parameter gebraucht werden.
+
+Zudem gibt es noch zwei wichtige Fachwörter:
+/ cross-entropy error: $E(w)=-sum_(n=1)^N (t_n ln y_n + (1-t_n) ln (1-y_n))$
+/ Softmax Regression: $(exp(a_k))/(sum_(j=1)^K exp(a_j))$ für eine Klasse $k in underline(K)$. (Die beiden Sachen lassen sich auch verbinden :/)
+
+Für die tatsächliche Regression müssen wir wieder auf iterative methoden zurückgreifen.
+In diesem Fall auf _gradient descent_. 
+
+==== Gradient Descent 
+
+$ w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((diff E(W))/(diff w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w)) $
+
+dies ist die (so halb) erste Taylor expansion mit Hyperparameter _learning rate_ $eta$.
+Ist die _learning rate_ wird das Optimum "übersprungen" und bei zu kleiner Learning Rate dauert es lange und eventuell konvergiert der Gradient zu einem lokalen Minimum.
+
+Die Newton-Raphson Methode (orientiert sich an der zweiten Taylorentwicklung)
+verwendet zusätzlich noch ein $H^(-1)=(diff^2 E(w))/(diff w_i diff w_j)$
+
 // Bei der Logistischen Regression versuchen wir die posteriors $p(Cl_k | x)$ durch eine linear discriminant function zu modellieren. 
 
-// Zunächst $p(Cl_1 | x) = sigma(a)$ mit $a = ln (p(x | Cl_1)p(Cl_1))/(p(x|Cl_2)p(Cl_2))$ beschreibt der logistic sigmoid eine posterior probability und modellieren so $p(Cl_1 | x) = y(x) = sigma(w^sans(T)x); quad p(C_2|x)=1-p(Cl_1|x)$
+//Zunächst $p(Cl_1 | x) = sigma(a)$ mit $a = ln (p(x | Cl_1)p(Cl_1))/(p(x|Cl_2)p(Cl_2))$ beschreibt der logistic sigmoid eine posterior probability und modellieren so $p(Cl_1 | x) = y(x) = sigma(w^sans(T)x); quad p(C_2|x)=1-p(Cl_1|x)$
 
-//TODO: softmax Regression
-// 
 
 === Support Vector Machines (SVM)
+
+#figure(
+  image("img/male/svm.png", height: 3cm),
+  caption: [Example of a SVM]
+)
+
+Bei Support Vector Machines (SVMs) wird anstatt eine Diskriminate zu verwenden versucht, wischen den zwei Cluster eine Safety Zone (d.h. _margin_) aufzubauen und zu maximieren.
+Das $y(x)=(t_n ( w^sans(T)x_n + b))$ welches den größten _margin_ $1/2 ||w||^2$ erschafft und $y(x) >= 1$ für alle $n in N$ (d.h. alle Trainingspunkte richtig klassifiziert) gilt als optimiert.
+
+Hieraus bauen wir uns ein Optimierungsproblem à la Quantitative Methoden (BWL😑).
+Wie genau wir dahin kommen ist für den Panikzettel (und aus meiner Sicht) wenig relevant, doch brauchen wir hierfür _langrange multiplier_ $lambda, a_n$ für die Primal form
+
+==== Primal Form
+Langrange multipliers $a_0 >= 0$
+$ L(w,b,a)=1/2 ||w||^2 - sum_(n=1)^N a_n [t_n(w^sans(T)x_n + b) -1] $
+
+Conditions: 
+$ a_n &>= 0 \
+  t_n(w^sans(T)x_n + b) -1 &>= 0 \ 
+  a_n[t_n(w^sans(T)x_n + b) -1] &= 0 $
+
+Karush-Kuhn-Tucker conditions:
+$ lambda &>= 0 \
+  f(x) &>= 0 \
+  lambda f(x) = 0 $
+
+Die Intuition aus der Primal Form ist (Gut, dass man sagen muss was die Intuition ist), dass nur mamche Datenpunkte (die support vectors (logisch)) die Margins und die Decision Boundary beinflussen.
+
+*Zeit Komplexität*: $O(D^3)$, also sehr schlecht für höherdimensionale Daten
+
+==== Dual Form
+$L_d(a)=sum_(n=1)^N a_n - 1/2 sum_(n=1)^N sum_(m=1)^N a_n a_m t_n t_m (x^sans(T) x_n)$
+
+mit conditions: 
+$ a_n &>= 0 quad forall n in underline(N) \
+  sum_(n=1)^N a_n t_n &= 0 $
+
+*Zeit Komplexität*: $O(N^3)$, also nichtmehr abhängig von $D$.
+
+Zudem sind die meisten Datenpunkte $a_n = 0$, was also sparse matrix zeugs ermöglicht (wer HPC kann, weiß, dass das gut zu haben ist).
+Ist natürlich immernoch anstrengend für große Datenmengen.
+
+Was ist aber wenn die Daten nicht linear trennbar sind?
+
+Dann lassen sich mit _Soft-Margin SVMs_ die "falsche" Punkte bestrafen, indem Slack Variablen $epsilon_n = |t_n - y(x_n)|$ für alle Trainingspunkte eingefügt werden.
+$epsilon_n = 0$ bei Korrektheit und erfährt bis $1$ eine penalty.
+
+Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter, gewichtet ($1/2 ||w||^2 + C sum_(n=1)^N epsilon_n$).
 
 = Data Science
 
