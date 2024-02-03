@@ -333,4 +333,62 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
 
 = Data Science
 
+In Data Science sprechen wir über _features_
+
+#figure(
+  table(
+    columns: (1fr, 1fr, 1fr, 1fr),
+    [Name], [Farbe], [Kosten], [Bestseller],
+    [Porsche GT], [Red], [5€], [Yes],
+    [Fiat 500e], [Blue], [$inf$], [No],
+  ),
+  caption: [Beispiel Labeled Data]
+)<FeatureTable>
+
+
+In Tabelle #ref(<FeatureTable>) gibt es die Features Name, Farbe, Kosten, Bestseller. Bestseller könnte hier ein _target-feature_ sein, was wir vorhersehen möchten.
+Die Reihen sind die _instances_.
+
+Die Datentypen sind ahnlich wie die der Deskriptiven Statistik. Zwei Sachen nur: Nominal sind wie Enums (ungeordnet). Ordinal sind z.B. Sternebewertungen.
+
+/ Visualisierung: Histogramme, Scatter Plots, Box Plots.
+/ Correlation: $"Corr"(x,y)="Cov"(x,y)/( sqrt("Var"(X)) dot sqrt("Var"(y))) $
+/ Binning: Aufteilen von _continuous features_ zu _categorical features_.\
+    Hier gibt es zwei Versionen:
+    - Equal Width Binning: z.B. $5$. dann startet der erste Bin bei dem niedrigesten z.B. $[2,7), [7,12),...$
+    - Equal Frequency Binning: z.B. $3$ pro Bin. Ist logisch.
+
+== Decision Trees
+
+Ein Decision Tree trennt die Gesamtheit in mehreren Schritten auf und versucht so zu "klassifizieren" bzw. vorherzusagen. Das Target Label steht in den _leaf nodes_. Im generellen versucht man die target labels in den Leaf Nodes zu trennen (z.B. zwischen "Yes" Bestseller oder "No" Bestseller), aber dabei sollte der Baum so klein und unkompliziert wie möglch sein.
+
+Hierfür brauchen wir ein paar Metriken (die sollte man wirklich können):
+/ Entropy: $H(t) = - sum_(k=1)^K (p(t=k) dot log_2 p(t=k))$. Man sollte hier auf die features und Wahrscheinlichkeiten aufpassen. Beispiel: 2 Blaue, 3 Rote Kugeln $H("Farbe") = -(2/5 log_2 2/5 + 3/5 log_2 3/5) approx 0.97$. \
+  Die Minimale Entropie wäre 5 Rote Kugeln $H("Farbe")=0$ und Maximale ist immer die gleichverteilung von allen Möglichen $H("Farbe") = log_2(K)$ wo $K in NN$ die Anzahl der Kugeln ist.
+/ Overall Entropy: In einem Decision Tree berechnet die Overall Entropy indem die Anzahl der Sachen im _leaf nodes_.
+  Gegebenfalls betrachten wir nur splits von dem Feature $d$. \
+  $H_W = sum_("node" in "leaf nodes"(d)) ((|"node"|)/N dot H^("node")(t))$
+/ Entropy-Information Gain: Ist einfach nur der Unterschied vom Start bis zu einem Leafnode. \
+  $"IG"(d) = H(t) - H^d_W(t)$
+/ Entropy-Information Gain Ratio: Hier nehmen wir \
+  $"GR(d)" = ("IG"(d)/H(d))$
+/ Gini Index: $"Gini"(t) = 1 - sum_(k=1)^K p(t=k)^2$ 
+
+Warum es die Entropy und den Information Gain gibt sollte klar sein, aber warum brauchen wir den $"GR"$ und $"Gini"$?
+- Information Gain Ratio bestraft feature splits die zu große Bäume erschaffen. Selbst wenn die Entropy dadurch sehr gut wird ist eine Aufteilung von jedem $n in N$ in ein einzelnen _node_ unbrauchbar. Der Information Gain Ratio würde das erkennen.
+- Gini berechnet die Verunreinigung. Ist für uns nur bedingt wichtig.
+
+Ein Decission Tree kann (und sollte) bereinigt (d.h. _pruning_) werden. Dies passiert durch:
+/ Pre-pruning: Vorzeitiges Stoppen bei einem Threshhold
+/ Post-pruning: Wenn in den Child-nodes summiert mehr misclassifications gemacht werden als zusammen im Parent lohnen sie sich nicht.
+
+Continuous Werte können mit $< 500$, $>= 500$ in ein Decision Tree eingebaut werden.
+
+==== ID3 Algorithmus
+
+Sehr simple. Versuche den Tree möglichst klein zu halten, also nehme immer ein Leaf Node wenn du nurnoch gleiche target labels, keine weiteren features hast oder einen pre-pruning threshold überschritten hast. 
+Sonst splite immer nach dem feature mit dem *höchsten* information gain (nicht doppelt splitten mit dem gleichen feature).
+
+
+
 = Evaluation and AutoML/DS
