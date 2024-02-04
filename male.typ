@@ -655,7 +655,24 @@ Reihenfolge ist hierbei wichtig:
 
 == Replay
 
+#let fitness = math.op("fitness")
 
+Wir müssen wie immer auch bei Petri-Nets die Performance messen. Hierfür haben wir den _fitness_ score:
+
+$ fitness(sigma, N) = 1/2 (1 - m/c) + 1/2 (1- r/p) $
+
+/ $sigma$: Der Trace der betrachtet wird (eine Sequence)
+/ $N$: Das Netzwerk
+/ $p$: Summe produzierte Tokens
+/ $c$: Summe konsumierte Token
+/ $m$: Missing Tokens immer wenn ein Token für eine Aktivierung fehlt (wir spielen ja ein Trace nach), erschaffen wir eins, aber merken uns die Summe.
+/ $r$: Remaining Tokens. Wenn tokens am Enden übrig bleiben.
+
+Dies können wir für einen gesamten Log ebenso machen. Wir merken uns immer die Summe.
+
+Die Nachteile von solchen Token-based Approaches sind:
+- Sie brauchen gelabelte Transitions
+- Können misleading Resultate erzeugen.
 
 == Sonstiges Data Science Zeugs
 
