@@ -58,7 +58,7 @@ Themen:
 - (AdaBoost) da nicht behandelt
 - Neural Networks
 
-//WARNING: stimmt so nicht (von der Bennenung), aber ich möchte grob einen Überblick geben der alle (Classification, Regression, Clustering, etc.) gemeinsam haben (außerhalb vom learning).
+//WARNING: stimmt so nicht (von der Benennung), aber ich möchte grob einen Überblick geben der alle (Classification, Regression, Clustering, etc.) gemeinsam haben (außerhalb vom learning).
 Das Grundkonzept des gesamten Machine Learning Bereichs, der in dieser Vorlesung behandelt wird, kümmert sich um _Klassifizierung_, also der Aufteilung in Klassen (z.B. gegeben ein Foto, ist es eine Katze oder ein Hund).
 
 === Lernformen & Lernziele
@@ -93,7 +93,7 @@ Wir werden einige Lernziele besprechen, aber es ist gut, sie vorher eingeführt 
 )
 
 Das Ziel wird aber immer sein:
-Gegeben Trainigsdaten $cal(D) = {x_1,..., x_n}$ oder mit gegebenenfalls labeln $cal(D) = {(x_1, t_1),..., (x_n, t_1)}$
+Gegeben Trainingsdaten $cal(D) = {x_1,..., x_n}$ oder mit gegebenenfalls labeln $cal(D) = {(x_1, t_1),..., (x_n, t_1)}$
 eine Funktion $y$ zu trainieren, die zu Daten, die nicht im Testset vorkommen, eine Vorhersage treffen kann.
 
 == Probability Density Estimation
@@ -112,7 +112,7 @@ Gegeben ist eine Reihe von Klassen $Cl_1,... Cl_d$, $d in NN$ (oder $Cl_a, Cl_b$
 
 == Parametrische Methoden mittels Gaussian (Normal) Verteilung
 
-Wir nehmen nun an, dass die $p(Cl_k | x)$ nach einer Normal Verteilung $theta_N=(mu, sigma)$ (genauer irgendeiner Verteilung mit Parametern $theta$) verteilt ist. Um hier die Parameter zu bestimmen, benötigen wir erneut die Hilfe von der log-likehood und der Maximum Likelihood. Wir werden das hier nochmal durchgehen:
+Wir nehmen nun an, dass die $p(Cl_k | x)$ nach einer Normal Verteilung $theta_N=(mu, sigma)$ (genauer irgendeiner Verteilung mit Parametern $theta$) verteilt ist. Um hier die Parameter zu bestimmen, benötigen wir erneut die Hilfe von der log-likelihood und der Maximum Likelihood. Wir werden das hier nochmal durchgehen:
 
 Hierfür benötigen wir die Wahrscheinlichkeit $L(theta) = p(cal(X) | theta)$, dass $cal(X)$ von den Parametern $theta$ generiert wurde. Wir wollen $L(theta)$ maximieren. Für einen einzelnen Datenpunk $x_n$ gilt $p(x_n | theta) = 1/(sqrt(2 pi) sigma) exp(-((x_n - mu)^2)/(2 sigma^2))$.
 
@@ -203,11 +203,11 @@ Der EM Algorithmus muss durch _regularization_ gegen $sigma -> 0$ geschützt wer
 
 == Linear Discriminants
 
-_Linear Discriminats_ versuchen, ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein dataset trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$). Falls dies gelingt, heißt ein dataset _linearly seperable_.
+_Linear Discriminants_ versuchen, ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein dataset trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$). Falls dies gelingt, heißt ein dataset _linearly seperable_.
 
 Häufiger wird aber $y(x) = tilde(w)^sans(T) tilde(x) = sum_(i=0)^D w_i x_i$ benutzt, wobei hier $x_0 = 1$ gesetzt ist und der Bias $w_0$ somit verrechnet wird.
 
-Es lassen sich $K in NN$ _linear discriminats_ berechnen und die Klasse $C_k$ genau dann gewählt werden, wenn $y_k (x) > y_j (x)$ für alle $j != k$.
+Es lassen sich $K in NN$ _linear discriminants_ berechnen und die Klasse $C_k$ genau dann gewählt werden, wenn $y_k (x) > y_j (x)$ für alle $j != k$.
 
 Nun aber zur Optimierungsmethoden dieser $y_k (x)$. Zunächst werden alle $k$ Diskriminanten zusammen gruppiert $tilde(W)=(tilde(w)_1, ..., tilde(w)_K) = mat(w_(10), ..., w_(K 0);
 dots.v, dots.down, dots.v;
@@ -241,19 +241,19 @@ Wir haben zwei verschiedene Arten Regression behandelt:
 
 === Linear Regression
 Für linear regression wenden wir die Least Square Regression an.
-Wir nehmen als _error function_ erneut die Sum of squares funktion $E(w)=1/2 sum_(i=1)^N (y(x_n;w) - t-n)^2$.
+Wir nehmen als _error function_ erneut die Sum of squares Funktion $E(w)=1/2 sum_(i=1)^N (y(x_n;w) - t-n)^2$.
 
 Kommen also bei dem gleichen $w=(Phi^sans(T)Phi)^(-1)Phi^sans(T)$ an wie bei den Diskriminanten. Allerdings mit $y(x) = w^sans(T) phi.alt(x)$ einer Basis Funktion
 
-Nehmen wir also als Basis Funktion $phi.alt_j(x) = x^j$. Nun ist die Wahl des Polynomgrades ein wichtiger _Hyperparameter_. Jedoch ist mit dieser Error Funktion des _overfitting_ groß, da es die unterliegende $epsilon$ noise modelliert und nicht $h(x)$.
+Nehmen wir also als Basis Funktion $phi.alt_j(x) = x^j$. Nun ist die Wahl des Polynomgrads ein wichtiger _Hyperparameter_. Jedoch ist mit dieser Error Funktion des _overfitting_ groß, da es die unterliegende $epsilon$ noise modelliert und nicht $h(x)$.
 
-Um dagegen vorzugehen, wird ein _regulerizer_ $Omega$ (z.B. $Omega = 1/2||w||^2$) eingesetzt $E(X)=L(w) + lambda Omega(w)$, hierbei ist $L(w)$ der Loss-Term also einfach die vorherige _error function_.
+Um dagegen vorzugehen, wird ein _regularizer_ $Omega$ (z.B. $Omega = 1/2||w||^2$) eingesetzt $E(X)=L(w) + lambda Omega(w)$, hierbei ist $L(w)$ der Loss-Term also einfach die vorherige _error function_.
 
 //TODO: Ridge Regression?
 
 === Logistic Regression
 
-Wir wollen die Class-posteriors $p(Cl_1 | phi.alt)$ modellieren und zwar als _linear discriminant_ $y(phi.alt) = sigma(Cl_1^sans(T) phi.alt)$. Wir gehen also nicht der generativen modellierung nach (die direkt die posterior Wahrscheinlichkeitsverteilung modellerien will), sondern *nur* der Grenze zwischen den Klassen (_discriminative modelling_) [Note: hierfür sind labels zwangsweise nötig].
+Wir wollen die Class-posteriors $p(Cl_1 | phi.alt)$ modellieren und zwar als _linear discriminant_ $y(phi.alt) = sigma(Cl_1^sans(T) phi.alt)$. Wir gehen also nicht der generativen Modellierung nach (die direkt die posterior Wahrscheinlichkeitsverteilung modellieren will), sondern *nur* der Grenze zwischen den Klassen (_discriminative modelling_) [Note: hierfür sind labels zwangsweise nötig].
 
 Falls ihr gefragt werdet, was die Vorteile sind:
 - Effizientere Parameter Nutzung, da weniger Parameter gebraucht werden.
@@ -262,7 +262,7 @@ Zudem gibt es noch zwei wichtige Fachwörter:
 / cross-entropy error: $E(w)=-sum_(n=1)^N (t_n ln y_n + (1-t_n) ln (1-y_n))$
 / Softmax Regression: $(exp(a_k))/(sum_(j=1)^K exp(a_j))$ für eine Klasse $k in underline(K)$. (Die beiden Sachen lassen sich auch verbinden :/)
 
-Für die tatsächliche Regression müssen wir wieder auf iterative methoden zurückgreifen.
+Für die tatsächliche Regression müssen wir wieder auf iterative Methoden zurückgreifen.
 In diesem Fall auf _gradient descent_.
 
 ==== Gradient Descent
@@ -287,11 +287,11 @@ verwendet zusätzlich noch ein $H^(-1)=(diff^2 E(w))/(diff w_i diff w_j)$
   caption: [Example of a SVM]
 )
 
-Bei Support Vector Machines (SVMs) wird anstatt eine Diskriminate zu verwenden, versucht, zwischen den zwei Cluster eine Safety Zone (d.h. _margin_) aufzubauen und zu maximieren.
+Bei Support Vector Machines (SVMs) wird anstatt eine Diskriminante zu verwenden, versucht, zwischen den zwei Cluster eine Safety Zone (d.h. _margin_) aufzubauen und zu maximieren.
 Das $y(x)=(t_n ( w^sans(T)x_n + b))$, welches den größten _margin_ $1/2 ||w||^2$ erschafft und $y(x) >= 1$ für alle $n in N$ (d.h. alle Trainingspunkte richtig klassifiziert), gilt als optimiert.
 
 Hieraus bauen wir uns ein Optimierungsproblem à la Quantitative Methoden (BWL😑).
-Wie genau wir dahin kommen, ist für den Panikzettel (und aus meiner Sicht) wenig relevant, doch brauchen wir hierfür _langrange multiplier_ $lambda, a_n$ für die Primal form.
+Wie genau wir dahin kommen, ist für den Panikzettel (und aus meiner Sicht) wenig relevant, doch brauchen wir hierfür _lagrange multiplier_ $lambda, a_n$ für die Primal form.
 
 ==== Primal Form
 Langrange multipliers $a_0 >= 0$
@@ -307,7 +307,7 @@ $ lambda &>= 0 \
   f(x) &>= 0 \
   lambda f(x) &= 0 $
 
-Die Intuition aus der Primal Form ist (Gut, dass man sagen muss was die Intuition ist), dass nur manche Datenpunkte (die support vectors (logisch)) die Margins und die Decision Boundary beinflussen.
+Die Intuition aus der Primal Form ist (Gut, dass man sagen muss was die Intuition ist), dass nur manche Datenpunkte (die support vectors (logisch)) die Margins und die Decision Boundary beeinflussen.
 
 *Zeit Komplexität*: $O(D^3)$, also sehr schlecht für höherdimensionale Daten oder wenn man Basis functions benutzen möchte.
 
@@ -320,8 +320,8 @@ $ a_n &>= 0 quad forall n in underline(N) \
 
 *Zeit Komplexität*: $O(N^3)$, also nichtmehr abhängig von $D$.
 
-Zudem sind die meisten Datenpunkte $a_n = 0$, was also sparse matrix zeugs ermöglicht (wer HPC kann, weiß, dass das gut zu haben ist).
-Ist natürlich immernoch anstrengend für große Datenmengen.
+Zudem sind die meisten Datenpunkte $a_n = 0$, was also sparse matrix Zeugs ermöglicht (wer HPC kann, weiß, dass das gut zu haben ist).
+Ist natürlich immer noch anstrengend für große Datenmengen.
 
 Was ist aber wenn die Daten nicht linear trennbar sind?
 
@@ -337,7 +337,7 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
 //TODO: Überarbeiten
 
 Ein _perceptron_ bekommt eine Menge $D in NN$ Inputs, gewichtet die dann und summiert sie.
-Das Ergebniss ist dann $y(x) = sigma(b + sum_(i=1)^D w_i x_i)$, $b$ ist der Bias, $sigma$ ist die _activation function_ (auch hier werden die Gewichte meistens in eine einheitliche Matrix gepackt, weswegen die Formel sich ändern kann). Perceptrons sind also nur generalisierte Lineare Discriminants.
+Das Ergebnis ist dann $y(x) = sigma(b + sum_(i=1)^D w_i x_i)$, $b$ ist der Bias, $sigma$ ist die _activation function_ (auch hier werden die Gewichte meistens in eine einheitliche Matrix gepackt, weswegen die Formel sich ändern kann). Perceptrons sind also nur generalisierte Lineare Discriminants.
 
 Nun fügen wir mehrere Layers von Perceptrons zusammen und bilden daraus ein _Multi-Layer Perceptron_. Jeder Layer fügt einen _bias_ (z.B 1) hinzu, der dann mit Weights zu jedem Perceptron der Layer verbunden ist.
 
@@ -361,26 +361,26 @@ In Data Science sprechen wir über _features_
 In Tabelle #ref(<FeatureTable>) gibt es die Features Name, Farbe, Kosten, Bestseller. Bestseller könnte hier ein _target-feature_ sein, was wir vorhersehen möchten.
 Die Reihen sind die _instances_.
 
-Die Datentypen sind ahnlich wie die der Deskriptiven Statistik. Zwei Sachen nur: Nominal sind wie Enums (ungeordnet). Ordinal sind z.B. Sternebewertungen.
+Die Datentypen sind ähnlich wie die der Deskriptiven Statistik. Zwei Sachen nur: Nominal sind wie Enums (ungeordnet). Ordinal sind z.B. Sternbewertungen.
 
 / Visualisierung: Histogramme, Scatter Plots, Box Plots.
 / Correlation: $"Corr"(x,y)="Cov"(x,y)/( sqrt("Var"(X)) dot sqrt("Var"(y))) $
 / Binning: Aufteilen von _continuous features_ zu _categorical features_.\
     Hier gibt es zwei Versionen:
-    - Equal Width Binning: z.B. $5$. dann startet der erste Bin bei dem niedrigesten z.B. $[2,7), [7,12),...$
+    - Equal Width Binning: z.B. $5$. dann startet der erste Bin bei dem niedrigsten z.B. $[2,7), [7,12),...$
     - Equal Frequency Binning: z.B. $3$ pro Bin. Ist logisch.
 
 == Decision Trees
 
-Ein Decision Tree trennt die Gesamtheit in mehreren Schritten auf und versucht so zu "klassifizieren" bzw. vorherzusagen. Das Target Label steht in den _leaf nodes_. Im generellen versucht man die target labels in den Leaf Nodes zu trennen (z.B. zwischen "Yes" Bestseller oder "No" Bestseller), aber dabei sollte der Baum so klein und unkompliziert wie möglch sein.
+Ein Decision Tree trennt die Gesamtheit in mehreren Schritten auf und versucht so zu "klassifizieren" bzw. vorherzusagen. Das Target Label steht in den _leaf nodes_. Im generellen versucht man die target labels in den Leaf Nodes zu trennen (z.B. zwischen "Yes" Bestseller oder "No" Bestseller), aber dabei sollte der Baum so klein und unkompliziert wie möglich sein.
 
 Hierfür brauchen wir ein paar Metriken (die sollte man wirklich können):
 / Entropy: $H(t) = - sum_(k=1)^K (p(t=k) dot log_2 p(t=k))$. Man sollte hier auf die features und Wahrscheinlichkeiten aufpassen. Beispiel: 2 Blaue, 3 Rote Kugeln $H("Farbe") = -(2/5 log_2 2/5 + 3/5 log_2 3/5) approx 0.97$. \
   Die Minimale Entropie wäre 5 Rote Kugeln $H("Farbe")=0$ und Maximale ist immer die gleichverteilung von allen Möglichen $H("Farbe") = log_2(K)$ wo $K in NN$ die Anzahl der Kugeln ist.
 / Overall Entropy: In einem Decision Tree berechnet die Overall Entropy indem die Anzahl der Sachen im _leaf nodes_.
-  Gegebenfalls betrachten wir nur splits von dem Feature $d$. \
+  Gegebenenfalls betrachten wir nur splits von dem Feature $d$. \
   $H_W = sum_("node" in "leaf_nodes"(d)) ((|"node"|)/N dot H^("node")(t))$
-/ Entropy-Information Gain: Ist einfach nur der Unterschied vom Start bis zu einem Leafnode. \
+/ Entropy-Information Gain: Ist einfach nur der Unterschied vom Start bis zu einem _leaf node_. \
   $"IG"(d) = H(t) - H^d_W(t)$
 / Entropy-Information Gain Ratio: Hier nehmen wir \
   $"GR(d)" = ("IG"(d)/H(d))$
@@ -390,24 +390,24 @@ Warum es die Entropy und den Information Gain gibt sollte klar sein, aber warum 
 - Information Gain Ratio bestraft feature splits die zu große Bäume erschaffen. Selbst wenn die Entropy dadurch sehr gut wird, ist eine Aufteilung von jedem $n in N$ in ein einzelnen _node_ unbrauchbar. Der Information Gain Ratio würde das erkennen.
 - Gini berechnet die Verunreinigung. Ist für uns nur bedingt wichtig.
 
-Ein Decission Tree kann (und sollte) bereinigt werden (_pruning_). Dies passiert durch:
-/ Pre-pruning: Vorzeitiges Stoppen bei einem Threshhold
+Ein Decision Tree kann (und sollte) bereinigt werden (_pruning_). Dies passiert durch:
+/ Pre-pruning: Vorzeitiges Stoppen bei einem Threshold
 / Post-pruning: Wenn in den Child-nodes summiert mehr misclassifications gemacht werden, als zusammen im Parent, lohnen sie sich nicht.
 
 Continuous Werte können mit $< 500$, $>= 500$ in ein Decision Tree eingebaut werden.
 
 ==== ID3 Algorithmus
 
-Sehr simple. Versuche den Tree möglichst klein zu halten, also nehme immer ein Leaf Node wenn du nurnoch gleiche target labels, keine weiteren features oder einen pre-pruning threshold überschritten hast.
-Sonst splite immer nach dem feature mit dem *höchsten* information gain (nicht doppelt splitten mit dem gleichen feature).
+Sehr simple. Versuche den Tree möglichst klein zu halten, also nehme immer ein Leaf Node wenn du nur noch gleiche target labels, keine weiteren features oder einen pre-pruning threshold überschritten hast.
+Sonst splitte immer nach dem feature mit dem *höchsten* information gain (nicht doppelt splitten mit dem gleichen feature).
 
 == Clustering
 
 Clustering fällt in die Kategorie des unsupervised learning.
 
 Für clustering müssen wir irgendwie messen, wie weit wir entfernt sind (hier in 2 Dimensionen):
-/ Euclidian Distance: $d(x,y) = sqrt((x_1 - y_1)^2 + (x_2 - y_2)^2)$
-/ Manhatten: $d(x,y) = |x_1-y_1| + |x_2 - y_2|$
+/ Euclidean Distance: $d(x,y) = sqrt((x_1 - y_1)^2 + (x_2 - y_2)^2)$
+/ Manhattan: $d(x,y) = |x_1-y_1| + |x_2 - y_2|$
 / Chebychev: $d(x,y) = limits(max)_i (|x_i - y_i|)$
 / Minkowski ($L^p$): $d(x,y) = root(p, limits(sum)_i |x_i - y_i|^p)$
 
@@ -417,15 +417,15 @@ Erzeuge $k in NN$ _centroid_ (zufällig). Weise dann jedem Datenpunkt den nächs
 
 Es ist garantiert, dass dies irgendwann konvergiert, allerdings hängt das Ergebnis von den Startpositionen der Centroids ab. Ein Problem ist, dass nur "kreisförmige" Cluster gefunden werden können, insbesondere keine komplizierten verschachtelten Formen.
 
-Eine häufige Error funktion ist Sum-of-Squares: $E(x,C) = sum_(i=1)^k sum_(x_j in C_i) d(x_j, c_i)^2$.
+Eine häufige Error Funktion ist Sum-of-Squares: $E(x,C) = sum_(i=1)^k sum_(x_j in C_i) d(x_j, c_i)^2$.
 
 === k-medoids
 
-Anstant eigene _centroids_ zu kreiren nutze manche Datenpunkte (_medoids_).
+Anstatt eigene _centroids_ zu erzeugen nutze manche Datenpunkte (_medoids_).
 
-Weise jedem Datenpunkt einen _medoid_ zu. Falls ein Punkt $x_i$ den Error veringert, tausche ihn mit einem _medioid_.
+Weise jedem Datenpunkt einen _medoid_ zu. Falls ein Punkt $x_i$ den Error verringert, tausche ihn mit einem _medoid_.
 
-Die Intuition ist richitg und k-medioids ist komplexer (zeitlich) zu berechnen, aber es ist weniger sensitiv zu outliers, da nicht ein einzelner Punkt den _centroid_ außerhalb vom wirklichen Cluster ziehen kann. In beiden Fällen ist $k$ natürlich ein Hyperparameter.
+Die Intuition ist richtig und k-medoids ist komplexer (zeitlich) zu berechnen, aber es ist weniger sensitiv zu outliers, da nicht ein einzelner Punkt den _centroid_ außerhalb vom wirklichen Cluster ziehen kann. In beiden Fällen ist $k$ natürlich ein Hyperparameter.
 
 == Aglomeratives/Dendrogram
 
@@ -443,17 +443,17 @@ Hier wird die Bottom-Up Technik verwendet um zu clustern.
 4. Schritt 2 bis es nur noch einen Cluster gibt.
 
 
-Bild #ref(<dendrogram>) zeigt die Visualisierung anhand eines Dendrograms. Ich denke keine Erklärung notwendig.
+Bild #ref(<dendrogram>) zeigt die Visualisierung anhand eines Dendrogramm. Ich denke keine Erklärung notwendig.
 
 == DB-Scan
 
-Keien sorge wir sind nicht wieder bei DBIS gelandet.
+Keine sorge wir sind nicht wieder bei DBIS gelandet.
 
 Zwei Punkte $x_i, x_j$ sind density-connected falls es ein $x_k$ gibt, das mit beiden Verbunden ist. Hieraus werden dann _core-points_ gebildet die mit _MinPts_ Punkten in $epsilon$ Nähe sind.
 
 Core points werden dann zu clustern oder clusters werden um core-points erweitert.
 
-Am Ende lassen sich beliebige Formen clustern, anders als k-means (wird aber häufig wegen einfachheit genutzt).
+Am Ende lassen sich beliebige Formen clustern, anders als k-means (wird aber häufig wegen Einfachheit genutzt).
 
 == Frequent Itemsets
 #let support = math.op("support")
@@ -461,8 +461,8 @@ Am Ende lassen sich beliebige Formen clustern, anders als k-means (wird aber hä
 
 Notation:
 - $I={I_1, ..., I_D}$ sind alle möglichen Items
-- $A subset.eq I$ ist dann ein Itemset (_transaction_ bei nichtleerem $A$).
-- Ein Dataset $X$ ist ein multiset von Transaktionen (mehere gleiche sind möglich).
+- $A subset.eq I$ ist dann ein _itemset_ (_transaction_ bei nichtleerem $A$).
+- Ein Dataset $X$ ist ein _multiset_ von Transaktionen (mehrere gleiche sind möglich).
 
 Wichtige Metriken sind $support(A) = ("support_count"(A))/(|X|) = (|[T in X | A subset.eq T]|)/(|X|)$
 
@@ -483,7 +483,7 @@ Zwei Algorithmen
 == Apriori
 
 1. Candidate Generation. Nutze $L_k$ (Frequent Itemsets der Länge $k$) um die Kandidaten $C_(k+1)$ zu generieren.
-2. Pruning Supersets von _infrequent_ itemsets können nicht _frequent_ sein.
+2. Pruning Supersets von _infrequent_ Itemsets können nicht _frequent_ sein.
 3. Testen.
 
 Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
@@ -524,7 +524,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Grapes, Apple}],
     [{Grapes, Banana}],
     [{Orange, Apple}],
-    [{Orage, Banana}],
+    [{Orange, Banana}],
     [{Apple, Banana}],
   ),
   table(
@@ -534,7 +534,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Grapes, Apple}], [3],
     [{Grapes, Banana}], [2],
     [{Orange, Apple}], [2],
-    [{Orage, Banana}], [3],
+    [{Orange, Banana}], [3],
     [{Apple, Banana}], [3]
   ),
   table(
@@ -543,7 +543,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Grapes, Apple}], [3],
     [{Grapes, Banana}], [2],
     [{Orange, Apple}], [2],
-    [{Orage, Banana}], [3],
+    [{Orange, Banana}], [3],
     [{Apple, Banana}], [3]
   ),
 )
@@ -554,13 +554,13 @@ Dies ist jeweils eine Iteration. Erst selection, dann pruning dann testing.
 
 1. Gehe alle Items $I_1, ..., I_D$ durch und sortiere nach Häufigkeit.
 2. Lösche alle _non-frequent_ items.
-3. Gehe durch alle Transaktionen und sortiere die Items nach der obrigen Häufigkeit.
+3. Gehe durch alle Transaktionen und sortiere die Items nach der obigen Häufigkeit.
 4. Baue daraus einen FP-Tree.
   1. Starte bei der Gesamtzahl als Wurzel
   2. Gehe die Transaktionen durch und füge sie an den Baum. Notiere die Häufigkeit der Items.
   3. Mine den FP-Tree um die Frequent Items zu bekommen. Hier gibt es Taktik, aber ich würde es raten in der Klausur einfach zu "machen".
 
-Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei durchläufe des Datensatzen nötig.
+Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei Durchläufen des Datensatzes nötig.
 
 === Association-Rules
 / Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A sect B = emptyset$.
@@ -570,7 +570,7 @@ $ support(A => B) &= (supportCount(A union B))/(supportCount(emptyset)) \
 
 $"conf"$ ist die Confidence.
 
-Da es noch mehr dieser Rules als frequent itemsets gibt, können wir auch hier wieder pruning und redundant rules löschen.
+Da es noch mehr dieser Rules als frequent Itemsets gibt, können wir auch hier wieder pruning und redundant rules löschen.
 
 > A trend appears in several different groups of
 data but disappears or reverses when these
@@ -594,7 +594,7 @@ Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I | suppor
 
 Nun mappen wir _Sequences_ auf die drunterliegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $<{a,c}, {a,b,c}>$ wird zu $<{{a},{c}},{{a},{b},{c},{a,b}>$
 
-Nun erstellen wir wieder die Kandidaten und prunen das Ergebniss.
+Nun erstellen wir wieder die Kandidaten und prunen das Ergebnis.
 
 Dann müssen wir noch testen ob $"min_sup"$ eingehalten wurde.
 
@@ -602,16 +602,16 @@ Wirklich interessante Daten müssen dann mit constraints gefunden werden.
 
 == Time-Series Forecasting
 
-Die Analyse betrachte ich als nicht wirklich relevant und überspringe sie. Falls jemand anders hier eine kleine Zusammenfassung schreibt wäre das vllt gut. Nun aber zum _forecasting_
+Die Analyse betrachte ich als nicht wirklich relevant und überspringe sie. Falls jemand anders hier eine kleine Zusammenfassung schreibt wäre das vielleicht gut. Nun aber zum _forecasting_
 
-/ Moving Average: Regression der vorherigen aufsummierten fehler.
+/ Moving Average: Regression der vorherigen aufsummierten Fehler.
 
 == Process-Mining
-In Process-Mining geht es erneut um ID-Activity-Timestamp Daten. Wir werden die Event-Daten in 4 Diagrammen modelieren:
+In Process-Mining geht es erneut um ID-Activity-Timestamp Daten. Wir werden die Event-Daten in 4 Diagrammen modellieren:
 
 === Directly-Follows Graph (DFG)
 
-Ein DFG ist simplich trivial. Ein Beispiel in Abbildung #ref(<dfg>).
+Ein DFG ist wirklich trivial. Ein Beispiel in Abbildung #ref(<dfg>).
 
 #figure(
   image("img/male/dfg.png", height: 8em),
@@ -627,7 +627,7 @@ Und ja wir verknüpfen bereits dagewesen Knoten miteinander.
   caption: [Beispiel eines Petri-Nets]
 ) <petri-net>
 
-Ein Perti-Net besteht aus einem Start, einem Endknoten und mehreren Transitions und Places.
+Ein Petri-Net besteht aus einem Start, einem Endknoten und mehreren Transitions und Places.
 Wir fangen beim Start an und legen einen Token hin. Nun gilt dir simple Firing Regel:
 Wenn ein Transition alle Inputs erfüllt hat (dort ein Token liegt), dann tut es auf alle Ausgaben ein Token (und löscht die Eingaben).
 
@@ -653,11 +653,16 @@ Reihenfolge ist hierbei wichtig:
 3. _parallel cut_
 4. _redo-loop cut_
 
+== Replay
+
+
+
 == Sonstiges Data Science Zeugs
 
-Preprossesing ist sehr häufig sehr wichtig. Vorallem bei Big-Data müssen die Datenmengen reduziert werden:
-/ Feature Reduction: Autoencoders sind NNs die eine automatische effizientere encoding der Datenmachen. Principal Component Analysis kombiniert die features zusammen. \
+Preprocessing ist sehr häufig sehr wichtig. Vor allem bei Big-Data müssen die Datenmengen reduziert werden:
+/ Feature Reduction: Autoencoders sind NNs die eine automatische effizientere encoding der Daten machen. Principal Component Analysis kombiniert die features zusammen. \
   Aber auch Feature Selection, also aussortieren unnötiger Features, gehört dazu.
 / Instance Reduction: Sampling (z.B. nehme $N$ zufällige instances)
+
 
 = Evaluation and AutoML/DS
