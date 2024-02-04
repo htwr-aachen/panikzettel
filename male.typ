@@ -674,6 +674,56 @@ Die Nachteile von solchen Token-based Approaches sind:
 - Sie brauchen gelabelte Transitions
 - Können misleading Resultate erzeugen.
 
+== Text Mining
+
+Die Steps bei Text-Mining sind:
+- Wir haben eine Datenbank
+- Daraus extrahieren wir einige Pieces(das können Wörter, Sätze, etc. sein) zusammen ein Corpus
+- Den Preprocessen wir
+- Transformieren in zu umgänglicheren Strukturen
+- Modellieren ihn
+- Und finden somit Patterns
+ 
+Wir versuchen also aus unstrukturierten Text, strukturierte Daten zu machen.
+
+Hier wird preprocessing wirklich wichtig.
+
+=== Preprocessing
+
+Wir verwenden Tokenization, Stop-Word removal und Token normalization.
+
+Wir splitten Sätze in Tokens (z.B. anhand von Lehrzeichen) müssen dabei aber auf einige Dinge achten: "He's" sollte z.B. zu "He", "is" werden oder vielleicht "New York City." -> "New York City" statt "New", "York", "City."
+
+Dann entfernen wir unnötige Informationen (Stop-Words) wie: Artikel, Präpositionen, etc.
+Die Informationen könnten natürlich wichtig sein, ist immer Abwägungssache.
+
+Schließlich wollen wir noch die Tokens auf einen Nenner bringen hierfür wenden wir an:
+// TODO: Ich hoffe das Stimmt überhautp
+/ Stemming: Wörter nur mit deren Wortstamm. "verzweifeln -> verzweifel" (das muss kein Wort sein)
+/ Lemmatization: Dasselbe wie Stemming, nur das wir ein "base" Wort aus dem Wörterbuch benutzen z.B. "verzweifelt"
+
+=== Modellierung
+
+#let tf = math.op("tf")
+#let idf = math.op("idf")
+#let tfidf = math.op("tfidf")
+
+Hierfür gibt es verschiedene Models:
+/ Bag of Words: _multiset_ der Wörter in einem Corpus. Wir verlieren somit die Reihenfolge
+/ Document Term Matrix: Wir listen alle Wörter in columns auf und haben als Reihen die Dokumente, die Zellen sind einfach die Anzahl.
+/ Term Frequency: Anzahl von $w$ in Dokument $d$ \
+  $tf(w,d) = |d_w|$
+/ Inverse Document Frequency: Je unwahrscheinlicher das Wort, desto höher der Wert. Stellt besonders Informationsbringende Wörter heraus. \
+  $idf(w,c) = log_2((|c|)/("Anzahl der Dokumente in" c "die" w "enthalten"))$
+/ TF-IDF Score: Kombination aus den beiden
+  $tfidf(w,d,c) = tf(w,d) dot idf(w,c)$
+
+=== Sonstiges
+
+Die $N$-Gram Anwendungen sind Wissenswert. Nutze die letzten $N$ Wörter um das nächste zu vorherzusagen. Das rechnen wir mit Wahrscheinlichkeiten aus, aber da wir nicht jede Wort Kombination in unseren Corpora haben, müssen wir die Wahrscheinlichkeitsverteilung smoothen um nicht nur Nullen zu haben.
+
+Häufig werden auch statt Wörtern ein Vektorencoding genutzt, die von einem Neural Network produziert wird. Das ist einfach effizienter.
+
 == Sonstiges Data Science Zeugs
 
 Preprocessing ist sehr häufig sehr wichtig. Vor allem bei Big-Data müssen die Datenmengen reduziert werden:
