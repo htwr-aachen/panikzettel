@@ -733,3 +733,43 @@ Preprocessing ist sehr häufig sehr wichtig. Vor allem bei Big-Data müssen die 
 
 
 = Evaluation and AutoML/DS
+
+#let TP = "TP"
+#let TN = "TN"
+#let FP = "FP"
+#let FN = "FN"
+
+Wir wollen beantworten:
+- Wie gut ist das ML Model?
+- Wie gut könnte es sein?
+
+#figure(
+  image("img/male/eval-matrix.png", height:8em),
+  caption: [Beispiel Confusion Matrix] 
+) <confusion-matrix>
+
+Wie bei Statistischen Tests und Studien gibt es hier ein Falsch positives FP, Falsch negatives FN und Wahr positives TP und Wahr negatives TN Ergebnis. 
+
+Darauf aufbauend haben wir erneut einige Scores:
+/ Accuracy: $(TP+TN)/(TP+TN+FP+FN)$
+/ Misclassification Rate: $(FP + FN)/(TP+TN+FP+FN)$
+/ True Positiv Rate: $TP/(TP+FN)$
+/ False Negative Rate: $FN/(TP+FN)$
+/ True Negative Rate: $TN/(TN+FP)$ 
+/ False Positive Rate: $FP/(TN+FP)$
+/ Recall: $= "TPR" = TP/(TP+FN)$
+/ Precision: $TP/(TP+FP)$
+/ $F_1$: $2 * ("precision" dot "recall")/("precision" + "recal")$
+
+Wie viele Trainingsdaten brauchen wir und wie sind die Aufgeteilt?
+
+Wir benötigen ein Trainingsset soweit ist's klar. Aber um overfitting während des Trainings zu reduzieren benötigen wir ein Validation set. Hiermit können wir abbrechen bei Overfitten, oder Hyperparameter Optimierungen ausführen.
+
+Aber schließlich brauchen wir noch ein Testing set um die Evaluation des Modells auszuführen. Diese Validierung machen wir meistens mit verschiedenen Modellen gleichzeitig und wählst dann mit den folgenden Methoden die Testdaten aus:
+/ k-Fold Cross Validation: Wähle für $N/k$ große Daten aus. $N$ ist die gesamt Testdaten Größe und wir haben $k$ unterschiedliche Folds.
+/ Jackknifing: Wie k-Fold aber wähle nur eine Testdaten _instance_.
+/ Bootstrapping: Wähle $m in NN$ _instances_ zufällig aus.
+
+Da FP und FN unterschiedliche Kosten haben können wenden wir eine Profit-Matrix an, die jeweils die unterschiedlichen Kategorien gewichtet.
+
+
