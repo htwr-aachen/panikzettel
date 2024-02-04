@@ -20,7 +20,7 @@
 
 Dieser Panikzettel ist über die neue Vorlesung "Elements of Machine Learning and Data Science", ein Pflichtfach des neuen Informatik Bachelors der RWTH Aachen.
 
-Dieser Panikzettel ist Open Source auf #link("https://git.rwth-aachen.de/jonas.max.schneider/panikzettel", `https://git.rwth-aachen.de/jonas.max.schneider/panikzettel`). Wir freuen uns über Anmerkungen und Verbessungsvorschläge (auch von offiziellen Quellen). 
+Dieser Panikzettel ist Open Source auf #link("https://git.rwth-aachen.de/jonas.max.schneider/panikzettel", `https://git.rwth-aachen.de/jonas.max.schneider/panikzettel`). Wir freuen uns über Anmerkungen und Verbessungsvorschläge (auch von offiziellen Quellen).
 
 Es ist häufig schwierig, die genauen Themenschwerpunkte der Vorlesung und Prüfung zu erkennen. Hier allerdings besonders, da es die erste Iteration des neuen Fachs ist und keine Altklausuren zu Rate stehen.
 Wir werden deshalb einige Zeit (und Feedback von späteren Semestern) brauchen um besser Zusammenfassen zu können.
@@ -58,13 +58,13 @@ Themen:
 - (AdaBoost) da nicht behandelt
 - Neural Networks
 
-//WARNING: stimmt so nicht (von der Bennenung), aber ich möchte grob einen Überblick geben der alle (Classification, Regression, Clustering, etc.) gemeinsam haben (außerhalb vom learning). 
-Das Grundkonzept des gesamten Machine Learning Bereichs, der in dieser Vorlesung behandelt wird, kümmert sich um _Klassifizierung_, also der Aufteilung in Klassen (z.B. gegeben ein Foto, ist es eine Katze oder ein Hund). 
+//WARNING: stimmt so nicht (von der Bennenung), aber ich möchte grob einen Überblick geben der alle (Classification, Regression, Clustering, etc.) gemeinsam haben (außerhalb vom learning).
+Das Grundkonzept des gesamten Machine Learning Bereichs, der in dieser Vorlesung behandelt wird, kümmert sich um _Klassifizierung_, also der Aufteilung in Klassen (z.B. gegeben ein Foto, ist es eine Katze oder ein Hund).
 
 === Lernformen & Lernziele
-Machine Learning Algorithmen lernen mit Trainingsdaten. 
+Machine Learning Algorithmen lernen mit Trainingsdaten.
 Diese können bereits (teilweise) klassifiziert sein (d.h._labeled_), woraus sich somit drei Arten zu lernen ergeben:
-- Supervised learning 
+- Supervised learning
 - Semi-supervised learning
 - Unsupervised learning
 
@@ -75,33 +75,33 @@ Wir werden einige Lernziele besprechen, aber es ist gut, sie vorher eingeführt 
   columns: (auto, 1fr, 1fr),
   rows: 3,
   [], [Discrete Targets], [Continuous targets],
-  [Known Targets \ / Supervised Learning], 
+  [Known Targets \ / Supervised Learning],
   [_Classification_ \
     Einteilung in verschiedene (zuvor bekannte) Klassen
-  ], 
-  [Regression \ 
+  ],
+  [Regression \
     Versuchen mittels Funktionen (z.B. lineare) Daten zu beschreiben.
   ],
-  [Unknown Targets \ / Unsupervised Learning], 
-  [Clustering \ 
+  [Unknown Targets \ / Unsupervised Learning],
+  [Clustering \
     Einteilung unbekannter Datenpunkte in _Clusters_, die stärker untereinander als mit anderen Verbunden sind.
-  ], 
+  ],
   [Density estimation \
       Versuchen, eine Wahrscheinlichkeitsverteilung abzubilden von zufälligen samples.
       Anders als bei Regression ist hier die Datenfunktion nicht bekannt / es wurde nicht vorher gelabeled.
   ]
 )
 
-Das Ziel wird aber immer sein: 
+Das Ziel wird aber immer sein:
 Gegeben Trainigsdaten $cal(D) = {x_1,..., x_n}$ oder mit gegebenenfalls labeln $cal(D) = {(x_1, t_1),..., (x_n, t_1)}$
-eine Funktion $y$ zu trainieren, die zu Daten, die nicht im Testset vorkommen, eine Vorhersage treffen kann. 
+eine Funktion $y$ zu trainieren, die zu Daten, die nicht im Testset vorkommen, eine Vorhersage treffen kann.
 
 == Probability Density Estimation
 
-Wie wahrscheinlich ist es, dass wir ein $x$ sehen unter der Bedingung, dass wir in der Klasse $cal(C)_k$ sind, also $p(x | cal(C)_k)$. 
+Wie wahrscheinlich ist es, dass wir ein $x$ sehen unter der Bedingung, dass wir in der Klasse $cal(C)_k$ sind, also $p(x | cal(C)_k)$.
 Diese _likelihood_ ist genau das Gegenteil von dem was wir brauchen: $p(cal(C)_k | x)$.
 
-Somit stellen wir es mit den _a-priori probabilities_ $p(cal(C)_k)$ und Bayes Theorem um: 
+Somit stellen wir es mit den _a-priori probabilities_ $p(cal(C)_k)$ und Bayes Theorem um:
 $ p(cal(C)_k | x) = (p(x | cal(C)_k)p(cal(C)_k))/(p(x)) = (p(x | cal(C)_k)p(cal(C)_k))/(sum_j p(x | cal(C)_j) p(cal(C)_j)) $
 
 Dies ist die _posterior_ Wahrscheinlichkeit, die wir benötigen, um x klassifizieren.
@@ -118,7 +118,7 @@ Hierfür benötigen wir die Wahrscheinlichkeit $L(theta) = p(cal(X) | theta)$, d
 
 Da alle Variablen i.i.d. (d.h. unabhängig und identisch verteilt) sind, können wir die Wahrscheinlichkeiten summieren: $L(theta)=sum_(n=1)^N p(x_n | theta)$ und das _negative log-likelihood_ bilden $E(theta)= - ln L(theta) = - sum_1^n ln p(x_n | theta)$ (#emoji.warning $ln a*b = ln a + ln b$).
 
-Um nun das Maximum zu berechnen ist nun die Ableitung von $E(theta)$ erforderlich: 
+Um nun das Maximum zu berechnen ist nun die Ableitung von $E(theta)$ erforderlich:
 $ diff/(diff theta) E(theta) &= - limits(sum_(n=1)^N (1/p(x_n | theta)) dot diff/(diff theta) p(x_n | theta)) \
 &= ... = 1/sigma^2 sum_(n=1)^N x_n - N mu =^! 0 \
 &<==> hat(mu) = 1/N sum_(n=1)^N x_n and hat(sigma)^2 = 1/N sum_(n=1)^N (x_n - hat(mu)^)^2 $ .
@@ -153,12 +153,12 @@ Wir haben somit zwei Möglichkeiten zu approximieren:
 === Kernel Methods
 
 Wir bilden einen Kernel $k$ mit $k(u) >= 0$ und $integral k(u) d u = 1$
-Hierbei beschreibt $u$ einen Vektor von einem Punkt $x$ zu einem $x_n$. 
+Hierbei beschreibt $u$ einen Vektor von einem Punkt $x$ zu einem $x_n$.
 Das $k$ gewichtet diese Distanz dann.
 
 Somit gilt $K = sum_(n=1)^N k(x - x_n)$ und $p(Cl_k | x) = K/(N V) = 1/N sum_(n=1)^N k(x-x_n)$
 
-Der parzen-window (kernel), indem man einen Würfel der Höhe $h in NN$ um $x$ aufbaut, wäre als Beispiel 
+Der parzen-window (kernel), indem man einen Würfel der Höhe $h in NN$ um $x$ aufbaut, wäre als Beispiel
 $ k = cases(1/(h^D) "if" |u_i| <= 1/2h\, i=1\,...D,
            0 "else") $
 Also skaliert 1, falls $x_n$ (in allen Dimensionen) im Würfel liegt und $0$ sonst.
@@ -190,7 +190,7 @@ Hierfür gibt es kein analytisches Verfahren, die Maximum Log Likelihoods zu fin
 Der _E-STEP_: $ gamma_j(x_n) <- (pi_j cal(N)(x_n | mu_j, Sigma_j))/(sum_(k=1)^K pi_k cal(N)(x_n | mu_k, Sigma_k)) $
 Hier ist $Sigma$ die Kovarianzmatrix.
 
-Der _M-STEP_: 
+Der _M-STEP_:
 #grid(
   columns: (1fr,1fr),
   $ hat(N) &<- sum_(n=1)^N gamma_j(x_n) \
@@ -203,7 +203,7 @@ Der EM Algorithmus muss durch _regularization_ gegen $sigma -> 0$ geschützt wer
 
 == Linear Discriminants
 
-_Linear Discriminats_ versuchen, ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein dataset trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$). Falls dies gelingt, heißt ein dataset _linearly seperable_. 
+_Linear Discriminats_ versuchen, ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein dataset trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$). Falls dies gelingt, heißt ein dataset _linearly seperable_.
 
 Häufiger wird aber $y(x) = tilde(w)^sans(T) tilde(x) = sum_(i=0)^D w_i x_i$ benutzt, wobei hier $x_0 = 1$ gesetzt ist und der Bias $w_0$ somit verrechnet wird.
 
@@ -249,11 +249,11 @@ Nehmen wir also als Basis Funktion $phi.alt_j(x) = x^j$. Nun ist die Wahl des Po
 
 Um dagegen vorzugehen, wird ein _regulerizer_ $Omega$ (z.B. $Omega = 1/2||w||^2$) eingesetzt $E(X)=L(w) + lambda Omega(w)$, hierbei ist $L(w)$ der Loss-Term also einfach die vorherige _error function_.
 
-//TODO: Ridge Regression? 
+//TODO: Ridge Regression?
 
 === Logistic Regression
 
-Wir wollen die Class-posteriors $p(Cl_1 | phi.alt)$ modellieren und zwar als _linear discriminant_ $y(phi.alt) = sigma(Cl_1^sans(T) phi.alt)$. Wir gehen also nicht der generativen modellierung nach (die direkt die posterior Wahrscheinlichkeitsverteilung modellerien will), sondern *nur* der Grenze zwischen den Klassen (_discriminative modelling_) [Note: hierfür sind labels zwangsweise nötig]. 
+Wir wollen die Class-posteriors $p(Cl_1 | phi.alt)$ modellieren und zwar als _linear discriminant_ $y(phi.alt) = sigma(Cl_1^sans(T) phi.alt)$. Wir gehen also nicht der generativen modellierung nach (die direkt die posterior Wahrscheinlichkeitsverteilung modellerien will), sondern *nur* der Grenze zwischen den Klassen (_discriminative modelling_) [Note: hierfür sind labels zwangsweise nötig].
 
 Falls ihr gefragt werdet, was die Vorteile sind:
 - Effizientere Parameter Nutzung, da weniger Parameter gebraucht werden.
@@ -263,9 +263,9 @@ Zudem gibt es noch zwei wichtige Fachwörter:
 / Softmax Regression: $(exp(a_k))/(sum_(j=1)^K exp(a_j))$ für eine Klasse $k in underline(K)$. (Die beiden Sachen lassen sich auch verbinden :/)
 
 Für die tatsächliche Regression müssen wir wieder auf iterative methoden zurückgreifen.
-In diesem Fall auf _gradient descent_. 
+In diesem Fall auf _gradient descent_.
 
-==== Gradient Descent 
+==== Gradient Descent
 
 $ w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((diff E(W))/(diff w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w)) $
 
@@ -275,7 +275,7 @@ Ist die _learning rate_ zu hoch, wird das Optimum "übersprungen", bei zu kleine
 Die Newton-Raphson Methode (orientiert sich an der zweiten Taylorentwicklung)
 verwendet zusätzlich noch ein $H^(-1)=(diff^2 E(w))/(diff w_i diff w_j)$
 
-// Bei der Logistischen Regression versuchen wir die posteriors $p(Cl_k | x)$ durch eine linear discriminant function zu modellieren. 
+// Bei der Logistischen Regression versuchen wir die posteriors $p(Cl_k | x)$ durch eine linear discriminant function zu modellieren.
 
 //Zunächst $p(Cl_1 | x) = sigma(a)$ mit $a = ln (p(x | Cl_1)p(Cl_1))/(p(x|Cl_2)p(Cl_2))$ beschreibt der logistic sigmoid eine posterior probability und modellieren so $p(Cl_1 | x) = y(x) = sigma(w^sans(T)x); quad p(C_2|x)=1-p(Cl_1|x)$
 
@@ -297,9 +297,9 @@ Wie genau wir dahin kommen, ist für den Panikzettel (und aus meiner Sicht) weni
 Langrange multipliers $a_0 >= 0$
 $ L(w,b,a)=1/2 ||w||^2 - sum_(n=1)^N a_n [t_n(w^sans(T)x_n + b) -1] $
 
-Conditions: 
+Conditions:
 $ a_n &>= 0 \
-  t_n(w^sans(T)x_n + b) -1 &>= 0 \ 
+  t_n(w^sans(T)x_n + b) -1 &>= 0 \
   a_n[t_n(w^sans(T)x_n + b) -1] &= 0 $
 
 Karush-Kuhn-Tucker conditions:
@@ -314,7 +314,7 @@ Die Intuition aus der Primal Form ist (Gut, dass man sagen muss was die Intuitio
 ==== Dual Form
 $L_d(a)=sum_(n=1)^N a_n - 1/2 sum_(n=1)^N sum_(m=1)^N a_n a_m t_n t_m (x^sans(T) x_n)$
 
-mit conditions: 
+mit conditions:
 $ a_n &>= 0 quad forall n in underline(N) \
   sum_(n=1)^N a_n t_n &= 0 $
 
@@ -384,7 +384,7 @@ Hierfür brauchen wir ein paar Metriken (die sollte man wirklich können):
   $"IG"(d) = H(t) - H^d_W(t)$
 / Entropy-Information Gain Ratio: Hier nehmen wir \
   $"GR(d)" = ("IG"(d)/H(d))$
-/ Gini Index: $"Gini"(t) = 1 - sum_(k=1)^K p(t=k)^2$ 
+/ Gini Index: $"Gini"(t) = 1 - sum_(k=1)^K p(t=k)^2$
 
 Warum es die Entropy und den Information Gain gibt sollte klar sein, aber warum brauchen wir den $"GR"$ und $"Gini"$?
 - Information Gain Ratio bestraft feature splits die zu große Bäume erschaffen. Selbst wenn die Entropy dadurch sehr gut wird, ist eine Aufteilung von jedem $n in N$ in ein einzelnen _node_ unbrauchbar. Der Information Gain Ratio würde das erkennen.
@@ -398,12 +398,12 @@ Continuous Werte können mit $< 500$, $>= 500$ in ein Decision Tree eingebaut we
 
 ==== ID3 Algorithmus
 
-Sehr simple. Versuche den Tree möglichst klein zu halten, also nehme immer ein Leaf Node wenn du nurnoch gleiche target labels, keine weiteren features oder einen pre-pruning threshold überschritten hast. 
+Sehr simple. Versuche den Tree möglichst klein zu halten, also nehme immer ein Leaf Node wenn du nurnoch gleiche target labels, keine weiteren features oder einen pre-pruning threshold überschritten hast.
 Sonst splite immer nach dem feature mit dem *höchsten* information gain (nicht doppelt splitten mit dem gleichen feature).
 
 == Clustering
 
-Clustering fällt in die Kategorie des unsupervised learning. 
+Clustering fällt in die Kategorie des unsupervised learning.
 
 Für clustering müssen wir irgendwie messen, wie weit wir entfernt sind (hier in 2 Dimensionen):
 / Euclidian Distance: $d(x,y) = sqrt((x_1 - y_1)^2 + (x_2 - y_2)^2)$
@@ -421,7 +421,7 @@ Eine häufige Error funktion ist Sum-of-Squares: $E(x,C) = sum_(i=1)^k sum_(x_j 
 
 === k-medoids
 
-Anstant eigene _centroids_ zu kreiren nutze manche Datenpunkte (_medoids_). 
+Anstant eigene _centroids_ zu kreiren nutze manche Datenpunkte (_medoids_).
 
 Weise jedem Datenpunkt einen _medoid_ zu. Falls ein Punkt $x_i$ den Error veringert, tausche ihn mit einem _medioid_.
 
@@ -430,7 +430,7 @@ Die Intuition ist richitg und k-medioids ist komplexer (zeitlich) zu berechnen, 
 == Aglomeratives/Dendrogram
 
 
-Hier wird die Bottom-Up Technik verwendet um zu clustern. 
+Hier wird die Bottom-Up Technik verwendet um zu clustern.
 
 #figure(
   image("img/male/dendrogram.png", height: 5cm),
@@ -447,11 +447,11 @@ Bild #ref(<dendrogram>) zeigt die Visualisierung anhand eines Dendrograms. Ich d
 
 == DB-Scan
 
-Keien sorge wir sind nicht wieder bei DBIS gelandet. 
+Keien sorge wir sind nicht wieder bei DBIS gelandet.
 
 Zwei Punkte $x_i, x_j$ sind density-connected falls es ein $x_k$ gibt, das mit beiden Verbunden ist. Hieraus werden dann _core-points_ gebildet die mit _MinPts_ Punkten in $epsilon$ Nähe sind.
 
-Core points werden dann zu clustern oder clusters werden um core-points erweitert. 
+Core points werden dann zu clustern oder clusters werden um core-points erweitert.
 
 Am Ende lassen sich beliebige Formen clustern, anders als k-means (wird aber häufig wegen einfachheit genutzt).
 
@@ -565,7 +565,7 @@ Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei dur
 === Association-Rules
 / Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A sect B = emptyset$.
 
-$ support(A => B) &= (supportCount(A union B))/(supportCount(emptyset)) \ 
+$ support(A => B) &= (supportCount(A union B))/(supportCount(emptyset)) \
   "conf"(A => B) &= (supportCount(A union B))/(supportCount(A)) $
 
 $"conf"$ ist die Confidence.
@@ -574,7 +574,7 @@ Da es noch mehr dieser Rules als frequent itemsets gibt, können wir auch hier w
 
 > A trend appears in several different groups of
 data but disappears or reverses when these
-groups are combined 
+groups are combined
 
 Das ist Simpons-Paradox.
 
@@ -614,4 +614,3 @@ Preprossesing ist sehr häufig sehr wichtig. Vorallem bei Big-Data müssen die D
 / Instance Reduction: Sampling (z.B. nehme $N$ zufällige instances)
 
 = Evaluation and AutoML/DS
-
