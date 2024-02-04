@@ -600,11 +600,58 @@ Dann müssen wir noch testen ob $"min_sup"$ eingehalten wurde.
 
 Wirklich interessante Daten müssen dann mit contraints gefunden werden.
 
-=== Time-Series Forecasting
+== Time-Series Forecasting
 
 Die Analyse betrachte ich als nicht wirklich relevant und überspringe sie. Falls jemand anders hier eine kleine Zusammenfassung schreibt wäre das vllt gut. Nun aber zum _forecasting_
 
 / Moving Average: Regression der vorherigen aufsummierten fehler.
+
+== Process-Mining
+In Process-Mining geht es erneut um ID-Activity-Timestamp Daten. Wir werden die Event-Daten in 4 Diagrammen modelieren:
+
+=== Directly-Follows Graph (DFG)
+
+Ein DFG ist simplich trivial. Ein Beispiel in Abbildung #ref(<dfg>).
+
+#figure(
+  image("img/male/dfg.png", height: 8em),
+  caption: [Beispiel eines DFG]
+) <dfg>
+
+Und ja wir verknüpfen bereits dagewesen Knoten miteinander.
+
+=== Petri-Nets
+
+#figure(
+  image("img/male/petri-net.png", height: 8em),
+  caption: [Beispiel eines Petri-Nets]
+) <petri-net>
+
+Ein Perti-Net besteht aus einem Start, einem Endknoten und mehreren Transitions und Places.
+Wir fangen beim Start an und legen einen Token hin. Nun gilt dir simple Firing Regel:
+Wenn ein Transition alle Inputs erfüllt hat (dort ein Token liegt), dann tut es auf alle Ausgaben ein Token (und löscht die Eingaben).
+
+Soweit so simple.
+
+=== Process-Trees
+
+Im Endeffekt bauen wir Process-Trees aus 4 Komponenten zusammen, die sich jeweils in ein Petri-Net übertragen lassen und wodurch sich jedes Petri-Net in ein Process-Tree umwandeln lässt.
+
+#figure(
+  image("img/male/process-tree-definition.png", height: 15em),
+  caption: [Definitionskomponenten des Process-Trees]
+) <process-tree-definition>
+
+$tau$ ist hier ein "silent skip". 
+
+=== Inductive Mining
+
+Wir wollen nun von einem DFG zu einem Process-Tree. Hierfür müssen wir die Komponenten erkennen. Wir betrachten immer zuerst den ganzen DFG und arbeiten uns dann ins Detail. Die 
+Reihenfolge ist hierbei wichtig:
+1. _exclusive or_ 
+2. _sequence cut_
+3. _parallel cut_
+4. _redo-loop cut_
 
 == Sonstiges Data Science Zeugs
 
