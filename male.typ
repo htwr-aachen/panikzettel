@@ -344,7 +344,7 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
   {figure(
     image("img/male/error-functions-2.png", height: 10em),
     caption: [Weitere Error Funktionsanalyse]
-  )}  
+  )}
 )
 
 
@@ -497,7 +497,7 @@ Hierzu ein Beispiel aus der Vorlesung:
 $ X &= [{A,B,E}, {C,B}, {A,D}, {A,D,B}] \
   T &= {A,B} subset.eq I $
 
-$supportCount(A)= |[T_1,T_2]| = 2$
+$supportCount(A)= |[T_1,T_2]| = 2$ \
 $support(A) = 2/4 = 1/2$
 
 
@@ -509,7 +509,7 @@ Zwei Algorithmen
 == Apriori
 
 1. Candidate Generation. Nutze $L_k$ (Frequent Itemsets der Länge $k$) um die Kandidaten $C_(k+1)$ zu generieren.
-2. Pruning Supersets von _infrequent_ Itemsets können nicht _frequent_ sein.
+2. Pruning. Supersets von _infrequent_ Itemsets können nicht _frequent_ sein.
 3. Testen.
 
 Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
@@ -586,7 +586,7 @@ Dies ist jeweils eine Iteration. Erst selection, dann pruning dann testing.
   2. Gehe die Transaktionen durch und füge sie an den Baum. Notiere die Häufigkeit der Items.
   3. Mine den FP-Tree um die Frequent Items zu bekommen. Hier gibt es Taktik, aber ich würde es raten in der Klausur einfach zu "machen".
 
-Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei Durchläufen des Datensatzes nötig.
+Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei Durchläufe des Datensatzes nötig.
 
 === Association-Rules
 / Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A sect B = emptyset$.
@@ -608,7 +608,7 @@ Das ist Simpons-Paradox.
 
 Hierbei gibt es _temporal data_, heißt jede Aktion hat einen Timestamp, eine Case-ID und eine Aktion (z.B. Nutzer 1 registriert sich $t_1$, Nutzer 2 meldet sich an $t_2$, etc...).
 
-Hieraus entstehen cases, $"case" 1= <"Nuzter registriert", ...>$.
+Hieraus entstehen cases, $"case" 1= angle.l"Nuzter registriert", ...angle.r$.
 
 Wir brauchen erneut eine Relation, das _containment_ $A subset.sq.eq B$. Wir gucken einfach ob wir die Events von $A$ in $B$ in der *gleichen Reihenfolge*, aber gegebenenfalls mit Lücken, in $B$ finden.
 
@@ -616,9 +616,9 @@ Der Support ist dann wieder gleich definiert: $support(P) = (|[S in X | P subset
 
 === Apriori-All Algorithmus
 
-Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I | support(<A>) >= "min_sup"}$
+Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I | support(angle.l A angle.r) >= "min_sup"}$
 
-Nun mappen wir _Sequences_ auf die darunter liegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $<{a,c}, {a,b,c}>$ wird zu $<{{a},{c}},{{a},{b},{c},{a,b}>$
+Nun mappen wir _Sequences_ auf die darunter liegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $angle.l{a,c}, {a,b,c}angle.r$ wird zu $angle.l{{a},{c}},{{a},{b},{c},{a,b}angle.r$
 
 Nun erstellen wir wieder die Kandidaten und prunen das Ergebnis.
 
@@ -644,7 +644,7 @@ Ein DFG ist wirklich trivial. Ein Beispiel in Abbildung #ref(<dfg>).
   caption: [Beispiel eines DFG]
 ) <dfg>
 
-Und ja wir verknüpfen bereits dagewesen Knoten miteinander.
+Und ja wir verknüpfen bereits dagewese Knoten miteinander.
 
 === Petri-Nets
 
@@ -654,7 +654,7 @@ Und ja wir verknüpfen bereits dagewesen Knoten miteinander.
 ) <petri-net>
 
 Ein Petri-Net besteht aus einem Start, einem Endknoten und mehreren Transitions und Places.
-Wir fangen beim Start an und legen einen Token hin. Nun gilt dir simple Firing Regel:
+Wir fangen beim Start an und legen einen Token hin. Nun gilt die simple Firing Regel:
 Wenn ein Transition alle Inputs erfüllt hat (dort ein Token liegt), dann tut es auf alle Ausgaben ein Token (und löscht die Eingaben).
 
 Soweit so simple.
@@ -668,13 +668,13 @@ Im Endeffekt bauen wir Process-Trees aus 4 Komponenten zusammen, die sich jeweil
   caption: [Definitionskomponenten des Process-Trees]
 ) <process-tree-definition>
 
-$tau$ ist hier ein "silent skip". 
+$tau$ ist hier ein "silent skip".
 
 === Inductive Mining
 
-Wir wollen nun von einem DFG zu einem Process-Tree. Hierfür müssen wir die Komponenten erkennen. Wir betrachten immer zuerst den ganzen DFG und arbeiten uns dann ins Detail. Die 
+Wir wollen nun von einem DFG zu einem Process-Tree. Hierfür müssen wir die Komponenten erkennen. Wir betrachten immer zuerst den ganzen DFG und arbeiten uns dann ins Detail. Die
 Reihenfolge ist hierbei wichtig:
-1. _exclusive or_ 
+1. _exclusive or_
 2. _sequence cut_
 3. _parallel cut_
 4. _redo-loop cut_
@@ -704,13 +704,13 @@ Die Nachteile von solchen Token-based Approaches sind:
 
 Die Steps bei Text-Mining sind:
 - Wir haben eine Datenbank
-- Daraus extrahieren wir einige Pieces(das können Wörter, Sätze, etc. sein) zusammen ein Corpus
-- Den Preprocessen wir
-- Transformieren in zu umgänglicheren Strukturen
+- Daraus extrahieren wir einige Pieces (das können Wörter, Sätze, etc. sein), zusammen ist das ein Corpus
+- Den preprocessen wir
+- Transformieren ihn zu umgänglicheren Strukturen
 - Modellieren ihn
 - Und finden somit Patterns
- 
-Wir versuchen also aus unstrukturierten Text, strukturierte Daten zu machen.
+
+Wir versuchen also aus unstrukturiertem Text strukturierte Daten zu machen.
 
 Hier wird preprocessing wirklich wichtig.
 
@@ -723,7 +723,7 @@ Wir splitten Sätze in Tokens (z.B. anhand von Lehrzeichen) müssen dabei aber a
 Dann entfernen wir unnötige Informationen (Stop-Words) wie: Artikel, Präpositionen, etc.
 Die Informationen könnten natürlich wichtig sein, ist immer Abwägungssache.
 
-Schließlich wollen wir noch die Tokens auf einen Nenner bringen hierfür wenden wir an:
+Schließlich wollen wir noch die Tokens auf einen Nenner bringen. Hierfür wenden wir an:
 // TODO: Ich hoffe das Stimmt überhautp
 / Stemming: Wörter nur mit deren Wortstamm. "verzweifeln -> verzweifel" (das muss kein Wort sein)
 / Lemmatization: Dasselbe wie Stemming, nur das wir ein "base" Wort aus dem Wörterbuch benutzen z.B. "verzweifelt"
@@ -739,16 +739,16 @@ Hierfür gibt es verschiedene Models:
 / Document Term Matrix: Wir listen alle Wörter in columns auf und haben als Reihen die Dokumente, die Zellen sind einfach die Anzahl.
 / Term Frequency: Anzahl von $w$ in Dokument $d$ \
   $tf(w,d) = |d_w|$
-/ Inverse Document Frequency: Je unwahrscheinlicher das Wort, desto höher der Wert. Stellt besonders Informationsbringende Wörter heraus. \
+/ Inverse Document Frequency: Je unwahrscheinlicher das Wort, desto höher der Wert. Stellt besonders informationsbringende Wörter heraus. \
   $idf(w,c) = log_2((|c|)/("Anzahl der Dokumente in" c "die" w "enthalten"))$
 / TF-IDF Score: Kombination aus den beiden
   $tfidf(w,d,c) = tf(w,d) dot idf(w,c)$
 
 === Sonstiges
 
-Die $N$-Gram Anwendungen sind Wissenswert. Nutze die letzten $N$ Wörter um das nächste zu vorherzusagen. Das rechnen wir mit Wahrscheinlichkeiten aus, aber da wir nicht jede Wort Kombination in unseren Corpora haben, müssen wir die Wahrscheinlichkeitsverteilung smoothen um nicht nur Nullen zu haben.
+Die $N$-Gram Anwendungen sind Wissenswert. Nutze die letzten $N$ Wörter, um das nächste vorherzusagen. Das rechnen wir mit Wahrscheinlichkeiten aus, aber da wir nicht jede Wortkombination in unseren Corpora haben, müssen wir die Wahrscheinlichkeitsverteilung smoothen, um nicht nur Nullen zu haben.
 
-Häufig werden auch statt Wörtern ein Vektor encoding genutzt, die von einem Neural Network produziert wird. Das ist einfach effizienter.
+Häufig werden auch statt Wörtern ein Vektor encoding genutzt, das von einem Neural Network produziert wird. Das ist einfach effizienter.
 
 == Sonstiges Data Science Zeugs
 
@@ -760,10 +760,10 @@ Preprocessing ist sehr häufig sehr wichtig. Vor allem bei Big-Data müssen die 
 
 = Evaluation and AutoML/DS
 
-#let TP = "TP"
-#let TN = "TN"
-#let FP = "FP"
-#let FN = "FN"
+#let TP = math.op("TP")
+#let TN = math.op("TN")
+#let FP = math.op("FP")
+#let FN = math.op("FN")
 
 Wir wollen beantworten:
 - Wie gut ist das ML Model?
@@ -771,10 +771,10 @@ Wir wollen beantworten:
 
 #figure(
   image("img/male/eval-matrix.png", height:8em),
-  caption: [Beispiel Confusion Matrix] 
+  caption: [Beispiel Confusion Matrix]
 ) <confusion-matrix>
 
-Wie bei Statistischen Tests und Studien gibt es hier ein Falsch positives FP, Falsch negatives FN und Wahr positives TP und Wahr negatives TN Ergebnis. Abbildung #ref(<confusion-matrix>) zeigt das in binomial Fall.
+Wie bei Statistischen Tests und Studien gibt es hier ein Falsch positives FP, Falsch negatives FN und Wahr positives TP und Wahr negatives TN Ergebnis. Abbildung #ref(<confusion-matrix>) zeigt das im binomial Fall.
 
 In einem Multinomial Fall, muss man sich ein Feature jeweils raus suchen und sich daraus eine Binomial Matrix bilden. So wie es Sinn ergibt.
 
@@ -783,17 +783,17 @@ Darauf aufbauend haben wir erneut einige Scores:
 / Misclassification Rate: $(FP + FN)/(TP+TN+FP+FN)$
 / True Positiv Rate: $TP/(TP+FN)$
 / False Negative Rate: $FN/(TP+FN)$
-/ True Negative Rate: $TN/(TN+FP)$ 
+/ True Negative Rate: $TN/(TN+FP)$
 / False Positive Rate: $FP/(TN+FP)$
 / Recall: $= "TPR" = TP/(TP+FN)$
 / Precision: $TP/(TP+FP)$
-/ $F_1$: $2 * ("precision" dot "recall")/("precision" + "recal")$
+/ $F_1$: $2 dot ("precision" dot "recall")/("precision" + "recal")$
 
-Wie viele Trainingsdaten brauchen wir und wie sind die Aufgeteilt?
+Wie viele Trainingsdaten brauchen wir und wie sind die aufgeteilt?
 
-Wir benötigen ein Trainingsset soweit ist's klar. Aber um overfitting während des Trainings zu reduzieren benötigen wir ein Validation set. Hiermit können wir abbrechen bei overfitting, oder Hyperparameter Optimierungen ausführen.
+Wir benötigen ein Trainingsset soweit ist's klar. Aber um overfitting während des Trainings zu reduzieren, benötigen wir ein Validation set. Hiermit können wir abbrechen bei overfitting, oder Hyperparameter Optimierungen ausführen.
 
-Aber schließlich brauchen wir noch ein Testing set um die Evaluation des Modells auszuführen. 
+Aber schließlich brauchen wir noch ein Testing set um die Evaluation des Modells auszuführen.
 Das Verhältnis ist variabel, aber (50%, 20%, 30%) oder (40%,20%,40%) wurde in der Vorlesung erwähnt.
 Diese Validierung machen wir meistens mit verschiedenen Modellen gleichzeitig und wählst dann mit den folgenden Methoden die Testdaten aus:
 / k-Fold Cross Validation: Wähle für $N/k$ große Daten aus. $N$ ist die gesamt Testdaten Größe und wir haben $k$ unterschiedliche Folds.
@@ -816,6 +816,5 @@ Unter der Diagonale ist alles schlechter als random guessing, also kann man hier
 Es gibt bei uns grob 4 Methoden:
 - Random Search
 - Grid Search
-- Bayesian Optimization 
+- Bayesian Optimization
 - Multi Fidelity Bandit
-
