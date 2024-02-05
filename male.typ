@@ -332,6 +332,32 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
 
 == Error Funktion Analyse
 // TODO: Do
+
+#stack(
+  dir: ltr,
+  spacing: 3em,
+  {figure(
+    image("img/male/error-functions.png", height: 10em),
+    caption: [Error Funktionsanalyse]
+  )},
+
+  {figure(
+    image("img/male/error-functions-2.png", height: 10em),
+    caption: [Weitere Error Funktionsanalyse]
+  )}  
+)
+
+
+In Abbildung  werden die verschiedenen Error Funktionen geplottet.
+Was sind hier die Achsen? Auf der Y-Achse ist der Fehler. Auf der X-Achse ist die Zuversicht die die Prediction hatte, bei 0 ist er sich unsicher, bei negativen Zahlen hat er Falsch gelegen, bei positiven Richtig.
+
+- Die Optimale Fehlerfunktion ist die Step Funktion, allerdings hat die den Nachteil keinen Gradienten zu haben und somit ist
+Gradient descent nicht möglich.
+- Der Squared Error steigt bei negativen zu schnell, und steigt bei "sehr richtigen" (also z.B. Punkte weit weg von der Boundary).
+- Hinge Loss ist bei X=1 nicht differenzierbar.
+- Cross-Entropy Error steigt im negativen Linear (gut für Gradient descent) und hat kein positives "penalty"
+- Tanh hat zwar kein positives "penalty", aber dafür genau wie die Step Funktion keine große Steigung im negativen Bereich.
+
 == Neural Nets
 
 //TODO: Überarbeiten
