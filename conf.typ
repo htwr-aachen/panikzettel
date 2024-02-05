@@ -30,7 +30,7 @@
     ])
   )
   set text(size: 11pt, lang: lang, font: "Latin Modern")
-  set par(leading: 0.55em, justify: true)
+  set par(leading: 0.65em, justify: true)
   set block(below: 1.05em)
 
   show link: it => [
@@ -93,6 +93,7 @@
     }
   }
 
+  show par: set block(spacing: 1.25em)
   
   doc
 }
