@@ -170,7 +170,7 @@ Populäre kernels sind z.B. auch Gaussian Blurs (Smoothener)
 === k-Nearest Neighbors
 
 Hier setzten wir ein $K in NN$ fest und bestimmen eine Sphäre, die wir brauchen, um die $K$ nächsten Nachbarn zu inkludieren.
-Somit gilt immernoch $p(x) approx K / (N V)$.
+Somit gilt immer noch $p(x) approx K / (N V)$.
 
 Die allermeisten _non-parameterized_ probability density estimators haben bestimmte Einstellungen, die für unterschiedliche Ergebnisse sorgt, sogenannte _Hyperparameter_ (z.B. $Delta_i, h, K,$ etc.).
 
@@ -294,7 +294,7 @@ Hieraus bauen wir uns ein Optimierungsproblem à la Quantitative Methoden (BWL�
 Wie genau wir dahin kommen, ist für den Panikzettel (und aus meiner Sicht) wenig relevant, doch brauchen wir hierfür _lagrange multiplier_ $lambda, a_n$ für die Primal form.
 
 ==== Primal Form
-Langrange multipliers $a_0 >= 0$
+Lagrange multipliers $a_0 >= 0$
 $ L(w,b,a)=1/2 ||w||^2 - sum_(n=1)^N a_n [t_n(w^sans(T)x_n + b) -1] $
 
 Conditions:
@@ -453,7 +453,7 @@ Weise jedem Datenpunkt einen _medoid_ zu. Falls ein Punkt $x_i$ den Error verrin
 
 Die Intuition ist richtig und k-medoids ist komplexer (zeitlich) zu berechnen, aber es ist weniger sensitiv zu outliers, da nicht ein einzelner Punkt den _centroid_ außerhalb vom wirklichen Cluster ziehen kann. In beiden Fällen ist $k$ natürlich ein Hyperparameter.
 
-== Aglomeratives/Dendrogram
+== Agglomerative/Dendrogramm
 
 
 Hier wird die Bottom-Up Technik verwendet um zu clustern.
@@ -618,7 +618,7 @@ Der Support ist dann wieder gleich definiert: $support(P) = (|[S in X | P subset
 
 Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I | support(<A>) >= "min_sup"}$
 
-Nun mappen wir _Sequences_ auf die drunterliegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $<{a,c}, {a,b,c}>$ wird zu $<{{a},{c}},{{a},{b},{c},{a,b}>$
+Nun mappen wir _Sequences_ auf die darunter liegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $<{a,c}, {a,b,c}>$ wird zu $<{{a},{c}},{{a},{b},{c},{a,b}>$
 
 Nun erstellen wir wieder die Kandidaten und prunen das Ergebnis.
 
@@ -748,7 +748,7 @@ Hierfür gibt es verschiedene Models:
 
 Die $N$-Gram Anwendungen sind Wissenswert. Nutze die letzten $N$ Wörter um das nächste zu vorherzusagen. Das rechnen wir mit Wahrscheinlichkeiten aus, aber da wir nicht jede Wort Kombination in unseren Corpora haben, müssen wir die Wahrscheinlichkeitsverteilung smoothen um nicht nur Nullen zu haben.
 
-Häufig werden auch statt Wörtern ein Vektorencoding genutzt, die von einem Neural Network produziert wird. Das ist einfach effizienter.
+Häufig werden auch statt Wörtern ein Vektor encoding genutzt, die von einem Neural Network produziert wird. Das ist einfach effizienter.
 
 == Sonstiges Data Science Zeugs
 
@@ -776,7 +776,7 @@ Wir wollen beantworten:
 
 Wie bei Statistischen Tests und Studien gibt es hier ein Falsch positives FP, Falsch negatives FN und Wahr positives TP und Wahr negatives TN Ergebnis. Abbildung #ref(<confusion-matrix>) zeigt das in binomial Fall.
 
-In einem Multinomial Fall, muss man sich ein Feature jeweils raussuchen und sich daraus eine Binomial Matrix bilden. So wie es Sinn ergibt.
+In einem Multinomial Fall, muss man sich ein Feature jeweils raus suchen und sich daraus eine Binomial Matrix bilden. So wie es Sinn ergibt.
 
 Darauf aufbauend haben wir erneut einige Scores:
 / Accuracy: $(TP+TN)/(TP+TN+FP+FN)$
@@ -791,7 +791,7 @@ Darauf aufbauend haben wir erneut einige Scores:
 
 Wie viele Trainingsdaten brauchen wir und wie sind die Aufgeteilt?
 
-Wir benötigen ein Trainingsset soweit ist's klar. Aber um overfitting während des Trainings zu reduzieren benötigen wir ein Validation set. Hiermit können wir abbrechen bei Overfitten, oder Hyperparameter Optimierungen ausführen.
+Wir benötigen ein Trainingsset soweit ist's klar. Aber um overfitting während des Trainings zu reduzieren benötigen wir ein Validation set. Hiermit können wir abbrechen bei overfitting, oder Hyperparameter Optimierungen ausführen.
 
 Aber schließlich brauchen wir noch ein Testing set um die Evaluation des Modells auszuführen. 
 Das Verhältnis ist variabel, aber (50%, 20%, 30%) oder (40%,20%,40%) wurde in der Vorlesung erwähnt.
@@ -809,4 +809,13 @@ Für die zweite Frage gucken wir uns die ROC-Kurve an.
 Hier plotten wir die TPR auf der y und die FPR auf der X Achse.
 Unter der Diagonale ist alles schlechter als random guessing, also kann man hier die Entscheidungen umdrehen und erhält ein gutes Model. Sonst ist ein Kurve die Stark zur 1 auf der X Achse wandert und dann da bleibt besser.
 
+== AutoML
+
+=== Hyperparameter Optimization
+
+Es gibt bei uns grob 4 Methoden:
+- Random Search
+- Grid Search
+- Bayesian Optimization 
+- Multi Fidelity Bandit
 
