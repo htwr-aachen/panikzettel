@@ -485,7 +485,7 @@ Hierzu ein Beispiel aus der Vorlesung:
 $ X &= [{A,B,E}, {C,B}, {A,D}, {A,D,B}] \
   T &= {A,B} subset.eq I $
 
-$supportCount(A)= |[T_1,T_2]| = 2$ \
+$supportCount(A)= |[T_1,T_2]| = 2$, da wir nur ${A,B}$ betrachten und nicht nur $A$, $B$. Somit ist $A,D$ nicht im support count mit drin. \
 $support(A) = 2/4 = 1/2$
 
 
