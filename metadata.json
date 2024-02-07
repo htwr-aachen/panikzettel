@@ -69,6 +69,11 @@
     "semester": 2,
     "type": "pf"
   },
+  "itsec.pdf": {
+    "name": "IT-Sicherheit",
+    "semester": 5,
+    "type": "pf"
+  },
   "la.pdf": {
     "name": "Lineare Algebra für Informatiker",
     "semester": 2,
