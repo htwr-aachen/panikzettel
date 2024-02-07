@@ -8,10 +8,10 @@ build:latex:
   needs: []
   rules:
     - changes:
-      - /*.{tex, cls}
-      - Makefile
-      - scripts/*
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+        - /*.{tex, cls}
+        - Makefile
+        - scripts/*
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == master
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
     - apk add make
@@ -29,10 +29,10 @@ build:typst:
   needs: []
   rules:
     - changes:
-      - /*.{typ}
-      - Makefile
-      - scripts/*
-    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
+        - /*.{typ}
+        - Makefile
+        - scripts/*
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == master
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
     - apk add make
@@ -47,15 +47,15 @@ build:typst:
 
 deploy:
   stage: deploy
-  rules: 
-   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   needs:
     - job: build:latex
       optional: true
     - job: build:typst
       optional: true
   image: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
-  script: 
+  script:
     - gcloud --quiet components update
 
     - echo $GCP_SERVICE_KEY > ${HOME}/gcloud-service-key.json
@@ -63,6 +63,7 @@ deploy:
     - gcloud config set project $GCP_PROJECT_ID
 
     # clear bucket and then upload files
-    - gsutil rm -a $GCP_BUCKET_URL/** 
+    - gsutil rm -a $GCP_BUCKET_URL/**
     - gcloud storage cp --cache-control="public, max-age=3600" metadata.json $GCP_BUCKET_URL
     - gcloud storage cp --cache-control="public, max-age=3600" build/* $GCP_BUCKET_URL
+
