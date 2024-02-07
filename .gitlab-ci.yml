@@ -11,7 +11,7 @@ build:latex:
         - /*.{tex, cls}
         - Makefile
         - scripts/*
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == master
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
     - apk add make
@@ -32,7 +32,7 @@ build:typst:
         - /*.{typ}
         - Makefile
         - scripts/*
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == master
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
     - apk add make
