@@ -31,10 +31,7 @@ Da das neue Fach auf Englisch gehalten wird, ist es eine gute Zeit, dies auch f�
 
 Ein großer Teil der Machine Learning und Data Science Konzepte und Algorithmen beruhen auf Stochastik. Wir werden hier _nicht_ die Grundlagen der Stochastik wiederholen, auch wenn ein kleiner Teil der Vorlesung genau dies tat, sondern auf den eigenen Stochastik Panikzettel #footnote([#link("panikzettel.htwr-aachen.de")]) verweisen.
 
-//TODO: Maybe doch ganz kurz Grundbegriffe erklären? Max 1/2 Seite.
-
 === Aufteilung
-//TODO: Aufteilung überarbeiten
 
 Die Vorlesung wurde von drei verschiedenen Lehrstühlen und Professoren zusammen angeboten und aufgeteilt.
 Die Aufteilung dieses Panikzettel orientiert sich ebenfalls an dieser Aufteilung.
@@ -46,17 +43,6 @@ Die Aufteilung dieses Panikzettel orientiert sich ebenfalls an dieser Aufteilung
 = Machine Learning
 
 #let Cl = $cal(C)$
-
-//TODO: Themen überblick nur temporär
-Themen:
-- (Intro)
-- Probability Density Estimation
-- Linear Discriminants
-- Linear Regression
-- Logistic Regression
-- Support Vector Machines
-- (AdaBoost) da nicht behandelt
-- Neural Networks
 
 //WARNING: stimmt so nicht (von der Benennung), aber ich möchte grob einen Überblick geben der alle (Classification, Regression, Clustering, etc.) gemeinsam haben (außerhalb vom learning).
 Das Grundkonzept des gesamten Machine Learning Bereichs, der in dieser Vorlesung behandelt wird, kümmert sich um _Klassifizierung_, also der Aufteilung in Klassen (z.B. gegeben ein Foto, ist es eine Katze oder ein Hund).
@@ -93,7 +79,7 @@ Wir werden einige Lernziele besprechen, aber es ist gut, sie vorher eingeführt 
 )
 
 Das Ziel wird aber immer sein:
-Gegeben Trainingsdaten $cal(D) = {x_1,..., x_n}$ oder mit gegebenenfalls labeln $cal(D) = {(x_1, t_1),..., (x_n, t_1)}$
+Gegeben Trainingsdaten $cal(D) = {x_1,..., x_n}$ oder mit _labels_ $cal(D) = {(x_1, t_1),..., (x_n, t_1)}$
 eine Funktion $y$ zu trainieren, die zu Daten, die nicht im Testset vorkommen, eine Vorhersage treffen kann.
 
 == Probability Density Estimation
@@ -104,7 +90,7 @@ Diese _likelihood_ ist genau das Gegenteil von dem was wir brauchen: $p(cal(C)_k
 Somit stellen wir es mit den _a-priori probabilities_ $p(cal(C)_k)$ und Bayes Theorem um:
 $ p(cal(C)_k | x) = (p(x | cal(C)_k)p(cal(C)_k))/(p(x)) = (p(x | cal(C)_k)p(cal(C)_k))/(sum_j p(x | cal(C)_j) p(cal(C)_j)) $
 
-Dies ist die _posterior_ Wahrscheinlichkeit, die wir benötigen, um x klassifizieren.
+Dies ist die _posterior_ Wahrscheinlichkeit, die wir benötigen, um x zu klassifizieren.
 
 Nun verteilt sich $p(cal(C)_k | x)$ in einer bestimmen Wahrscheinlichkeitsverteilung, die wir aber nicht kennen, die es nun geht zu approximieren.
 
@@ -126,11 +112,15 @@ $ diff/(diff theta) E(theta) &= - limits(sum_(n=1)^N (1/p(x_n | theta)) dot diff
 //TODO: Eher nicht mit rein nehmen oder?
 Bei Maximum Log-Likelihood Optimierungen wird die Varianz unterschätzt, und muss im Fall der Normalverteilung mit $N/(N-1)$ ausgeglichen werden.
 
-== Histogramme, Kernel Methods & k-Nearest Neighbors
+== Non-Parametrische Methoden: Histogramme, Kernel Methods & k-Nearest Neighbors
+
+Das hier sind Methoden, die nicht die Parameter der _probability density_ Funktion (pdf) approximieren wollen, sondern
+Die Funktion als Ganzes. Wir wissen also gar nicht die unterliegende pdf und somit auch nicht ihre Parameter.
 
 === Histogramme
 
-Aufteilung der Daten in $N$ Säulen mit breite $Delta_i$. Die Höhe der Säule ist dann $p_i = n_i/(N Delta_i)$, wobei $n_i$ die Anzahl der Beobachteten Ergebnisse in dem Bereich ist.
+Aufteilung der Daten in $N$ Säulen mit Breite $Delta$. Die Höhe der Säule ist dann $p_i = n_i/(N Delta_i)$, wobei $n_i$ die Anzahl der Beobachteten Ergebnisse in dem Bereich $i$ ist.
+
 
 #grid(
   columns: (1fr, 1fr),
@@ -174,7 +164,7 @@ Somit gilt immer noch $p(x) approx K / (N V)$.
 
 Die allermeisten _non-parameterized_ probability density estimators haben bestimmte Einstellungen, die für unterschiedliche Ergebnisse sorgt, sogenannte _Hyperparameter_ (z.B. $Delta_i, h, K,$ etc.).
 
-k-NNs können mittels Bayes Decision Theory auch als Klassifizierer dienen. Indem man die class-conditional Verteilung approximiert mit $p(x | C_j) approx K_j/(N_j V)$ und durch die priors $p(C_j) approx N_j/N$ die posteriors $p(C_j | x) approx p(x | C_j)p(C_j) 1/p(x) = K_j/K$
+k-NNs können mittels Bayes Decision Theory auch als Klassifizierer dienen. Indem man die class-conditional Verteilung approximiert mit $p(x | C_j) approx K_j/(N_j V)$ und auch durch die prior$p(C_j) approx N_j/N$ die posteriors $p(C_j | x) approx p(x | C_j)p(C_j) 1/p(x) = K_j/K$
 
 == Mixture Models
 
@@ -203,7 +193,7 @@ Der EM Algorithmus muss durch _regularization_ gegen $sigma -> 0$ geschützt wer
 
 == Linear Discriminants
 
-_Linear Discriminants_ versuchen, ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein dataset trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$). Falls dies gelingt, heißt ein dataset _linearly seperable_.
+_Linear Discriminants_ versuchen, ein Gerade $y(x) = w^sans(T) x + w_0$ zu finden, die ein Datensatz trennt (d.h. $y(x) >= 0 ==> C_1 "sonst" C_2$). Falls dies gelingt, heißt ein Datensatz _linearly separable_.
 
 Häufiger wird aber $y(x) = tilde(w)^sans(T) tilde(x) = sum_(i=0)^D w_i x_i$ benutzt, wobei hier $x_0 = 1$ gesetzt ist und der Bias $w_0$ somit verrechnet wird.
 
@@ -213,12 +203,13 @@ Nun aber zur Optimierungsmethoden dieser $y_k (x)$. Zunächst werden alle $k$ Di
 dots.v, dots.down, dots.v;
 w_(1D), ..., w_(K D))$, $tilde(X) = vec(x_1^sans(T), dots.v, x_N^sans(T))$ und $Y(tilde(X))=tilde(X)tilde(W)$. Ebenso werden die _target vectors_ (die label) $T = vec(t_1^sans(T), dots.v, t_N^sans(T))$.
 
-Um lernen zu können, definieren wir eine _error function_ (hier _Sum of squares_) $E(W) = 1/2sum_(n=1)^N sum_(k=1)^K (w_k^sans(T)x_n - t_(n k))^2$. Nehmen wir nun im 2-class Fall die Ableitung: $(diff E(w))/(diff w) = ... = w = (X^sans(T)X)^(-1)X^sans(T)t = X^dagger t$ (das $X^dagger$ ist die pseudo-inverse, da X ja singulär seine könnte). Somit erhalten wir eine _closed-form_ Lösung $y(x;w) = w^sans(T) x = t^sans(T) (X^dagger)^sans(T) x$.
+Um lernen zu können, definieren wir eine _error function_ (hier _Sum of squares_) $E(W) = 1/2sum_(n=1)^N sum_(k=1)^K (w_k^sans(T)x_n - t_(n k))^2$. Die $1/2$ als Faktor ist nicht benötigt, mach aber bei der Differenzierung den Faktor $2$ weg.
+Nehmen wir nun im 2-class Fall die Ableitung: $(diff E(w))/(diff w) = ... = w = (X^sans(T)X)^(-1)X^sans(T)t = X^dagger t$ (das $X^dagger$ ist die pseudo-inverse, da X ja singulär seine könnte). Somit erhalten wir eine _closed-form_ Lösung $y(x;w) = w^sans(T) x = t^sans(T) (X^dagger)^sans(T) x$.
 
 Um weniger sensitiv gegen _outliers_ zu sein, wird $y$ allerdings meist mit einer Aktivierungsfunktion versehen (ähnlich wie bei NNs) $y(x)=g(w^T x)$.
 In der Vorlesung der Logistic-Sigmoid $sigma(x) = 1/(1+e^(-x))$.
 
-_Basis functions_ $phi.alt$ erweitern die $y(x) = w^sans(T) phi.alt(x)$, um nicht linear trennbare Datensätze zu klassifizieren zu können.
+_Basis functions_ $phi.alt$ erweitern die Gerade zu $y(x) = w^sans(T) phi.alt(x)$, um nicht linear trennbare Datensätze zu klassifizieren zu können.
 
 
 == Regressions
@@ -235,9 +226,11 @@ _Basis functions_ $phi.alt$ erweitern die $y(x) = w^sans(T) phi.alt(x)$, um nich
 //     })
 // })
 
+//TODO: Neuschreiben, Logistic Regression ist "nicht wirklich" Regression sondern auch zum klassifizieren
+
 Wir haben zwei verschiedene Arten Regression behandelt:
 / Linear Regression: approximieren einer Funktion $h(x) in RR$, gegeben durch label $t_n = h(x) + epsilon$
-/ Logistic Regression: approximieren einer diskreten Funktion (hier sind zwar auch nur Datenpunkte gegeben, aber die Funktion ist diskret)
+/ Logistic Regression: approximieren einer diskreten Funktion (bei Linearer Regression sind zwar auch nur Datenpunkte gegeben, aber hier ist die Funktion diskret)
 
 === Linear Regression
 Für linear regression wenden wir die Least Square Regression an.
@@ -245,7 +238,7 @@ Wir nehmen als _error function_ erneut die Sum of squares Funktion $E(w)=1/2 sum
 
 Kommen also bei dem gleichen $w=(Phi^sans(T)Phi)^(-1)Phi^sans(T)$ an wie bei den Diskriminanten. Allerdings mit $y(x) = w^sans(T) phi.alt(x)$ einer Basis Funktion
 
-Nehmen wir also als Basis Funktion $phi.alt_j(x) = x^j$. Nun ist die Wahl des Polynomgrads ein wichtiger _Hyperparameter_. Jedoch ist mit dieser Error Funktion des _overfitting_ groß, da es die unterliegende $epsilon$ noise modelliert und nicht $h(x)$.
+Nehmen wir also als Basis Funktion $phi.alt_j(x) = x^j$. Nun ist die Wahl des Polynomgrads ein wichtiger _Hyperparameter_. Jedoch ist mit dieser Error Funktion das _overfitting_ Risiko groß, da es den Datenpunkten unterliegenden _noise_ modelliert und nicht $h(x)$.
 
 Um dagegen vorzugehen, wird ein _regularizer_ $Omega$ (z.B. $Omega = 1/2||w||^2$) eingesetzt $E(X)=L(w) + lambda Omega(w)$, hierbei ist $L(w)$ der Loss-Term also einfach die vorherige _error function_.
 
@@ -270,7 +263,7 @@ In diesem Fall auf _gradient descent_.
 $ w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((diff E(W))/(diff w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w)) $
 
 dies ist die (so halb) erste Taylor expansion mit Hyperparameter _learning rate_ $eta$.
-Ist die _learning rate_ zu hoch, wird das Optimum "übersprungen", bei zu kleiner Learning Rate dauert es lange und eventuell konvergiert der Gradient zu einem lokalen Minimum.
+Ist die _learning rate_ zu hoch, wird das Optimum "übersprungen" und es kann sein, dass unsere Funktion _divergent_ wird, also sich immer zwischen zu viel Error auf der einen + Seite zu zu viel auf der - Seite (vereinfach). Bei zu kleiner Learning Rate dauert es lange und eventuell konvergiert der Gradient zu einem lokalen Minimum statt zu einem Globalen.
 
 Die Newton-Raphson Methode (orientiert sich an der zweiten Taylorentwicklung)
 verwendet zusätzlich noch ein $H^(-1)=(diff^2 E(w))/(diff w_i diff w_j)$
@@ -294,7 +287,6 @@ Hieraus bauen wir uns ein Optimierungsproblem à la Quantitative Methoden (BWL�
 Wie genau wir dahin kommen, ist für den Panikzettel (und aus meiner Sicht) wenig relevant, doch brauchen wir hierfür _lagrange multiplier_ $lambda, a_n$ für die Primal form.
 
 ==== Primal Form
-Lagrange multipliers $a_0 >= 0$
 $ L(w,b,a)=1/2 ||w||^2 - sum_(n=1)^N a_n [t_n(w^sans(T)x_n + b) -1] $
 
 Conditions:
@@ -328,10 +320,9 @@ Was ist aber wenn die Daten nicht linear trennbar sind?
 Dann lassen sich mit _Soft-Margin SVMs_ die "falschen" Punkte bestrafen, indem Slack Variablen $epsilon_n = |t_n - y(x_n)|$ für alle Trainingspunkte eingefügt werden.
 $epsilon_n = 0$ bei Korrektheit und erfährt bis $1$ eine penalty.
 
-Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter, gewichtet ($1/2 ||w||^2 + C sum_(n=1)^N epsilon_n$).
+Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter, gewichtet ($1/2 ||w||^2 + C sum_(n=1)^N epsilon_n$). Die Dual Form ist mit Slack variablen deutlich günstiger. Somit sollte die Primal Form wenig Dimensionen, viele Datenpunkte und _linear separable_ sein.
 
 == Error Funktion Analyse
-// TODO: Do
 
 #stack(
   dir: ltr,
@@ -351,8 +342,7 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
 In Abbildung  werden die verschiedenen Error Funktionen geplottet.
 Was sind hier die Achsen? Auf der Y-Achse ist der Fehler. Auf der X-Achse ist die Zuversicht die die Prediction hatte, bei 0 ist er sich unsicher, bei negativen Zahlen hat er Falsch gelegen, bei positiven Richtig.
 
-- Die Optimale Fehlerfunktion ist die Step Funktion, allerdings hat die den Nachteil keinen Gradienten zu haben und somit ist
-Gradient descent nicht möglich.
+- Die Optimale Fehlerfunktion ist die Step Funktion, allerdings hat die den Nachteil keinen Gradienten zu haben und somit ist _gradient descent_ nicht möglich.
 - Der Squared Error steigt bei negativen zu schnell, und steigt bei "sehr richtigen" (also z.B. Punkte weit weg von der Boundary).
 - Hinge Loss ist bei X=1 nicht differenzierbar.
 - Cross-Entropy Error steigt im negativen Linear (gut für Gradient descent) und hat kein positives "penalty"
@@ -360,14 +350,12 @@ Gradient descent nicht möglich.
 
 == Neural Nets
 
-//TODO: Überarbeiten
-
 Ein _perceptron_ bekommt eine Menge $D in NN$ Inputs, gewichtet die dann und summiert sie.
 Das Ergebnis ist dann $y(x) = sigma(b + sum_(i=1)^D w_i x_i)$, $b$ ist der Bias, $sigma$ ist die _activation function_ (auch hier werden die Gewichte meistens in eine einheitliche Matrix gepackt, weswegen die Formel sich ändern kann). Perceptrons sind also nur generalisierte Lineare Discriminants.
 
 Nun fügen wir mehrere Layers von Perceptrons zusammen und bilden daraus ein _Multi-Layer Perceptron_. Jeder Layer fügt einen _bias_ (z.B 1) hinzu, der dann mit Weights zu jedem Perceptron der Layer verbunden ist.
 
-Die Weights und Biases werden dann durch Backpropagation und Stochastic Gradient Descent trainiert. Auch hier ist die _learning rate_ ein Wichtiger Hyperparameter.
+Die Weights und Biases werden dann durch Backpropagation und Stochastic Gradient Descent trainiert. Auch hier ist die _learning rate_ ein wichtiger Hyperparameter, genauso wie der Aufbau des NN selber.
 
 = Data Science
 
