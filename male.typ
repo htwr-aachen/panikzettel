@@ -8,6 +8,7 @@
   shortTitle: "MaLe",
   authors: (
     (name: "Jonas Schneider"),
+    (name: "Adrian Groh"),
   ),
   lang: "de",
   filename: "male",
