@@ -106,6 +106,7 @@
   textColor: luma(0),
   radius: 3pt,
   width: 100%,
+  breakable: false,
   body
 ) = {
 
@@ -123,14 +124,17 @@
     width: 100%,
   )
   
-  return grid(
-    columns: 1fr,
-    rows: (auto, auto),
-    titleCell(height: auto)[#text(font: sansFont ,fill: titleTextColor, weight: "semibold")[#title]],
-    contentCell(height: auto)[ 
-      #set text(textColor)
-      #body
-    ]
+  return block(
+    breakable: breakable,
+    grid(
+      columns: 1fr,
+      rows: (auto, auto),
+      titleCell(height: auto)[#text(font: sansFont ,fill: titleTextColor, weight: "semibold")[#title]],
+      contentCell(height: auto)[ 
+        #set text(textColor)
+        #body
+      ]
+    )
   )
 }
 
@@ -211,3 +215,44 @@
     #body
     #align(right)[$qed$]
 ]
+
+#let posneg(
+  titlePositive: "Positives (+)",
+  titleNegative: "Negatives (-)",
+  bodyPositive,
+  bodyNegative,
+  breakable: false
+) = { 
+  return block(
+    radius: 3pt,
+    clip: true,
+    breakable: breakable,
+    table(
+      columns: 2,
+      stroke: none,
+      fill: (col, row) =>
+        if row == 0 {
+          if col == 0 {rgb(30, 128, 17)} else {
+            rgb(200,22, 40)
+          }
+        } else {
+          if col == 0 {rgb(40,173,23,75)} else {rgb(240,22,40,75)}
+        },
+      block(
+        inset: 4pt,
+        text(font: sansFont, fill: white, weight: "semibold", [#titlePositive]),
+      ),
+      block(
+        inset: 4pt,
+        text(font: sansFont, fill: white, weight: "semibold", [#titleNegative]),
+      ),
+      block(
+        inset: 4pt,
+        [#bodyPositive]),
+      block(
+        inset: 4pt,
+        [#bodyNegative])
+    )
+  )
+  
+}
