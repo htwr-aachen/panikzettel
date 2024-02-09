@@ -134,6 +134,21 @@
   )
 }
 
+#let sidenote(
+  title: "title",
+  titleTextColor: luma(255),
+  textColor: luma(0),
+  radius: 3pt,
+  width: 100%,
+  prefix: "Sidenote: ",
+  body) = {
+    colorbox(
+      title: prefix + title,
+      bgColor: rgb(177, 177, 177, 75),
+      strokeColor: rgb(55, 55, 55),
+    )[#body]
+}
+
 #let algoBox(
   title: "title",
   titleTextColor: luma(255),
