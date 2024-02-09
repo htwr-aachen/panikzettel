@@ -1,4 +1,4 @@
-#import "conf.typ": conf, algoBox, defiBox, theoBox
+#import "conf.typ": conf, algoBox, defiBox, theoBox, posneg
 
 #show: conf.with(
   title: "IT-Sicherheit",
@@ -22,12 +22,13 @@ Dieser Panikzettel ist Open Source auf #link("https://git.rwth-aachen.de/jonas.m
 == Ziele von IT-Sicherheit
 IT-Sicherheit beinhaltet, Vorbeugung, Erkennung und Verhinderung gegen Angriffe gegen eines der *CIA*-Ziele.
 
-*CIA*
-- *_Confidentiality_*: Nur autorisierte Personen haben *Zugriff* auf ein System
-- *_Integrity_*: Nur autorisierte Personen können *Ressourcen* in einem System *verändern*
-- *_Availability_*: Autorisierte Personen können *wie vorgesehen* auf Ressource in einem System *zugreifen*
+=== CIA
+/ Confidentiality: Nur autorisierte Personen haben *Zugriff* auf ein System
+/ Integrity: Nur autorisierte Personen können *Ressourcen* in einem System verändern
+/ Availability: Autorisierte Personen können *wie vorgesehen* auf Ressourcen in einem System *zugreifen*
 
-= Angriffe
+Hierauf folgend kommen einige Beispiele für angriffe auf eines (oder mehreren) der _CIA_-Ziele.
+
 == Angriffe gegen _Confidentiality_
 === _Eavesdropping_
 Beim Transfer vom Daten werden diese abgehört/abgefangen.
@@ -54,16 +55,17 @@ Eine Aktion wird geleugnet, z.B. ein spezifisches Datenpaket gesendet zu haben.
 - Das Signal einer Verbindung wird mit einem *Störsignal* gejammed
 - Das *Passwort* eines Nutzers wird *falsch eingegeben*, um den *Account* zu *blockieren*
 
+=== Sonstiges
+
+Es gibt grob zwei Prinzipien beim Design eines Kryptosystems (sei es ein Verschlüsselungsverfahren, ein Protokoll oder eine Anwendung).
+
+/ Kreckhoffs Principle: Ein Kryptosystem sollte sicher sein, selbst wenn alles über das System *außer der/die Schlüssel* bekannt ist.
+/ Security by obscurity: Das Gegenstück dazu. Sicherheit durch Geheimhaltung des Designs eines Kryptosystems. (Im generellen eine Schlechtere Methodik, auch wenn sie natürlich kombiniert werden können).
+
 = _Symmetric Encryption_
-Bei _symmetric encryption_ sind die *_encryption_* und *_decryption keys_* *identisch*.
+Bei _symmetric encryption_ sind die *_encryption_* und *_decryption keys_* *identisch*. 
 
-=== _Kreckhoffs Principle_
-Ein Kryptosystem sollte sicher sein, selbst wenn alles über das System *außer der Schlüssel* bekannt ist.
-
-=== _Security by obscurity_
-Sicherheit durch Geheimhaltung des Designs eines Kryptosystems. (Schlechtere Methode!)
-
-=== _Caesar Cipher_
+== _Caesar Cipher_
 Ersetzt jeden verwendeten Buchstaben, durch den, der $k$ Stellen im Alphabet danach kommt ($k$ ist entsprechend der Schlüssel).
 
 ==== Sicherheit des _Caesar Cipher_
@@ -118,9 +120,7 @@ Wähle *zufällig gleichverteilt* ein $K in cal(K)$ für jedes $P in cal(P)$, we
   Der _One-Time-Pad_ hat _perfect secrecy_.
 ])
 
-#table(
-  columns: (1fr, 1fr),
-  fill: (col, _) => if col == 0 {rgb(10%,80%, 10%, 70%)} else {rgb(100%,10%,0%,70%)},
+#posneg(
   [
     - *Einfach zu berechnen*
       - Verschlüsselung und Entschlüsselung sind *dieselbe Operation*
