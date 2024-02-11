@@ -101,7 +101,7 @@
   "or1.pdf": {
     "name": "Operations Research 1 (Quantitative Methoden)",
     "semester": 3,
-    "type":"af"
+    "type": "af"
   },
   "pp.pdf": {
     "name": "Probabilistic Programming",
@@ -133,5 +133,9 @@
     "name": "Elements of Machine Learning and Data Science",
     "semester": 5,
     "type": "pf"
+  },
+  "hpc.pdf": {
+    "name": "Einführung in die High Performance Computing",
+    "type": "wpf"
   }
 }
