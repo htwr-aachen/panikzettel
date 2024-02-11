@@ -29,7 +29,7 @@
       #h(1fr) #smallcaps[#dateString]
     ])
   )
-  set text(size: 11pt, lang: lang, font: "Latin Modern")
+  set text(size: 11pt, lang: lang, font: ("Latin Modern"), fallback: true)
   set par(leading: 0.65em, justify: true)
   set block(below: 1.05em)
 
