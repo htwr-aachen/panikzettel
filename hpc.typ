@@ -194,6 +194,7 @@ Bei Optimierungen sollte immer nach dem Schema vorgegangen werden:
 Versucht nicht ernsthaft zu optimieren ohne _profiling_. Ihr könnt nur schätzen wo die Hotspots sind.
 
 #sidenote(
+  title: "Optimierungs Tips by Jonas",
   [
     Ganz grob sollte es bei Optimierungen folgende schritte geben:
     1. Datenstrukturen und Algorithmen. Macht keine Arbeit die auch einfacher ginge. (Das macht meistens den größten speedup aus)
@@ -417,7 +418,7 @@ Die Network performance ist natürlich von der Netzwerktopologie (Bus, Ring, etc
     [Topologie], [Max degree], [Edge connectivity], [Diameter], [Bisection Bandwidth],
     [Bus], [1], [1], [1], [B],
     [Ring], [2], [2], [$floor(N/2)$], [2B],
-    [Fully-Connected], [], [], [], [],
+    [Fully-Connected], [$N-1$], [$N-1$], [$1$], [$B floor(N^2/4)$],
     [Fat-Tree], [depends], [1 w/o redundancy], [$2 dot "level"$], [depends],
     [Mesh], [$2d$], [$d$], [$sum_(i=1)^1 (N_i - 1)$], [$B(product_(i=1)^(d-1) N_i)$]
   ),
