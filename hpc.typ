@@ -100,7 +100,7 @@ Natürlich kann code für pipelining optimiert werden. Zum Beispiel können die 
 #defiBox(
   title: "Superscalarity",
   [
-    Ein Prozessor ist _superscalar_, wenn er dafür gebaut wurde, mehrere Instruktionen pro _clock cycle_ auszuführen.
+    Ein Prozessor ist _superscalar_, wenn er dafür gebaut wurde mehrere Instruktionen pro _clock cycle_ auszuführen.
     Es ist eine Form des _instruction level parallelism_. Moderne  Prozessoren sind 3-6 fach _superscalar_.
   ]
 )
@@ -133,7 +133,7 @@ for(i=0; i<n; i+=4)
   C[i+3] = A[i+3]+B[i+3];
 }
 ```
-Hier kann dann aber der Compiler leichter sehe, ok diese 4 Operationen können in eine SIMD instruction zusammengefasst werden.
+Hier kann dann aber der Compiler leichter sehen: ok diese 4 Operationen können in eine SIMD instruction zusammengefasst werden.
 Wir müssen den Compiler entweder mit Flags oder mit z.B. `#pragam omp simd` mittels Directives und OpenMP sagen, das er Vektorisieren soll.
 
 == Memory hierarchy
@@ -392,7 +392,7 @@ Zwei wichtige Punkte zu Amdahl:
   ]
 )
 
-== Multthreading
+== Multithreading
 
 Hyperthreading ist das wir zwei Control-Units und doppelte Register haben und zwei Threads laufen lassen. Die ALU wird aber geteilt.
 Somit wird ein Kern besser ausgenutzt.
@@ -424,12 +424,12 @@ Die Network performance ist natürlich von der Netzwerktopologie (Bus, Ring, etc
   ),
   caption: "Topologieübersicht"
 )
-= Parallelierungsoptimierungen
+= Parallelisierungsoptimierungen
 
 / Concurrency: Ausführung eines Tasks ist nicht fest-gelegt (kann auch gleichzeitig sein). Eigenschaft eines Programms
 / Parallel: Berechnung können simultan geschehen. Eigenschaft einer Maschine.
 
-Unterscheid zwischen Prozessen und Threads sollte durch BUS und PSP bekannt sein.
+Unterschied zwischen Prozessen und Threads sollte durch BUS und PSP bekannt sein.
 
 
 Es gibt verschiedene Wege wie wir parallelisieren können. Auch Bibliotheken (z.B. OpenMP) unterstützen häufig mehrere Wege.
@@ -446,7 +446,7 @@ All das waren Support Strukturen. Es gibt aber auch die Algorithmischen Struktur
 
 === Geometric decomposition
 
-Wir teilen z.B. ein Bild oder eine Matrix auf. Zumindest solange die Indexe nicht-überlappen.
+Wir teilen z.B. ein Bild oder eine Matrix auf. Zumindest solange die Indexe nicht-überlappen. Bzw. sie können überlappen (wie bei Gaussian Blurs) müssen dann aber unabhängig voneinander sein. Z.b. convolutions bei einem convolutional-neural-network
 
 
 === Divide&Conquer
@@ -682,10 +682,10 @@ for(k = 0; k < N; k++)
 }
 
 // Halo exchange done by single thread via MPI
-MPI_Irecv(halo data from –dir neighbour)
-MPI_Isend(data to +dir neighbour)
-MPI_Irecv(halo data from +dir neighbour)
-MPI_Isend(data to -dir neighbour)
+MPI_Irecv(halo data from –dir neighbor)
+MPI_Isend(data to +dir neighbor)
+MPI_Irecv(halo data from +dir neighbor)
+MPI_Isend(data to -dir neighbor)
 MPI_Waitall();
 ```
 
@@ -748,7 +748,7 @@ Computer können nur begrenzt effizient sein.
   title: "Thermodynamische Limits eines NAND Gates",
   [
      $ E = ln(2) dot k dot T $
-     wobei $k=1.3806504 24 ∗ 10−23 J/K$ die Bolzmann Konstante ist. Und T die Temperatur (Kevlin).
+     wobei $k=1.3806504 24 ∗ 10−23 J/K$ die Bolzmann Konstante ist. Und T die Temperatur (Kelvin).
      
      Ist nur gut zu wissen.
   ]
@@ -761,7 +761,7 @@ Wobei $V$ die Spannung ist, $f$ die Frequenz, $I$ die Stromstärke, $C$ die Elek
 Um eine höhere Frequenz zu erreichen, braucht die CPU eine höhere Spannung (also quadratisch mehr Power).
 
 Ein Prozessor kann in unterschiedlichen Zuständen sein:
-- P State: Unterschiedliche Leistung/Geschwindigkeit aber alle voll Funktional. (Und nichtmehr ganz akurat)
+- P State: Unterschiedliche Leistung/Geschwindigkeit aber alle voll Funktional. (Und nichtmehr ganz akkurat)
 - C State:
   - C0 CPU macht gerade etwas
   - C1 CPU ist IDLE: Clock wird nicht weitergegeben
