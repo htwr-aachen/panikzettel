@@ -29,15 +29,17 @@ build:latex:
     name: latex-artifacts
     paths:
       - ./build/*.pdf
+  cache:
+    key: "$CI_COMMIT_REF_SLUG-latex-artifacts"
+    paths:
+      - ./build/*.pdf
+    policy: push
+
 build:typst:
   stage: build
   image: ghcr.io/typst/typst:latest
   needs: []
   rules:
-    - changes:
-        - /*.{typ}
-        - Makefile
-        - scripts/*
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   before_script:
@@ -68,6 +70,8 @@ deploy:
     - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
 
+    # Check for cached latex artifacts and copy them to the working directory if they exist
+    - "if [ -d cache/$CI_COMMIT_REF_SLUG-latex-artifacts ]; then cp -r cache/$CI_COMMIT_REF_SLUG-latex-artifacts/* build/; fi"
     # clear bucket and then upload files
     - gsutil rm -a $GCP_BUCKET_URL/**
     - gcloud storage cp --cache-control="public, max-age=3600" metadata.json $GCP_BUCKET_URL

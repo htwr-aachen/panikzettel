@@ -60,7 +60,7 @@
 \date{\small\filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
 \makeatother
 
-\subject{\normalfont{}\texttt{\href{https://panikzettel.philworld.de}{panikzettel.philworld.de}}}
+\subject{\normalfont{}\texttt{\href{https://panikzettel.htwr-aachen.de}{panikzettel.htwr-aachen.de}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Math & Symbols
@@ -112,7 +112,7 @@
 \usepackage{todonotes}
 
 % Just like the 'center' block, but without spacing around it.
-\newenvironment{tightcenter}{%
+\nelenvironment{tightcenter}{%
   \setlength\topsep{0pt}
   \setlength\parskip{0pt}
   \begin{center}
