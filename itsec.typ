@@ -214,3 +214,93 @@ Bei CTR wird auf den $E_K$ vom ersten Block $"IV" + 1$ auf den zweiten Block $"I
 Dadurch ist kein Padding notwendig, und Ver- und Entschlüsselung kann parallelisiert werden.
 
 CTR macht also aus einem _block cipher_ einen _stream cipher_.
+
+Die abgewandelte Variante des Galois Counter Mode (GCM) wird in #ref(<gcm>) behandelt.
+
+= Symmetric Integrity Protection
+
+_Modification Detection Code_ (MDC) werden über einen *secure* channel gesendet (die Nachricht nicht). Dann wird die MDC-Funktion auf die Nachricht angewand und geguckt ob MDC gleich ist.
+
+_Message Authentication Code_ (MAC) werden mit der Nachricht über den unsicheren Channel gesendet. 
+Um eine MAC zu erstellen (und zu überprüfen) benötigt man den Key.
+
+== Hash functions
+
+#defiBox(
+  title: "Hash Funktion",
+  [
+    Eine Hash Funktion $h$ muss folgende Eigenschaften aufweisen:
+    1. _compression_: $h$ mapped eine Eingabe unbestimmter Länge auf eine *fixe* Länge.
+    2. _ease of computation_: Die hash funktion muss effizient berechenbar sein.
+  ]
+)
+
+Aus der ersten Eigenschaft ergibt sich natürlich, dass es (unendlich viele) Kollisionen geben muss.
+
+#defiBox(
+  title: "Cryptographic Hash function",
+  [
+    / preimage resistance: Gegeben einem $y=h(x)$, aber nicht $x$. Es ist nicht möglich $x'$ zu finden mit $h(x') = y$. Es kann auch $x=x'$ gelten.
+    / second preimage resistance: Gegeben einem $x, h(x)$. Es ist nicht möglich ein $x' != x$ zu finden mit $h(x')=h(x)$.
+    / collision resistance: Es ist nicht möglich ein $x,x'$ zu finden mit $h(x')=h(x)$.
+   
+    #footnote([Alle "nicht möglich" sind natürlich nur _computationally infeasible_]) 
+  ]
+)
+
+#theoBox(
+  title: "Geltende Implikationen",
+  [
+    _collision resistant_ $==>$ _second preimage resistant_.
+
+    Alle anderen Implikationen gelten nicht.
+  ]
+)
+
+Eine _cryptographic hash function_ ist nun eine die alle 3 Eigenschaften erfüllt.
+
+== HMAC
+
+MAC auf Grundlage einer _cryptographic hashs_
+
+$ "HMAC"_K (M) = h(K xor "opad" || h(K xor "ipad" || M)) quad quad #footnote([$xor$ kommt immer zuerst]) $
+
+_ipad_ und _opad_ sind festgelegt und unterscheiden sich 
+
+== CMAC
+
+MAC mittels Symmetrischer Block Verschlüsselung.
+
+$M = M_1 || M_2 || ... || M_n$ 
+
+1. Fall $||M_n|| = b$ $M_n$ passt genau in einen Block.
+  
+  $"CMAC"(M) = K_bold(1) xor M_n xor E_k (M_(n-1) xor E_k (... xor E_k (M_1)))$
+
+2. Fall padde $M_n^'=M_n 1 underbrace(0...0, b - ||M_n|| - 1) $
+ 
+  $"CMAC"(M) = K_bold(2) xor M_n^' xor E_k (M_(n-1) xor E_k (... xor E_k (M_1)))$
+
+$K_1, K_2$ generieren wir uns aus $K$, aber benötigen unterscheidliche, da sonst $"CMAC"(M) = "CMAC" (M')$ wäre
+wenn $M' = M 1 0...0$
+
+=== Replay Protection in MAC & Verschlüsselungsreihenfolge
+
+Um gegen einfach kopieren der Datei mit MAC zu verhindern müssen wir Sachen (wie z.B. timestamp, RNG, SQN) einbauen.
+Bei RNG muss Bob zuerst die Zufallszahl senden, die dann mit der $"MAC"_K (M || "RAND")$ mitgeschickt wird.
+
+Man sollte immer erst Verschlüsseln und dann den MAC berechnen, da dann MAC keine sicherheitsrelevanten Informationen enthällt
+und man MAC erst überprüfen kann, bevor dem aufwändigeren Entschlüsseln.
+
+== GCM <gcm>
+
+Der GCM Encryption Mode kann beides gleichzeitig.
+
+Wir haben dabei $A_1 || ... || A_m || P_1 || ... || P_n$ $m<n$. Wir wollen $A_i$ integrity protecten und $P_i$ verschlüsseln und integrity protecten.
+
+#figure(
+  image("img/itsec/gcm.png", height: 12em),
+  caption: [Operationsdiagramm GCM #footnote([Hier wird nur $A_1$ dargestellt, aber bei mehreren $A_i$ werden die nacher äquivalent mit eingebunden])]
+)
+
+
