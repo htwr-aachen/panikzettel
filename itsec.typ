@@ -1,11 +1,12 @@
-#import "conf.typ": conf, algoBox, defiBox, theoBox, posneg
+#import "conf.typ": conf, algoBox, defiBox, theoBox, posneg, sidenote
 
 #show: conf.with(
   title: "IT-Sicherheit",
   shortTitle: "ITSec",
   authors: (
     (name: "Tore Kunze"),
-    (name: "Adrian Groh")
+    (name: "Adrian Groh"),
+    (name: "Jonas Schneider")
   ),
   lang: "de",
   filename: "itsec",
@@ -15,6 +16,13 @@
 = Einleitung
 
 === Vorwort
+
+#sidenote(
+  title: "Warnung",
+  [
+    Dieser Panikzettel ist noch nicht fertig. Die Zeit (und Motivation) fehlt für uns. Ich verspreche für den 2. Termin ist er fertig.
+  ]
+)
 
 Dieser Panikzettel ist über die neue Vorlesung "IT-Sicherheit", ein Pflichtfach des neuen Informatik Bachelors der RWTH Aachen.
 

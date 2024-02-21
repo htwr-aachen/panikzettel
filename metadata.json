@@ -71,6 +71,7 @@
   },
   "itsec.pdf": {
     "name": "IT-Sicherheit",
+    "short": "IT-sec",
     "semester": 5,
     "type": "pf"
   },
