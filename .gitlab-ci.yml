@@ -7,13 +7,18 @@ build:latex:
   image: kjarosh/latex:2023.1
   needs: []
   rules:
-    - changes:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
         - "*.tex"
         - "*.cls"
         - Makefile
         - scripts/*
-    - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "*.tex"
+        - "*.cls"
+        - Makefile
+        - scripts/*
   before_script:
     - apk add make
     - apk add git
