@@ -8,17 +8,17 @@ build:latex:
   needs: []
   rules:
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - "*.tex"
-        - "*.cls"
-        - Makefile
-        - scripts/*
+      # changes:
+      #   - "*.tex"
+      #   - "*.cls"
+      #   - Makefile
+      #   - scripts/*
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      changes:
-        - "*.tex"
-        - "*.cls"
-        - Makefile
-        - scripts/*
+      # changes:
+      #   - "*.tex"
+      #   - "*.cls"
+      #   - Makefile
+      #   - scripts/*
   before_script:
     - apk add make
     - apk add git
@@ -63,18 +63,18 @@ deploy:
     - job: build:typst
       optional: true
   image: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
-  before_script:
-    - apk add --no-cache curl jq
-    - |
-      if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
-        PROJECT_ID="$CI_PROJECT_ID"
-        PIPELINE_ID=$(curl --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/api/v4/projects/$PROJECT_ID/pipelines?ref=$CI_COMMIT_REF_NAME&status=success" | jq -r ".[0].id")
-        JOB_ID=$(curl --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/api/v4/projects/$PROJECT_ID/pipelines/$PIPELINE_ID/jobs?scope=success" | jq -r '.[] | select(.name=="build:latex") | .id')
-        if [ ! -z "$JOB_ID" ]; then
-          curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/api/v4/projects/$PROJECT_ID/jobs/$JOB_ID/artifacts"
-          unzip -o artifacts.zip -d build/
-        fi
-      fi
+  # before_script:
+  #   - apk add --no-cache curl jq
+  #   - |
+  #     if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
+  #       PROJECT_ID="$CI_PROJECT_ID"
+  #       PIPELINE_ID=$(curl --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/api/v4/projects/$PROJECT_ID/pipelines?ref=$CI_COMMIT_REF_NAME&status=success" | jq -r ".[0].id")
+  #       JOB_ID=$(curl --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/api/v4/projects/$PROJECT_ID/pipelines/$PIPELINE_ID/jobs?scope=success" | jq -r '.[] | select(.name=="build:latex") | .id')
+  #       if [ ! -z "$JOB_ID" ]; then
+  #         curl --location --output artifacts.zip --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" "https://gitlab.com/api/v4/projects/$PROJECT_ID/jobs/$JOB_ID/artifacts"
+  #         unzip -o artifacts.zip -d build/
+  #       fi
+  #     fi
   script:
     - gcloud --quiet components update
 
