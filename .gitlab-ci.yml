@@ -8,7 +8,8 @@ build:latex:
   needs: []
   rules:
     - changes:
-        - /*.{tex, cls}
+        - "*.tex"
+        - "*.cls"
         - Makefile
         - scripts/*
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
@@ -66,4 +67,3 @@ deploy:
     - gsutil rm -a $GCP_BUCKET_URL/**
     - gcloud storage cp --cache-control="public, max-age=3600" metadata.json $GCP_BUCKET_URL
     - gcloud storage cp --cache-control="public, max-age=3600" build/* $GCP_BUCKET_URL
-
