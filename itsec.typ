@@ -303,4 +303,9 @@ Wir haben dabei $A_1 || ... || A_m || P_1 || ... || P_n$ $m<n$. Wir wollen $A_i$
   caption: [Operationsdiagramm GCM #footnote([Hier wird nur $A_1$ dargestellt, aber bei mehreren $A_i$ werden die nacher äquivalent mit eingebunden])]
 )
 
+= Asymmetric Encryption & Signatures
 
+Alles hier beruht darauf einen _public key_ $p_k$ zu haben den jeder kennt (man geht auch davon aus, dass jeden ihn kennt).
+Und einen _private key_ $s_k$ den Niemand außer man selber kennt. 
+
+== RSA
