@@ -3,6 +3,10 @@ stages:
   - deploy
 
 build:latex:
+  cache:
+    policy: pull-push
+    untracked: true
+    key: "$CI_BUILD_NAME"
   stage: build
   image: kjarosh/latex:2023.1
   needs: []
