@@ -597,7 +597,7 @@ Das ist Simpons-Paradox.
 
 Hierbei gibt es _temporal data_, heißt jede Aktion hat einen Timestamp, eine Case-ID und eine Aktion (z.B. Nutzer 1 registriert sich $t_1$, Nutzer 2 meldet sich an $t_2$, etc...).
 
-Hieraus entstehen cases, $"case" 1= angle.l"Nuzter registriert", ...angle.r$.
+Hieraus entstehen cases, $"case" 1= angle.l"Nutzer registriert", ...angle.r$.
 
 Wir brauchen erneut eine Relation, das _containment_ $A subset.sq.eq B$. Wir gucken einfach ob wir die Events von $A$ in $B$ in der *gleichen Reihenfolge*, aber gegebenenfalls mit Lücken, in $B$ finden.
 
