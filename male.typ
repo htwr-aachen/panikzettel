@@ -235,7 +235,7 @@ Wir haben zwei verschiedene Arten Regression behandelt:
 
 === Linear Regression
 Für linear regression wenden wir die Least Square Regression an.
-Wir nehmen als _error function_ erneut die Sum of squares Funktion $E(w)=1/2 sum_(i=1)^N (y(x_n;w) - t-n)^2$.
+Wir nehmen als _error function_ erneut die Sum of squares Funktion $E(w)=1/2 sum_(i=1)^N (y(x_n;w) - t_n)^2$.
 
 Kommen also bei dem gleichen $w=(Phi^sans(T)Phi)^(-1)Phi^sans(T)$ an wie bei den Diskriminanten. Allerdings mit $y(x) = w^sans(T) phi.alt(x)$ einer Basis Funktion
 
