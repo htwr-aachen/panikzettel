@@ -221,10 +221,12 @@
   titleNegative: "Negatives (-)",
   bodyPositive,
   bodyNegative,
+  width: 100%,
   breakable: false
 ) = { 
   return block(
     radius: 3pt,
+    width: width,
     clip: true,
     breakable: breakable,
     table(
@@ -239,10 +241,12 @@
           if col == 0 {rgb(40,173,23,75)} else {rgb(240,22,40,75)}
         },
       block(
+        width: width / 2,
         inset: 4pt,
         text(font: sansFont, fill: white, weight: "semibold", [#titlePositive]),
       ),
       block(
+        width: width / 2,
         inset: 4pt,
         text(font: sansFont, fill: white, weight: "semibold", [#titleNegative]),
       ),
@@ -253,6 +257,5 @@
         inset: 4pt,
         [#bodyNegative])
     )
-  )
-  
+  ) 
 }
