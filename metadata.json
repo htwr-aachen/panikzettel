@@ -143,5 +143,10 @@
   "hpc.pdf": {
     "name": "Einführung in die High Performance Computing",
     "type": "wpf"
+  },
+  "cse.pdf": {
+    "name": "Communication Systems Engineering",
+    "type": "wpf",
+    "shortname": "cse"
   }
 }
