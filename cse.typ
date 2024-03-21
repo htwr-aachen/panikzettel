@@ -1,4 +1,4 @@
-#import "conf.typ": conf, sidenote, algoBox, defiBox, theoBox, posneg
+#import "conf.typ": conf, posneg, algoBox, sidenote, defiBox
 #import "@preview/cetz:0.2.0": canvas, plot
 
 
@@ -86,7 +86,7 @@ Sie werden dann an einem bestimmte Adresse/Port via `bind` gebunden.
 
 Die tatsächliche Kommunikation läuft dann über `send/write`, `recv/read`, bzw. `sendto()`, `recvfrom()` für verbindungslose Protokolle.
 
-Die tatsächliche Implementierung/Funktionsweise der Protokolle bleit dabei transparent für den Benutzer.
+Die tatsächliche Implementierung/Funktionsweise der Protokolle bleibt dabei transparent für den Benutzer.
 Z.B. übergeben wir einem `SOCK_STREAM` ganze Daten, obwohl es _packetized_ wird.
 
 Am Ende wird der Socket dann via `shutdown` & `close` geschlossen.
@@ -151,26 +151,31 @@ Normalerweise ist in TCP ein 3-Way Handshake vorgesehen (e.g. `SYN` $->$ `SYN, A
 Probleme die jedoch dabei auftreten:
 - Doppelte SYN: Was die `SYN` anfrage dupliziert wird? Wir können nicht wissen, dass es sich nicht um eine neue Anfrage handelt.
 - DoS attacks (Resource exhaustion attack -> & Reflection Attack):
-  `SYN` floot attacks. Schicke einfach `SYN`s, die dann aber wegen den Fast Open Daten an den HTTP server weitergereicht werden (mehr Arbeit). Reflektion ist einfach das nur mit spoofed IP Adressen, die dann die HTTP Daten von der Request bekommen. (Somit auch eine Art _amplification_)
+  `SYN` flood attacks. Schicke einfach `SYN`s, die dann aber wegen den Fast Open Daten an den HTTP server weitergereicht werden (mehr Arbeit). Reflektion ist einfach das nur mit spoofed IP Adressen, die dann die HTTP Daten von der Request bekommen. (Somit auch eine Art _amplification_)
 
-Das zweite Problem kann mit Cookies (!TCP cookies nicht HTTP) behoben werden. Wir müssen einmal einen 3-WHS machen und bekommen dann einen Nachweis über das halten der betreffenden IP-Addresse. Das müssen wir bei Fast Open mitschicken. Der Cookie muss natürlich irgendwie sicher übertragen werden.
+Das zweite Problem kann mit Cookies (!TCP cookies nicht HTTP) behoben werden. Wir müssen einmal einen 3-WHS machen und bekommen dann einen Nachweis über das halten der betreffenden IP-Addresse. Das müssen wir bei Fast Open mitschicken. Der Cookie muss natürlich irgendwie sicher übertragen werden. Ebenfalls hängt er von der IP Addresse ab, bei einer geänderten IP Adresse gilt er deswegen nichtmehr.
 
 Auch TCP Fast Open wird bei Bedarf über Socket Optionen (de)aktiviert.
   
 === Multipath (MPTCP)
 
-Wir können server über verschiedene Routen durchs Internet erreichen. TCP nutzt aber immer nur eine.
-Das ist aber unter anderem für mobile Geräte schlecht, wenn sie von einem Router zu einem anderen springen, oder von WIFI zu LTE wechseln. Die vohrhandenen TCP Verbindungen werden dann abgebrochen.
+Standard TCP nutzt nur ein Interface um eine Verbindung zu erstellen. Besonders für mobile Endgeräte ist ein wechseln zwischen Interfaces (z.B. LTE und WIFI) häufig, führt aber zu Verbungsabbrüchen.
 
-Wir erklären mit `MP_CAPABLE` _MPTCP_ (Multipath TCP) das wir das können. Der Server muss ebenfalls zustimmen im `SYN,ACK`.
+Mittels Multipath TCP kann eine TCP Verbindung über mehrere Wege erreicht werden.
 
-Ab dann gibt es `SUBFLOWS` denen wir via `SYN, JOIN` $->$ `SYN, ACK, JOIN` joinen können. 
+Hierfür erklären wir mit der `MP_CAPABLE` Option unsere Kompatibilität, die der Server ebenfalls aktiviert haben muss. 
+Ab dann können mehrere `SUBFLOWS` existieren. Um einen neuen `SUBFLOW` zu der Verbindung hinzuzufügen muss eine neue TCP Verbindung zum gleichen Server aufgebaut werden, erneut mit der `MP_CAPABLE` *und* `JOIN` Optionen. Die vorhandene Verbindung wird dann durch die Server (oder Client Adresse jenachdem wer die neue Verbindung aufbaut) identifiziert.
+
+Das gesamte läuft erneut transparent für den Benutzer der Sockets ab, heißt er bekommt davon nichts mit, denn für ihn sieht alles nach einer einzigen Verbindung aus.
 
 === Middleboxes
 Middleboxes können fast alle Felder eines IP Pakets im Netz unvorhersehbar modifizieren, was die Implementierung neuer Protokolle, wie auch MPTCP erschwert.
-Dazu können sie Pakete mit unbekannten TCP Optionen oft einfach droppen. Somit können neue Funktionen entweder erst gar nicht aktiviert oder behindert werden. (z.B. Ich sehe hier nur `ACK 1` und `ACK 3` durchkommen: Kill it. Obwohl es über _Subflow_ 2 kommen könnte)
+Dazu können sie Pakete mit unbekannten TCP Optionen oft einfach droppen. Somit können neue Funktionen entweder erst gar nicht aktiviert oder behindert werden. 
 
-MPTCP umgeht das mit weiteren `Data ACK`s und Data seq. number. Die ursprünglichen Sequence Nummern und ACK Nummern gelten nur für den jeweiligen Subflow, die Data ACKs handeln auf den globalen Daten und leben in den TCP Optionen.
+Zudem könnten Middleboxes die nur einen Teil der MPTCP Verbindung sehen die Verbindung als gescheitert ansehen und daraufhin auflösen/blockieren, da sie einen Teil der Nachrichten erhalten.  
+
+Unteranderem um dieses Problem zu lösen verwendet MPTCP die Sequence Nummern von TCP jeweils nur für einen _Subflow_. 
+Um aber über _Subflows_ hinweg die Reihenfolge zu beizubehalten werden globale `DATA ACK`s und `DATA Seq. Num.` eingeführt und in den TCP Optionen mitübertragen.
 
 
 == Design Principles
@@ -184,6 +189,7 @@ Da sich Anforderungen an Protokolle mit der Zeit verändern können, sollten sie
 Oft ist ein Schichtenmodell sinnvoll.
 
 === 10 Rules of Design
+#quote(quotes: false, block: true)[
 1. Make sure that the problem is well designed
 2. Define the service first
 3. Design external functionality before the internal one
@@ -194,6 +200,7 @@ Oft ist ein Schichtenmodell sinnvoll.
 8. Implement the design, evaluate and optimize it
 9. Check the equivalence of prototype and implementation
 10. Don't skip rules 1-7
+]
 
 === Internet Design Goals
 Das primäre Ziel beim Internet Design ist es, die existierenden Netzwerke optimal auszunutzen. Dabei werden Gateways benötigt, um Netzwerke verschiedener Art zu verbinden.
@@ -237,7 +244,7 @@ Der Zustand wird hier nur auf den Endhosts gespeichert.
 
 Im Internet hat sich das Prinzip "dummes Netzwerk, Intelligenz an den Endsystemen" durchgesetzt. Das beinhaltet die verwendung von Packet Switching und die Verwendung von zwei Transportprotokollen. Dabei wird ein Schichtenmodell verwendet, durch das der Rechenaufwand erhöht wird.
 
-== Design a Protcol. Mach einfach
+== Design a Protcol
 
 - Adressen: Entweder per Client (Device Adresse) oder Flow Adresse à la RTP. Der Adressraum sollte groß genug sein für die Zukunft
 - Sequence Control: Der Sequencenumberraum sollte groß genug sein, so dass keine zwei gleichen seq. numbers simultan unterweges sind
@@ -427,7 +434,7 @@ Vorteile des _in-band_ signaling
   - Einheitliches und vereinfachtes Management von Verbindungen
 ], [
   - Kann Latez erhöhen.
-  - Erschwert QoS und eventuell niedrigere Durchsatzrate
+  - Erschwert QoS garantien und eventuell niedrigere Durchsatzrate
 ])
 
 Auch beim Zustand und bei der Kontrolle gibt es optionen:
@@ -454,11 +461,13 @@ Versionsrecap HTTP:
       - Ein _Stream_ ist ein bidirektionaler Nachrichtenverkehr
       - Eine _Connection_ kann mehrere Streams beinhalten. Aber *nur eine* _Connection_ zwischen Client und Server. 
     Eine Nachricht kann zum Beispiel dann aus einem Header _Frame_ und einem DATA _Frame_ bestehen.
-    Die Stream ID identifiziert den Stream. Server initialisierte Streams *gerade*, Client initialisierte *ungreade*. Es gibt auch Flow Control aufbauend auf dem TCP flow control.
+    Die Stream ID identifiziert den Stream. Server initialisierte Streams *gerade*, Client initialisierte *ungerade*. 
+    
+    Es gibt auch Flow Control aufbauend auf dem TCP flow control. Hiermit kann aber besseres fine-tuning und Applikationsspezifisches flow controlling erreicht werden. 
     Streams können unterschiedlich gewichtet sein und _dependencies_ haben (somit können beim scrollen die wichtigen Sachen priorisiert werden). 
     Der Server kann auch _Server push_ ohne explizite Anfrage des Clients, aber mit Vorwarnung.
 
-    Header Frames können mit Huffman codes und vordefinierten statischen und dynamischen Tabellen codiert werden.
+    Header Frames können mit `HPACK` comprimiert werden. Im Hintergrund nutzt es Huffman codes und vordefinierten statischen (oft verwendeten Begriffe) und dynamischen Tabellen.
     
     Insgesamt ein ziemlich gutes Protokoll.
 
@@ -469,7 +478,7 @@ Versionsrecap HTTP:
     #link("https://htwr-aachen.de") unterstützt IPv6 und HTTP/3
   ]
 
-Tolles QUIC:
+Tolles QUIC. Es baut auf vielen Extensions zu TCP auf:
   - QUIC nutzt Fast Open
   - QUIC nutzt 0-RTT TLS 1.3 (TLS ist in QUIC drin).
   - QUIC connections sind nicht an IPs gebunden um multipath/mobilität zu erlauben.
@@ -515,19 +524,17 @@ Es gibt mehrere möglichkeiten den Bottom-Half zu schedulen:
   [], [SoftIRQ], [Tasklets], [Work Queues],
   [Execution Context], [runs in interrupt context], [runs in interrupt context], [runs in process context],
   [Reentrancy], [Can run simultaneously on multiple CPUs], [Cannot run simultaneously. Different CPUs can run different Tasklets], [Can run simultaneously on multiple CPUs],
-  [Sleep], [Cannot], [Cannot], [Can],
-  [Preemption], [Cannot], [Cannot], [Can],
-  [Ease of use], [No], [Yes], [Yes],
-  [When?], [No sleep and speed requirements], [No sleep], [Yes sleep]
+  [Sleep/Preemption], [Cannot], [Cannot], [Can],
+  [Ease of use], [Requires locking and deadlock prevention], [Possible easier to use], [Possibly easier to use],
 )
 
-== New API
+== New API (_NAPI_)
 Wie funktioniert das jetzt wirklich?
-Um die Nachteile des Pollings zu mitigieren, aktivieren wir polling immer erst dann, wenn die Anzahl der eintreffenden Pakete einen bestimmten Schwellenwert überschreitet. Wir deaktivieren es entweder nach einer kurzen Zeit (ein paar ms) oder wenn keine zu verarbeitenden Pakete mehr da sind wieder.
+Um die Nachteile des Pollings zu umgehen, aktivieren wir polling immer erst dann, wenn die Anzahl der eintreffenden Pakete einen bestimmten Schwellenwert überschreitet. Wir deaktivieren es entweder nach einer kurzen Zeit (ein paar ms) oder wenn keine zu verarbeitenden Pakete mehr da sind.
 
-== Arbeiten mit Netwerkdaten
+== Arbeiten mit Netzwerkdaten
 
-Das wichtigeste hier ist der _Socket Buffer_ (mbuffs). Das ist die Datenstruktur auf der wir arbeiten.
+Das wichtigeste hier ist der _Socket Buffer_ (mbuffs). Das ist die Datenstruktur auf der gearbeitet wird.
 
 
 Teilkomponenten sind ein _header_ (Metainformationen) und ein Speicherort für das Paket.
@@ -535,8 +542,7 @@ Teilkomponenten sind ein _header_ (Metainformationen) und ein Speicherort für d
 - `data_len`: bytes der tatsächlichen Daten
 - ...
 
-//heißt das so
-Wir wenden das 0-copy System an. Hierfür haben wir Pointer die auf die einzelnen Regionen zeigen:
+Wir wenden das zero-copy System an. Hierfür haben wir Pointer die auf die einzelnen Regionen zeigen:
 - `head`: Zeigt zum Anfang des Speichers
 - `data`: Anfang des Pakets
 - `tail`: Ende des Pakets
@@ -545,10 +551,8 @@ Wir wenden das 0-copy System an. Hierfür haben wir Pointer die auf die einzelne
 //maybe Bilderreihe zum veranschaulichen
 
 *Locking* 
-übliche Locks sind `spin_lock`s. Versuche in SoftIRQs max. 5 (atomare) lines of code zu locken.
-Achte auch auf Deadlocks. Ansonsten standard Multi-CPU kram.
-
-// todo: Unterschied spin locks und Sempahores
+- _semaphores_: Falls eine kritischer Abschnitt _gelocked_ ist, wird der wartende Prozess bei _semaphores_ Schlafen gelegt.
+- _spin_lock_: Falls eine kritischer Abschnitt _gelocked_ ist, prüft der wartende Prozess bei _spin_locks_ durchgehend den Lock. Er verbraucht also CPU Zeit. Dafür können _spin_locks_ auch von (Prozess)Strukturen genutzt werden, die nicht Schlafen können (z.B. SoftIRQs). 
 
 = Testing
 
@@ -572,7 +576,7 @@ Achte auch auf Deadlocks. Ansonsten standard Multi-CPU kram.
     - Contracts: Spezifiziere das genaue input schema via assertions.
     - Mit static assertions können auch bei compiletime Überprüfungen gemacht werden
     - Unit Testing: Schreibe extra Funktionen mit assertions, die eine "unit" testen
-  - \*box Testing, Fuzzing: Unit-Testing, Black-Box Testing (Only test API), Whitebox, Coverage-guided Fuzizng
+  - \*box Testing, Fuzzing: Unit-Testing, Black-Box Testing (Only test API), Whitebox, Coverage-guided Fuzzing
   - Symbolic Execution, KLEE: Erkundet alle Pfade eines Programs. Folge Branches unabhängig von einander. Bei Dynamic Symbolic Execution: forke bei branch. \
     Concolic Execution bei zu vielen Zuständen. Bearbeite nur einen Pfad nacheinander. \
     Static Symbolic Execution: Untersuche das Programm als logische Formel.
@@ -595,7 +599,7 @@ Dabei hat das System einen Zustand der sich meistens mit der Zeit verändert, wa
   - Schlachtfelder
   - ...
 
-Stochastisch beduetet, dass die Simulation nicht deterministisch ist, also die gleichen Startbedingungen zu verschiedenen Abläufen führen können, da z.B. ping oder packet loss zufällig vorkommen.
+Stochastisch bedeutet, dass die Simulation nicht deterministisch ist, also die gleichen Startbedingungen zu verschiedenen Abläufen führen können, da z.B. ping oder packet loss zufällig vorkommen.
 
 Von der zu simulierenden Situation müssen einige Sachen festgestellt werden:
 - die Komponenten, die Interaktionen durchführen (components)
@@ -603,6 +607,9 @@ Von der zu simulierenden Situation müssen einige Sachen festgestellt werden:
 - Parameter, die definieren, wie sich der Zustand mit der Zeit ändert (parameters)
 
 Bei DES wird davon ausgeganen, dass es diskrete Events gibt, bei denen sich der Zustand des Systems ändert und dass es zwischen diesen Events keine Zustandsveränderungen gibt. Dadurch kann man in der Simulation immer direkt zum Zeitpunkt des nächsten Events springen (next-event algorithms).
+
+Für die Randomness brauch man noch einen Random Number Generator (RNG), z.B. Linear Congruential Generator (LCG):
+$ x_n = (a x_(n-1) + c) mod m $
 
 Die Zeit innerhalb der Simulation ist unabhängig von der außerhalb und kann mit beliebigen Einheiten notiert werden (typischerweise mit Sekunden nach Simulationsstart). Mögliche Bezeichnungen für die verschiedenen Zeiten sind z.B. "simulated time" (innerhalb) und "wall-clock time" (außerhalb).
 
@@ -630,15 +637,15 @@ Das geht entweder, indem die Event Handler mit z.B. OpenMP oder CUDA parallelisi
 Dabei ist es wichtig zu beachten, welche Events voneinander abhängig sind, da das Ergebnis der Simulation sonst verfälscht werden könnte. Eine Möglichkeit dieser Synchronisation ist mit _Space-parallel Simulation_.
 
 === Space-parallel Simulation
-Es gibt logische Prozesse (LP), die jeweils einen Teil der Simulation ausführen. Jeder LP hat seine Eigene Clock und event list. Die LPs tauschen untereinander Nachriten zur Synchronisierung aus, wodurch eine korrekte Ausführung sichergestellt wird. Die LPs sollten so gewählt werden, dass die nötige Kommunikation zwischen ihnen minimal ist.
+Es gibt logische Prozesse (LP), die jeweils einen Teil der Simulation ausführen. Jeder LP hat seine Eigene Clock und event list. Die LPs tauschen untereinander Nachrichten zur Synchronisierung aus, wodurch eine korrekte Ausführung sichergestellt wird. Die LPs sollten so gewählt werden, dass die nötige Kommunikation zwischen ihnen minimal ist.
 
 Bei Space-parallel Simulation gibt es zwei Arten von Algorithmen:
 - Konservative Algorithmen, die streng auf die richtige Reihenfolge und Abhängigkeit von Events achtet
-- Optimistische Algorithmen, die Events einfach immer ausführt. Die dadurch resultierenden Kausalitätsfehler werden dann erkannt und beseitigt. Dies führt of insgesamt zu einer besseren Performance
+- Optimistische Algorithmen, die Events einfach immer ausführt. Die dadurch resultierenden Kausalitätsfehler werden dann erkannt und beseitigt. Dies führt of insgesamt zu einer besseren Performance.
 // weiß nicht ob das sinnvoll ist auf die Details einzugehen (VI-96 ..)
 
 == Performance Evaluation
-1. Proglem formulation and system definition
+1. Problem formulation and system definition
 2. Choice of metrics, factors and levels
 3. Data collection and modeling
 4. Choice of simulation environment & model implementation
@@ -647,11 +654,9 @@ Bei Space-parallel Simulation gibt es zwei Arten von Algorithmen:
 7. Experimentation, analysis and presentation
 
 Die gesammelten Daten können dann z.B. mit arithmetischem Mittel oder empirischer Varianz aufbereitet werden.
-// warum kommt hier nach einfach stocha
 
 
 = Measurements
-// bestimmt wichtig, das ist eins von comsys Hauptforschungsgebieten
 Messungen sind nützlich für die Validierung in Simulationen. Außerdem können Simulationen ganz vermieden werden, wenn wir existierende Systeme vermessen können.
 
 In komplexen Systemen wie dem Internet ist das nicht so leicht.
@@ -663,7 +668,7 @@ Mögliche Gründe für Messungen sind unter Anderem:
 (ähnlich zu Simulationen, aber jetzt bare metal)
 
 == Active Measurements
-Sende selbst Traffic zum Messen los. Das ist zum Beispiel sinnvoll, um Situtationen zu untersuchen, die sonst nur selten/nie auftreten. Der Nachteil ist, dass das untersuchte System dabei beeinflusst wird. 
+Sende selbst Traffic zum Messen los. Das ist zum Beispiel sinnvoll, um Situationen zu untersuchen, die sonst nur selten/nie auftreten. Der Nachteil ist, dass das untersuchte System dabei beeinflusst wird. 
 
 Ein einfaches Beispiel von Active Measurements ist das Tool `ping`, mit dem man die RTT zu einem Host messen kann.
 
@@ -687,6 +692,3 @@ Beim Erfassen von Paketen sollten auch immer Metadaten, wie das genutzte Tool un
 - Filtering/Sampling ist meistens notwendig, damit die generierten Datenmengen im Rahmen bleiben (z.B. nur bestimmte IP Addressen, Protokolle, Ports, etc. oder nur Teile von Paketen)
 - Realer Internet Traffic ist voll von Anomalien, unerwartetem Verhalten und Hosts, die sich nicht an Standards halten $->$ Daten müssen vor der Verarbeitung aufbereitet werden
 
-
-//habt ihr noch vorschläge was bei dem Panikzettel Template praktisch sein könnte?
-// A: ich finde das sieht so schon ganz gut aus
