@@ -10,5 +10,4 @@ git log --format=oneline -- $1 | wc -l >> $FILENAME
 echo "---" >> $FILENAME
 git log --pretty=format:%ad --date=format:'%d.%m.%Y' -n 1 -- $1 >> $FILENAME
 
-
 typst compile -f pdf --root=. "$1" "./build/$OUTPUT_FILE"
