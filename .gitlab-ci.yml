@@ -8,7 +8,7 @@ build:latex:
     untracked: true
     key: "$CI_BUILD_NAME"
   stage: build
-  image: kjarosh/latex:2023.1
+  image: guusk/docker-latex:xenial
   needs: []
   rules:
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH == $CI_DEFAULT_BRANCH
@@ -23,9 +23,6 @@ build:latex:
         - "*.cls"
         - Makefile
         - scripts/*
-  before_script:
-    - apk add make
-    - apk add git
   script:
     - make clean
     - make --keep-going all || echo "failure"
