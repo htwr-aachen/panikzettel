@@ -15,7 +15,7 @@ jobs:
 
       - name: Git Safe Dir
         run: |
-          git config --global --add safe.directory .
+          git config --global --add safe.directory /home/runner/work/panikzettel/panikzettel
 
       - name: Compile with TexLive
         uses: xu-cheng/texlive-action@v2
@@ -24,7 +24,7 @@ jobs:
           run: |
             apk add make
             apk add git
-            git config --global --add safe.directory .
+            git config --global --add safe.directory /home/runner/work/panikzettel/panikzettel
             make clean
             make --keep-going all
       - name: Archive Latex artifacts
