@@ -13,6 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Git Safe Dir
+        run: |
+          git config --global --add safe.directory .
+
       - name: Compile with TexLive
         uses: xu-cheng/texlive-action@v2
         with:
