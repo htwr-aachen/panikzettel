@@ -1,0 +1,27 @@
+name: timestamp
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  timestamp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkou@v4
+
+      - name: Versionize
+        run: |
+          ./scripts/versionize.sh metadata.json
+
+      - name: Add metadata.json
+        run: |
+          git add metadata.json
+
+      - name: Commit & Push metadata.json
+        run: |
+          git config --global user.name "GITHUB-TIMESTAMP-ACTION"
+          git config --global user.email "GITHUB-TIMESTAMP-ACTION@users.noreply.github.com"
+          git commit -m "chore(timestamp): Update metadata timestamps"
+          git push
