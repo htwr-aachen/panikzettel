@@ -12,32 +12,32 @@ stocha.pdf: stocha.tex panikzettel.cls
 dsal.pdf: dsal.tex dsal.last-change panikzettel.cls
 	latexmk -output-directory=./build -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make dsal.tex
 
-fosap.pdf: fosap.tex panikzettel.cls
+fosap.pdf: fosap.tex fosap.last-change panikzettel.cls
 	latexmk -output-directory=./build -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make fosap.tex
 
-bus.pdf: bus.tex panikzettel.cls
+bus.pdf: bus.tex bus.last-change panikzettel.cls
 	latexmk -output-directory=./build -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make bus.tex
 
-maschinengestaltung_i.pdf: maschinengestaltung_i.tex panikzettel.cls
+maschinengestaltung_i.pdf: maschinengestaltung_i.tex maschinengestaltung_i.last-change panikzettel.cls
 	latexmk -output-directory=./build -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make maschinengestaltung_i.tex
 
 numrech.pdf: numrech.tex panikzettel.cls numrech.last-change
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -use-make -pdf numrech.tex
 
-buk.pdf: buk.tex
+buk.pdf: buk.tex buk.last-change
 	latexmk -output-directory=./build -pdflatex="lualatex -interaction=nonstopmode" -pdf -use-make buk.tex
 
 swt.pdf: swt.tex panikzettel.cls swt.last-change
 	cp deps/tikz-uml.sty tikz-uml.sty
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -pdf -use-make swt.tex
 
-datkom.pdf: datkom.tex
+datkom.pdf: datkom.tex datkom.last-change
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -pdf -use-make datkom.tex
 
 malo.pdf: malo.tex panikzettel.cls malo.last-change
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -pdf -use-make malo.tex
 
-dbis.pdf: dbis.tex
+dbis.pdf: dbis.tex dbis.last-change
 	cp deps/tikz-er2.sty tikz-er2.sty
 	cp deps/BTrees.sty BTrees.sty
 	latexmk -output-directory=./build -pdflatex="pdflatex -interaction=nonstopmode" -pdf -use-make dbis.tex
