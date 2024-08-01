@@ -3,189 +3,189 @@
     "name": "Advanced Automata Theory",
     "semester": 3,
     "type": "wpf",
-    "date": "19.08.2020"
+    "date": "01.08.2024"
   },
   "afi.pdf": {
     "name": "Analysis für Informatiker (AFI)",
     "semester": 1,
     "type": "pf",
-    "date": "31.07.2020"
+    "date": "01.08.2024"
   },
   "ai.pdf": {
     "name": "Introduction to Artifical Intelligence",
     "semester": 3,
     "type": "wpf",
-    "date": "19.03.2019"
+    "date": "01.08.2024"
   },
   "algds.pdf": {
     "name": "Algorithmic Foundations of Data Science",
     "semester": 3,
     "type": "wpf",
-    "date": "05.08.2020"
+    "date": "01.08.2024"
   },
   "bpi.pdf": {
     "name": "Business Process Intelligence",
     "semester": 3,
     "type": "af",
-    "date": "21.02.2019"
+    "date": "01.08.2024"
   },
   "buk.pdf": {
     "name": "Berechenbarkeit und Komplexität",
     "semester": 3,
     "type": "pf",
-    "date": "20.01.2020"
+    "date": "01.08.2024"
   },
   "bus.pdf": {
     "name": "Betriebssyteme und Systemsoftware",
     "semester": 2,
     "type": "pf",
-    "date": "05.09.2019"
+    "date": "01.08.2024"
   },
   "cg.pdf": {
     "name": "Basic Techniques in Computer Graphics",
     "semester": 3,
     "type": "wpf",
-    "date": "19.02.2019"
+    "date": "01.08.2024"
   },
   "datkom.pdf": {
     "name": "Datenkommunikation",
     "semester": 3,
     "type": "pf",
-    "date": "23.02.2024"
+    "date": "01.08.2024"
   },
   "dbis.pdf": {
     "name": "Datenbanken und Informationssysteme",
     "semester": 4,
     "type": "pf",
     "shortname": "dbis",
-    "date": "19.07.2020"
+    "date": "01.08.2024"
   },
   "dsal.pdf": {
     "name": "Datenstrukturen und Algorithmen",
     "semester": 2,
     "type": "pf",
-    "date": "14.07.2020"
+    "date": "01.08.2024"
   },
   "effi.pdf": {
     "name": "Effiziente Algorithmen",
     "semester": 3,
     "type": "wpf",
-    "date": "08.08.2018"
+    "date": "01.08.2024"
   },
   "elehre.pdf": {
     "name": "Entscheidungslehre",
     "semester": 3,
     "type": "af",
-    "date": "02.03.2019"
+    "date": "01.08.2024"
   },
   "fosap.pdf": {
     "name": "Formale Systeme, Automaten und Prozesse",
     "semester": 2,
     "type": "pf",
-    "date": "14.08.2016"
+    "date": "01.08.2024"
   },
   "itsec.pdf": {
     "name": "IT-Sicherheit",
     "short": "IT-sec",
     "semester": 5,
     "type": "pf",
-    "date": "21.02.2024"
+    "date": "01.08.2024"
   },
   "la.pdf": {
     "name": "Lineare Algebra für Informatiker",
     "semester": 2,
     "type": "pf",
-    "date": "17.07.2018"
+    "date": "01.08.2024"
   },
   "lsp1.pdf": {
     "name": "Logistics Systems Planning 1",
     "semester": 3,
     "type": "wpf",
-    "date": "05.08.2020"
+    "date": "01.08.2024"
   },
   "malo.pdf": {
     "name": "Mathematische Logik",
     "semester": 4,
     "type": "pf",
-    "date": "06.09.2018"
+    "date": "01.08.2024"
   },
   "maschinengestaltung_i.pdf": {
     "name": "Maschinengestaltung 1",
     "semester": 3,
     "type": "af",
-    "date": "11.07.2017"
+    "date": "01.08.2024"
   },
   "meta.pdf": {
     "name": "Der Meta-Panikzettel",
     "type": "none",
-    "date": "16.12.2023"
+    "date": "01.08.2024"
   },
   "numrech.pdf": {
     "name": "Numerisches Rechnen",
     "semester": 3,
     "type": "af",
-    "date": "10.03.2018"
+    "date": "01.08.2024"
   },
   "or1.pdf": {
     "name": "Operations Research 1 (Quantitative Methoden)",
     "semester": 3,
     "type": "af",
-    "date": "25.11.2020"
+    "date": "01.08.2024"
   },
   "pp.pdf": {
     "name": "Probabilistic Programming",
     "type": "wpf",
-    "date": "31.12.2020"
+    "date": "01.08.2024"
   },
   "sn19.pdf": {
     "name": "Social Networks 2019",
     "type": "wpf",
-    "date": "21.07.2020"
+    "date": "01.08.2024"
   },
   "sn20.pdf": {
     "name": "Social Networks 2020",
     "type": "wpf",
-    "date": "03.08.2021"
+    "date": "01.08.2024"
   },
   "spa.pdf": {
     "name": "Static Program Analysis",
     "type": "wpf",
-    "date": "15.02.2019"
+    "date": "01.08.2024"
   },
   "stocha.pdf": {
     "name": "Stochastik",
     "semester": 4,
     "type": "pf",
-    "date": "31.07.2020"
+    "date": "01.08.2024"
   },
   "swt.pdf": {
     "name": "Softwaretechnik",
     "semester": 3,
     "type": "pf",
-    "date": "03.08.2020"
+    "date": "01.08.2024"
   },
   "male.pdf": {
     "name": "Elements of Machine Learning and Data Science",
     "semester": 5,
     "type": "pf",
-    "date": "04.03.2024"
+    "date": "01.08.2024"
   },
   "hpc.pdf": {
     "name": "Einführung in die High Performance Computing",
     "type": "wpf",
-    "date": "19.02.2024"
+    "date": "01.08.2024"
   },
   "cse.pdf": {
     "name": "Communication Systems Engineering",
     "type": "wpf",
     "shortname": "cse",
-    "date": "21.03.2024"
+    "date": "01.08.2024"
   },
   "mit.pdf": {
     "name": "Mobile Internet Technology",
     "type": "wpf",
     "shortname": "mit",
-    "date": "31.07.2024"
+    "date": "01.08.2024"
   },
   "male_en.pdf": {
     "date": "01.08.2024"
