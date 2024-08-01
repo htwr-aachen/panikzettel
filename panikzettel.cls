@@ -7,6 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Optional 'english' language option
 \newcommand{\InitPanikzettelLanguage}{\PassOptionsToPackage{english,ngerman}{babel}}
+\DeclareOption{german}{\renewcommand{\InitPanikzettelLanguage}{\PassOptionsToPackage{ngerman}{babel}}}
 \DeclareOption{english}{\renewcommand{\InitPanikzettelLanguage}{\PassOptionsToPackage{english}{babel}}}
 \ProcessOptions
 \InitPanikzettelLanguage
@@ -24,7 +25,6 @@
 \usepackage{babel}
 \usepackage{microtype}
 \usepackage{parskip}
-\usepackage{microtype}
 \usepackage{csquotes}
 \usepackage{booktabs}
 
@@ -112,7 +112,7 @@
 \usepackage{todonotes}
 
 % Just like the 'center' block, but without spacing around it.
-\nelenvironment{tightcenter}{%
+\newenvironment{tightcenter}{%
   \setlength\topsep{0pt}
   \setlength\parskip{0pt}
   \begin{center}

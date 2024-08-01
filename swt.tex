@@ -1,4 +1,4 @@
-\documentclass{panikzettel}
+\documentclass[german]{panikzettel}
 
 \usepackage{adjustbox}
 \usepackage{tikz}
@@ -279,10 +279,11 @@ Zwischen den \emph{Objekten}, für die alle die Zeit gleichmäßig nach unten vo
     \umlobject[class=PanikzettelServer]{ps}
 
     \begin{umlcall}[op=getPanikzettel(),return=bild]{s}{c}
-      \begin{umlcall}[op=download(),return=panikzettel]{c}{ps}
 
-      \end{umlcall}
     \end{umlcall}
+
+    \begin{umlcall}[op=download(),return=panikzettel]{c}{ps}
+    \end{umlcall}    
   \end{umlseqdiag}
 \end{tikzpicture}
 
