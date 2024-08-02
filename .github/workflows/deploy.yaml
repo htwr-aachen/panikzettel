@@ -64,13 +64,13 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
-  
+
     needs:
       - build_latex
       - build_typst
-  
+
     runs-on: ubuntu-latest
-  
+
     steps:
       # we must download the artifacts here
       - name: Download Artifacts
@@ -78,30 +78,30 @@ jobs:
         with:
           #download all artifacts => name=none
           path: build/
-  
+
       - name: auth
         id: "auth"
         uses: "google-github-actions/auth@v2"
         with:
           project_id: htwr-aachen
           workload_identity_provider: "projects/984825600619/locations/global/workloadIdentityPools/htwr-identity-pool/providers/github-provider"
-  
+
       - name: Deploy Panikzettel
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           project_id: htwr-aachen
           path: build
-          destination: ${{ env.GCP_BUCKET_URL }}
+          destination: ${{vars.GCP_BUCKET_URL}}
           parent: false # dont upload build directory
           headers: |-
             cache-control: 'public, max-age=3600'
-  
+
       - name: Deploy Panikzettel Metadata
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           project_id: htwr-aachen
           path: metadata.json
-          destination: ${{ env.GCP_BUCKET_URL }}
+          destination: ${{vars.GCP_BUCKET_URL}}
           parent: false # dont upload build directory
           headers: |-
             cache-control: 'public, max-age=3600'
