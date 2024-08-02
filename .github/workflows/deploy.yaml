@@ -84,7 +84,7 @@ jobs:
         uses: "google-github-actions/auth@v2"
         with:
           project_id: htwr-aachen
-          workload_identity_provider: "projects/984825600619/locations/global/workloadIdentityPools/htwr-identity-pool/providers/github-provider"
+          workload_identity_provider: "projects/984825600619/locations/global/workloadIdentityPools/htwr-identity-pool/providers/panikzettel"
 
       - name: Deploy Panikzettel
         uses: google-github-actions/upload-cloud-storage@v2
