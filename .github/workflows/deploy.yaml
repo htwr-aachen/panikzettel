@@ -78,6 +78,7 @@ jobs:
         with:
           #download all artifacts => name=none
           path: build/
+          merge-multiple: true
 
       - name: auth
         id: "auth"
