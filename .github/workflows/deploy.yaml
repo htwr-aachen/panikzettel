@@ -17,6 +17,14 @@ jobs:
         run: |
           git config --global --add safe.directory /home/runner/work/panikzettel/panikzettel
 
+      - name: Restore build files as cache
+        id: latex-cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ./build
+          key: latex-cache
+
       - name: Compile with TexLive
         uses: xu-cheng/texlive-action@v2
         with:
@@ -27,6 +35,16 @@ jobs:
             git config --global --add safe.directory /home/runner/work/panikzettel/panikzettel
             make clean
             make --keep-going all
+
+      # Utilize Latex caching
+      - name: Save build files as cache
+        id: latex-cache-save
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ./build/
+          key: ${{ steps.latex-cache-restore.outputs.cache-primary-key }}
+
       - name: Archive Latex artifacts
         uses: actions/upload-artifact@v4
         with:
