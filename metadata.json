@@ -191,11 +191,13 @@
     "name": "Elements of Machine Learning and Data Science (EN)",
     "shortname": "male (EN)",
     "type": "pf",
-    "semester": 5
+    "semester": 5,
+    "date": "01.08.2024"
   },
   "funkpro.pdf": {
     "name": "Foundations of Functional Programming",
     "shortname": "funkpro",
-    "type": "wpf"
+    "type": "wpf",
+    "date": "04.08.2024"
   }
 }
