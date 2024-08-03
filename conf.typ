@@ -208,6 +208,23 @@
   content
 }
 
+
+#let todo(
+  title: "",
+  titleTextColor: luma(0),
+  textColor: luma(255),
+  radius: 3pt,
+  width: 100%,
+  prefix: "TODO ",
+  body) = {
+    colorbox(
+      title: prefix + title,
+      bgColor: rgb(240, 22, 40, 75),
+      strokeColor: rgb(200, 22, 40),
+    )[#body]
+}
+
+
 #let proof(
   title: "",
   body) = [
