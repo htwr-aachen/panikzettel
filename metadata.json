@@ -204,5 +204,8 @@
     "shortname": "funkpro",
     "type": "compulsory_elective",
     "date": "2024-08-04"
+  },
+  "afi.pdf": {
+    "date": "2020-07-31"
   }
 }
