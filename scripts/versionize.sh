@@ -5,7 +5,7 @@ for file in $(find . -maxdepth 1 -type f \( -iname "*.typ" -o -iname "*.tex" \) 
     OUTPUT_FILE=$(echo $file | sed -E -e "s/\.(typ|tex)$/.pdf/" | cut -c3-)
     echo "DATE PARSING for $OUTPUT_FILE"
     # get date from git
-    DATE=$(git log --pretty=format:%ad --date=format:'%d.%m.%Y' -n 1 -- $file)
+    DATE=$(git log --pretty=format:%ad --date=format:'%Y-%m-%d' -n 1 -- $file)
 
     #add to json
     if hash jq 2> /dev/null; then
