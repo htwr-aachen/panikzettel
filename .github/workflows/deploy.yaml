@@ -23,7 +23,9 @@ jobs:
         with:
           path: |
             ./build
-          key: latex-cache
+          restore-keys: |
+            latex-cache-${{ runner.os }}
+          key: latex-cache-${{ runner.os }}-${{ hashFiles('**.tex', 'deps/**', 'img/**') }}
 
       - name: Compile with TexLive
         uses: xu-cheng/texlive-action@v2
