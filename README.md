@@ -4,9 +4,9 @@
 
 Die ultimative Paniksammlung.
 
-Der `master`-Branch ist live auf **[panikzettel.htwr-aachen.de](https://panikzettel.htwr-aachen.de)**.
+Der `master`-Branch ist live auf **[panikzettel.htwr-aachen.de](https://htwr-aachen.de/panikzettel/)**.
 
-Alles Wichtige zum Mitarbeiten und Kompilieren findest Du in unserem [Meta-Panikzettel](https://panikzettel.htwr-aachen.de/meta.pdf).
+Alles Wichtige zum Mitarbeiten und Kompilieren findest Du in unserem [Meta-Panikzettel](https://htwr-aachen.de/panikzettel/meta.pdf).
 
 Wir freuen uns über Beiträge!
 
