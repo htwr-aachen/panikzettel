@@ -1,208 +1,208 @@
 {
-	"aat.pdf": {
-		"name": "Advanced Automata Theory",
-		"semester": 3,
-		"type": "compulsory_elective",
-		"date": "2020-08-19"
-	},
-	"afi.pdf": {
-		"name": "Analysis für Informatiker (AFI)",
-		"semester": 1,
-		"type": "compulsory",
-		"date": "2020-07-31"
-	},
-	"ai.pdf": {
-		"name": "Introduction to Artifical Intelligence",
-		"semester": 3,
-		"type": "compulsory_elective",
-		"date": "2019-03-19"
-	},
-	"algds.pdf": {
-		"name": "Algorithmic Foundations of Data Science",
-		"semester": 3,
-		"type": "compulsory_elective",
-		"date": "2020-08-05"
-	},
-	"bpi.pdf": {
-		"name": "Business Process Intelligence",
-		"subject_area": "unknown",
-		"semester": 3,
-		"type": "application_area",
-		"date": "2019-02-21"
-	},
-	"buk.pdf": {
-		"name": "Berechenbarkeit und Komplexität",
-		"semester": 3,
-		"type": "compulsory",
-		"date": "2020-01-20"
-	},
-	"bus.pdf": {
-		"name": "Betriebssyteme und Systemsoftware",
-		"semester": 2,
-		"type": "compulsory",
-		"date": "2019-09-05"
-	},
-	"cg.pdf": {
-		"name": "Basic Techniques in Computer Graphics",
-		"semester": 3,
-		"type": "compulsory_elective",
-		"date": "2019-02-19"
-	},
-	"datkom.pdf": {
-		"name": "Datenkommunikation",
-		"semester": 3,
-		"type": "compulsory",
-		"date": "2024-02-23"
-	},
-	"dbis.pdf": {
-		"name": "Datenbanken und Informationssysteme",
-		"semester": 4,
-		"type": "compulsory",
-		"shortname": "dbis",
-		"date": "2020-07-19"
-	},
-	"dsal.pdf": {
-		"name": "Datenstrukturen und Algorithmen",
-		"semester": 2,
-		"type": "compulsory",
-		"date": "2024-08-02"
-	},
-	"effi.pdf": {
-		"name": "Effiziente Algorithmen",
-		"semester": 3,
-		"type": "compulsory_elective",
-		"date": "2018-08-08"
-	},
-	"elehre.pdf": {
-		"name": "Entscheidungslehre",
-		"subject_area": "business_administration",
-		"semester": 3,
-		"type": "application_area",
-		"date": "2019-03-02"
-	},
-	"fosap.pdf": {
-		"name": "Formale Systeme, Automaten und Prozesse",
-		"semester": 2,
-		"type": "compulsory",
-		"date": "2016-08-14"
-	},
-	"itsec.pdf": {
-		"name": "IT-Sicherheit",
-		"short": "IT-sec",
-		"semester": 5,
-		"type": "compulsory",
-		"date": "2024-02-21"
-	},
-	"la.pdf": {
-		"name": "Lineare Algebra für Informatiker",
-		"semester": 2,
-		"type": "compulsory",
-		"date": "2018-07-17"
-	},
-	"lsp1.pdf": {
-		"name": "Logistics Systems Planning 1",
-		"semester": 3,
-		"type": "compulsory_elective",
-		"date": "2020-08-05"
-	},
-	"malo.pdf": {
-		"name": "Mathematische Logik",
-		"semester": 4,
-		"type": "compulsory",
-		"date": "2018-09-06"
-	},
-	"maschinengestaltung_i.pdf": {
-		"name": "Maschinengestaltung 1",
-		"subject_area": "mechanical_engineering",
-		"semester": 3,
-		"type": "application_area",
-		"date": "2017-07-11"
-	},
-	"meta.pdf": {
-		"name": "Der Meta-Panikzettel",
-		"type": "other",
-		"date": "2023-12-16"
-	},
-	"numrech.pdf": {
-		"name": "Numerisches Rechnen",
-		"subject_area": "unknown",
-		"semester": 3,
-		"type": "application_area",
-		"date": "2018-03-10"
-	},
-	"or1.pdf": {
-		"name": "Operations Research 1 (Quantitative Methoden)",
-		"subject_area": "business_administration",
-		"semester": 3,
-		"type": "application_area",
-		"date": "2020-11-25"
-	},
-	"pp.pdf": {
-		"name": "Probabilistic Programming",
-		"type": "compulsory_elective",
-		"date": "2020-12-31"
-	},
-	"sn19.pdf": {
-		"name": "Social Networks 2019",
-		"type": "compulsory_elective",
-		"date": "2020-07-21"
-	},
-	"sn20.pdf": {
-		"name": "Social Networks 2020",
-		"type": "compulsory_elective",
-		"date": "2021-08-03"
-	},
-	"spa.pdf": {
-		"name": "Static Program Analysis",
-		"type": "compulsory_elective",
-		"date": "2019-02-15"
-	},
-	"stocha.pdf": {
-		"name": "Stochastik",
-		"semester": 4,
-		"type": "compulsory",
-		"date": "2020-07-31"
-	},
-	"swt.pdf": {
-		"name": "Softwaretechnik",
-		"semester": 3,
-		"type": "compulsory",
-		"date": "2024-08-02"
-	},
-	"male.pdf": {
-		"name": "Elements of Machine Learning and Data Science",
-		"semester": 5,
-		"type": "compulsory",
-		"date": "2024-03-04"
-	},
-	"hpc.pdf": {
-		"name": "Einführung in die High Performance Computing",
-		"type": "compulsory_elective",
-		"date": "2024-02-19"
-	},
-	"cse.pdf": {
-		"name": "Communication Systems Engineering",
-		"type": "compulsory_elective",
-		"shortname": "cse",
-		"date": "2024-03-21"
-	},
-	"mit.pdf": {
-		"name": "Mobile Internet Technology",
-		"type": "compulsory_elective",
-		"shortname": "mit",
-		"date": "2024-07-31"
-	},
-	"male_en.pdf": {
-		"name": "Elements of Machine Learning and Data Science (EN)",
-		"shortname": "male (EN)",
-		"type": "compulsory",
-		"semester": 5,
-		"date": "2024-08-01"
-	},
-	"funkpro.pdf": {
-		"name": "Foundations of Functional Programming",
-		"shortname": "funkpro",
-		"type": "compulsory_elective",
-		"date": "2024-08-04"
-	}
+  "aat.pdf": {
+    "name": "Advanced Automata Theory",
+    "semester": 3,
+    "type": "compulsory_elective",
+    "date": "2020-08-19"
+  },
+  "afi.pdf": {
+    "name": "Analysis für Informatiker (AFI)",
+    "semester": 1,
+    "type": "compulsory",
+    "date": "2020-07-31"
+  },
+  "ai.pdf": {
+    "name": "Introduction to Artifical Intelligence",
+    "semester": 3,
+    "type": "compulsory_elective",
+    "date": "2019-03-19"
+  },
+  "algds.pdf": {
+    "name": "Algorithmic Foundations of Data Science",
+    "semester": 3,
+    "type": "compulsory_elective",
+    "date": "2020-08-05"
+  },
+  "bpi.pdf": {
+    "name": "Business Process Intelligence",
+    "subject_area": "unknown",
+    "semester": 3,
+    "type": "application_area",
+    "date": "2019-02-21"
+  },
+  "buk.pdf": {
+    "name": "Berechenbarkeit und Komplexität",
+    "semester": 3,
+    "type": "compulsory",
+    "date": "2020-01-20"
+  },
+  "bus.pdf": {
+    "name": "Betriebssyteme und Systemsoftware",
+    "semester": 2,
+    "type": "compulsory",
+    "date": "2019-09-05"
+  },
+  "cg.pdf": {
+    "name": "Basic Techniques in Computer Graphics",
+    "semester": 3,
+    "type": "compulsory_elective",
+    "date": "2019-02-19"
+  },
+  "datkom.pdf": {
+    "name": "Datenkommunikation",
+    "semester": 3,
+    "type": "compulsory",
+    "date": "2024-02-23"
+  },
+  "dbis.pdf": {
+    "name": "Datenbanken und Informationssysteme",
+    "semester": 4,
+    "type": "compulsory",
+    "shortname": "dbis",
+    "date": "2020-07-19"
+  },
+  "dsal.pdf": {
+    "name": "Datenstrukturen und Algorithmen",
+    "semester": 2,
+    "type": "compulsory",
+    "date": "2024-08-02"
+  },
+  "effi.pdf": {
+    "name": "Effiziente Algorithmen",
+    "semester": 3,
+    "type": "compulsory_elective",
+    "date": "2018-08-08"
+  },
+  "elehre.pdf": {
+    "name": "Entscheidungslehre",
+    "subject_area": "business_administration",
+    "semester": 3,
+    "type": "application_area",
+    "date": "2019-03-02"
+  },
+  "fosap.pdf": {
+    "name": "Formale Systeme, Automaten und Prozesse",
+    "semester": 2,
+    "type": "compulsory",
+    "date": "2016-08-14"
+  },
+  "itsec.pdf": {
+    "name": "IT-Sicherheit",
+    "short": "IT-sec",
+    "semester": 5,
+    "type": "compulsory",
+    "date": "2024-02-21"
+  },
+  "la.pdf": {
+    "name": "Lineare Algebra für Informatiker",
+    "semester": 2,
+    "type": "compulsory",
+    "date": "2018-07-17"
+  },
+  "lsp1.pdf": {
+    "name": "Logistics Systems Planning 1",
+    "semester": 3,
+    "type": "compulsory_elective",
+    "date": "2020-08-05"
+  },
+  "malo.pdf": {
+    "name": "Mathematische Logik",
+    "semester": 4,
+    "type": "compulsory",
+    "date": "2018-09-06"
+  },
+  "maschinengestaltung_i.pdf": {
+    "name": "Maschinengestaltung 1",
+    "subject_area": "mechanical_engineering",
+    "semester": 3,
+    "type": "application_area",
+    "date": "2017-07-11"
+  },
+  "meta.pdf": {
+    "name": "Der Meta-Panikzettel",
+    "type": "other",
+    "date": "2023-12-16"
+  },
+  "numrech.pdf": {
+    "name": "Numerisches Rechnen",
+    "subject_area": "unknown",
+    "semester": 3,
+    "type": "application_area",
+    "date": "2018-03-10"
+  },
+  "or1.pdf": {
+    "name": "Operations Research 1 (Quantitative Methoden)",
+    "subject_area": "business_administration",
+    "semester": 3,
+    "type": "application_area",
+    "date": "2020-11-25"
+  },
+  "pp.pdf": {
+    "name": "Probabilistic Programming",
+    "type": "compulsory_elective",
+    "date": "2020-12-31"
+  },
+  "sn19.pdf": {
+    "name": "Social Networks 2019",
+    "type": "compulsory_elective",
+    "date": "2020-07-21"
+  },
+  "sn20.pdf": {
+    "name": "Social Networks 2020",
+    "type": "compulsory_elective",
+    "date": "2021-08-03"
+  },
+  "spa.pdf": {
+    "name": "Static Program Analysis",
+    "type": "compulsory_elective",
+    "date": "2019-02-15"
+  },
+  "stocha.pdf": {
+    "name": "Stochastik",
+    "semester": 4,
+    "type": "compulsory",
+    "date": "2020-07-31"
+  },
+  "swt.pdf": {
+    "name": "Softwaretechnik",
+    "semester": 3,
+    "type": "compulsory",
+    "date": "2024-08-02"
+  },
+  "male.pdf": {
+    "name": "Elements of Machine Learning and Data Science",
+    "semester": 5,
+    "type": "compulsory",
+    "date": "2024-03-04"
+  },
+  "hpc.pdf": {
+    "name": "Einführung in die High Performance Computing",
+    "type": "compulsory_elective",
+    "date": "2024-02-19"
+  },
+  "cse.pdf": {
+    "name": "Communication Systems Engineering",
+    "type": "compulsory_elective",
+    "shortname": "cse",
+    "date": "2024-03-21"
+  },
+  "mit.pdf": {
+    "name": "Mobile Internet Technology",
+    "type": "compulsory_elective",
+    "shortname": "mit",
+    "date": "2024-07-31"
+  },
+  "male_en.pdf": {
+    "name": "Elements of Machine Learning and Data Science (EN)",
+    "shortname": "male (EN)",
+    "type": "compulsory",
+    "semester": 5,
+    "date": "2024-08-01"
+  },
+  "funkpro.pdf": {
+    "name": "Foundations of Functional Programming",
+    "shortname": "funkpro",
+    "type": "compulsory_elective",
+    "date": "2024-08-04"
+  }
 }
