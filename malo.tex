@@ -5,7 +5,7 @@
 \usetikzlibrary{positioning}
 
 \title{Mathematische Logik Panikzettel}
-\author{Philipp Schröer, Tobias Polock, Luca Oeljeklaus, Caspar Zecha,\\Jonathan du Mesnil}
+\author{Philipp Schröer, Tobias Polock, Luca Oeljeklaus, Caspar Zecha,\\Jonathan du Mesnil, Markus Weller}
 
 \newcommand{\AL}{\mathrm{AL}}
 \newcommand{\Kl}{\mathrm{K}}
@@ -44,13 +44,16 @@
 
 Dieser Panikzettel ist eine mehr oder weniger informelle Zusammenfassung der Vorlesung Mathematische Logik bei Prof. Erich Grädel im Sommersemester 2017. Es werden hier die wichtigsten Aussagen, Tipps und Erklärungen gesammelt, die hoffentlich in dem unvermeidbaren Moment der Panik bei Hausaufgaben oder beim Lernen helfen. Wir haben etwas Formalismus im Sinne der Übersichtlichkeit weggelassen.
 
-Dieses Projekt ist lizenziert unter CC-BY-SA-4.0 und wird auf dem Git-Server der RWTH verwaltet:
-\url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}
+Dieser Panikzettel wird Stück für Stück für das Sommersemester 2025 mit Semantik und anderen Algorithmen für die Vorlesung von Prof. Grohe angepasst.
+
+Dieses Projekt ist lizenziert unter CC-BY-SA-4.0 und wird auf dem Github von HTWR-Aachen verwaltet:
+\url{https://github.com/htwr-aachen/panikzettel}\\
+Früher: \url{https://git.rwth-aachen.de/philipp.schroer/panikzettel}
 
 \subsection{Logik}
 Eine Logik ist eine (typischerweise induktiv definierte) Menge von Formeln (Syntax) zusammen mit einem Typ von Interpretationen, mithilfe derer man einer Formel einen Wahrheitswert zuordnen kann (Semantik).
 
-Für eine Interpretation $\J$ ist $\interpret{\varphi}^\J$ der Wahrheitswert von $\varphi$ unter $\J$. Wenn $\interpret{\varphi}^\J = 1$ ist, sagen wir dass $\J$ ein Modell von $\varphi$ ist ($\J \models \varphi$). Als Modell einer Formelmenge ($\J \models \Phi$) bezeichnen wir eine Interpretation, die ein Modell aller Formeln aus $\Phi$ ist. Das Symbol $\models$ verwenden wir auch für die semantische Folgerungsbeziehung: Für eine Menge $\Phi$ von Formeln bedeutet $\Phi \models \psi$, dass jedes Modell, welches Modell aller Formeln aus $\Phi$ ist, auch Modell von $\psi$ ist.
+Für eine Interpretation $\J$ ist $\interpret{\varphi}^\J$ der Wahrheitswert von $\varphi$ unter $\J$. Wenn $\interpret{\varphi}^\J = \top$ ist, sagen wir dass $\J$ ein Modell von $\varphi$ ist ($\J \models \varphi$). Als Modell einer Formelmenge ($\J \models \Phi$) bezeichnen wir eine Interpretation, die ein Modell aller Formeln aus $\Phi$ ist. Das Symbol $\models$ verwenden wir auch für die semantische Folgerungsbeziehung: Für eine Menge $\Phi$ von Formeln bedeutet $\Phi \models \psi$, dass jedes Modell, welches Modell aller Formeln aus $\Phi$ ist, auch Modell von $\psi$ ist.
 
 Eine Formel ist \emph{erfüllbar}, wenn sie ein Modell hat. Eine Formel ist \emph{gültig} oder \emph{allgemeingültig}, wenn jede passende Interpretation ein Modell ist. Zwei Formeln $\varphi$ und $\psi$ sind äquivalent, wenn für Interpretationen $\J$, die auf beide passen, $\interpret{\varphi}^\J = \interpret{\psi}^\J$ ist.
 
@@ -74,7 +77,9 @@ Die Menge $\AL$ der \emph{aussagenlogischen Formeln} ist wie folgt induktiv defi
 \begin{minipage}[t]{0.3\textwidth}
 \begin{center}
 \emph{Boolesche Konstanten}: \\
-$0, 1 \in \AL$
+$\bot, \top \in \AL$ \\
+(mit: Bottom $\bot = 0$\\
+Top $\top = 1$)
 \end{center}
 \end{minipage}
 \begin{minipage}[t]{0.28\textwidth}
@@ -96,10 +101,10 @@ mit $\psi,\ \phi \in \AL$
 
 $\tau(\phi)$ bezeichnet die Menge der in $\phi$ vorkommenden Aussagenvariablen.
 
-Eine \emph{aussagenlogische Interpretation} ist eine Abbildung für Variablen $\sigma \subseteq \tau$ auf einen Wahrheitswert: $\J : \sigma \to \Set{0,\ 1}$. Sie \emph{passt} zu einer Formel $\psi \in \AL$, wenn sie jede vorkommende Variable belegt ($\tau(\psi) \subseteq \sigma$).
+Eine \emph{aussagenlogische Interpretation} ist eine Abbildung für Variablen $\sigma \subseteq \tau$ auf einen Wahrheitswert: $\J : \sigma \to \Set{\bot,\ \top}$. Sie \emph{passt} zu einer Formel $\psi \in \AL$, wenn sie jede vorkommende Variable belegt ($\tau(\psi) \subseteq \sigma$).
 Der Wahrheitswert einer Interpretation ist durch die logische Auswertung der Formel gegeben.
 
-Ein \emph{Modell einer Formel} $\psi \in \AL$ ist eine Interpretation $\J$ mit $\interpret{\psi}^\J = 1$.
+Ein \emph{Modell einer Formel} $\psi \in \AL$ ist eine Interpretation $\J$ mit $\interpret{\psi}^\J = \top$.
 
 Ein \emph{Modell einer Formelmenge} $\Phi \subseteq \AL$ ist eine Interpretation $\J$ mit $\J \models \psi$ für alle $\psi \in \Phi$.
 
@@ -132,10 +137,10 @@ Eine Menge von Booleschen Funktionen heißt \emph{funktional vollständig}, wenn
 
 Einige Beispiele:
 \begin{itemize}
-	\item $\{\land, \lnot\}$ und $\{\lor, \lnot\}$ sind funktional vollständig.
-	\item $\{\to,0\}$ ist funktional vollständig.
-	\item $\{\mid\}$ ist funktional vollständig, wobei $(\phi\mid\psi)\equiv\lnot(\phi \land \psi)$.
-	\item $\{\land,\lor,0,1\}$ ist nicht funktional vollständig, da die Negation nicht allgemein darstellbar ist.
+  \item $\{\land, \lnot\}$ und $\{\lor, \lnot\}$ sind funktional vollständig.
+  \item $\{\to,\bot\}$ ist funktional vollständig.
+  \item $\{\mid\}$ ist funktional vollständig, wobei $(\phi\mid\psi)\equiv\lnot(\phi \land \psi)$.
+  \item $\{\land,\lor,\bot,\top\}$ ist nicht funktional vollständig, da die Negation nicht allgemein darstellbar ist.
 \end{itemize}
 
 \subsection{Horn-Formeln}
@@ -144,13 +149,13 @@ Eine \emph{aussagenlogische Horn-Formel} ist eine KNF-Formel $\bigwedge_{i=1}^n 
 
 Erfüllbarkeit von Horn-Formeln kann in Polynomialzeit getestet werden. Dazu der \emph{Markierungsalgorithmus} für eine Formel $\psi = \bigwedge_i C_i$:
 \begin{enumerate}
-\item Markiere alle $C_i$ der Form $(1 \to X)$.
-\item Wiederhole diesen Schritt, bis keine der Regeln mehr zutrifft. Seien $X_1, \ldots, X_n$ markiert.
-    \begin{itemize}
-        \item Wenn $X_1 \land \ldots \land X_n \to X$ in $\psi$ vorkommt, markiere $X$.
-        \item Wenn $X_1 \land \ldots \land X_n \to 0$ in $\psi$ vorkommt, abbrechen, denn $\psi$ ist unerfüllbar.
-    \end{itemize}
-\item Dann ist $\psi$ ist erfüllbar mit den markierten Literalen.
+  \item Markiere alle $C_i$ der Form $(\top \to X)$.
+  \item Wiederhole diesen Schritt, bis keine der Regeln mehr zutrifft. Seien $X_1, \ldots, X_n$ markiert.
+  \begin{itemize}
+    \item Wenn $X_1 \land \ldots \land X_n \to X$ in $\psi$ vorkommt, markiere $X$.
+    \item Wenn $X_1 \land \ldots \land X_n \to 0$ in $\psi$ vorkommt, abbrechen, denn $\psi$ ist unerfüllbar.
+  \end{itemize}
+  \item Dann ist $\psi$ ist erfüllbar mit den markierten Literalen.
 \end{enumerate}
 
 Nicht alle aussagenlogischen Formeln lassen sich als Horn-Formel schreiben. Man betrachte etwa $X \lor Y$.
@@ -161,11 +166,30 @@ Für den Kompaktheitssatz haben wir das \emph{Lemma von Zorn} benutzt: Sei $(A, 
 
 Der \emph{Kompaktheitssatz}:
 \begin{itemize}
-\item Für $\Phi \subseteq \AL$:\\
-$\Phi$ ist erfüllbar genau dann, wenn jede endliche Teilmenge von $\Phi$ erfüllbar ist.
-\item
-Für $\Phi \subseteq \AL, \psi \in \AL$:\\
-$\Phi \models \psi$ genau dann, wenn eine endliche Teilmenge $\Phi_0 \subseteq \Phi$ existiert, so dass $\Phi_0 \models \psi$.
+  \item Für $\Phi \subseteq \AL$:\\
+  $\Phi$ ist erfüllbar genau dann, wenn jede endliche Teilmenge von $\Phi$ erfüllbar ist.
+  \item
+  Für $\Phi \subseteq \AL, \psi \in \AL$:\\
+  $\Phi \models \psi$ genau dann, wenn eine endliche Teilmenge $\Phi_0 \subseteq \Phi$ existiert, so dass $\Phi_0 \models \psi$.
+\end{itemize}
+
+\subsection{DPLL Algoithmus}
+Der DPLL-Algorithmus (oder SIMPLIFY) ist ein Erfüllbarkeitsalgorithmus für Formeln in KNF.
+
+Die Simplify-Funktion nimmt eine Formel $\varphi$ in KNF und gibt eine vereinfachte Formel $\varphi'$ und eine (partielle) Interpretation $A'$ zurück. Diese Funktion wendet wiederholt die Vereinfachungsregeln an, solange dies möglich ist:
+\begin{itemize}
+  \item \textbf{Pure Literal Rule (PLR):} Wenn ein Literal $\psi$ (z. B. $P$ oder $\neg P$) in der aktuellen Formel $\varphi$ nur mit einer Polarität vorkommt (d.h. nur als $P$ oder nur als $\neg P$, aber nicht beides), dann kann dieses Literal so belegt werden, dass es erfüllt ist:
+  \begin{itemize}
+    \item Wenn $P$ nur positiv vorkommt, wird $P$ auf $\top$ gesetzt
+    \item Wenn $\neg P$ nur negativ vorkommt, wird $P$ auf $\bot$ gesetzt
+    \item Bei Anwendung dieser Regel werden alle Klauseln, die dieses Literal enthalten, aus der Formel entfernt (da sie nun erfüllt sind). Das Literal und seine Belegung werden zur Interpretation $A'$ hinzugefügt. Wenn ein Literal einfach "verschwindet" (weil alle Klauseln, in denen es vorkam, entfernt wurden, aber nicht durch \textbf{PLR} oder \textbf{UPR}), kann es beliebig belegt werden.
+  \end{itemize}
+  \item \textbf{Unit Propagation Rule (UPR):} Wenn die Formel $\varphi$ eine Einheitsklausel (eine Klausel, die nur aus einem einzelnen Literal $\psi$ besteht) enthält, dann muss dieses Literal wahr sein, damit die Klausel erfüllt ist.
+  \begin{itemize}
+    \item Wenn die Klausel $(P)$ ist, muss $P$ auf $\top$ gesetzt werden
+    \item Wenn die Klausel $(\neg Q)$ ist, muss $Q$ auf $\bot$ gesetzt werden
+    \item Bei Anwendung dieser Regel werden alle Klauseln, die das Literal $\psi$ enthalten, entfernt (da sie nun erfüllt sind). Alle komplementären Literale $(\neg \psi)$ werden aus den Klauseln, in denen sie vorkommen, entfernt (da sie nicht mehr zur Erfüllung beitragen können). Das Literal und seine Belegung werden zur Interpretation $A'$ hinzugefügt
+  \end{itemize}
 \end{itemize}
 
 \subsection{Resolution}
