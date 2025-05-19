@@ -33,10 +33,20 @@
 \newcommand{\until}{\mathrm{U}}
 \newcommand{\qr}{\mathrm{qr}}
 
+
+\usepackage{lmodern}           % Text font
+\usepackage{amsmath,amssymb}   % Math packages
+\usepackage{fix-cm}            % Optional font fixes
+
+% Reset math font definitions
+\DeclareSymbolFont{operators}{OT1}{cmr}{m}{n}
+\DeclareSymbolFont{letters}{OML}{cmm}{m}{it}
+\DeclareSymbolFont{symbols}{OMS}{cmsy}{m}{n}
+\DeclareSymbolFont{largesymbols}{OMX}{cmex}{m}{n}
+
 \begin{document}
 
 \maketitle
-
 \setcounter{tocdepth}{2}
 \tableofcontents
 
@@ -229,7 +239,7 @@ Einheitsresolution ist eine Variante von Resolution, bei der man eine Resolvente
 
 \subsection{Der aussagenlogische Sequenzenkalkül}
 
-Eine \emph{Sequenz} ist ein Ausdruck der Form $\Gamma \Rightarrow \Delta$ für endliche Formelmengen $\Gamma, \Delta \subseteq \AL$.
+Eine \emph{Sequenz} ist ein Ausdruck der Form $\Gamma \vdash \varphi$ für endliche Formelmengen $\Gamma, \Delta \subseteq \AL$.
 
 Eine Sequenz ist \emph{gültig}, wenn jedes Modell von $\Gamma$ auch ein Modell von mindestens einer Formel aus $\Delta$ ist, also wenn $\bigwedge \Gamma \models \bigvee \Delta$.
 
@@ -239,55 +249,185 @@ Falls $\Gamma, \Delta$ disjunkte Mengen von Aussagenvariablen sind, ist $\Gamma 
 
 Die \emph{Schlussregeln} sind, für $\Delta, \Gamma$ beliebige endliche Formelmengen und $\psi, \theta$ beliebige Formeln:
 
-\begin{minipage}{0.15\textwidth}~\\
+% \begin{minipage}{0.15\textwidth}~\\
+% \end{minipage}
+
+Für alle endlichen Formelmengen $\Gamma, \Gamma' \subseteq \AL$ und alle Formeln $\varphi \in \AL$:
+
+\begin{minipage}{0.1\textwidth}\centering
+    (Vor)
 \end{minipage}
-\begin{minipage}[t]{0.35\textwidth}
+\begin{minipage}{0.30\textwidth}\centering
 \begin{prooftree}
-  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
-  \LeftLabel{$(\neg \Rightarrow)$}
-  \UnaryInfC{$\Gamma, \neg \psi \Rightarrow \Delta$}
+    \AxiomC{}
+    \UnaryInfC{$\varphi \vdash \varphi$}
 \end{prooftree}
+\end{minipage}\hfill
+\begin{minipage}{0.1\textwidth}\centering
+    (Erw)
+\end{minipage}
+\begin{minipage}{0.45\textwidth}\centering
 \begin{prooftree}
-  \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
-  \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
-  \LeftLabel{$(\lor \Rightarrow)$}
-  \BinaryInfC{$\Gamma, \psi \lor \theta \Rightarrow \Delta$}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma, \psi, \theta \Rightarrow \Delta$}
-  \LeftLabel{$(\land \Rightarrow)$}
-  \UnaryInfC{$\Gamma, \psi \land \theta \Rightarrow \Delta$}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
-  \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
-  \LeftLabel{$(\to \Rightarrow)$}
-  \BinaryInfC{$\Gamma, \psi \to \theta \Rightarrow \Delta$}
+    \AxiomC{$\Gamma \vdash \varphi$}
+    \UnaryInfC{$\Gamma, \Gamma' \vdash \varphi$}
 \end{prooftree}
 \end{minipage}
-\begin{minipage}[t]{0.35\textwidth}
+
+Für alle endlichen Formelmengen $\Gamma \subseteq \AL$ und alle Formeln $\varphi, \varphi_1, \varphi_2, \psi \in \AL$:
+
+\begin{minipage}{0.1\textwidth}\centering
+($\land$I)
+\end{minipage}
+\begin{minipage}{0.30\textwidth}\centering
 \begin{prooftree}
-  \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
-  \LeftLabel{$(\Rightarrow \neg)$}
-  \UnaryInfC{$\Gamma \Rightarrow \Delta, \neg \psi$}
+    \AxiomC{$\Gamma \vdash \varphi$}
+    \AxiomC{$\Gamma \vdash \psi$}
+    \BinaryInfC{$\Gamma \vdash \varphi \land \psi$}
 \end{prooftree}
+\end{minipage}\hfill
+\begin{minipage}{0.1\textwidth}\centering
+($\land$E$_i$)
+\end{minipage}
+\begin{minipage}{0.45\textwidth}\centering
 \begin{prooftree}
-  \AxiomC{$\Gamma \Rightarrow \Delta, \psi, \theta$}
-  \LeftLabel{$(\Rightarrow \lor)$}
-  \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \lor \theta$}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
-  \AxiomC{$\Gamma \Rightarrow \Delta, \theta$}
-  \LeftLabel{$(\Rightarrow \land)$}
-  \BinaryInfC{$\Gamma \Rightarrow \Delta, \psi \land \theta$}
-\end{prooftree}
-\begin{prooftree}
-  \AxiomC{$\Gamma, \psi \Rightarrow \Delta, \theta$}
-  \LeftLabel{$(\Rightarrow \to)$}
-  \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \to \theta$}
+    \AxiomC{$\Gamma \vdash \varphi_1 \land \varphi_2$}
+    \RightLabel{ für $i = 1, 2$}
+    \UnaryInfC{$\Gamma \vdash \varphi_i$}
 \end{prooftree}
 \end{minipage}
+
+
+\begin{minipage}{0.1\textwidth}\centering
+($\lor$I$_i$)
+\end{minipage}
+\begin{minipage}{0.30\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma \vdash \varphi_i$}
+    \RightLabel{für $i = 1, 2$ \quad}
+    \UnaryInfC{$\Gamma \vdash \varphi_1 \lor \varphi_2$}
+\end{prooftree}
+\end{minipage}\hfill
+\begin{minipage}{0.1\textwidth}\centering
+($\lor$E)
+\end{minipage}
+\begin{minipage}{0.45\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma \vdash \varphi_1 \lor \varphi_2$}
+    \AxiomC{$\Gamma, \varphi_1 \vdash \psi$}
+    \AxiomC{$\Gamma, \varphi_2 \vdash \psi$}
+    \TrinaryInfC{$\Gamma \vdash \psi$}
+\end{prooftree}
+\end{minipage}
+
+\begin{minipage}{0.1\textwidth}\centering
+    ($\rightarrow$I)
+\end{minipage}
+\begin{minipage}{0.30\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma, \varphi \vdash \psi$}
+    \UnaryInfC{$\Gamma \vdash \varphi \rightarrow \psi$}
+\end{prooftree}
+\end{minipage}\hfill
+\begin{minipage}{0.1\textwidth}\centering
+    ($\rightarrow$E)
+\end{minipage}
+\begin{minipage}{0.45\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma \vdash \varphi \rightarrow \psi$}
+    \AxiomC{$\Gamma \vdash \varphi$}
+    \BinaryInfC{$\Gamma \vdash \psi$}
+\end{prooftree}
+\end{minipage}
+
+
+\begin{minipage}{0.1\textwidth}\centering
+    ($\neg$I)
+\end{minipage}
+\begin{minipage}{0.30\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma, \varphi \vdash \bot$}
+    \UnaryInfC{$\Gamma \vdash \neg \varphi$}
+\end{prooftree}
+\end{minipage}\hfill
+\begin{minipage}{0.1\textwidth}\centering
+    ($\neg$E)
+\end{minipage}
+\begin{minipage}{0.45\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma \vdash \neg \neg \varphi$}
+    \UnaryInfC{$\Gamma \vdash \varphi$}
+\end{prooftree}
+\end{minipage}
+
+\begin{minipage}{0.1\textwidth}\centering
+    ($\bot$I)
+\end{minipage}
+\begin{minipage}{0.30\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{$\Gamma \vdash \varphi$}
+    \AxiomC{$\Gamma \vdash \neg \varphi$}
+    \BinaryInfC{$\Gamma \vdash \bot$}
+\end{prooftree}
+\end{minipage}\hfill
+\begin{minipage}{0.1\textwidth}\centering
+    ($\top$E)
+\end{minipage}
+\begin{minipage}{0.45\textwidth}\centering
+\begin{prooftree}
+    \AxiomC{}
+    \UnaryInfC{$\vdash \top$}
+\end{prooftree}
+\end{minipage}
+
+% \begin{minipage}{0.15\textwidth}~\\
+% \end{minipage}
+% \begin{minipage}[t]{0.35\textwidth}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+%   \LeftLabel{$(\neg \Rightarrow)$}
+%   \UnaryInfC{$\Gamma, \neg \psi \Rightarrow \Delta$}
+% \end{prooftree}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
+%   \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
+%   \LeftLabel{$(\lor \Rightarrow)$}
+%   \BinaryInfC{$\Gamma, \psi \lor \theta \Rightarrow \Delta$}
+% \end{prooftree}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma, \psi, \theta \Rightarrow \Delta$}
+%   \LeftLabel{$(\land \Rightarrow)$}
+%   \UnaryInfC{$\Gamma, \psi \land \theta \Rightarrow \Delta$}
+% \end{prooftree}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+%   \AxiomC{$\Gamma, \theta \Rightarrow \Delta$}
+%   \LeftLabel{$(\to \Rightarrow)$}
+%   \BinaryInfC{$\Gamma, \psi \to \theta \Rightarrow \Delta$}
+% \end{prooftree}
+% \end{minipage}
+% \begin{minipage}[t]{0.35\textwidth}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma, \psi \Rightarrow \Delta$}
+%   \LeftLabel{$(\Rightarrow \neg)$}
+%   \UnaryInfC{$\Gamma \Rightarrow \Delta, \neg \psi$}
+% \end{prooftree}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma \Rightarrow \Delta, \psi, \theta$}
+%   \LeftLabel{$(\Rightarrow \lor)$}
+%   \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \lor \theta$}
+% \end{prooftree}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma \Rightarrow \Delta, \psi$}
+%   \AxiomC{$\Gamma \Rightarrow \Delta, \theta$}
+%   \LeftLabel{$(\Rightarrow \land)$}
+%   \BinaryInfC{$\Gamma \Rightarrow \Delta, \psi \land \theta$}
+% \end{prooftree}
+% \begin{prooftree}
+%   \AxiomC{$\Gamma, \psi \Rightarrow \Delta, \theta$}
+%   \LeftLabel{$(\Rightarrow \to)$}
+%   \UnaryInfC{$\Gamma \Rightarrow \Delta, \psi \to \theta$}
+% \end{prooftree}
+% \end{minipage}
 \ \\
 
 Für Formelmengen $\Phi$ und Formeln $\psi$ heißt $\psi$ \emph{ableitbar} aus $\Phi$ ($\Phi \vdash \psi$), wenn ein endliches $\Gamma \subseteq \Phi$ existiert, so das $\Gamma \Rightarrow \psi$ im SK ableitbar ist. Wir schreiben $\vdash \psi$, falls $\emptyset \Rightarrow \psi$ im SK ableitbar ist.
