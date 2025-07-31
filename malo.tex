@@ -170,10 +170,16 @@ Erfüllbarkeit von Horn-Formeln kann in Polynomialzeit getestet werden. Dazu der
 
 Nicht alle aussagenlogischen Formeln lassen sich als Horn-Formel schreiben. Man betrachte etwa $X \lor Y$.
 
-\subsection{Kompaktheitssatz der Aussagenlogik}
+\subsection{Endlichkeitssatz (Kompaktheitssatz) der Aussagenlogik}
 
-Für den Kompaktheitssatz haben wir das \emph{Lemma von Zorn} benutzt: Sei $(A, <)$ eine nicht-leere partielle Ordnung, in der jede Kette nach oben beschränkt ist. Dann besitzt $(A, <)$ ein maximales Element in $A$.
-
+Den Endlichkeitssatz haben wir mithilfe des Vollständigkeitssatz der Prädikatenlogik bewiesen:
+Behauptung: Zu zeigen ist: Wenn $\Phi \models \varphi$ gilt, dann existiert eine endliche Teilmenge $\Phi_0 \subseteq \Phi$, für die ebenfalls $\Phi_0 \models \varphi $ gilt.
+\begin{itemize}
+\item Annahme $\Phi \models \varphi$
+\item Mit Vollständigkeitssatz von semantischer Folgerung zu syntaktischer Ableitung: $\Phi \vdash \varphi$
+\item Ein formaler Beweis (eine Ableitung) ist per Definition immer eine endliche Kette von logischen Schritten. Daher kann er auch nur eine endliche Anzahl von Annahmen (Prämissen) aus der Menge $\Phi$ verwenden. Es muss also eine endliche Teilmenge $\Phi_0 \subseteq \Phi$ geben, die für den Beweis ausreicht. Daher gilt: $\Phi_0 \vdash \varphi$.
+\item Mit Vollständigkeitssatz von syntaktischer Ableitung zu semantischer Folgerung: $\Phi_0 \models \varphi$
+\end{itemize}
 Der \emph{Kompaktheitssatz}:
 \begin{itemize}
   \item Für $\Phi \subseteq \AL$:\\
