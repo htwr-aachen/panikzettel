@@ -1,5 +1,5 @@
 
-#import "conf.typ": conf, algoBox, defiBox, theoBox
+#import "conf.typ": algoBox, conf, defiBox, theoBox
 
 #show: conf.with(
   title: "Panikzettel Panikzettel",
@@ -15,9 +15,9 @@
 
 = Vorwort
 
-Dies ist ein Fork des originalen #link("https://git.rwth-aachen.de/philipp.schroer/panikzettel")[Panikzettel Repository] von Phillip Schröer, da ursprüngliche Repository seit 2 Jahren verlassen zu sein scheint. Von ihm und weiteren Betragenden sind der Großteil der Panikzettel bis heute. 
+Dies ist ein Fork des originalen #link("https://git.rwth-aachen.de/philipp.schroer/panikzettel")[Panikzettel Repository] von Phillip Schröer, da ursprüngliche Repository seit 2 Jahren verlassen zu sein scheint. Von ihm und weiteren Betragenden sind der Großteil der Panikzettel bis heute.
 
-Dieses Projekt ist weiterhin lizenziert unter #link("https://creativecommons.org/licenses/by-sa/4.0/")[CC-BY-SA-4.0] und wird auf dem Git-Server der RWTH verwaltet: #link("https://git.rwth-aachen.de/jonas.max.schneider/panikzettel").
+Dieses Projekt ist weiterhin lizenziert unter #link("https://creativecommons.org/licenses/by-sa/4.0/")[CC-BY-SA-4.0] und wird auf dem Git-Server der RWTH verwaltet: #link("https://github.com/htwr-aachen/panikzettel").
 
 = Einleitung
 
@@ -49,20 +49,20 @@ Für Panikzettel brauchst du `latex` / `xelatex`/ `typst` usw., `git` und `make`
 === Kompilieren mit make
 
 Panikzettel werden mit `make` kompiliert:
-  - `make` bzw. `make all`: Alle `latex` Panikzettel kompilieren. Sie sind dann im `/build` Verzeichnis zu finden
-  - `make la.pdf`, `make meta.pdf`, etc.: Einen bestimmten (nur `latex`) Panikzettel bauen. \ Er ist dann im `/build` Verzeichnis zu finden
-  - `make typst`: Alle `typst` Panikzettel kompilieren.
-  - `typst meta.typ`, etc.: Einen bestimmten `typst`-Panikzettel bauen. (Benötigt `{name}.last-change` Datei. Siehe unten)
-  - `typst watch meta.typ`, etc.: Einen bestimmten `typst`-Panikzettel kontinuierlich bei Änderungen bauen. (Benötigt `{name}.last-change` Datei. Siehe unten)
-  - `make clean`: Alle Kompilate löschen.
+- `make` bzw. `make all`: Alle `latex` Panikzettel kompilieren. Sie sind dann im `/build` Verzeichnis zu finden
+- `make la.pdf`, `make meta.pdf`, etc.: Einen bestimmten (nur `latex`) Panikzettel bauen. \ Er ist dann im `/build` Verzeichnis zu finden
+- `make typst`: Alle `typst` Panikzettel kompilieren.
+- `typst meta.typ`, etc.: Einen bestimmten `typst`-Panikzettel bauen. (Benötigt `{name}.last-change` Datei. Siehe unten)
+- `typst watch meta.typ`, etc.: Einen bestimmten `typst`-Panikzettel kontinuierlich bei Änderungen bauen. (Benötigt `{name}.last-change` Datei. Siehe unten)
+- `make clean`: Alle Kompilate löschen.
 
-  Im Hintergrund wird in der `Makefile` für jeden Panikzettel eine `name.last-change` Datei erstellt, die von Git das Datum der letzten Änderung enthält.
-  Das Datum wird dann oben eingeblendet. Dies passiert im Format:
-  ```
-  Version 1
-  ===
-  12.12.2012
-  ```
+Im Hintergrund wird in der `Makefile` für jeden Panikzettel eine `name.last-change` Datei erstellt, die von Git das Datum der letzten Änderung enthält.
+Das Datum wird dann oben eingeblendet. Dies passiert im Format:
+```
+Version 1
+===
+12.12.2012
+```
 
 === Kompilieren ohne make (etwa in Overleaf/#link("typst.app"))
 
@@ -91,7 +91,7 @@ Der ehemalige `latex` Meta-Panikzettel wurde für den `typst` ersetzt. Er steht 
 
 ==== Typst
 
-Für typst muss einfach nur eine neue `name.typ` Datei im Hauptverzeichnis angelegt werden. 
+Für typst muss einfach nur eine neue `name.typ` Datei im Hauptverzeichnis angelegt werden.
 Die `make typst` Regel findet sie automatisch. Es ist darauf zu achten in der `#show: conf.with()` den `title` und den `filename` zu ändern ebenso wie alles andere :). Es ist gut sich an diesem `typst` Meta-Panikzettel zu orientieren.
 
 
@@ -162,11 +162,11 @@ Es folgen Tipps für den Latex-Code eines Panikzettels.
 
 Damit man den Latex-Code gut lesen und mit Git überarbeiten kann, haben wir einige Anforderungen an den Code (die nicht immer eingehalten werden):
 
-  - Code zwischen `\begin` und `\end` einrücken.
-  - Jeder Satz kommt im Quellcode auf eine eigene Zeile. Das hilft bei Diffs mit Git.
-  - Absätze durch Leerzeilen trennen, `\\` nur selten verwenden.
-  - Kommentare sind gut, aber bitte nicht halbfertige Texte auskommentiert übrig lassen.
-  - Keine Leerzeichen am Ende der Zeile, das macht Diffs einfacher. Dein Editor sollte dafür eine Funktion haben (Stichwort "trailing whitespace").
+- Code zwischen `\begin` und `\end` einrücken.
+- Jeder Satz kommt im Quellcode auf eine eigene Zeile. Das hilft bei Diffs mit Git.
+- Absätze durch Leerzeilen trennen, `\\` nur selten verwenden.
+- Kommentare sind gut, aber bitte nicht halbfertige Texte auskommentiert übrig lassen.
+- Keine Leerzeichen am Ende der Zeile, das macht Diffs einfacher. Dein Editor sollte dafür eine Funktion haben (Stichwort "trailing whitespace").
 
 
 == Die `panikzettel.cls`
@@ -199,11 +199,11 @@ Die Verwendung läuft über `\begin{algo}{Titel}` und `\end{algo}` bzw. mit `def
   ],
   defiBox(title: "Wiederholung")[
     Sei $n in NN$ eine Zahl und $w in Sigma^*$ ein Wort.\ Die _Wiederholung_ von $w$ ist:
-    $ w^n = underbrace(w...w, "n Mal"). $ 
+    $ w^n = underbrace(w...w, "n Mal"). $
   ],
   theoBox(title: "P und NP")[
     Entweder ist $"P" = "NP"$, oder $"P" != "NP"$, aber wahrscheinlich nicht beides.
-  ]
+  ],
 )
 
 Bei Algorithmen verwenden wir immer das Schema mit *Eingabe* und *Ausgabe*, und dem Trennstrich mit `\tcblower`.
@@ -217,21 +217,21 @@ Für gleich große Spalten haben wir die Umgebungen `halfboxl`/ `halfboxr` und `
 Beispielcode:
 
 #grid(
-columns: (auto, 1fr),
-gutter: 5em,
-```tex
-\begin{halfboxl}
-  Linke Seite
-\end{halfboxl}%
-\begin{halfboxr}
-  Rechte Seite
-\end{halfboxr}
-```,
-[
-  Man beachte das Kommentar-Zeichen % am Ende der Zeile.
-  Das ist wichtig, damit wegen des Zeilenumbruchs kein Leerzeichen von Latex eingefügt wird.
-  Sonst bekommt man Fehler, weil der Inhalt breiter als die Seite ist ("overfull hbox").
-]
+  columns: (auto, 1fr),
+  gutter: 5em,
+  ```tex
+  \begin{halfboxl}
+    Linke Seite
+  \end{halfboxl}%
+  \begin{halfboxr}
+    Rechte Seite
+  \end{halfboxr}
+  ```,
+  [
+    Man beachte das Kommentar-Zeichen % am Ende der Zeile.
+    Das ist wichtig, damit wegen des Zeilenumbruchs kein Leerzeichen von Latex eingefügt wird.
+    Sonst bekommt man Fehler, weil der Inhalt breiter als die Seite ist ("overfull hbox").
+  ],
 )
 
 
@@ -243,3 +243,4 @@ Wir wissen nicht wieso das nötig ist, aber es hilft.
 === Typst
 
 Unter `typst` kann einfach ein `grid` mit entsprechenden `columns` genutzt werden (Siehe `meta.typ`).
+
