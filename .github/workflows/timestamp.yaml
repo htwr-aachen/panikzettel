@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   timestamp:
     runs-on: ubuntu-latest
@@ -11,12 +10,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
           fetch-depth: 0 # we want the full history
-
       - name: Versionize
         run: |
           ./scripts/versionize.sh metadata.json
-
       - name: Add & Commit & Push metadata.json
         run: |
           if git diff --name-only | grep -q "metadata.json"; then
