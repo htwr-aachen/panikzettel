@@ -1,7 +1,7 @@
 all: la.pdf stocha.pdf dsal.pdf fosap.pdf bus.pdf maschinengestaltung_i.pdf numrech.pdf buk.pdf swt.pdf datkom.pdf malo.pdf dbis.pdf effi.pdf afi.pdf ai.pdf cg.pdf bpi.pdf aat.pdf spa.pdf pp.pdf elehre.pdf algds.pdf sn19.pdf sn20.pdf lsp1.pdf or1.pdf
 
 typst:
-	find . -type f -iname "*.typ" -not -name "conf.typ" -not -iname "_*.typ" -exec ./scripts/compile-typst {} \;
+	find . -type f -iname "*.typ" -not -name "conf.typ" -not -iname "_*.typ" -exec ./scripts/compile-typst.sh {} \;
 
 la.pdf: la.tex panikzettel.cls la.last-change
 	latexmk -output-directory=./build -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make la.tex
