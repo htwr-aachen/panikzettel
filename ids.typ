@@ -487,7 +487,11 @@ The encryption schemes need to allow for certain operations to allow queries to 
   caption: [Encryption Schemes used in CryptDB],
 )<encryption_schemes>
 
-The challenge is that queries are often not known ahead of time. To solve this, CryptDB uses 3 *Onions of encryption* ([RND, DET, JOIN], [RND, OPE, OPE-JOIN], SEARCH or HOM) for each column. Once a column needs to for example to be used in a `GROUP BY`(DET) The RND layer is removed, never to return.
+The challenge is that queries are often not known ahead of time. To solve this, CryptDB uses 3 *Onions of encryption* ([RND, DET, JOIN], [RND, OPE, OPE-JOIN], SEARCH or HOM) for each column.
+The first two are type independent, the third is either homomorphic Encryption (HOM) in case of a numerical type or SEARCH in case of a string type.
+Both are secure enough, such that they don't have an initial random AES encryption. The onions are layers of encryption, first a value would thus be JOIN encrypted then DET encrypted and finally RND encrypted, together with the other onions.
+
+Once a column needs to for example to be used in a `GROUP BY`(DET) The RND layer is removed, never to return. The onions would thus be ([DET, JOIN], [RND, OPE, OPE-JOIN], SEARCH or HOM)
 But when just allowing everything to be removed the whole system does not work. Thus, we define a privacy threshold that ensures not to many layers are removed (from differing onions).
 
 == Privacy & Anonymity
