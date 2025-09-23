@@ -217,5 +217,8 @@
     "shortname": "FunkPro",
     "type": "compulsory_elective",
     "date": "2024-08-04"
+  },
+  "ids.pdf": {
+    "date": "2025-09-23"
   }
 }
