@@ -414,7 +414,7 @@ _XMLSig_ allows for cryptographically signing parts of the document, the variant
 
     `//lecture[term="ss"]/name` addresses "Industrial Data Security" one.
 
-    (The empty `/` means don't care)
+    (The `//` means everywhere. See #link("https://www.w3schools.com/xml/xpath_syntax.asp") for syntax)
   ],
 )
 
