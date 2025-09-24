@@ -53,6 +53,11 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/typst/typst:latest
     steps:
+      - name: Setup environment
+        run: |
+          apk add make
+          apk add bash
+          apk add git
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
@@ -60,10 +65,6 @@ jobs:
       - name: Git Safe Dir
         run: |
           git config --global --add safe.directory $GITHUB_WORKSPACE
-      - name: Setup environment
-        run: |
-          apk add make
-          apk add bash
       - name: Build Typst
         #if: github.event_name == 'push' && (github.event.head_commit.message =~ /.*\.tex|.*\.cls|Makefile|scripts\// || github.event.ref == 'refs/heads/main')
         run: |
