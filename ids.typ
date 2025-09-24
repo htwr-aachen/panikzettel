@@ -473,6 +473,10 @@ We concentrate on the access control part. DBMS have several features which allo
 
 3. The `GRANT` and `REVOKE` SQL commands are the foundation of database access control. They allow administrators to assign or remove specific privileges (like `SELECT`, `INSERT`, `UPDATE`, `DELETE`) on database objects like tables, views, and stored procedures to specific users or roles.
 
+== Statistical Databases
+
+If we only want aggregated / statistical information from our data. We can implement it via a statistical database. We can implement it with the help of views or only allowing aggregate functions. This allows us to do macro-statistics (about collections e.g. count) but only views allow micro-statistics (about individuals without PII).
+
 == Encrypted Query Processing
 The mechanisms above provide no protection against a malicious or breached database administrator who has direct access to the stored data.
 When eavesdropping the database only data encryption can help. CryptDB tries to process SQL queries directly on this encrypted data.
@@ -530,7 +534,7 @@ setting:
 $ forall K, ("DB1", "DB2") (Pr[K|"DB1"])/(Pr[K|"DB2"]) < e^epsilon $
 smaller $epsilon$ leads to better privacy protection
 
-For a statistical function $f$ we need to know the sensitivity of $f$, named $Delta f$. Then we add $K = f("DB") = "Laplace"(delta)$ enough noise $lambda = Delta f / epsilon$ to the function, to ensure privacy.
+For a statistical function $f$ we need to know the sensitivity of $f$, named $Delta f$. Then we add $K = f("DB") + "Laplace"(delta)$ enough noise $lambda = Delta f / epsilon$ to the function, to ensure privacy.
 
 = Machine Learning
 
