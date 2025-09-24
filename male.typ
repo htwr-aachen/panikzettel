@@ -1,5 +1,5 @@
 
-#import "conf.typ": conf, algoBox, defiBox, theoBox
+#import "conf.typ": algoBox, conf, defiBox, theoBox
 #import "@preview/cetz:0.2.0": canvas, plot
 
 
@@ -69,14 +69,15 @@ Wir werden einige Lernziele besprechen, aber es ist gut, sie vorher eingeführt 
   [Regression \
     Versuchen mittels Funktionen (z.B. lineare) Daten zu beschreiben.
   ],
+
   [Unknown Targets \ / Unsupervised Learning],
   [Clustering \
     Einteilung unbekannter Datenpunkte in _Clusters_, die stärker untereinander als mit anderen Verbunden sind.
   ],
   [Density estimation \
-      Versuchen, eine Wahrscheinlichkeitsverteilung abzubilden von zufälligen samples.
-      Anders als bei Regression ist hier die Datenfunktion nicht bekannt / es wurde nicht vorher gelabeled.
-  ]
+    Versuchen, eine Wahrscheinlichkeitsverteilung abzubilden von zufälligen samples.
+    Anders als bei Regression ist hier die Datenfunktion nicht bekannt / es wurde nicht vorher gelabeled.
+  ],
 )
 
 Das Ziel wird aber immer sein:
@@ -89,7 +90,9 @@ Wie wahrscheinlich ist es, dass wir ein $x$ sehen unter der Bedingung, dass wir 
 Diese _likelihood_ ist genau das Gegenteil von dem was wir brauchen: $p(cal(C)_k | x)$.
 
 Somit stellen wir es mit den _a-priori probabilities_ $p(cal(C)_k)$ und Bayes Theorem um:
-$ p(cal(C)_k | x) = (p(x | cal(C)_k)p(cal(C)_k))/(p(x)) = (p(x | cal(C)_k)p(cal(C)_k))/(sum_j p(x | cal(C)_j) p(cal(C)_j)) $
+$
+  p(cal(C)_k | x) = (p(x | cal(C)_k)p(cal(C)_k))/(p(x)) = (p(x | cal(C)_k)p(cal(C)_k))/(sum_j p(x | cal(C)_j) p(cal(C)_j))
+$
 
 Dies ist die _posterior_ Wahrscheinlichkeit, die wir benötigen, um x zu klassifizieren.
 
@@ -127,15 +130,15 @@ Aufteilung der Daten in $N$ Säulen mit Breite $Delta$. Die Höhe der Säule ist
   columns: (1fr, 1fr),
   [#figure(
     image("img/male/kernel-method.png", width: 30%),
-    caption: [Kernel Method]
+    caption: [Kernel Method],
   ) <k-nearest>],
   [#figure(
     image("img/male/k-nearest-neighbors.svg", width: 30%),
-    caption: [1-Nearest Neighbors]
-  ) <k-nearest>]
+    caption: [1-Nearest Neighbors],
+  ) <k-nearest>],
 )
 Gegeben sei eine _probability density function_ (pdf) $p(Cl_k | x)$, die wir erneut approximieren wollen. Wir visualisieren hier mit zwei Dimensionen. Wir können nun $p$ approximieren indem wir uns einen kleinen Bereich $cal(R)$ um die Datenpunkte angucken
-und somit ein $P=integral_cal(R) p(y) d y = K/N approx p(x)V $ erhalten, wobei $V$ das Volumen von $cal(R)$ ist und $K$ die Anzahl der Datenpunkte die in $cal(R)$ liegen.
+und somit ein $P=integral_cal(R) p(y) d y = K/N approx p(x)V$ erhalten, wobei $V$ das Volumen von $cal(R)$ ist und $K$ die Anzahl der Datenpunkte die in $cal(R)$ liegen.
 
 Wir haben somit zwei Möglichkeiten zu approximieren:
 / Kernel Methods: Fixes Volumen $V$, aber mit einer variablen Menge von Punkten $K$ in $cal(R)$
@@ -150,8 +153,12 @@ Das $k$ gewichtet diese Distanz dann.
 Somit gilt $K = sum_(n=1)^N k(x - x_n)$ und $p(Cl_k | x) = K/(N V) = 1/N sum_(n=1)^N k(x-x_n)$
 
 Der parzen-window (kernel), indem man einen Würfel der Höhe $h in NN$ um $x$ aufbaut, wäre als Beispiel
-$ k = cases(1/(h^D) "if" |u_i| <= 1/2h\, i=1\,...D,
-           0 "else") $
+$
+  k = cases(
+    1/(h^D) "if" |u_i| <= 1/2h\, i=1\,...D,
+    0 "else"
+  )
+$
 Also skaliert 1, falls $x_n$ (in allen Dimensionen) im Würfel liegt und $0$ sonst.
 
 Somit ergibt sich eine probability density estimation von $p(Cl_k | x) approx K/(N V) = 1/(N h^D) sum_(n=1)^N k(x-x_n)$
@@ -183,11 +190,15 @@ Hier ist $Sigma$ die Kovarianzmatrix.
 
 Der _M-STEP_:
 #grid(
-  columns: (1fr,1fr),
-  $ hat(N) &<- sum_(n=1)^N gamma_j(x_n) \
-  hat(pi)_j &<- hat(N)_j/N $,
-  $ hat(mu)_j &<- 1/hat(N)_j sum_(n=1)^N gamma_j(x_n)x_n \
-  hat(Sigma)_j &<- 1/hat(N)_j sum_(n=1)^N gamma_j(x_n)(x_n - hat(mu)_j)(x_n - hat(mu)_j)^sans(T) $,
+  columns: (1fr, 1fr),
+  $
+       hat(N) & <- sum_(n=1)^N gamma_j(x_n) \
+    hat(pi)_j & <- hat(N)_j/N
+  $,
+  $
+    hat(mu)_j &<- 1/hat(N)_j sum_(n=1)^N gamma_j(x_n)x_n \
+    hat(Sigma)_j &<- 1/hat(N)_j sum_(n=1)^N gamma_j(x_n)(x_n - hat(mu)_j)(x_n - hat(mu)_j)^sans(T)
+  $,
 )
 
 Der EM Algorithmus muss durch _regularization_ gegen $sigma -> 0$ geschützt werden, weswegen $sigma_min I$ addiert wird #footnote("Der EM Algorithmus wird aus meiner Sicht nicht groß in der Klausur angewandt werden können, Wissensfragen jedoch schon.")
@@ -200,9 +211,11 @@ Häufiger wird aber $y(x) = tilde(w)^sans(T) tilde(x) = sum_(i=0)^D w_i x_i$ ben
 
 Es lassen sich $K in NN$ _linear discriminants_ berechnen und die Klasse $C_k$ genau dann gewählt werden, wenn $y_k (x) > y_j (x)$ für alle $j != k$.
 
-Nun aber zur Optimierungsmethoden dieser $y_k (x)$. Zunächst werden alle $k$ Diskriminanten zusammen gruppiert $tilde(W)=(tilde(w)_1, ..., tilde(w)_K) = mat(w_(10), ..., w_(K 0);
-dots.v, dots.down, dots.v;
-w_(1D), ..., w_(K D))$, $tilde(X) = vec(x_1^sans(T), dots.v, x_N^sans(T))$ und $Y(tilde(X))=tilde(X)tilde(W)$. Ebenso werden die _target vectors_ (die label) $T = vec(t_1^sans(T), dots.v, t_N^sans(T))$.
+Nun aber zur Optimierungsmethoden dieser $y_k (x)$. Zunächst werden alle $k$ Diskriminanten zusammen gruppiert $tilde(W)=(tilde(w)_1, ..., tilde(w)_K) = mat(
+  w_(10), ..., w_(K 0);
+  dots.v, dots.down, dots.v;
+  w_(1D), ..., w_(K D)
+)$, $tilde(X) = vec(x_1^sans(T), dots.v, x_N^sans(T))$ und $Y(tilde(X))=tilde(X)tilde(W)$. Ebenso werden die _target vectors_ (die label) $T = vec(t_1^sans(T), dots.v, t_N^sans(T))$.
 
 Um lernen zu können, definieren wir eine _error function_ (hier _Sum of squares_) $E(W) = 1/2sum_(n=1)^N sum_(k=1)^K (w_k^sans(T)x_n - t_(n k))^2$. Die $1/2$ als Faktor ist nicht benötigt, mach aber bei der Differenzierung den Faktor $2$ weg.
 Nehmen wir nun im 2-class Fall die Ableitung: $(diff E(w))/(diff w) = ... = w = (X^sans(T)X)^(-1)X^sans(T)t = X^dagger t$ (das $X^dagger$ ist die pseudo-inverse, da X ja singulär seine könnte). Somit erhalten wir eine _closed-form_ Lösung $y(x;w) = w^sans(T) x = t^sans(T) (X^dagger)^sans(T) x$.
@@ -261,7 +274,9 @@ In diesem Fall auf _gradient descent_.
 
 ==== Gradient Descent
 
-$ w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((diff E(W))/(diff w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w)) $
+$
+  w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((diff E(W))/(diff w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w))
+$
 
 dies ist die (so halb) erste Taylor expansion mit Hyperparameter _learning rate_ $eta$.
 Ist die _learning rate_ zu hoch, wird das Optimum "übersprungen" und es kann sein, dass unsere Funktion _divergent_ wird, also sich immer zwischen zu viel Error auf der einen + Seite zu zu viel auf der - Seite (vereinfach). Bei zu kleiner Learning Rate dauert es lange und eventuell konvergiert der Gradient zu einem lokalen Minimum statt zu einem Globalen.
@@ -278,7 +293,7 @@ verwendet zusätzlich noch ein $H^(-1)=(diff^2 E(w))/(diff w_i diff w_j)$
 
 #figure(
   image("img/male/svm.png", height: 3cm),
-  caption: [Example of a SVM]
+  caption: [Example of a SVM],
 )
 
 Bei Support Vector Machines (SVMs) wird anstatt eine Diskriminante zu verwenden, versucht, zwischen den zwei Cluster eine Safety Zone (d.h. _margin_) aufzubauen und zu maximieren.
@@ -291,14 +306,18 @@ Wie genau wir dahin kommen, ist für den Panikzettel (und aus meiner Sicht) weni
 $ L(w,b,a)=1/2 ||w||^2 - sum_(n=1)^N a_n [t_n(w^sans(T)x_n + b) -1] $
 
 Conditions:
-$ a_n &>= 0 \
-  t_n(w^sans(T)x_n + b) -1 &>= 0 \
-  a_n[t_n(w^sans(T)x_n + b) -1] &= 0 $
+$
+                            a_n & >= 0 \
+       t_n(w^sans(T)x_n + b) -1 & >= 0 \
+  a_n[t_n(w^sans(T)x_n + b) -1] & = 0
+$
 
 Karush-Kuhn-Tucker conditions:
-$ lambda &>= 0 \
-  f(x) &>= 0 \
-  lambda f(x) &= 0 $
+$
+       lambda & >= 0 \
+         f(x) & >= 0 \
+  lambda f(x) & = 0
+$
 
 Die Intuition aus der Primal Form ist (Gut, dass man sagen muss was die Intuition ist), dass nur manche Datenpunkte (die support vectors (logisch)) die Margins und die Decision Boundary beeinflussen.
 
@@ -308,8 +327,10 @@ Die Intuition aus der Primal Form ist (Gut, dass man sagen muss was die Intuitio
 $L_d(a)=sum_(n=1)^N a_n - 1/2 sum_(n=1)^N sum_(m=1)^N a_n a_m t_n t_m (x^sans(T) x_n)$
 
 mit conditions:
-$ a_n &>= 0 quad forall n in underline(N) \
-  sum_(n=1)^N a_n t_n &= 0 $
+$
+                  a_n & >= 0 quad forall n in underline(N) \
+  sum_(n=1)^N a_n t_n & = 0
+$
 
 *Zeit Komplexität*: $O(N^3)$, also nichtmehr abhängig von $D$.
 
@@ -328,15 +349,19 @@ Alle Slacks werden dann summiert und mit einem $C$, dem tradeoff Hyperparameter,
 #stack(
   dir: ltr,
   spacing: 3em,
-  {figure(
-    image("img/male/error-functions.png", height: 10em),
-    caption: [Error Funktionsanalyse]
-  )},
+  {
+    figure(
+      image("img/male/error-functions.png", height: 10em),
+      caption: [Error Funktionsanalyse],
+    )
+  },
 
-  {figure(
-    image("img/male/error-functions-2.png", height: 10em),
-    caption: [Weitere Error Funktionsanalyse]
-  )}
+  {
+    figure(
+      image("img/male/error-functions-2.png", height: 10em),
+      caption: [Weitere Error Funktionsanalyse],
+    )
+  },
 )
 
 
@@ -369,7 +394,7 @@ In Data Science sprechen wir über _features_
     [Porsche GT], [Red], [5€], [Yes],
     [Fiat 500e], [Blue], [$inf$], [No],
   ),
-  caption: [Beispiel Labeled Data]
+  caption: [Beispiel Labeled Data],
 )<FeatureTable>
 
 
@@ -379,11 +404,11 @@ Die Reihen sind die _instances_.
 Die Datentypen sind ähnlich wie die der Deskriptiven Statistik. Zwei Sachen nur: Nominal sind wie Enums (ungeordnet). Ordinal sind z.B. Sternbewertungen.
 
 / Visualisierung: Histogramme, Scatter Plots, Box Plots.
-/ Correlation: $"Corr"(x,y)="Cov"(x,y)/( sqrt("Var"(X)) dot sqrt("Var"(y))) $
+/ Correlation: $"Corr"(x,y)="Cov"(x,y)/( sqrt("Var"(X)) dot sqrt("Var"(y)))$
 / Binning: Aufteilen von _continuous features_ zu _categorical features_.\
-    Hier gibt es zwei Versionen:
-    - Equal Width Binning: z.B. $5$. dann startet der erste Bin bei dem niedrigsten z.B. $[2,7), [7,12),...$
-    - Equal Frequency Binning: z.B. $3$ pro Bin. Ist logisch.
+  Hier gibt es zwei Versionen:
+  - Equal Width Binning: z.B. $5$. dann startet der erste Bin bei dem niedrigsten z.B. $[2,7), [7,12),...$
+  - Equal Frequency Binning: z.B. $3$ pro Bin. Ist logisch.
 
 == Decision Trees
 
@@ -449,7 +474,7 @@ Hier wird die Bottom-Up Technik verwendet um zu clustern.
 
 #figure(
   image("img/male/dendrogram.png", height: 5cm),
-  caption: [Beispiel eines Dendrogramms]
+  caption: [Beispiel eines Dendrogramms],
 ) <dendrogram>
 
 1. Erstelle cluster $Cl_i$ für jedes $x_i$
@@ -483,8 +508,10 @@ Wichtige Metriken sind $support(A) = ("support_count"(A))/(|X|) = (|[T in X | A 
 
 Hierzu ein Beispiel aus der Vorlesung:
 
-$ X &= [{A,B,E}, {C,B}, {A,D}, {A,D,B}] \
-  T &= {A,B} subset.eq I $
+$
+  X & = [{A,B,E}, {C,B}, {A,D}, {A,D,B}] \
+  T & = {A,B} subset.eq I
+$
 
 $supportCount(A)= |[T_1,T_2]| = 2$, da wir nur ${A,B}$ betrachten und nicht nur $A$, $B$. Somit ist $A,D$ nicht im support count mit drin. \
 $support(A) = 2/4 = 1/2$
@@ -513,7 +540,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [2], [{Orange, Apple, Banana}],
     [3], [{Grapes, Orange, Apple, Banana}],
     [4], [{Orange, Banana}],
-    [5], [{Grapes, Apple, Banana}]
+    [5], [{Grapes, Apple, Banana}],
   ),
   table(
     columns: 2,
@@ -522,7 +549,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Orange}], [2],
     [{Apple}], [4],
     [{Pineapple}], [1],
-    [{Banana}], [4]
+    [{Banana}], [4],
   ),
   table(
     columns: 2,
@@ -530,8 +557,9 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Grapes}], [3],
     [{Orange}], [2],
     [{Apple}], [4],
-    [{Banana}], [4]
+    [{Banana}], [4],
   ),
+
   table(
     columns: 1,
     [Itemsets],
@@ -550,7 +578,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Grapes, Banana}], [2],
     [{Orange, Apple}], [2],
     [{Orange, Banana}], [3],
-    [{Apple, Banana}], [3]
+    [{Apple, Banana}], [3],
   ),
   table(
     columns: 2,
@@ -559,7 +587,7 @@ Was macht ihr aber in der Klausur? Ein Beispiel mit $"min_support" = 2$.
     [{Grapes, Banana}], [2],
     [{Orange, Apple}], [2],
     [{Orange, Banana}], [3],
-    [{Apple, Banana}], [3]
+    [{Apple, Banana}], [3],
   ),
 )
 
@@ -578,10 +606,12 @@ Dies ist jeweils eine Iteration. Erst selection, dann pruning dann testing.
 Der FP-Tree kann groß werden, aber falls er ins memory passt, sind nur zwei Durchläufe des Datensatzes nötig.
 
 === Association-Rules
-/ Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A sect B = emptyset$.
+/ Association Rule: $A => B "mit" A subset.eq I, B subset.eq I, A inter B = emptyset$.
 
-$ support(A => B) &= (supportCount(A union B))/(supportCount(emptyset)) \
-  "conf"(A => B) &= (supportCount(A union B))/(supportCount(A)) $
+$
+  support(A => B) & = (supportCount(A union B))/(supportCount(emptyset)) \
+   "conf"(A => B) & = (supportCount(A union B))/(supportCount(A))
+$
 
 $"conf"$ ist die Confidence.
 
@@ -630,7 +660,7 @@ Ein DFG ist wirklich trivial. Ein Beispiel in Abbildung #ref(<dfg>).
 
 #figure(
   image("img/male/dfg.png", height: 8em),
-  caption: [Beispiel eines DFG]
+  caption: [Beispiel eines DFG],
 ) <dfg>
 
 Und ja wir verknüpfen bereits dagewese Knoten miteinander.
@@ -639,7 +669,7 @@ Und ja wir verknüpfen bereits dagewese Knoten miteinander.
 
 #figure(
   image("img/male/petri-net.png", height: 8em),
-  caption: [Beispiel eines Petri-Nets]
+  caption: [Beispiel eines Petri-Nets],
 ) <petri-net>
 
 Ein Petri-Net besteht aus einem Start, einem Endknoten und mehreren Transitions und Places.
@@ -654,7 +684,7 @@ Im Endeffekt bauen wir Process-Trees aus 4 Komponenten zusammen, die sich jeweil
 
 #figure(
   image("img/male/process-tree-definition.png", height: 15em),
-  caption: [Definitionskomponenten des Process-Trees]
+  caption: [Definitionskomponenten des Process-Trees],
 ) <process-tree-definition>
 
 $tau$ ist hier ein "silent skip".
@@ -727,11 +757,11 @@ Hierfür gibt es verschiedene Models:
 / Bag of Words: _multiset_ der Wörter in einem Corpus. Wir verlieren somit die Reihenfolge
 / Document Term Matrix: Wir listen alle Wörter in columns auf und haben als Reihen die Dokumente, die Zellen sind einfach die Anzahl.
 / Term Frequency: Anzahl von $w$ in Dokument $d$ \
-  $tf(w,d) = |d_w|$
+  $tf(w, d) = |d_w|$
 / Inverse Document Frequency: Je unwahrscheinlicher das Wort, desto höher der Wert. Stellt besonders informationsbringende Wörter heraus. \
-  $idf(w,c) = log_2((|c|)/("Anzahl der Dokumente in" c "die" w "enthalten"))$
+  $idf(w, c) = log_2((|c|)/("Anzahl der Dokumente in" c "die" w "enthalten"))$
 / TF-IDF Score: Kombination aus den beiden
-  $tfidf(w,d,c) = tf(w,d) dot idf(w,c)$
+  $tfidf(w, d, c) = tf(w, d) dot idf(w, c)$
 
 === Sonstiges
 
@@ -759,8 +789,8 @@ Wir wollen beantworten:
 - Wie gut könnte es sein?
 
 #figure(
-  image("img/male/eval-matrix.png", height:8em),
-  caption: [Beispiel Confusion Matrix]
+  image("img/male/eval-matrix.png", height: 8em),
+  caption: [Beispiel Confusion Matrix],
 ) <confusion-matrix>
 
 Wie bei Statistischen Tests und Studien gibt es hier ein Falsch positives FP, Falsch negatives FN und Wahr positives TP und Wahr negatives TN Ergebnis. Abbildung #ref(<confusion-matrix>) zeigt das im binomial Fall.
