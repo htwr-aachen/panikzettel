@@ -5,18 +5,17 @@ on:
     types: [completed]
     branches:
       - "main"
-
 jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Git Safe Dir
         run: |
-          git config --global --add safe.directory /home/runner/work/panikzettel/panikzettel
-
+          git config --global --add safe.directory $GITHUB_WORKSPACE
       - name: Restore build files as cache
         id: latex-cache-restore
         uses: actions/cache/restore@v4
@@ -26,7 +25,6 @@ jobs:
           restore-keys: |
             latex-cache-${{ runner.os }}
           key: latex-cache-${{ runner.os }}-${{ hashFiles('**.tex', 'deps/**', 'img/**') }}
-
       - name: Compile with TexLive
         uses: xu-cheng/texlive-action@v2
         with:
@@ -37,7 +35,6 @@ jobs:
             git config --global --add safe.directory /home/runner/work/panikzettel/panikzettel
             make clean
             make --keep-going all
-
       # Utilize Latex caching
       - name: Save build files as cache
         id: latex-cache-save
@@ -46,32 +43,31 @@ jobs:
           path: |
             ./build/
           key: ${{ steps.latex-cache-restore.outputs.cache-primary-key }}
-
       - name: Archive Latex artifacts
         uses: actions/upload-artifact@v4
         with:
           overwrite: true
           name: latex-artifacts
           path: ./build/*.pdf
-
   build_typst:
     runs-on: ubuntu-latest
     container: ghcr.io/typst/typst:latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Git Safe Dir
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
       - name: Setup environment
         run: |
           apk add make
-          apk add git
           apk add bash
-
       - name: Build Typst
         #if: github.event_name == 'push' && (github.event.head_commit.message =~ /.*\.tex|.*\.cls|Makefile|scripts\// || github.event.ref == 'refs/heads/main')
         run: |
           make typst
-
       - name: Archive Typst artifacts
         #if: github.event_name == 'push' && (github.event.head_commit.message =~ /.*\.tex|.*\.cls|Makefile|scripts\// || github.event.ref == 'refs/heads/main')
         uses: actions/upload-artifact@v4
@@ -79,22 +75,17 @@ jobs:
           overwrite: true
           name: typst-artifacts
           path: ./build/*.pdf
-
   deploy:
     permissions:
       contents: "read"
       id-token: "write"
-
     needs:
       - build_latex
       - build_typst
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-
       # we must download the artifacts here
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -102,14 +93,12 @@ jobs:
           #download all artifacts => name=none
           path: build/
           merge-multiple: true
-
       - name: auth
         id: "auth"
         uses: "google-github-actions/auth@v2"
         with:
           project_id: htwr-aachen
           workload_identity_provider: "projects/984825600619/locations/global/workloadIdentityPools/htwr-identity-pool/providers/panikzettel"
-
       - name: Deploy Panikzettel
         uses: google-github-actions/upload-cloud-storage@v2
         with:
@@ -119,7 +108,6 @@ jobs:
           parent: false # dont upload build directory
           headers: |-
             cache-control: 'public, max-age=3600'
-
       - name: Deploy Panikzettel Metadata
         uses: google-github-actions/upload-cloud-storage@v2
         with:
