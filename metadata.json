@@ -186,7 +186,7 @@
     "shortname": "MaLe",
     "semester": 5,
     "type": "compulsory",
-    "date": "2024-03-04"
+    "date": "2025-09-24"
   },
   "hpc.pdf": {
     "name": "Einführung in die High Performance Computing",
@@ -222,6 +222,6 @@
     "name": "Industrial Data Security",
     "shortname": "IDS",
     "type": "compulsory_elective",
-    "date": "2025-09-23"
+    "date": "2025-09-24"
   }
 }
