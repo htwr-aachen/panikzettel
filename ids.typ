@@ -14,16 +14,16 @@
 
 = Introduction
 
-This Panikzettel is about the new lecture "Industrial Data Security".
+This Panikzettel covers the new lecture "Industrial Data Security".
 
 This Panikzettel is open source at #link("https://github.com/htwr-aachen/panikzettel", `https://github.com/htwr-aachen/panikzettel`). We welcome comments and suggestions for improvement (also from official sources).
 
 It is often difficult to determine the exact focus of the lecture and the exams, but with this new subject especially since no exams or the like are known yet.
 However, we will still focus on important content from the lecture, that was asked, or could be reasonably asked by the exercises.
 
-Primary expectations from reader are content from the mandatory IT-Security lecture, such as the CIA (Confidentiality, Integrity, Availability) Principles, the different attacks on those principles and a basic understanding of the cryptographic building blocks. As with all panikzettels, not everything is covered.
+Primary expectations of readers are content from the mandatory IT-Security lecture, such as the CIA (Confidentiality, Integrity, Availability) principles, the different attacks on those principles and a basic understanding of the cryptographic building blocks. As with all panikzettel, not everything is covered.
 
-= Industrial Data (ID)
+= Industrial Data
 
 Industrial data cannot be classified into one category, format, or source. Any information / data in an industrial context could be described as _industrial data_ such as:
 - Sensor data
@@ -35,7 +35,7 @@ Industrial data cannot be classified into one category, format, or source. Any i
 
 This data is produced by various sources at various stages in a company.
 At first data needed to be manually collected (with all the drawbacks of human time, speed and errors), but now only advanced digital acquisition can handle the large volume of data.
-For manufacturing industries data is often produced along the products lifecycle as shown in @product_lifecycle. Overarching data (Financials, Product lifecycle data and others) are not listed there, as well as industries outside manufacturing ones.
+For manufacturing industries data is often produced along the products lifecycle as shown in @product_lifecycle. Overarching data (Financials, Product lifecycle data and others) are not listed there, as well as industries outside of manufacturing.
 
 #figure(
   image("img/ids/product_lifecycle.jpg", width: 50%),
@@ -47,8 +47,8 @@ For manufacturing industries data is often produced along the products lifecycle
 == IoT sensors:
 - large number of wireless sensors, can be placed everywhere
 - more data
-  - needs to be managed through sampling, compression and edge computing
-  - extract insights using statistical and time-series analysis and machine learning
+  - Needs to be managed through sampling, compression, and edge computing
+  - Extract insights using statistical and time-series analysis and machine learning
 
 #colorbox(title: [But why is data needed in the first place?], [
   Data can be useful in many scenarios but it is mostly used for *informed decision making*
@@ -60,10 +60,10 @@ For manufacturing industries data is often produced along the products lifecycle
 
 
 == Data Types
-To make any analysis of the data possible, we need to classify some form of structures the data can in.
+To make any analysis of the data possible, we need to classify it into some form of structure.
 
 - structured
-  - categorial (fixed number of distinct values)
+  - categorical (fixed number of distinct values)
     - nominal (no ordering, e.g. binary)
     - ordinal (values have meaningful order, e.g. high/medium/low)
   - numerical (measurable quantities, mean, mode, variance .. can be computed)
@@ -122,7 +122,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
     [
       *volume*
 
-      quantity of generated and stored data
+      Quantity of generated and stored data
     ],
   )),
   grid.cell(block(
@@ -134,7 +134,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
     [
       *velocity*
 
-      speed at which data is generated and processed ],
+      Speed at which data is generated and processed ],
   )),
   grid.cell(block(
     height: 100%,
@@ -145,7 +145,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
     [
       *variety*
 
-      type of the data, (structured or unstructured)
+      Type of the data, (structured or unstructured)
     ],
   )),
   grid.cell(block(
@@ -158,7 +158,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
     [
       *value*
 
-      benefits and insights derived from collection, processing and analyzing],
+      benefits and insights derived from collection, processing, and analyzing],
   )),
   grid.cell(block(
     height: 100%,
@@ -169,7 +169,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
     [
       *veracity*
 
-      trustworthiness, accuracy, and reliability],
+      Trustworthiness, accuracy, and reliability],
   )),
   grid.cell(block(
     height: 100%,
@@ -180,7 +180,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
     [
       *visualization*
 
-      understanding, analysis and decision making],
+      Understanding, analysis, and decision making],
   )),
   grid.cell(colspan: 3, block(
     height: 100%,
@@ -200,7 +200,7 @@ Data, or rather data streams can have multiple properties, that are needed to kn
 )
 
 == Process, Management & Harmonization
-The Process of collecting and analyzing data is described by the lecture with:
+The process of collecting and analyzing data is described by the lecture as follows:
 #block(
   breakable: false,
   grid(
@@ -223,15 +223,15 @@ The Process of collecting and analyzing data is described by the lecture with:
 )
 
 After data acquisition, the data has to be managed. Here regulatory things also come into consideration.
-First and foremost, _privacy_ when data covers sensitive information (more on this later) but also _security_ to protect data. Of course privacy needs - or overlaps with - security in the areas of _personal identifying information_ (PII). Other consideration in terms of data management are:
+First and foremost, _privacy_ when data covers sensitive information (more on this later) but also _security_ to protect data. Of course privacy needs - or overlaps with - security in the areas of _personal identifying information_ (PII). Other considerations in terms of data management are:
 
-- data governance: usability and quality of protected data
-- data and information sharing: enhances collaboration
-- cost/operational expenditures: cover all expenses for managing, storing, processing and analyzing data
-- data ownership: right to control, manage and make decisions regarding pieces of ID
+- Data governance: usability and quality of protected data
+- Data and information sharing: enhances collaboration
+- Cost/operational expenditures: cover all expenses for managing, storing, processing, and analyzing data
+- Data ownership: right to control, manage, and make decisions regarding pieces of ID
 
 === Harmonizing Industrial Data
-Now the lecture takes a swing into a different direction. Harmonization considers the interoperability of data sources / consumers. The lectures prime example are CAD file formats. Where at the beginning of computer design, each CAD program would have its own proprietary file format. If another program wanted open another's, a translator would be needed. To facilitate a complete exchange $(n*(n-1))/2$ translator are needed.
+Now the lecture takes a swing into a different direction. Harmonization considers the interoperability of data sources / consumers. The lectures prime example are CAD file formats. When at the beginning of computer design, each CAD program had its own proprietary file format. If another program wanted top open another's file, a translator would be needed. To facilitate a complete exchange $(n*(n-1))/2$ translators are needed.
 
 #sidenote(
   title: [Not really],
@@ -248,7 +248,7 @@ The following are two example of such _harmonization frameworks_, now in the con
 
 
 2. OPC Unified Architecture (OPC UA) unifies data exchange from various data sources (Mostly OT, i.e. sensors, PLCs, ...) in an open source, cross platform and extensible way.
-  The data model is a hirachical address space, where semantics of the data can be added as attributes "under" the value.
+  The data model is a hierarchical address space, where semantics of the data can be added as attributes "under" the value.
   A visualization is shown in @opc_ua_architecture and @opc_ua_address_space.
 
 
@@ -279,7 +279,7 @@ The following are two example of such _harmonization frameworks_, now in the con
   )<opc_ua_address_space>],
 )
 
-To communicate data with others two primary schemes have been presented
+To communicate data with others, two primary schemes have been presented:
 _Data sharing_ along the supply chain makes *specific* data available to the next company in the supply chain.
 Whereas _data spaces_ are a group of companies allowing *most* data to be *discoverable and open*. Data ownership and management in data spaces are still at the original owner. As an example the European Product Passport, a product contains only the ID of how to find it in the data space. The data is stored at the company.
 
@@ -287,20 +287,20 @@ Whereas _data spaces_ are a group of companies allowing *most* data to be *disco
 
 #text(size: 8pt, [| _This will deviate a bit from the lecturing order_])
 
-At first an explanation on the challenges of securing industrial data. PII Data obviously needs privacy.
+First, an explanation of the challenges of securing industrial data. PII Data obviously needs privacy.
 The management topics of ownership and provenance (trackable through its lifecycle) are also somewhat security related.
 But because of the large scale systems at play, we must secure data across security domains (cross domain security) and in dynamic environments.
-Furthermore, we need a fine grained access management where each item must have its own security policy. Because this all is challenging we need to plan this out in a _security plan_.
-The complete state, our requirements, blueprints for further enhancements and their timetable and accountability should all be described.
+Furthermore, we need a fine grained access management where each item must have its own security policy. Because this is all challenging, we need to plan this out in a _security plan_.
+The complete state, our requirements, blueprints for further enhancements, and their timetable and accountability should all be described.
 A security plan should be:
 
-- correctness (requirement understandable?)
-- consistency (any conflicts?)
-- completeness (all possible situations addressed?)
-- realism (possible to implement?)
-- need (requirements unnecessarily restrictive?)
-- verifiability (tests that requirements have been met?)
-- traceability (easy re-evaluation for changed requirements?)
+- Correctness (requirement understandable?)
+- Consistency (any conflicts?)
+- Completeness (all possible situations addressed?)
+- Realism (possible to implement?)
+- Need (requirements unnecessarily restrictive?)
+- Verifiability (tests that requirements have been met?)
+- Traceability (easy re-evaluation for changed requirements?)
 
 In addition a risk assessment - a theoretical overview of sensitive parts of the company - should be done.
 
@@ -326,13 +326,13 @@ Harm is a realized threat.
 
 #text(
   size: 8pt,
-  [| _There is no good red line here to follow, if you find one, edit this_],
+  [| _There is no clear thread to follow here, if you find one, edit this_],
 )
 
 In general there are three states of data
 
 + Data in use:
-  active data under constant change and the *most* difficult to secure since encryption is not possible
+  active data under constant change and the *most* difficult to secure, since encryption is not possible
 
 + Data in motion: data that is traversing a network
 
@@ -341,7 +341,7 @@ In general there are three states of data
 Just again to hammer it in:
 
 - Security refers to measures and protocols implemented to protect data from unauthorized access, breaches and cyber threats (confidentiality, integrity, availability)
-- Privacy concerns the right of individuals to control their personal information and how it is collected, used and shared (collection, processing and dissemination of personal information)
+- Privacy concerns the right of individuals to control their personal information and how it is collected, used and shared (collection, processing, and dissemination of personal information)
 
 The overlap is in: protection of (personal) information
 
@@ -351,14 +351,14 @@ Data can be under legal protection in case of
 - Patents (protect inventions)
 - Trade secrets (must be kept secret or legal protections are lost) *most* desired for industrial data
 
-But also data can also be a responsibility in case of General Data Protection Regulation (*GDPR*) which enforces core data protection principles. Regulations define legal boundaries without implementation, but can sometimes define standards as minimums. Standards are then the policies and procedures around the implementation.
+But data can also be a responsibility in case of General Data Protection Regulation (*GDPR*), which enforces core data protection principles. Regulations define legal boundaries without implementation, but can sometimes define standards as minimums. Standards are then the policies and procedures around the implementation.
 
 == Cloud Computing
 
-This whole topic overlaps with the lecture _Advanced Internet Technology_. There the benefits of cloud computing are better explained.
+This whole topic overlaps with the lecture _Advanced Internet Technology_. The benefits of cloud computing are better explained there.
 But security challenges of no transparency, no control over data, and no compliance are easy to see.
 
-Casandra is also explained there, the only thing to add, is that because of the hashed node id, data placement is *not controllable* and thus each node has to comply with the security requirements.
+Cassandra is also explained there, the only thing to add, is that because of the hashed node id, data placement is *not controllable* and thus each node has to comply with the security requirements.
 However, a possibility is to add yet another layer of indirection and let trusted party determine where items must be stored and have the "insecure" representative node redirect to the target node, where the data can be stored.
 
 #colorbox(
@@ -381,9 +381,9 @@ Whereas objects are self-contained units of data that encapsulates both the data
 
 We will limit ourselves to the sections on attribute-based encryption, XML, JSON, and a little bit of SenML.
 
-In fine grained access control individual data records are split finer into individual fields. These are encrypted *one key for each field*, services which then need to interact with a set of fields receive then only the keys to exactly these fields.
+In fine-grained access control, individual data records are split finer into individual fields. These are encrypted *one key for each field*, services which then need to interact with a set of fields receive then only the keys to exactly these fields.
 This can even be made cryptographically secure when combining with attribute based encryption where entities have some attributes and there are policies which determine which set of attributes should allow access to which data items.
-Two distinct variants, 1. The ciphertext-policy based, as the name suggests, stores the policies next to the ciphertext and the attributes, on the private key of the entity, 2. Key-Policy does the opposite. In both variants a trusted authority creates the policies, attributes and keys and therefore has complete control over the security.
+There are two distinct variants: 1. The ciphertext-policy based encryption, as the name suggests, stores the policies next to the ciphertext and the attributes, on the private key of the entity, 2. The Key-Policy based encryption does the opposite. In both variants a trusted authority creates the policies, attributes and keys and therefore has complete control over the security.
 
 == XML Security
 
@@ -408,7 +408,7 @@ _XMLSig_ allows for cryptographically signing parts of the document, the variant
     ```
   ]),
   [
-    The parts to sign are addressed via the XPath.
+    The parts to be signed are addressed via the XPath.
 
     For example, `//lecture/name` addresses all name elements
 
@@ -434,32 +434,32 @@ in practice, XML Security struggles with its complexity
 
 == JSON Security
 
-JSON is similar to XML. However it has a standardized format (*NOT* canonical though), but less flexibility with the data types. For JSON security 4 _JOSE_ standard were described
+JSON is similar to XML. However, it has a standardized format (*NOT* canonical though) but less flexibility with the data types. For JSON security 4 _JOSE_ standard were described
 - _JSON Web Signatures_ (JWS)
 - _JSON Web Encryption_ (JWE)
 - _JSON Web Key_ (JWK)
 - _JSON Web Algorithms_ (JWA)
 
-Again we need to do canonicalization before anything. This is even more complex than XML, since JSON is largely unordered. Thus, if asked *JSON* is more work to secure.
+Again we need to do canonicalization before anything. This is even more complex than XML, since JSON is largely unordered. Thus, if asked *JSON* is more work to canonicalize.
 Then we define JSONPath. The two example from above would be `$.*.lecture.name` and `$.*.lecture[?(@.term== 'ss')].name`.
 
 == SenML
 
-SenML stands for _Sensor Measurement Lists_ which can include XML or JSON content. SenML supports fine grained symmetric encryption for individual fields (selected with JSONPath), but by always signs the *complete* data item.
+SenML stands for _Sensor Measurement Lists_, which can include XML or JSON content. SenML supports fine grained symmetric encryption for individual fields (selected with JSONPath) but by always signs the *complete* data item.
 
 == Others
 
-Often time sensor data is send via a pub/sub communication scheme. Here Replay and Suppression are difficult to combat.
+Often time sensor data is sent via a pub/sub communication scheme. Here, replay and suppression are difficult to combat.
 Possibilities include timestamps, counter or hashchain for replay, with a fixed transmission schedule for suppression possibly including a heartbeat message.
 
 Key revocation and rotation (revocation scheme could be to just rotate keys) is a lot of work for limited IoT devices.
-We can outsource some of it, by doubly encrypting our data, then let the cloud rotate the outer key.
+We can outsource some of this by doubly encrypting our data, then letting the cloud rotate the outer key.
 
 = Database Security
 
-Industrial data is very often stored in relational databases. Good security is important here
+Industrial data is very often stored in relational databases. Good security is important here.
 
-We need to satisfy several requirements most of them self-explanatory:
+We need to satisfy several requirements, most which are self-explanatory:
 - *Physical* database integrity & *Availability*
 - *Logical* database integrity & *Element* integrity verifies the records are accurate
 - *Auditability*
@@ -479,9 +479,9 @@ If we only want aggregated / statistical information from our data. We can imple
 
 == Encrypted Query Processing
 The mechanisms above provide no protection against a malicious or breached database administrator who has direct access to the stored data.
-When eavesdropping the database only data encryption can help. CryptDB tries to process SQL queries directly on this encrypted data.
+When eavesdropping the database, only data encryption can help. CryptDB tries to process SQL queries directly on this encrypted data.
 It uses a trusted proxy that sits between the application and the database. This proxy intercepts queries, translates them to operate on encrypted data, and forwards them to the database.
-Both app and database transparently work with each other.
+Both app and the database transparently work with each other.
 
 The encryption schemes need to allow for certain operations to allow queries to be processed. The ones discussed are shown in @encryption_schemes.
 
@@ -496,17 +496,17 @@ The first two are type independent, the third is either homomorphic Encryption (
 Both are secure enough, such that they don't have an initial random AES encryption. The onions are layers of encryption, first a value would thus be JOIN encrypted then DET encrypted and finally RND encrypted, together with the other onions.
 
 Once a column needs to for example to be used in a `GROUP BY`(DET) The RND layer is removed, never to return. The onions would thus be ([DET, JOIN], [RND, OPE, OPE-JOIN], SEARCH or HOM)
-But when just allowing everything to be removed the whole system does not work. Thus, we define a privacy threshold that ensures not to many layers are removed (from differing onions).
+But when just allowing everything to be removed, the whole system does not work. Thus, we define a privacy threshold that ensures not to many layers are removed (from differing onions).
 
 == Privacy & Anonymity
 
 Removing personally identifying information (PII) from a dataset is not enough to ensure anonymity, combination of other data can be used for identification of individuals.
 
-- Singling: extract attributes that allow identification of one or more individuals
-- Linkability: linking at least two records of a single stakeholder in dataset(s)
+- Singling: extracting attributes that allow identification of one or more individuals
+- Linkability: linking at least two records of a single stakeholder in a dataset(s)
 - Inference: deducing the value of an attribute from the values of a set of other attributes
 
-We need to distinguish between key attributes (direct identification), quasi-identifiers (linkage), and sensitive attributes what makes the data useful.
+We need to distinguish between key attributes (direct identification), quasi-identifiers (linkage), and sensitive attributes, which makes the data useful.
 
 == $k$, $p$, $l$, $t$-Anonymity
 
@@ -534,7 +534,7 @@ setting:
 $ forall K, ("DB1", "DB2") (Pr[K|"DB1"])/(Pr[K|"DB2"]) < e^epsilon $
 smaller $epsilon$ leads to better privacy protection
 
-For a statistical function $f$ we need to know the sensitivity of $f$, named $Delta f$. Then we add $K = f("DB") + "Laplace"(delta)$ enough noise $lambda = Delta f / epsilon$ to the function, to ensure privacy.
+For a statistical function $f$ we need to know the sensitivity of $f$, named $Delta f$. Then we add $K = f("DB") + "Laplace"(delta)$ enough noise to the function, where $lambda = Delta f / epsilon$, to ensure privacy.
 
 = Machine Learning
 
@@ -542,14 +542,14 @@ Machine learning models are used to classify data into known categories. Machine
 
 Security wise, multiple attacks are possible. We can have _open box_ or _closed box_ attacks (whether the attacker knows the model parameters).
 
-The most important considerations for machine learning models in industrial contexts is safety. Since when a self-driving car does not detect a stop sign: #quote([very bad things can happen. Many people say horrible things can happen]). This is also connected to security, since there are misclassification and unlearning attacks, that will be discussed later on.
+The most important considerations for machine learning models in industrial contexts is safety. Since, when a self-driving car does not detect a stop sign: #quote([very bad things can happen. Many people say horrible things can happen]). This is also connected to security, since there are misclassification and unlearning attacks, that will be discussed later on.
 Other considerations are fairness, ethics, accountability, explainability, and robustness as well as privacy of the training data and the model.
 
 == Training Data Security & Privacy
 
 We must ensure our training data is accurate and private.
 
-The accuracy consideration stems from training data poisoning attacks. Where an attack can insert (or remove) training data to shift the models classifications. This can either be indiscriminative such that it tries to maximize the overall error. Or targeted to only misclassified a stop sign for example. A third option is a _backdoor_ attack, where for example only a stop sign with a predefined noise can be on demand misclassified.
+The accuracy consideration stems from training data poisoning attacks. Where an attacker can insert (or remove) training data to shift the models classifications. This can either be indiscriminate, such that it tries to maximize the overall error. Or targeted to only misclassify a stop sign for example. A third option is a _backdoor_ attack, where, for example only a stop sign with a predefined noise can be misclassified on demand.
 
 To mitigate this training data sanitization with respect to outliers, model inspection and sanitization and trigger reconstruction must be used.
 
@@ -559,7 +559,7 @@ What if we want to train a model with very private data for a lot of people?
 
 For this federated learning is a possibility.
 Multiple entities collaborate in solving a machine learning problem under the coordination of a central server or service provider.
-Each clients locally trains a model only it's data. Then only the model is sent to the central server, which takes the average over all trained models. This can also be done cryptographically securely with a specialized Secure Multi Party Computation routine - if you know what that is.
+Each client locally trains a model only its data. Then, only the model is sent to the central server, which takes the average of all trained models. This can also be done cryptographically securely with a specialized Secure Multi Party Computation routine - if you know what that is.
 The new model parameters are then redistributed to clients for further training round.
 
 There are two variations
@@ -591,7 +591,7 @@ There are two variations
 Not only the training data can be private, but also the valuable model.
 
 Models can be extracted, called _model stealing_ by prompting providers repeatedly.
-For SVM, make enough requests to discover the decision boundary.
+For an SVM, make enough requests to discover the decision boundary.
 - high-fidelity: extracted model behaves similar to target model
 - high-accuracy: extracted model performs task of target model very well
 
@@ -603,10 +603,10 @@ Backdoors (intentionally misclassified datapoints) & Watermarks can be used to m
 
 == Request and Response Privacy
 
-When overfitting a model on specific datapoints in the training data. It increases the risk of unententional memorization.
-For this we again take to differential privacy.
+When overfitting a model on specific datapoints in the training data. It increases the risk of unintentional memorization.
+For this, we again turn to differential privacy.
 
 For sensitive requests we can use homomorphic encryption, but this can be prohibitively computationally expensive.
 
-The last section describes prompt-tuning, where general-purpose models are used for very specific tasks. This is done using prompt-tuning which induce the desired behavior to the model.
+The last section describes prompt-tuning, where general-purpose models are used for very specific tasks. This is done using prompt-tuning which induces the desired behavior to the model.
 However, we can backdoor this as well for multiple tasks (_task agnostic_). Furthermore, task-specific trigger reconstruction does not work well. We can search for "exceptional behavior" mitigating this risk a bit.
