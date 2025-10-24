@@ -1,4 +1,4 @@
-#let sansFont = "Latin Modern Sans"
+#let sansFont = "New Computer Modern Sans"
 #let conf(
   title: none,
   shortTitle: none,
@@ -31,7 +31,12 @@
       }
     },
   )
-  set text(size: 11pt, lang: lang, font: "Latin Modern Roman", fallback: true)
+  set text(
+    size: 11pt,
+    lang: lang,
+    font: "New Computer Modern",
+    fallback: true,
+  )
   set par(leading: 0.65em, justify: true)
   set block(below: 1.05em)
 
@@ -46,7 +51,7 @@
 
   stack(
     spacing: 1cm,
-    text(font: "Latin Modern Mono", {
+    text(font: "New Computer Modern Mono", {
       link("https://panikzettel.htwr-aachen.de")[panikzettel.htwr-aachen.de]
     }),
     text(22pt, font: sansFont, hyphenate: false, strong([#title])),
@@ -69,6 +74,10 @@
   set align(left)
 
   if showOutline [
+    #show heading: it => {
+      set text(font: sansFont, weight: "semibold")
+      block(above: 2em, below: 1.05em, it.body)
+    }
     #show outline.entry.where(level: 1): it => [
       #v(8pt)
       #it

@@ -109,7 +109,7 @@ Hierfür benötigen wir die Wahrscheinlichkeit $L(theta) = p(cal(X) | theta)$, d
 Da alle Variablen i.i.d. (d.h. unabhängig und identisch verteilt) sind, können wir die Wahrscheinlichkeiten summieren: $L(theta)=sum_(n=1)^N p(x_n | theta)$ und das _negative log-likelihood_ bilden $E(theta)= - ln L(theta) = - sum_1^n ln p(x_n | theta)$ (#emoji.warning $ln a*b = ln a + ln b$).
 
 Um nun das Maximum zu berechnen ist nun die Ableitung von $E(theta)$ erforderlich:
-$ diff/(diff theta) E(theta) &= - limits(sum_(n=1)^N (1/p(x_n | theta)) dot diff/(diff theta) p(x_n | theta)) \
+$ partial/(partial theta) E(theta) &= - limits(sum_(n=1)^N (1/p(x_n | theta)) dot partial/(partial theta) p(x_n | theta)) \
 &= ... = 1/sigma^2 sum_(n=1)^N x_n - N mu =^! 0 \
 &<==> hat(mu) = 1/N sum_(n=1)^N x_n and hat(sigma)^2 = 1/N sum_(n=1)^N (x_n - hat(mu)^)^2 $ .
 
@@ -218,7 +218,7 @@ Nun aber zur Optimierungsmethoden dieser $y_k (x)$. Zunächst werden alle $k$ Di
 )$, $tilde(X) = vec(x_1^sans(T), dots.v, x_N^sans(T))$ und $Y(tilde(X))=tilde(X)tilde(W)$. Ebenso werden die _target vectors_ (die label) $T = vec(t_1^sans(T), dots.v, t_N^sans(T))$.
 
 Um lernen zu können, definieren wir eine _error function_ (hier _Sum of squares_) $E(W) = 1/2sum_(n=1)^N sum_(k=1)^K (w_k^sans(T)x_n - t_(n k))^2$. Die $1/2$ als Faktor ist nicht benötigt, mach aber bei der Differenzierung den Faktor $2$ weg.
-Nehmen wir nun im 2-class Fall die Ableitung: $(diff E(w))/(diff w) = ... = w = (X^sans(T)X)^(-1)X^sans(T)t = X^dagger t$ (das $X^dagger$ ist die pseudo-inverse, da X ja singulär seine könnte). Somit erhalten wir eine _closed-form_ Lösung $y(x;w) = w^sans(T) x = t^sans(T) (X^dagger)^sans(T) x$.
+Nehmen wir nun im 2-class Fall die Ableitung: $(partial E(w))/(partial w) = ... = w = (X^sans(T)X)^(-1)X^sans(T)t = X^dagger t$ (das $X^dagger$ ist die pseudo-inverse, da X ja singulär seine könnte). Somit erhalten wir eine _closed-form_ Lösung $y(x;w) = w^sans(T) x = t^sans(T) (X^dagger)^sans(T) x$.
 
 Um weniger sensitiv gegen _outliers_ zu sein, wird $y$ allerdings meist mit einer Aktivierungsfunktion versehen (ähnlich wie bei NNs) $y(x)=g(w^T x)$.
 In der Vorlesung der Logistic-Sigmoid $sigma(x) = 1/(1+e^(-x))$.
@@ -275,14 +275,14 @@ In diesem Fall auf _gradient descent_.
 ==== Gradient Descent
 
 $
-  w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((diff E(W))/(diff w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w))
+  w_(k j)^(tau + 1) = w_(k j)^tau - eta lr((partial E(W))/(partial w_(k j)) bar)_(w^tau) ( "fortan" w^(tau + 1) = w^tau - eta Delta E(w))
 $
 
 dies ist die (so halb) erste Taylor expansion mit Hyperparameter _learning rate_ $eta$.
 Ist die _learning rate_ zu hoch, wird das Optimum "übersprungen" und es kann sein, dass unsere Funktion _divergent_ wird, also sich immer zwischen zu viel Error auf der einen + Seite zu zu viel auf der - Seite (vereinfach). Bei zu kleiner Learning Rate dauert es lange und eventuell konvergiert der Gradient zu einem lokalen Minimum statt zu einem Globalen.
 
 Die Newton-Raphson Methode (orientiert sich an der zweiten Taylorentwicklung)
-verwendet zusätzlich noch ein $H^(-1)=(diff^2 E(w))/(diff w_i diff w_j)$
+verwendet zusätzlich noch ein $H^(-1)=(partial^2 E(w))/(partial w_i partial w_j)$
 
 // Bei der Logistischen Regression versuchen wir die posteriors $p(Cl_k | x)$ durch eine linear discriminant function zu modellieren.
 
@@ -627,7 +627,7 @@ Das ist Simpons-Paradox.
 
 Hierbei gibt es _temporal data_, heißt jede Aktion hat einen Timestamp, eine Case-ID und eine Aktion (z.B. Nutzer 1 registriert sich $t_1$, Nutzer 2 meldet sich an $t_2$, etc...).
 
-Hieraus entstehen cases, $"case" 1= angle.l"Nutzer registriert", ...angle.r$.
+Hieraus entstehen cases, $"case" 1= chevron.l"Nutzer registriert", ...chevron.r$.
 
 Wir brauchen erneut eine Relation, das _containment_ $A subset.sq.eq B$. Wir gucken einfach ob wir die Events von $A$ in $B$ in der *gleichen Reihenfolge*, aber gegebenenfalls mit Lücken, in $B$ finden.
 
@@ -635,9 +635,9 @@ Der Support ist dann wieder gleich definiert: $support(P) = (|[S in X | P subset
 
 === Apriori-All Algorithmus
 
-Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I | support(angle.l A angle.r) >= "min_sup"}$
+Wir brauchen alle _litemsets_ (doofes wort) also alle $cal(L) = {A in I | support(chevron.l A chevron.r) >= "min_sup"}$
 
-Nun mappen wir _Sequences_ auf die darunter liegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $angle.l{a,c}, {a,b,c}angle.r$ wird zu $angle.l{{a},{c}},{{a},{b},{c},{a,b}angle.r$
+Nun mappen wir _Sequences_ auf die darunter liegenden _litemsets_ um. Beispiel $cal(L) = {{a}, {b}, {c}, {a,b}}$ und die _sequence_ $chevron.l{a,c}, {a,b,c}chevron.r$ wird zu $chevron.l{{a},{c}},{{a},{b},{c},{a,b}chevron.r$
 
 Nun erstellen wir wieder die Kandidaten und prunen das Ergebnis.
 
