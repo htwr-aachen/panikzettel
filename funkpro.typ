@@ -1,27 +1,16 @@
-#import "conf.typ": conf, posneg, algoBox, sidenote, defiBox, theoBox, todo
+#import "conf.typ": algoBox, conf, defiBox, posneg, sidenote, theoBox, todo
 #import "@preview/cetz:0.2.0": canvas, plot
-#import "@preview/acrostiche:0.3.2": *
 
 #show: conf.with(
   title: "Funktionale Programmierung",
   shortTitle: "FunkPro",
   authors: (
-    (name: "🌎 Jonas Maximus Schneider 🌏"),
-    (name: "✨Leo std::vector Werner✨"),// hab ein zeichen geschrieben um einen tippfehler zu fixen | mehr als der Rest :)
-    (name: "🐈‍⬛ Destina Kolac <3"), //hab auch einen rechtschreibfehler gefunden :) und ne erklärung ergänzt
-    (name: "🦀 Adrian Jakob Groh 🚀"),// er hat nicht geschrieben was er gemacht hat, dann hat er wohl nichts gemacht, stimmt gar nicht ich hab ganz viel gemacht :angry:
-    (name: "🍪 Peter (Peti) Wallmeyer :)"), // Ich hab formeln bei type inference gemacht :) (und versucht das zu erklären aber bin kläglich gescheitert :")
-    (name: "💀 Tore Ulrich Kunze 👹") // ich hab versucht Peter zu assistieren 🤓 wieso bist du nicht bib? wo bleibst du? heute nachmittag pull? ich würde glaube ich eher leg machen wollen, morgen bin ich nicht da, na gut pull, wann geht ihr? alles klar, ja lets go, ich bin 16 in der fahrradwerkstatt im carl, entweder davor oder danach
-    // morgen leg? :c
-    // nein nicht löschen :(
-      // ihr trollos 💀
-      // lets go, typinferenz muss ich noch üben. vielleicht können wir ja mal audimax gehen nachmittags und da zusammen lernen
-      // ja typinferenz hab ich jetzt drauf
-      // ich auch
-      // ich finds toll, dass die nachrichten alle in der richtigen reihenfolge sind
-      // aber jetzt ist hier alles zugespammed
-      // das ist das easter egg vom panikzettel
-    // J: was geht hier ab?
+    (name: "🌎 Jonas Maximus Schneider"),
+    (name: "✨Leo std::vector Werner✨"),
+    (name: "🐈‍⬛ Destina Kolac <3"),
+    (name: "🦀 Adrian Jakob Groh 🚀"),
+    (name: "🍪 Peter (Peti) Wallmeyer :)"),
+    (name: "💀 Tore Ulrich Kunze 👹"),
   ),
   lang: "de",
   filename: "funkpro",
@@ -31,16 +20,8 @@
 #let ltes = math.op($subset.eq.sq$)
 #let ltesn = math.op($subset.eq.sq.not$)
 #let lub = math.op($union.sq$)
- 
-= Einleitung und Vorwissen
 
-#init-acronyms((
-    "decl": ("Deklaration"),
-    "typedecl": ("Typdeklarationen"),
-    "funcdecl": ("Funktionsdeklarationen"),
-    "gdw.": ("genau dann wenn"),
-    "lfp": ("least fixpoint"),
-))
+= Einleitung und Vorwissen
 
 === Vorwort
 
@@ -297,7 +278,7 @@ filter even [1..10] = [2,4,	.., 10] -- Behält nur die Elemente einer Liste, fü
 
 -- zipWith
 -- Mit zipWith lassen sich zwei Listen mit Anwendung einer Funktion vereinen.
-zipWith (+) [1,2] [3,4]  -- [4,6] 
+zipWith (+) [1,2] [3,4]  -- [4,6]
 
 -- Fold
 -- Mit foldl und foldr können alle Elemente einer Liste auf ein Element "gefaltet" werden, indem sie mit einer Funktion mit dem Accumulator verrechnet werden.
@@ -315,7 +296,7 @@ concat = foldr (++) []
 
 Listenkokmprehensionen können mit der _Generatorregel_ und der _Einschränkungsregel_ ausgewertet werden.
 
-Ein Generator hat die Form `var <- exp` (z.B. `x <- [1..5]`). 
+Ein Generator hat die Form `var <- exp` (z.B. `x <- [1..5]`).
 Eine Einschränkung ist dann ein Wahrheitswert z.B. `even x`.
 
 Wir bauen also zuerst alle möglichen Werte mit Generatoren und schränken sie danach ein, um unsere Liste zu fertigen.
@@ -421,9 +402,9 @@ Die Folgenden Gesetze müssen für `return` und `>>=` erfüllt sein, damit ein T
 
 Ab hier wird es wesentlich theoretischer. Wir wollen nun versuchen die Semantik von Haskell zu definieren. Hierfür gibt es 3 Arten diese zu definieren:
 
- / Denotationelle Semantik: Hier weisen wir jedem Ausdruck ein Mathematisches Äquivalent zu, was dieses definiert
- / Operationelle Semantik: Hier abstrahieren wir meist ein Programm und geben einen abstrakten Interpreter an, welcher das Ergebnis festlegt.
- / Axiomatische Semantik: Werden wir nicht behandeln.
+/ Denotationelle Semantik: Hier weisen wir jedem Ausdruck ein Mathematisches Äquivalent zu, was dieses definiert
+/ Operationelle Semantik: Hier abstrahieren wir meist ein Programm und geben einen abstrakten Interpreter an, welcher das Ergebnis festlegt.
+/ Axiomatische Semantik: Werden wir nicht behandeln.
 
 PS. die meisten Sprachen geben einfach nur eine Referenz Implementierung eines Compilers.
 
@@ -439,7 +420,7 @@ square :: Int -> Int
 square x = x * x
 ```
 auf eine mathematische Funktion, die Zahlen quadriert.
-Da es in Haskell aber auch Ausdrücke gibt, die nicht oder nur partiell definiert sind, wie 
+Da es in Haskell aber auch Ausdrücke gibt, die nicht oder nur partiell definiert sind, wie
 ```hs
 non_term :: Int -> Int
 non_term x = non_term (x + 1)
@@ -449,7 +430,7 @@ gibt es auch den undefinierten Wert #bot (bottom).
 
 == Ordnungen
 
-Für die Übertragung brauchen wir Funktionen mit bestimmten Eigenschaften. Hierfür definieren wir uns eine partielle Ordnung, die besagt "wie stark" eine Sache definiert ist. 
+Für die Übertragung brauchen wir Funktionen mit bestimmten Eigenschaften. Hierfür definieren wir uns eine partielle Ordnung, die besagt "wie stark" eine Sache definiert ist.
 
 Eine Ordnung ist, genau das was man vermutet:
 - $x <= x$, Reflexivität
@@ -471,7 +452,7 @@ Für jeden Haskell Typ bauen wir eine eigene Menge von Mathematischen Objekten, 
 
 Für den Typ Integer wählen wir den _Domain_ $ZZ_bot = {bot_ZZ_bot,0,1,-1,2,-2,...}$ für Booleans $BB_bot = {bot_BB_bot,True,False}$, etc.
 
-Die Struktur eines Domains $D$ wird durch eine partielle Ordnung $ltes_D$ festgelegt, die ihre Elemente danach ordnet, wie "stark sie definiert sind". 
+Die Struktur eines Domains $D$ wird durch eine partielle Ordnung $ltes_D$ festgelegt, die ihre Elemente danach ordnet, wie "stark sie definiert sind".
 $x ltes_D y$ bedeutet also, dass $x$ höchstens so sehr definiert ist wie $y$.
 
 #quote(block: true, [Wieso denn nicht nur ein $bot$?])
@@ -482,31 +463,48 @@ Werte können nicht nur definiert und undefiniert sein, z.B. können Tupel als e
 
 $D$ heißt ein Basis-Domain, wenn nur $bot_D$ mit den anderen Element in Relation stehen. Alle anderen sind "gleichwertig" (*nicht gleich* $1 != 2$, aber sie stehen nicht in der Ordnung $1 ltesn 2 or 2 ltesn 1$). Z.B. $BB_bot, ZZ_bot, ...$
 
-#quote(block:true)[Ja leider _ein_ Domain, genauer _ein Scott-Ershov Domain_ 🤮.] //habe das ein cursiviert weil das war hart verwirred :") (-Marry)"
+#quote(
+  block: true,
+)[Ja leider _ein_ Domain, genauer _ein Scott-Ershov Domain_ 🤮.] //habe das ein cursiviert weil das war hart verwirred :") (-Marry)"
 
-Tupel von Domains sind erneut Domains. $(d_1, ..., d_n) ltes_(D_1 times ... times D_n) (d'_1, ..., d'_n)$ gilt #acr("gdw.") $d_i ltes d'_i$ für alle $1 <= i <= n$ (Zu beachten ist der Typ/Subscript der Relation). Somit ist $(bot_D_1,...,bot_D_n) = bot_(D_1 times ... times D_n)$ das kleinste Element.
+Tupel von Domains sind erneut Domains. $(d_1, ..., d_n) ltes_(D_1 times ... times D_n) (d'_1, ..., d'_n)$ gilt genau dann wenn (gdw) $d_i ltes d'_i$ für alle $1 <= i <= n$ (Zu beachten ist der Typ/Subscript der Relation). Somit ist $(bot_D_1,...,bot_D_n) = bot_(D_1 times ... times D_n)$ das kleinste Element.
 
-Für Funktionen $f,g : D_1 -> D_2$ gilt $f ltes_(D_1 -> D_2) g$ #acr("gdw.") für alle $d in D_1: f(d) ltes_D_2 g(d)$. $bot_(D_1 -> D_2) = d => bot_D_2$ ist somit das kleinste Element. 
+Für Funktionen $f,g : D_1 -> D_2$ gilt $f ltes_(D_1 -> D_2) g$ gdw. für alle $d in D_1: f(d) ltes_D_2 g(d)$. $bot_(D_1 -> D_2) = d => bot_D_2$ ist somit das kleinste Element.
 
-#defiBox(title: [Extension von Funktionen], [Sei $f: A -> B$ eine Funktion. Jede Funktion $f': A_bot -> B$ bezeichnet man als Extension von $f$ wobei $A_bot = A union {bot_A_bot}$ und wobei $f(d) = f'(d)$ für alle $d in A$.])
+#defiBox(
+  title: [Extension von Funktionen],
+  [Sei $f: A -> B$ eine Funktion. Jede Funktion $f': A_bot -> B$ bezeichnet man als Extension von $f$ wobei $A_bot = A union {bot_A_bot}$ und wobei $f(d) = f'(d)$ für alle $d in A$.],
+)
 
-#defiBox(title: [Striktheit von Funktionen], [Eine Funktion $g: D_1 times ... times D_n -> D$ für Domains $D_1,...,D_n,D$ heißt _strikt_, falls $g(d_1,...,d_n) = bot_D$ für alle $d_1,...,d_n$ gilt, bei denen ein $d_i = bot_D_i$ ist. Ansonsten heißt $g$ _nicht-strikt_.])
+#defiBox(
+  title: [Striktheit von Funktionen],
+  [Eine Funktion $g: D_1 times ... times D_n -> D$ für Domains $D_1,...,D_n,D$ heißt _strikt_, falls $g(d_1,...,d_n) = bot_D$ für alle $d_1,...,d_n$ gilt, bei denen ein $d_i = bot_D_i$ ist. Ansonsten heißt $g$ _nicht-strikt_.],
+)
 
-#defiBox(title: [Monotone Funktionen], [Seien $ltes_D_1$ und $ltes_D_2$ partielle Ordnungen auf $D_1$ bzw. $D_2$. Eine Funktion $f: D_1 -> D_2$ ist monoton $<=> forall d ltes_D_1 d': f(d) ltes_D_2 f(d')$])
+#defiBox(
+  title: [Monotone Funktionen],
+  [Seien $ltes_D_1$ und $ltes_D_2$ partielle Ordnungen auf $D_1$ bzw. $D_2$. Eine Funktion $f: D_1 -> D_2$ ist monoton $<=> forall d ltes_D_1 d': f(d) ltes_D_2 f(d')$],
+)
 
-#theoBox(title: [Aus Striktheit folgt Monotonie], [Seien $D_1,...,D_n,D$ Domains, wobei $D_1,...,D_n$ flach sind. Sei $f: D_1 times ... times D_n -> D$ strikt. Dann ist $f$ auch monoton.])
+#theoBox(
+  title: [Aus Striktheit folgt Monotonie],
+  [Seien $D_1,...,D_n,D$ Domains, wobei $D_1,...,D_n$ flach sind. Sei $f: D_1 times ... times D_n -> D$ strikt. Dann ist $f$ auch monoton.],
+)
 
 Wir definieren für jede Menge $D$ mit p. Ordnung $ltes_D$ den Lift von $D$, $D_bot$ so, dass $bot_D_bot ltes_D_bot d$ kleiner ist als alle $d in D$ (inklusive, des eventuellen Vorherigen $bot_D$). Alle anderen Elemente der Relationen werden beibehalten.
 
 === Eigenschaften von $ltes$
 Dass $ltes$ eine partielle Ordnung ist, ist offensichtlich.
 
-#defiBox(title: [Kleinste obere Schranke (Supremum)], [Sei $ltes$ eine partielle Ordnung auf einer Menge $D$ und $S$ eine Teilmenge von $D$. Ein Element $d in D$ ist eine _obere Schranke_ von $S$, falls $d' ltes d$ für alle $d' in S$ gilt. Das Element $d$ ist die _kleinste obere Schranke_ (oder "Supremum"), falls darüber hinaus für alle anderen oberen Schranken $e$ der Zusammenhang $d ltes e$ gilt. Wir bezeichnen dieses Element als $lub S$])
+#defiBox(
+  title: [Kleinste obere Schranke (Supremum)],
+  [Sei $ltes$ eine partielle Ordnung auf einer Menge $D$ und $S$ eine Teilmenge von $D$. Ein Element $d in D$ ist eine _obere Schranke_ von $S$, falls $d' ltes d$ für alle $d' in S$ gilt. Das Element $d$ ist die _kleinste obere Schranke_ (oder "Supremum"), falls darüber hinaus für alle anderen oberen Schranken $e$ der Zusammenhang $d ltes e$ gilt. Wir bezeichnen dieses Element als $lub S$],
+)
 
 Aber nicht nur das, für jede Domain $D$:
 - Gibt es ein kleinstes Element $bot_D$.
 - Jede Kette $S = d_1 ltes d_2 ltes ... ltes d_n in D$ hat ein Supremum $lub S$.
-Dank diesen zwei Eigenschaften heißt $ltes_D$ eine vollständige Partielle Ordnung. Dies gilt für Basis-Domains, Tuple-Domains und Funktionsdomains (Satz 2.1.13) 
+Dank diesen zwei Eigenschaften heißt $ltes_D$ eine vollständige Partielle Ordnung. Dies gilt für Basis-Domains, Tuple-Domains und Funktionsdomains (Satz 2.1.13)
 
 
 == Fixpunkte
@@ -515,22 +513,31 @@ Dank diesen zwei Eigenschaften heißt $ltes_D$ eine vollständige Partielle Ordn
 #let ff = math.op([#h(0.1cm) $f$ #h(-0.33cm) $f$ #h(0.1cm)]) // das muss irgendwie schöner gehen
 #let lfp = math.op("lfp")
 
-#defiBox(title: [Fixpunkt], [$f$ ist ein Fixpunkt von $ff$ #acr("gdw."). $ff (f) = f$])
+#defiBox(title: [Fixpunkt], [$f$ ist ein Fixpunkt von $ff$ gdw.. $ff (f) = f$])
 
-Der kleinste Fixpunkt (welcher am wenigsten definiert ist) wird als #acr("lfp") bezeichnset.
+Der kleinste Fixpunkt (welcher am wenigsten definiert ist) wird als least fixpoint (lfp) bezeichnset.
 
-#theoBox(title: [Fixpunktsatz], [Sei $ltes$ eine vollständige partielle Ordnung auf $D$ und sei $f : D -> D$ stetig. Dann besitzt $f$ einen kleinsten Fixpunkt und es gilt $lfp f  = lub {f^i (bot) | i in NN}$.])
+#theoBox(
+  title: [Fixpunktsatz],
+  [Sei $ltes$ eine vollständige partielle Ordnung auf $D$ und sei $f : D -> D$ stetig. Dann besitzt $f$ einen kleinsten Fixpunkt und es gilt $lfp f = lub {f^i (bot) | i in NN}$.],
+)
 
 Funktionen wie $ff$, die aus Haskell-Ausdrücken gewonnen werden, sind immer stetig.
 Insofern ist durch den Fixpunktsatz garantiert, dass ihr kleinster Fixpunkt existiert und durch die kleinste obere Schranke der Kette ${bot,ff(bot),ff^2 (bot),...}$ erhalten werden kann.
 Insgesamt fassen wir also in der denotationellen Semantik die Definition einer Funktion als eine _(Fixpunkt)gleichung_ über Funktionen auf. Da hier Gleichungen immer lösbar sind, erhalten wir mindestens eine Funktion als Lösung. Unter allen Lösungen wird dann die kleinste ausgewählt und dem Funktionssymbol als Semantik zugeordnet.
 
-#defiBox(title: [Stetigkeit], [Sei $ltes_D_1$ vollständig auf $D_1$ und $ltes_D_2$ vollständig auf $D_2$. Eine Funktion $f: D_1 -> D_2$ heißt _stetig_ (_continuous_) #acr("gdw."). für jede Kette $S$ von $D_1$ jeweils $f(lub S) = lub {f(d) | d in S}$ ist. Die Menge aller stetigen Funktionen von $D_1$ nach $D_2$ wird mit $angle.l D_1 -> D_2 angle.r$ bezeichnet.])
+#defiBox(
+  title: [Stetigkeit],
+  [Sei $ltes_D_1$ vollständig auf $D_1$ und $ltes_D_2$ vollständig auf $D_2$. Eine Funktion $f: D_1 -> D_2$ heißt _stetig_ (_continuous_) gdw.. für jede Kette $S$ von $D_1$ jeweils $f(lub S) = lub {f(d) | d in S}$ ist. Die Menge aller stetigen Funktionen von $D_1$ nach $D_2$ wird mit $chevron.l D_1 -> D_2 chevron.r$ bezeichnet.],
+)
 
-#theoBox(title: [Stetigkeit und Monotonie], [Seien $ltes_D_1$ und $ltes_D_2$ vollständige Ordnungen auf $D_1$ bzw. $D_2$ und sei $f: D_1 -> D_2$ eine Funktion.
-1. $f$ ist stetig #acr("gdw."). $f$ monoton ist und für jede kette $S$ von $D_1$ gilt $f(lub S) ltes lub f (S)$.
-2. Falls $D_1$ nur endliche Ketten besitzt, dann ist $f$ stetig #acr("gdw.") $f$ monoton ist.
-])
+#theoBox(
+  title: [Stetigkeit und Monotonie],
+  [Seien $ltes_D_1$ und $ltes_D_2$ vollständige Ordnungen auf $D_1$ bzw. $D_2$ und sei $f: D_1 -> D_2$ eine Funktion.
+    1. $f$ ist stetig gdw. $f$ monoton ist und für jede kette $S$ von $D_1$ gilt $f(lub S) ltes lub f (S)$.
+    2. Falls $D_1$ nur endliche Ketten besitzt, dann ist $f$ stetig gdw. $f$ monoton ist.
+  ],
+)
 
 #sidenote(title: "Relevanz?")[
   Ja leider haben die Übungsblätter einige Aufgaben hierzu enthalten.
@@ -560,31 +567,33 @@ Es sind somit noch folgende Konstrukte erlaubt:
 - \var -> exp
 - Ein paar vordefinierte Funktionen in der Umgebung $omega$ (z.B. <=, -, $*$)
 
-#sidenote(title: "Umgebungen / Environments")[Eine Umgebung $rho: sans("Var") -> sans("Dom")$ ist eine Variablenbelegung, genauer eine partielle Funktion, \ die Werte auf ein Domain $sans("Dom")$. $rho$ ist nur für endlich viele Variablen definiert.]
+#sidenote(
+  title: "Umgebungen / Environments",
+)[Eine Umgebung $rho: sans("Var") -> sans("Dom")$ ist eine Variablenbelegung, genauer eine partielle Funktion, \ die Werte auf ein Domain $sans("Dom")$. $rho$ ist nur für endlich viele Variablen definiert.]
 
 #let free = "free"
-Wir brauchen nun noch den Begriff der _freien_ Variablen $free(exp)$, er ordnet jedem _simple Haskell_ Ausdruck eine Menge seiner freien Variablen zu. 
+Wir brauchen nun noch den Begriff der _freien_ Variablen $free(exp)$, er ordnet jedem _simple Haskell_ Ausdruck eine Menge seiner freien Variablen zu.
 
 
 
-Nun zu $Val$. Wir geben das Ergebniss von $Val(exp) = rho...$ an, also der Variablenbelegung in einer Umgebung $rho$. 
+Nun zu $Val$. Wir geben das Ergebniss von $Val(exp) = rho...$ an, also der Variablenbelegung in einer Umgebung $rho$.
 
 
-//TODO: unwichtig? Eher beschreibungen der Environment einbauen? 
+//TODO: unwichtig? Eher beschreibungen der Environment einbauen?
 $
-&Val[|var|] rho &&= rho(var) \
-&Val[|(exp)|] &&= Val[|exp|] \
-&Val[|constr_0|] rho &&= rho(constr_0)  "z.B." z in ZZ, b in BB, "etc" \
-&Val[|constr_n |] rho (n > 0) &&= rho(constr_n (d_1..., d_n)) \
-&Val[|(exp_1, ..., exp_n)|] rho &&= (Val[|exp_1|] rho, ..., Val[|exp_n|] rho) \
-&Val[|(exp_1 exp_2)|] &&= f(Val[|exp_2|]), "da" exp_1 "eine Funktion" f "ist" \
-&Val[| "if" exp_1 "then" exp_2 "else" exp_3|] rho &&= cases(
-  Val[|exp_2|] &"if" Val[|exp_1|] = "true",
-  Val[|exp_3|] &"if" Val[|exp_1|] = "false",
-  bot & "else"
-) \
-&Val[|"let var" = exp "in" exp'|] rho &&= Val[|exp'|] (rho + { var \/ Val[|exp|] rho }) \
-&Val[| \\var -> exp|] &&= f, "mit" f(d) = Val[|exp|] (rho + {var \/ d})
+  &Val[|var|] rho &&= rho(var) \
+  &Val[|(exp)|] &&= Val[|exp|] \
+  &Val[|constr_0|] rho &&= rho(constr_0) "z.B." z in ZZ, b in BB, "etc" \
+  &Val[|constr_n |] rho (n > 0) &&= rho(constr_n (d_1..., d_n)) \
+  &Val[|(exp_1, ..., exp_n)|] rho &&= (Val[|exp_1|] rho, ..., Val[|exp_n|] rho) \
+  &Val[|(exp_1 exp_2)|] &&= f(Val[|exp_2|]), "da" exp_1 "eine Funktion" f "ist" \
+  &Val[| "if" exp_1 "then" exp_2 "else" exp_3|] rho &&= cases(
+    Val[|exp_2|] & "if" Val[|exp_1|] = "true",
+    Val[|exp_3|] & "if" Val[|exp_1|] = "false",
+    bot & "else"
+  ) \
+  &Val[|"let var" = exp "in" exp'|] rho &&= Val[|exp'|] (rho + { var \/ Val[|exp|] rho }) \
+  &Val[| \\var -> exp|] &&= f, "mit" f(d) = Val[|exp|] (rho + {var \/ d})
 $
 
 
@@ -595,19 +604,19 @@ Nun müssen wir lediglich für jeden normalen Haskell Ausdruck (mit Pattern-Matc
 Hierfür werden wir Stück für Stück Teilausdrücke mit von uns vordefinierte Funktionen ersetzten, bis keine Regel mehr anwendbar ist. In der Start Environment $omega$ geben wir also nun vordefinierte Funktionen an $w_tr$
 
 / $mono("bot")$: Simple. $mono("bot") = bot$. Also Undefiniertheit.
-/ $mono("isa")_constr (d)$: \ 
-    `true`, falls $d=(constr, d_1, ..., d_n)$. \
-    `false` falls $d=(constr', d_1, ..., d_n)$, \
-    $bot$ sonst.
+/ $mono("isa")_constr (d)$: \
+  `true`, falls $d=(constr, d_1, ..., d_n)$. \
+  `false` falls $d=(constr', d_1, ..., d_n)$, \
+  $bot$ sonst.
 
 / $mono("argof")_constr (d)$: \
-    $(d_1,...d_n)$ falls $d=(constr, d_1, ..., d_n)$, \
-    $bot$ sonst
+  $(d_1,...d_n)$ falls $d=(constr, d_1, ..., d_n)$, \
+  $bot$ sonst
 / $mono("isa")_(n-mono("tuple"))(d)$: \
-    `true`, falls $d=(d_1,...,d_n)$, \
-    $bot$ sonst.
+  `true`, falls $d=(d_1,...,d_n)$, \
+  $bot$ sonst.
 / $mono("sel")_(n,i)$: \
-  $d_i$, falls $d=(d_1, ..., d_n)$ \ 
+  $d_i$, falls $d=(d_1, ..., d_n)$ \
   $bot$ sonst
 
 // #pagebreak()
@@ -637,8 +646,8 @@ append (Cons x y) z = Cons x (append y z)
 1. *Pattern Matching zu `case`* \
 /*
 ```hs
-    let isEven = \x -> 
-      case (x) of 
+    let isEven = \x ->
+      case (x) of
         {Zero -> True;
         (Succ Zero) -> False;
         (Succ (Succ n)) -> isEven n}
@@ -646,12 +655,12 @@ append (Cons x y) z = Cons x (append y z)
   Wir verwenden nur Lambda Ausdrücke mit einem Argument, die wir zur not verschachteln.
 
   ```hs
-  append = 
-    \x1 -> 
+  append =
+    \x1 ->
       \x2 -> case (x1, x2) of
         (Nil, z) -> z
         (Cons x y, z) -> Cons x (append y z)
-      
+
   ```
 */
 2. *Multi-Lambda zu Lambda*
@@ -664,7 +673,7 @@ Nun müssen wir noch alle `match` Klauseln autstauschen:
 7. *`match` von Konstruktoren*
 8. *`match` von leeren Tupeln*
 9. *`match` von nicht-leeren Tupeln*
-10. *Aufteilung von Deklarationen* 
+10. *Aufteilung von Deklarationen*
 11. *Vereinen von Deklarationen*
 12. #math.arrow.t Mit mehreren Variablen
 
@@ -717,19 +726,19 @@ Wenn wir $delta$ Regeln der Form $c t_1 ... t_n -> r$ mit $c in cal(C), t_1,...,
 
 Dann ist die $delta$ Reduktion
 
-$ l ->_delta r $ für alle $l -> r in delta $
+$ l ->_delta r $ für alle $l -> r in delta$
 
 == Übersetzung von einfachem Haskell in Lambda-Terme
 Dies geschieht mit der Funktion $Lam: "Exp" -> Lambda$
 $
-&Lam(underline("var")) &&= underline("var") \
-&Lam(c) &&= c \
-&Lam((exp,...,exp_n)) &&= mono("tuple")_n Lam(exp_1 ... Lam(exp_n)) \
-&Lam((exp)) &&= Lam(exp) \
-&Lam((exp_1 exp_2)) &&= (Lam(exp_1) Lam(exp_2)) \
-&Lam(mono("if") exp_1 mono("then") exp_2 mono("else") exp_3) &&= mono("if") Lam(exp_1) Lam(exp_2) Lam(exp_3) \
-&Lam(mono("let") underline("var") = exp mono("in") exp') &&= Lam(exp') [underline("var") slash (mono("fix") (lambda underline("var").Lam(exp)))] \
-&Lam(mono("\\")underline("var") mono("->") exp) &&= lambda underline("var").Lam(exp)
+  &Lam(underline("var")) &&= underline("var") \
+  &Lam(c) &&= c \
+  &Lam((exp,...,exp_n)) &&= mono("tuple")_n Lam(exp_1 ... Lam(exp_n)) \
+  &Lam((exp)) &&= Lam(exp) \
+  &Lam((exp_1 exp_2)) &&= (Lam(exp_1) Lam(exp_2)) \
+  &Lam(mono("if") exp_1 mono("then") exp_2 mono("else") exp_3) &&= mono("if") Lam(exp_1) Lam(exp_2) Lam(exp_3) \
+  &Lam(mono("let") underline("var") = exp mono("in") exp') &&= Lam(exp') [underline("var") slash (mono("fix") (lambda underline("var").Lam(exp)))] \
+  &Lam(mono("\\")underline("var") mono("->") exp) &&= lambda underline("var").Lam(exp)
 $
 
 = Typüberprüfung und -inferenz
@@ -737,43 +746,45 @@ $
 #let mgu = math.op("mgu")
 #let cW = $cal(W)$
 
-Bis jetzt wurde bei der Semantik die Typekorrektheit angenommen und nicht überprüft. 
+Bis jetzt wurde bei der Semantik die Typekorrektheit angenommen und nicht überprüft.
 Hierfür nehmen wir zunächst eine Typannahme $A_0$, wobei alle vordefinierten Operationen, bereits den *allgemeinsten Zugrundeliegendem Typen* zugewisen haben (z.B. $A_0(42)=mono("Int"), quad A_0(mono("not")) = mono("Bool") -> mono("Bool")$).
 
 Wir müssen nun also noch alle eigens deklarierten Typen inferieren, durch den _Typinferenzalgorithmus_ $cW$.
 Er bekommt eine Typannahme $A$ und einen zu überprüfenden Term $t$ und gibt als Ausgabe eine substituierte Typannahme $A'$ und den allgemeinsten Typen für den Term $tau$ zurück.
 
-$ cW ( A + { c ::forall a_1,...,a_n . tau}, c ) &= (id, tau[a_1\/b_1,...,a_n\/b_n]) $
+$
+  cW ( A + { c ::forall a_1,...,a_n . tau}, c ) &= (id, tau[a_1\/b_1,...,a_n\/b_n])
+$
 
 Das heißt, wenn wir eine Konstante $c$ haben, für die wir bereits den Typen kennen, dann nehmen wir einfach die Identitätsfunktion als Map (da wir sie ja schon haben). Tauschen also praktisch nicht. $b, b_1,..., b_n$ sind einfach neue Variablen.
 
-  Beispiele:
-  - $cW(A_0 + {x :: c}, x) ) = (id, c)$
-  - $cW(A_0, "not") = (id, "Bool" -> "Bool") wide$ (da not in Haskell vordefiniert ist) 
+Beispiele:
+- $cW(A_0 + {x :: c}, x) ) = (id, c)$
+- $cW(A_0, "not") = (id, "Bool" -> "Bool") wide$ (da not in Haskell vordefiniert ist)
 
-  ---
+---
 
 Soweit so gut. Nun zu Lambda Funktionen
-1. $  
-  cW(A, lambda x.t) &= (theta, b theta -> tau) \
-  &"wobei" cW(A + {x :: b}, t) &= (theta, tau)
-$
+1. $
+    cW(A, lambda x.t) & = (theta, b theta -> tau) \
+                      & "wobei" cW(A + {x :: b}, t) & = (theta, tau)
+  $
 
-  Wir finden für $lambda x.t$ zuerst den Typ von $t$ heraus und nehmen dabei an, dass $x$ den Typ $b$ hat (eine Neue Variable). 
+  Wir finden für $lambda x.t$ zuerst den Typ von $t$ heraus und nehmen dabei an, dass $x$ den Typ $b$ hat (eine Neue Variable).
   Hieraus erhalten wir eine Substitution, in der b aber noch offen ist, also $b theta -> tau$.
-  
-    Beispiel:
-    - $cW({y :: c}, lambda x . y)$ Zuerst finden wir den Typ von $y$ heraus mit zusätzlicher Typannahme ${x :: d}$.
+
+  Beispiel:
+  - $cW({y :: c}, lambda x . y)$ Zuerst finden wir den Typ von $y$ heraus mit zusätzlicher Typannahme ${x :: d}$.
 
 2. Lambdaanwendungen
 $
-  cW(A, (t_1 t_2)) &= (theta_1 theta_2 theta_3, b theta_3) \
-  & "wobei" cW(A,t_1) = (theta_1,tau_1) \
-  & "und" cW(A,t_2) = (theta_2, tau_2) \
-  & "und" theta_3 = mgu(tau_1 theta_2, tau_2 -> b)  
-$ 
+  cW(A, (t_1 t_2)) & = (theta_1 theta_2 theta_3, b theta_3) \
+                   & "wobei" cW(A, t_1) = (theta_1,tau_1) \
+                   & "und" cW(A, t_2) = (theta_2, tau_2) \
+                   & "und" theta_3 = mgu(tau_1 theta_2, tau_2 -> b)
+$
 
 Bei Funktionsanwendungen $t_1 t_2$ berechnen wir zuerst den Typen von $t_1$ und dann mit der Substitution $theta_1$ berechnen wir den Typen von $t_2$. Somit erhalten wir $theta_2$ und zusammen also $tau_1$ und $tau_2$.
 Zusammen bilden $tau_1 theta_2$ und $tau_2 -> b$, $theta_3$, also die kombinierte Substitution $(theta_1 theta_2 theta_3, b theta_3)$.
 
-// #todo[Den letzten Absatz neu schreiben. In tatsächlich ansatzweise Verständlich bitte <\3]
+// TODO: Den letzten Absatz neu schreiben. In tatsächlich ansatzweise Verständlich bitte <\3]

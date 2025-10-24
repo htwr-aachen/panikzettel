@@ -1,4 +1,4 @@
-#import "conf.typ": conf, algoBox, defiBox, theoBox, posneg, sidenote
+#import "conf.typ": algoBox, conf, defiBox, posneg, sidenote, theoBox
 
 #show: conf.with(
   title: "IT-Sicherheit",
@@ -6,7 +6,7 @@
   authors: (
     (name: "Tore Kunze"),
     (name: "Adrian Groh"),
-    (name: "Jonas Schneider")
+    (name: "Jonas Schneider"),
   ),
   lang: "de",
   filename: "itsec",
@@ -21,12 +21,12 @@
   title: "Warnung",
   [
     Dieser Panikzettel ist noch nicht fertig. Die Zeit (und Motivation) fehlt für uns. Ich verspreche für den 2. Termin ist er fertig.
-  ]
+  ],
 )
 
 Dieser Panikzettel ist über die neue Vorlesung "IT-Sicherheit", ein Pflichtfach des neuen Informatik Bachelors der RWTH Aachen.
 
-Dieser Panikzettel ist Open Source auf #link("https://git.rwth-aachen.de/jonas.max.schneider/panikzettel", `https://git.rwth-aachen.de/jonas.max.schneider/panikzettel`). Wir freuen uns über Anmerkungen und Verbessungsvorschläge (auch von offiziellen Quellen). 
+Dieser Panikzettel ist Open Source auf #link("https://git.rwth-aachen.de/jonas.max.schneider/panikzettel", `https://git.rwth-aachen.de/jonas.max.schneider/panikzettel`). Wir freuen uns über Anmerkungen und Verbessungsvorschläge (auch von offiziellen Quellen).
 
 == Ziele von IT-Sicherheit
 IT-Sicherheit beinhaltet Vorbeugung, Erkennung und Verhinderung von Angriffen gegen eines der *CIA*-Ziele.
@@ -72,7 +72,7 @@ Es gibt grob zwei Prinzipien beim Design eines Kryptosystems (sei es ein Verschl
 / Security by obscurity: Das Gegenstück dazu. Sicherheit durch Geheimhaltung des Designs eines Kryptosystems. (Generell eine schlechtere Methodik, auch wenn sie natürlich kombiniert werden können.)
 
 = _Symmetric Encryption_
-Bei _symmetric encryption_ sind die *_encryption_* und *_decryption keys_* *identisch*. 
+Bei _symmetric encryption_ sind die *_encryption_* und *_decryption keys_* *identisch*.
 
 == _Caesar Cipher_
 Ersetzt jeden verwendeten Buchstaben, durch den, der $k$ Stellen im Alphabet danach kommt ($k$ ist entsprechend der Schlüssel).
@@ -84,7 +84,7 @@ Der _Caesar Cipher_ hat nur 25 verschiedene _Keys_ ${1, ..., 25}$ und lässt sic
 Alle möglichen _keys_ werden durchprobiert.
 
 == _Monoalphabetic Substitution Cipher_
-Jeder *Buchstabe* wird durch einen anderen ersetzt gemäß einer *Ersetzungstabelle*. 
+Jeder *Buchstabe* wird durch einen anderen ersetzt gemäß einer *Ersetzungstabelle*.
 \ Der _Caesar Cipher_ ist insbesondere ein *Spezialfall* vom *_Monoalphabetic Substitution Cipher_*.
 
 Der key space entspricht nun allen Permutationen der Buchstaben.
@@ -93,14 +93,14 @@ Der key space entspricht nun allen Permutationen der Buchstaben.
 Durch *_Frequency Analysis_* kann der _Cipher_ leicht geknackt werden.
 
 == _Frequency Analysis_
-Für jede Sprache gibt es *relative Häufigkeiten* der Buchstaben, was bei _Ciphern_, die die *Frequenzen* der Buchstaben *erhalten* insbesondere dazu führt, dass diese leicht entziffert werden können. 
+Für jede Sprache gibt es *relative Häufigkeiten* der Buchstaben, was bei _Ciphern_, die die *Frequenzen* der Buchstaben *erhalten* insbesondere dazu führt, dass diese leicht entziffert werden können.
 
 *_Monoalphabetic Substitution Ciphers_* erhalten insbesondere die Frequenzen und können daher mit _Frequency Analysis_ geknackt werden.
 
 == _Perfect Secrecy_ (Shannon)
 *Idee*: Ein _ciphertext_ soll *keine neue Information* über den _plaintext_ preisgeben.
 
-#defiBox(title: "Perfect Secrecy",[
+#defiBox(title: "Perfect Secrecy", [
   Ein _encryption scheme_ hat *_perfect secrecy_*, wenn für eine gegebene *Wahrscheinlichkeitsverteilung* Pr *auf dem _plaintext space_* $cal(P)$ mit $"Pr"(P) > 0$ für alle _plaintexts_ $P$ gilt:
 
   Für jedes $P in cal(P), C in cal(C), K in cal(K)$ *zufällig gleichverteilt* ausgewählt, gilt $"Pr"(P | C) = "Pr"(P)$
@@ -125,9 +125,9 @@ Wähle $cal(P) = cal(C) = cal(K) = {0,1}^n$ für ein $n in NN$.
 _Key_ Generierung:
 Wähle *zufällig gleichverteilt* ein $K in cal(K)$ für jedes $P in cal(P)$, welches verschlüsselt werden soll
 
-Verschlüsselung: $C = P plus.circle K$
+Verschlüsselung: $C = P plus.o K$
 
-Entschlüsselung: $C plus.circle K = P plus.circle K plus.circle K = P$
+Entschlüsselung: $C plus.o K = P plus.o K plus.o K = P$
 
 #theoBox(title: "OTP", [
   Der _One-Time-Pad_ hat _perfect secrecy_.
@@ -141,7 +141,7 @@ Entschlüsselung: $C plus.circle K = P plus.circle K plus.circle K = P$
     - *So sicher wie theorethisch möglich*
       - Wenn ein _ciphertext_ gegeben ist, sind alle *_plaintexts_ gleich wahrscheinlich*.
       - Sicherheit *unabhängig* von den *Ressourcen* des Angreifers
-  ], 
+  ],
   [
     - *_Key_ muss so lang sein wie _plaintext_*
       - *Unpraktisch* für die meisten Szenarien
@@ -150,7 +150,7 @@ Entschlüsselung: $C plus.circle K = P plus.circle K plus.circle K = P$
       - Garantiert nur *_confidentiality_*
       - Angreifer kann leicht den Text *verändern*, ohne dass dies erkannt wird
     - Offensichtlich *nicht* für alle Anwendungen *geeignet*
-  ]
+  ],
 )
 
 Moderne _encryption schemes_ haben keine _perfect secrecy_, sind aber _computationally secure_.
@@ -201,7 +201,7 @@ Teilt einfach den Input in Blöcke der richtigen Länge und fügt falls Nötig a
 Problem: Die selben _plaintext_ Blöcke ergeben denselben _ciphertext_, wodurch sich Muster aus dem _plaintext_ im _ciphertext_ wiederfinden lassen. $=>$ sollte nicht benutzt werden
 
 === Cipher Block Chaining Mode (CBC)
-Ähnlich wie ECB, nur dass jeder Block vor der verschlüsselung noch mit dem _ciphertext_ des vorigen Blocks $plus.circle$ gerechnet wird (und der erste Block mit einem öffentlichen IV).
+Ähnlich wie ECB, nur dass jeder Block vor der verschlüsselung noch mit dem _ciphertext_ des vorigen Blocks $plus.o$ gerechnet wird (und der erste Block mit einem öffentlichen IV).
 
 Man sollte für jeden _plaintext_ einen neuen IV verwenden, da ein Angreifer ansonsten erkennen kann, ob mehrfach derselbe _plaintext_ verschlüsselt wurde.
 
@@ -209,7 +209,7 @@ Ist anfällig gegen _padding-oracle attacks_. $=>$ sollte auch nicht mehr benutz
 
 === Counter Mode (CTR)
 
-Bei CTR wird auf den $E_K$ vom ersten Block $"IV" + 1$ auf den zweiten Block $"IV" + 2$ usw. angewendet und dann unabhängig von einander jeder Block mit dem jeweiligen $E_K$ $plus.circle$ gerechnet.
+Bei CTR wird auf den $E_K$ vom ersten Block $"IV" + 1$ auf den zweiten Block $"IV" + 2$ usw. angewendet und dann unabhängig von einander jeder Block mit dem jeweiligen $E_K$ $plus.o$ gerechnet.
 
 Dadurch ist kein Padding notwendig, und Ver- und Entschlüsselung kann parallelisiert werden.
 
@@ -221,7 +221,7 @@ Die abgewandelte Variante des Galois Counter Mode (GCM) wird in #ref(<gcm>) beha
 
 _Modification Detection Code_ (MDC) werden über einen *secure* channel gesendet (die Nachricht nicht). Dann wird die MDC-Funktion auf die Nachricht angewand und geguckt ob MDC gleich ist.
 
-_Message Authentication Code_ (MAC) werden mit der Nachricht über den unsicheren Channel gesendet. 
+_Message Authentication Code_ (MAC) werden mit der Nachricht über den unsicheren Channel gesendet.
 Um eine MAC zu erstellen (und zu überprüfen) benötigt man den Key.
 
 == Hash functions
@@ -232,7 +232,7 @@ Um eine MAC zu erstellen (und zu überprüfen) benötigt man den Key.
     Eine Hash Funktion $h$ muss folgende Eigenschaften aufweisen:
     1. _compression_: $h$ mapped eine Eingabe unbestimmter Länge auf eine *fixe* Länge.
     2. _ease of computation_: Die hash funktion muss effizient berechenbar sein.
-  ]
+  ],
 )
 
 Aus der ersten Eigenschaft ergibt sich natürlich, dass es (unendlich viele) Kollisionen geben muss.
@@ -243,9 +243,11 @@ Aus der ersten Eigenschaft ergibt sich natürlich, dass es (unendlich viele) Kol
     / preimage resistance: Gegeben einem $y=h(x)$, aber nicht $x$. Es ist nicht möglich $x'$ zu finden mit $h(x') = y$. Es kann auch $x=x'$ gelten.
     / second preimage resistance: Gegeben einem $x, h(x)$. Es ist nicht möglich ein $x' != x$ zu finden mit $h(x')=h(x)$.
     / collision resistance: Es ist nicht möglich ein $x,x'$ zu finden mit $h(x')=h(x)$.
-   
-    #footnote([Alle "nicht möglich" sind natürlich nur _computationally infeasible_]) 
-  ]
+
+    #footnote(
+      [Alle "nicht möglich" sind natürlich nur _computationally infeasible_],
+    )
+  ],
 )
 
 #theoBox(
@@ -254,7 +256,7 @@ Aus der ersten Eigenschaft ergibt sich natürlich, dass es (unendlich viele) Kol
     _collision resistant_ $==>$ _second preimage resistant_.
 
     Alle anderen Implikationen gelten nicht.
-  ]
+  ],
 )
 
 Eine _cryptographic hash function_ ist nun eine die alle 3 Eigenschaften erfüllt.
@@ -263,22 +265,24 @@ Eine _cryptographic hash function_ ist nun eine die alle 3 Eigenschaften erfüll
 
 MAC auf Grundlage einer _cryptographic hashs_
 
-$ "HMAC"_K (M) = h(K xor "opad" || h(K xor "ipad" || M)) quad quad #footnote([$xor$ kommt immer zuerst]) $
+$
+  "HMAC"_K (M) = h(K xor "opad" || h(K xor "ipad" || M)) quad quad #footnote([$xor$ kommt immer zuerst])
+$
 
-_ipad_ und _opad_ sind festgelegt und unterscheiden sich 
+_ipad_ und _opad_ sind festgelegt und unterscheiden sich
 
 == CMAC
 
 MAC mittels Symmetrischer Block Verschlüsselung.
 
-$M = M_1 || M_2 || ... || M_n$ 
+$M = M_1 || M_2 || ... || M_n$
 
 1. Fall $||M_n|| = b$ $M_n$ passt genau in einen Block.
-  
+
   $"CMAC"(M) = K_bold(1) xor M_n xor E_k (M_(n-1) xor E_k (... xor E_k (M_1)))$
 
-2. Fall padde $M_n^'=M_n 1 underbrace(0...0, b - ||M_n|| - 1) $
- 
+2. Fall padde $M_n^'=M_n 1 underbrace(0...0, b - ||M_n|| - 1)$
+
   $"CMAC"(M) = K_bold(2) xor M_n^' xor E_k (M_(n-1) xor E_k (... xor E_k (M_1)))$
 
 $K_1, K_2$ generieren wir uns aus $K$, aber benötigen unterscheidliche, da sonst $"CMAC"(M) = "CMAC" (M')$ wäre
@@ -300,12 +304,12 @@ Wir haben dabei $A_1 || ... || A_m || P_1 || ... || P_n$ $m<n$. Wir wollen $A_i$
 
 #figure(
   image("img/itsec/gcm.png", height: 12em),
-  caption: [Operationsdiagramm GCM #footnote([Hier wird nur $A_1$ dargestellt, aber bei mehreren $A_i$ werden die nacher äquivalent mit eingebunden])]
+  caption: [Operationsdiagramm GCM #footnote([Hier wird nur $A_1$ dargestellt, aber bei mehreren $A_i$ werden die nacher äquivalent mit eingebunden])],
 )
 
 = Asymmetric Encryption & Signatures
 
 Alles hier beruht darauf einen _public key_ $p_k$ zu haben den jeder kennt (man geht auch davon aus, dass jeden ihn kennt).
-Und einen _private key_ $s_k$ den Niemand außer man selber kennt. 
+Und einen _private key_ $s_k$ den Niemand außer man selber kennt.
 
 == RSA
