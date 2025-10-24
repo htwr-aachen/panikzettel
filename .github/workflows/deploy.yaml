@@ -55,13 +55,7 @@ jobs:
     steps:
       - name: Setup environment
         run: |
-          apk add make
-          apk add bash
-          apk add git
-          apk add gpg
-          apk add tar
-          apk add curl
-          apk add fc-cache
+          apk add --no-cache make bash git gpg tar curl xz fontconfig
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
