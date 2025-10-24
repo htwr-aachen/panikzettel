@@ -98,7 +98,7 @@
     "short": "IT-Sec",
     "semester": 5,
     "type": "compulsory",
-    "date": "2024-02-21"
+    "date": "2025-10-24"
   },
   "la.pdf": {
     "name": "Lineare Algebra für Informatiker",
@@ -216,7 +216,7 @@
     "name": "Foundations of Functional Programming",
     "shortname": "FunkPro",
     "type": "compulsory_elective",
-    "date": "2024-08-04"
+    "date": "2025-10-24"
   },
   "ids.pdf": {
     "name": "Industrial Data Security",
