@@ -51,13 +51,17 @@ jobs:
           path: ./build/*.pdf
   build_typst:
     runs-on: ubuntu-latest
-    container: ghcr.io/typst/typst:latest
+    container: ghcr.io/typst/typst:0.14.0
     steps:
       - name: Setup environment
         run: |
           apk add make
           apk add bash
           apk add git
+          apk add gpg
+          apk add tar
+          apk add curl
+          apk add fc-cache
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
@@ -65,6 +69,9 @@ jobs:
       - name: Git Safe Dir
         run: |
           git config --global --add safe.directory $GITHUB_WORKSPACE
+      - name: Install fonts
+        run: |
+          ./scripts/install-fonts.sh
       - name: Build Typst
         #if: github.event_name == 'push' && (github.event.head_commit.message =~ /.*\.tex|.*\.cls|Makefile|scripts\// || github.event.ref == 'refs/heads/main')
         run: |
