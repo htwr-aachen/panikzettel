@@ -1,4 +1,5 @@
 #let sansFont = "New Computer Modern Sans"
+#let monoFont = "DejaVu Sans Mono"
 #let conf(
   title: none,
   shortTitle: none,
@@ -172,52 +173,63 @@
   )[#body]
 }
 
+#let algoCounter = counter("algorithm")
 #let algoBox(
   title: "title",
   titleTextColor: luma(255),
   textColor: luma(0),
   radius: 3pt,
   width: 100%,
-  prefix: "Algorithmus: ",
+  prefix: "Algorithmus",
   body,
 ) = {
   colorbox(
-    title: prefix + title,
+    title: prefix + " " + context algoCounter.display() + ": " + title,
     bgColor: rgb(240, 200, 12, 75),
     strokeColor: rgb(184, 129, 2),
   )[#body]
 }
 
+#let theoCounter = counter("theorem")
 #let theoBox(
   title: "title",
   titleTextColor: luma(255),
   textColor: luma(0),
   radius: 3pt,
   width: 100%,
-  prefix: "Satz: ",
+  prefix: "Satz",
   body,
 ) = {
-  colorbox(
-    title: prefix + title,
-    bgColor: rgb(40, 173, 23, 75),
-    strokeColor: rgb(30, 128, 17),
-  )[#body]
+  figure(kind: "theorem", supplement: "Satz", {
+    set align(left)
+    theoCounter.step()
+    colorbox(
+      title: prefix + " " + context theoCounter.display() + ": " + title,
+      bgColor: rgb(40, 173, 23, 75),
+      strokeColor: rgb(30, 128, 17),
+    )[#body]
+  })
 }
 
+#let defiCounter = counter("definition")
 #let defiBox(
   title: "title",
   titleTextColor: luma(255),
   textColor: luma(0),
   radius: 3pt,
   width: 100%,
-  prefix: "Definition: ",
-  body,
+  prefix: "Definition",
+  it,
 ) = {
-  colorbox(
-    title: prefix + title,
-    bgColor: rgb(61, 88, 242, 75),
-    strokeColor: rgb(9, 74, 143),
-  )[#body]
+  figure(kind: "definition", supplement: "Definition", {
+    set align(left)
+    defiCounter.step()
+    colorbox(
+      title: prefix + " " + context defiCounter.display() + ": " + title,
+      bgColor: rgb(61, 88, 242, 75),
+      strokeColor: rgb(9, 74, 143),
+    )[#it]
+  })
 }
 
 #let ComplexityProblem = content => {
