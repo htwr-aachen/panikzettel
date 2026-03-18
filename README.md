@@ -4,18 +4,17 @@
 
 Die ultimative Paniksammlung.
 
-Der `master`-Branch ist live auf **[panikzettel.htwr-aachen.de](https://htwr-aachen.de/panikzettel/)**.
+Der `main`-Branch ist live auf **[panikzettel.htwr-aachen.de](https://htwr-aachen.de/panikzettel/)**.
 
 Alles Wichtige zum Mitarbeiten und Kompilieren findest Du in unserem [Meta-Panikzettel](https://htwr-aachen.de/panikzettel/meta.pdf).
 
-Wir freuen uns über Beiträge!
+Wir freuen uns über jegliche Beiträge!
 
 ## Aktuelle Arbeit
 
-Aktuell arbeiten welche an folgenden Panikzetteln (mit Kontakt zum mithelfen):
+Aktuell erfolgt Arbeit an folgenden Panikzetteln (mit Kontakt zum mithelfen):
 
-- Communications Systems Engineering ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de))
-- IT-Security ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de))
+- Advanced Internet Technology ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de))
+- Advanced Operating Systems ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de))
 - DU?
 
-Außerdem wird dieses Repository vermutlich bald auf GitHub umziehen, um ein einheitlichen Ort für htwr zu haben.
