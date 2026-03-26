@@ -17,7 +17,7 @@
 
 Dies ist ein Fork des originalen #link("https://git.rwth-aachen.de/philipp.schroer/panikzettel")[Panikzettel Repository] von Phillip Schröer, da ursprüngliche Repository seit 2 Jahren verlassen zu sein scheint. Von ihm und weiteren Betragenden sind der Großteil der Panikzettel bis heute.
 
-Dieses Projekt ist weiterhin lizenziert unter #link("https://creativecommons.org/licenses/by-sa/4.0/")[CC-BY-SA-4.0] und wird auf dem Git-Server der RWTH verwaltet: #link("https://github.com/htwr-aachen/panikzettel").
+Dieses Projekt ist weiterhin lizenziert unter #link("https://creativecommons.org/licenses/by-sa/4.0/")[CC-BY-SA-4.0] und wird nun auf GitHub, anstatt RWTH's Gitlab Instanz, verwaltet: #link("https://github.com/htwr-aachen/panikzettel").
 
 = Einleitung
 
@@ -26,21 +26,9 @@ Hier wollen wir kurz beschreiben, wie man zum Projekt beiträgt: Wie soll ein Pa
 Jedoch sollte nicht vergessen werden: Wie alle anderen Panikzettel auch ist dieser hier nur eine Sammlung von Notizen.
 So gut wie alles ist auch mit dem Team zur Diskussion offen.
 
-#pagebreak()
-
-Am Besten ist es, wenn Ideen für Panikzettel mit dem Team abgesprochen werden: \
-- #link("mailto:jonas.max.schneider@gmail.com")[jonas.max.schneider\@gmail.com]
-- #link("mailto:panikzettel@panikzettel.philworld.de")[panikzettel\@panikzettel.philworld.de] (ehemaliger owner. Antwortet vermutlich nicht)
-
-
-
-
-=== Kein Zugriff auf den obigen Link?
-Das Repository ist RWTH-intern verfügbar.
-Für den Zugriff muss man also als RWTH-Angehöriger angemeldet sein.
-Manchmal hat man trotzdem keinen Zugriff auf RWTH-interne Repositories, obwohl man über seinen RWTH-Account angemeldet ist.
-Das ist schon öfter passiert.
-Dann muss man eben dem #link("http://www.itc.rwth-aachen.de/cms/IT-Center/Services/kompletter-Servicekatalog/Beschaffungsportale/~estp/ServiceDesk/?lidx=1")[IT Center der RWTH] schreiben.
+Es ist vielleicht auf hilfreich, Ideen für Panikzettel mit mir abzusprechen: \
+- #link("mailto:panikzettel@gmail.com")[panikzettel@htwr-aachen.de]
+- #link("mailto:panikzettel@panikzettel.philworld.de")[panikzettel\@panikzettel.philworld.de] (ehemaliger Maintainer. Antwortet vermutlich nichtmehr)
 
 = Panikzettel kompilieren und erstellen
 
@@ -76,7 +64,9 @@ Version 1
 
 Für beide Schriftsysteme muss `metadata.json` ein neuer Eintrag erstellen werden. Hier werden generelle Informationen zu den Fächern angegeben.
 
-> Wir empfehlen für neue Panikzettel auf Typst zu setzten, da, dass das Schreiben deutlich einfacherer gestaltet.
+> Ich empfehle für neue Panikzettel auf Typst zu setzten um das Schreiben deutlich zu vereinfachen.
+
+Wichtig ist neuerdings auch noch zusätzlich ein Eintrag in `metadata.json` für das neue Fach, hier lassen sich Fächer gut kategorisieren und alternative Namen (z.B. voller Name, Abkürzungen definieren) und sonstige Metadaten hinzufügen. Ohne `metadata.json` Eintrag wird der neue Panikzettel nicht unter #link("https://panikzettel.htwr-aachen.de") gelistet.
 
 ==== Latex
 In der `Makefile`-Datei eine Regel für den neuen Panikzettel einfügen, etwa wie folgt.
