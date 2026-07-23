@@ -14,7 +14,7 @@ Wir freuen uns über jegliche Beiträge!
 
 Aktuell erfolgt Arbeit an folgenden Panikzetteln (mit Kontakt zum mithelfen):
 
-- Advanced Internet Technology ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de))
+- Advanced Internet Technology ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de)) online aber halbfertig!
 - Advanced Operating Systems ([panikzettel@htwr-aachen.de](mailto:panikzettel@htwr-aachen.de))
 - DU?
 
