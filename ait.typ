@@ -1,5 +1,5 @@
 #import "conf.typ": (
-  algoBox, colorbox, conf, defiBox, monoFont, posneg, sidenote, theoBox,
+  algoBox, colorbox, conf, defiBox, monoFont, posneg, sidenote, theoBox, todo
 )
 #import "@preview/cetz:0.2.0": canvas, plot
 #import "@preview/fancy-units:0.1.1": (
@@ -392,9 +392,9 @@ Gnutella 0.6 wants to improve the performance and introduced a superpeer type of
     Now to the winner a _distributed hash table_.
     We recognize that we need to achieve a nice distribution of our content to the nodes
     and use the help of a hash function ($h$), which does not necessarily be a cryptographically secure hash function, but it *must* map to exactly one ${0,..., 2^m-1}$ large address space.
-    Then we lay out this address space as a ring shown and give each peer an ID in this address space e.g. $h("Alice") = 13, h("Bob") = 7, h("Charlie")=3 h("David") = 15$. The content is then also hashed $h(#raw("A")) = 0$ and saved by Alice on the next clockwise node on the ring of that id $0 -> 3, 4 -> 7, ...$ e.g. Charlie. This results in @dht_1.
+    Then we lay out this address space as a ring shown and give each peer an ID in this address space e.g. $h("Alice") = 13, h("Bob") = 7, h("Charlie") = 3, h("David") = 15$. The content is then also hashed $h(#raw("A")) = 0$ and saved by Alice on the next clockwise node on the ring of that id $0 -> 3, 4 -> 7, ...$ e.g. Charlie. This results in @dht_1.
 
-    Again Bob wants to find `A`. Currently he only has the hash $h(#raw("A"))$, but for routing we need to know the next nodes. Specifically we create a table of the nodes which own the $j+ 2^i$, where $j$ is my ID and $0 <= i <= m$. So with each finger we cover increasing distances, which allows us to have a $O(log n)$ node state.
+    Again Bob wants to find `A`. Currently he only knows it's hash $h(#raw("A"))$, but for routing we need to know the next nodes. Specifically we create a table of the nodes which own the $j+ 2^i$, where $j$ is my ID and $0 <= i <= m$. So with each finger we cover increasing distances, which allows us to have a $O(log n)$ node state.
 
     Coming back to Bob, who wants to find the owning node of $h(#raw("A") = 0$ and starts with going as far as he can without overshooting so $7->13$ in our case (! he does not know 1 is responsible 0, there could be someone in the middle!), Then we check again, $13$ knows $15$ is closer so $13->15$, and now 15 knows the next node $3$ is responsible and sends this back to Bob. This allows routing in $O(log n)$ steps :D see @dht_2. Then Bob can simply go to the responsible node and retrieve `A` (@dht_3)
 
@@ -461,7 +461,7 @@ For successors of your node contact the first successor from the finger table an
 
 Then we need to signal nodes which have an invalid finger to our successor to update to us. For this we use the same method but backwards $id - 2^i$. => $O(log^2 n)$
 
-2. Storage, Replication &
+2. Storage & Replication
 
 We can distinguish between _direct storage_ where we store content directly on the responsible node, or an _indirect storage_ where we store at Charlie, that Alice has the content.
 Content can be replicated with using multiple hashes, and storing it at each (e.g $h(#raw("A")), h(h(#raw("A"))), h(h(h(#raw("A"))))$. Then when loading choose one to lookup.
@@ -1454,7 +1454,7 @@ Now we do a quick sidetrack exploration into data-center design of such cloud pr
   [
     *Three-Tiered Design*
 
-    The traditional topology with classes of switches
+    The traditional topology with hierarchical classes of switches.
 
     #figure(
       caption: [Three-Tiered Datacenter Design],
@@ -1510,7 +1510,7 @@ Now we do a quick sidetrack exploration into data-center design of such cloud pr
   [
     *Fat-Tree*
 
-    Easy additions but can result in uneven traffic distribution.
+    Allow easy additions but can result in uneven traffic distribution.
     Fat-Tree is entirely determined by the port count $K in NN$ of the switches.
 
     $K=24 "ports" -> K^3/4 = 3456 "servers"$
@@ -1603,7 +1603,7 @@ Now we do a quick sidetrack exploration into data-center design of such cloud pr
   [
     *Jellyfish*
 
-    Random connections between switches can result in more throughput for less switches than for Fat-Trees.
+    Random connections between switches can result in more throughput for less switches.
     There is not really an aggregation or core switch anymore, or any structure.
 
     #let inner_ring = 12mm
@@ -1832,9 +1832,53 @@ An example of MapReduce can seen in @fig:mapreduce.
   ),
 )<fig:mapreduce>
 
-= Resource-Constrained Systems <chapter:iot>
+#pagebreak()
+
+= Resource-Constrained Systems & Cyberphysical Systems <chapter:iot>
+
+Since the invention and spread of the internet there is this idea of interconnected everything. This idea is conceptualized into the Internet of Things (IoT) where devices/microcontrollers in "things" are connected to the network. A cyberphysical system is a digital chip i.e. a microcontroller that has influence in the "real" world either by sensors (allowing measurements) and/or by actuators (motors, mosfets, etc.) that allows control over things.
 
 == Energy Consumption
+
+The chips in these IoT devices vary widely between purposes, price, and other factors. But most of them are severely resource constrained.
+Either they have little processing power or run on battery power and need to last as long as possible.
+The lecture example here are "smart" fire detectors which you do not want to charge too often.
+
+The energy consumption depends in most cases on the following things in order
+1. Sending wireless transmissions
+  ---
+
+2. Receiving wireless transmissions
+  ---
+
+3. CPU computation
+  ---
+
+4. RAM
+  ---
+
+5. Storage
+  ---
+  Depends on the type of Storage high speed SSDs can consume up to 10W, HDDs as well, both during full operation. The types of devices we are talking about likeliest only have tiny flash storage inside them.
+
+6. Physical systems
+  ---
+  This of course heavily depends on the device. A 1 Hz laser smoke detection costs basically no power. Powering a motor does though.
+
+
+#todo(
+  title: "Unfinished Work",
+  [
+    This Panikzettel is only half finished if I find time again I may continue it.
+    Otherwise it is to much work to not upload it anyway.
+
+    If you have some time or want to give others a better time learning, continue it 
+    and publish it on #link("https://github.com/htwr-aachen/panikzettel", `https://github.com/htwr-aachen/panikzettel`).
+
+    Even sketches, corrections and bullet points help others!
+  ]
+)
+
 
 == In-Network Processing
 
